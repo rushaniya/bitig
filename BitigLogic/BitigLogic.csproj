@@ -78,6 +78,7 @@
     <Compile Include="Commands\PhoneticYanalif.cs" />
     <Compile Include="Commands\PhoneticZamanalif.cs" />
     <Compile Include="Model\Alifba.cs" />
+    <Compile Include="Model\BuiltInAlifba.cs" />
     <Compile Include="Model\BuiltInDirection.cs" />
     <Compile Include="Model\Exclusion.cs" />
     <Compile Include="Model\ExclusionManager.cs" />

@@ -56,6 +56,8 @@ namespace Bitig.Logic.Model
             set;
         }
 
+        public BuiltInAlifba BuiltInAlifba { get; set; }
+
         public Alifba()
         {
         }
