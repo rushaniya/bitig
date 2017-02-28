@@ -1,0 +1,506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6CE8F819-307D-4444-8841-7387461B1D8B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bitig.UI</RootNamespace>
+    <AssemblyName>Bitig</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="sysglobl" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BitigInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BitigInstaller.Designer.cs">
+      <DependentUpon>BitigInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CKeyMap.cs" />
+    <Compile Include="CKeyMapManager.cs" />
+    <Compile Include="Classes\SymbolEventArgs.cs" />
+    <Compile Include="Classes\TempConfig.cs" />
+    <Compile Include="Configuration\frmAlphabetSymbols.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\frmAlphabetSymbols.Designer.cs">
+      <DependentUpon>frmAlphabetSymbols.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\frmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\frmConfig.Designer.cs">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\frmEditAlphabet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\frmEditAlphabet.Designer.cs">
+      <DependentUpon>frmEditAlphabet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\frmEditDirection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\frmEditDirection.Designer.cs">
+      <DependentUpon>frmEditDirection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlAlifba.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlAlifba.Designer.cs">
+      <DependentUpon>ctlAlifba.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlCustomCombo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlYanalif.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlYanalif.Designer.cs">
+      <DependentUpon>ctlYanalif.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\frmNumericList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\frmNumericList.Designer.cs">
+      <DependentUpon>frmNumericList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExclusionEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExclusionEdit.designer.cs">
+      <DependentUpon>frmExclusionEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExclusions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExclusions.Designer.cs">
+      <DependentUpon>frmExclusions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExclusionsAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExclusionsAdd.Designer.cs">
+      <DependentUpon>frmExclusionsAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExclusionsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExclusionsView.Designer.cs">
+      <DependentUpon>frmExclusionsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainForm.Designer.cs">
+      <DependentUpon>frmMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Configuration\frmAlphabetSymbols.resx">
+      <DependentUpon>frmAlphabetSymbols.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\frmConfig.resx">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\frmEditAlphabet.resx">
+      <DependentUpon>frmEditAlphabet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\frmEditDirection.resx">
+      <DependentUpon>frmEditDirection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlAlifba.resx">
+      <DependentUpon>ctlAlifba.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlYanalif.resx">
+      <DependentUpon>ctlYanalif.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExclusionEdit.resx">
+      <DependentUpon>frmExclusionEdit.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExclusions.resx">
+      <DependentUpon>frmExclusions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExclusionsAdd.resx">
+      <DependentUpon>frmExclusionsAdd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExclusionsView.resx">
+      <DependentUpon>frmExclusionsView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMainForm.resx">
+      <DependentUpon>frmMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\frmNumericList.resx">
+      <DependentUpon>frmNumericList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disk_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_plain_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flag_russia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\italic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\underline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\keyboard2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">
+      <Project>{83407590-EEF6-4822-8CCE-FED8BEEBD83A}</Project>
+      <Name>BitigBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitigData\BitigData.csproj">
+      <Project>{2be970c9-50ff-4038-be4c-80275ef802e4}</Project>
+      <Name>BitigData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitigLogic\BitigLogic.csproj">
+      <Project>{5052751A-CE01-4CEF-88DD-4BC4FA3C49CB}</Project>
+      <Name>BitigLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitigRtbControl\BitigRtbControl.csproj">
+      <Project>{E0103C36-1AEE-46D9-8FB7-9397E2AADF72}</Project>
+      <Name>BitigRtbControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\azur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\o.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ozur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\uzur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\u.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gzur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\g.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\izur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\i.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\czur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\szur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nzur.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\quot_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\quot_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_align_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_align_center.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_align_justified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_align_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\palette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\palette_text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\align_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\align_center.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\align_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\align_justify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bulleted_list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Photo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\forwd_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\go_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyboard_key.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\color-palette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alifba.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kitap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\numeric_list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indent_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subscript.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dropcaps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\forecolor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\backcolor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paragraph.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\erase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveas_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\advanced.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyboard24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyboard16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\Bitig.Logic.AlifbaConfigWrapper.datasource" />
+    <None Include="Properties\DataSources\Bitig.Logic.AlifbaSymbol.datasource" />
+    <None Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_up2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\Bitig.Logic.Alifba.datasource" />
+    <None Include="Properties\DataSources\Bitig.Logic.DirectionConfigUI.datasource" />
+    <None Include="Resources\arrow_up.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

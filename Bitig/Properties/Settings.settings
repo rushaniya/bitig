@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Bitig.UI.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="k_SplitterDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">469</Value>
+    </Setting>
+    <Setting Name="k_AlifbaVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="k_Location" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">3, 0</Value>
+    </Setting>
+    <Setting Name="k_ClientSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">709, 573</Value>
+    </Setting>
+    <Setting Name="k_WindowState" Type="System.Windows.Forms.FormWindowState" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
+    <Setting Name="k_AlifUser1Visible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="k_AlifUser2Visible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="k_AlifUser3Visisble" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="k_TlsMainLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">2, 24</Value>
+    </Setting>
+    <Setting Name="k_AlifbaLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">229, 39</Value>
+    </Setting>
+    <Setting Name="k_TlsTextLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">3, 0</Value>
+    </Setting>
+    <Setting Name="k_TlsParagraphLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">141, 44</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
