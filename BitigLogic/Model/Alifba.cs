@@ -65,7 +65,7 @@ namespace Bitig.Logic.Model
             id = ID;
             this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
             this.FriendlyName = FriendlyName;
-            this.RightToLeft=RightToLeft;
+            this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
         }
 

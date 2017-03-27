@@ -17,7 +17,7 @@ namespace Bitig.Logic.Model
 
         private int sourceID = -1;
 
-        public int SourceAlifbaID
+        public int SourceAlifbaID //repo: Alifba
         {
             get { return sourceID; }
             //set { sourceID = value; }
@@ -25,7 +25,7 @@ namespace Bitig.Logic.Model
 
         private int targetID = -1;
 
-        public int TargetAlifbaID
+        public int TargetAlifbaID //repo: Alifba
         {
             get { return targetID; }
            // set { targetID = value; }
@@ -44,10 +44,9 @@ namespace Bitig.Logic.Model
         //repo
         internal BuiltInDirection(int ID, int SourceID, int TargetID)
         {
-            throw new NotImplementedException();
-            //this.id = ID;
-            //this.sourceID = SourceID;
-            //this.targetID = TargetID;
+            this.id = ID;
+            this.sourceID = SourceID;
+            this.targetID = TargetID;
             //string _source = AlifbaManager.GetAlifbaNameByID(this.sourceID);
             //string _target = AlifbaManager.GetAlifbaNameByID(this.targetID);
             //if (string.IsNullOrEmpty(_source)) _source = "(none)";

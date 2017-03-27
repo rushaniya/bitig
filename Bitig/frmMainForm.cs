@@ -56,6 +56,8 @@ namespace Bitig.UI
 
         private readonly AlifbaRepository x_AlifbaRepository;
 
+        private readonly DirectionRepository x_DirectionRepository;
+
         #endregion
 
 
@@ -354,9 +356,7 @@ namespace Bitig.UI
                 else
                 {
                     lblTarget.Text = x_CurrentTranslitTarget.FriendlyName;
-                    //x_CurrentDirectionCode = x_CurrentTranslitSource.Code + x_CurrentTranslitTarget.Code;
-                    //x_CurrentDirection = DirectionManager.Instance[x_CurrentDirectionCode];
-                    x_CurrentDirection = DirectionManager.GetDirectionByAlifbaID(x_CurrentTranslitSource.ID, x_CurrentTranslitTarget.ID);
+                    x_CurrentDirection = x_DirectionRepository.GetByAlifbaIDs(x_CurrentTranslitSource.ID, x_CurrentTranslitTarget.ID);
                     string _toolTip = string.Format("Convert from {0} to {1}", x_CurrentTranslitSource.FriendlyName, x_CurrentTranslitTarget.FriendlyName);
                     if (x_CurrentDirection == null)
                     {
@@ -410,7 +410,7 @@ namespace Bitig.UI
             cmbTarget.Items.Clear();
             if (x_CurrentTranslitSource != null)
             {
-                foreach (Alifba _target in BitigConfigManager.GetTranslitTargets(x_CurrentTranslitSource.ID))
+                foreach (Alifba _target in x_DirectionRepository.GetTargets(x_CurrentTranslitSource.ID))
                 {
                     cmbTarget.Items.Add(_target);
                 }
@@ -898,7 +898,7 @@ namespace Bitig.UI
 
         private void mniConfiguration_Click(object sender, EventArgs e)
         {
-            using (frmConfig _configForm = new frmConfig(x_AlifbaRepository))
+            using (frmConfig _configForm = new frmConfig(x_AlifbaRepository, x_DirectionRepository))
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {

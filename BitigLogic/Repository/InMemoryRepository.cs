@@ -6,19 +6,19 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
-    public class InMemoryRepository<T, IDType>
+    public class InMemoryRepository<T, IDType> : IRepository<T, IDType>
         where T:EquatableByID<IDType>, IDeepCloneable<T>
     {
         private List<InMemoryItem<T>> list;
         private IRepository<T, IDType> persistentRepo;
 
-        //public bool IsFlushable
-        //{
-        //    get
-        //    {
-        //        return true;
-        //    }
-        //}
+        public bool IsFlushable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         //public IDType DefaultID
         //{
@@ -134,6 +134,11 @@ namespace Bitig.Logic.Repository
             }
             if (persistentRepo.IsFlushable)
                 persistentRepo.SaveChanges();
+        }
+
+        public IDType GenerateID(IEnumerable<IDType> ExsitingIDs)
+        {
+            throw new NotImplementedException();
         }
     }
 

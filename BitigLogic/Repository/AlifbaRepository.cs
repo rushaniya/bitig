@@ -5,17 +5,23 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
+    //repo: change non-custom IDs to built-in IDs like in directions?
+    //repo: is it bad to require IDs to be int? no, because ID in business entity is int
     public abstract class AlifbaRepository : IRepository<Alifba, int>
     {
-        public List<Alifba> GetList()
+        protected void EnsureDefaults()
         {
             var _list = GetListNoCreate();
             if (_list == null || _list.Count == 0)
             {
                 CreateDefaultConfiguration();
-                _list = GetListNoCreate();
             }
-            return _list;
+        }
+
+        public List<Alifba> GetList()
+        {
+            EnsureDefaults();
+            return GetListNoCreate();
         }
 
         protected abstract List<Alifba> GetListNoCreate();
@@ -24,6 +30,7 @@ namespace Bitig.Logic.Repository
         {
             if (Item == null)
                 throw new ArgumentNullException("Item");
+            EnsureDefaults();
             Item.ID = GenerateAlifbaID();
             InsertExactID(Item);
         }
@@ -31,24 +38,33 @@ namespace Bitig.Logic.Repository
         protected abstract void InsertExactID(Alifba Item);
 
         public abstract void Update(Alifba Item);
-        public abstract void Delete(Alifba Item);
+
+        public virtual void Delete(Alifba Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+            if (Item.ID == DefaultConfiguration.YANALIF)
+                throw new InvalidOperationException("Cannot delete Yanalif.");
+            EnsureDefaults();
+            DeleteNoCheck(Item);
+        }
+
+        protected abstract void DeleteNoCheck(Alifba Item);
 
         public Alifba Get(int ID)
         {
-            var _result = GetNoCreate(ID);
+            EnsureDefaults();
+            var _list = GetListNoCreate();
+            var _result = GetIfExists(ID);
             if (_result == null && ID == DefaultConfiguration.YANALIF)
             {
-                var _list = GetListNoCreate();
-                if (_list == null || _list.Count == 0)
-                    CreateDefaultConfiguration();
-                else
-                    CreateYanalif();
-                _result = GetNoCreate(ID);
+                CreateYanalif();
+                _result = GetIfExists(ID);
             }
             return _result;
         }
 
-        protected abstract Alifba GetNoCreate(int ID);
+        protected abstract Alifba GetIfExists(int ID);
 
         public bool IsFlushable { get; protected set; }
 
@@ -96,7 +112,7 @@ namespace Bitig.Logic.Repository
 
         protected virtual int GenerateAlifbaID()
         {
-            int _result = -1;
+            /*int _result = -1;
             var _list = GetList();
             for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
             {
@@ -106,13 +122,15 @@ namespace Bitig.Logic.Repository
                     break;
                 }
             }
-            return _result;
+            return _result;*/
+            var _list = GetList();
+            var _existingIDs = _list.Select(_alif => _alif.ID);
+            return GenerateID(_existingIDs);
         }
 
         public int GenerateID(IEnumerable<int> ExsitingIDs)
         {
             int _result = -1;
-            //var _list = GetList();
             for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
             {
                 if (ExsitingIDs.All(_id => _id != i))

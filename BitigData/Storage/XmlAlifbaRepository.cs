@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Bitig.Logic.Repository;
 using Bitig.Data.Model;
 using Bitig.Logic.Model;
-using System.Drawing;
 
 namespace Bitig.Data.Storage
 {
@@ -24,15 +23,6 @@ namespace Bitig.Data.Storage
             xmlList = AlifbaSerializer.ReadFromFile(path);
             if (xmlList == null)
                 xmlList = new List<XmlAlifba>();
-            //if (xmlList.Count == 0)
-            //{
-            //    CreateDefaultConfiguration();
-            //}
-            //var xmlYanalif = xmlList.Find(_alif => _alif.ID == DefaultConfiguration.YANALIF);
-            //if (xmlYanalif == null) //repo: in base (abstract) class?
-            //{
-            //    CreateYanalif();
-            //}
         }
 
         private Alifba MapToModel(XmlAlifba StoredAlifba)
@@ -110,9 +100,14 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
+        public List<Alifba> GetListNoCreateDefaults()
+        {
+            return GetListNoCreate();
+        }
+
         protected override void InsertExactID(Alifba Item)
         {
-            if (GetNoCreate(Item.ID) != null)
+            if (GetIfExists(Item.ID) != null)
                 throw new Exception("Same ID exists.");
             xmlList.Add(MapToStorage(Item));
         }
@@ -121,6 +116,7 @@ namespace Bitig.Data.Storage
         {
             if (Item == null)
                 throw new ArgumentNullException("Item");
+            EnsureDefaults();
             if (xmlList == null)
             {
                 ReadListFromFile();
@@ -132,7 +128,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        protected override Alifba GetNoCreate(int ID)
+        protected override Alifba GetIfExists(int ID)
         {
             if (xmlList == null)
             {
@@ -145,10 +141,8 @@ namespace Bitig.Data.Storage
         }
 
 
-        public override void Delete(Alifba Item)
+        protected override void DeleteNoCheck(Alifba Item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
             if (xmlList == null)
             {
                 ReadListFromFile();

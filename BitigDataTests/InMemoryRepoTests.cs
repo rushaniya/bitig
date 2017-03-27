@@ -147,3 +147,5 @@ namespace BitigDataTests
         }
     }
 }
+
+//repo: test creating a direction with newly added alifbas

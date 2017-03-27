@@ -387,7 +387,7 @@
             // 
             // bndDirection
             // 
-            this.bndDirection.DataSource = typeof(Bitig.Logic.DirectionConfig);
+            this.bndDirection.DataSource = typeof(Bitig.Logic.Model.Direction);
             // 
             // colDirectionID
             // 

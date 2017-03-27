@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Bitig.Logic.Repository
 {
+    //repo: delete?
     public interface IIDGenerator<T, IDType>
     {
         IDType GenerateID(List<T> List);

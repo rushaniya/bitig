@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InMemoryRepoTests.cs" />
     <Compile Include="AlifbaTests.cs" />
+    <Compile Include="XmlDirectionRepoTests.cs" />
     <Compile Include="XmlAlifbaRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +68,8 @@
     <Content Include="TestData\corrupted\NoYanalif.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\1025.xml" />
+    <Content Include="TestData\Prepared\Alifba1025.xml" />
+    <Content Include="TestData\Prepared\Direction777.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

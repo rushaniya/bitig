@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\DirectionExtensions.cs" />
     <EmbeddedResource Include="Configuration\frmAlphabetSymbols.resx">
       <DependentUpon>frmAlphabetSymbols.cs</DependentUpon>
     </EmbeddedResource>

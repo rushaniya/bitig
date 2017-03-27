@@ -66,7 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitigConfigManager.cs" />
     <Compile Include="Commands\CyrillicTranscription.cs" />
     <Compile Include="Commands\CyrillicRasmalif.cs" />
     <Compile Include="Commands\CyrillicYanalif.cs" />
@@ -84,17 +83,17 @@
     <Compile Include="Repository\AlifbaFont.cs" />
     <Compile Include="Repository\AlifbaRepository.cs" />
     <Compile Include="Model\AlifbaSymbol.cs" />
+    <Compile Include="Repository\BitigAlifbaRepository.cs" />
+    <Compile Include="Repository\DirectionRepository.cs" />
     <Compile Include="Repository\IDeepCloneable.cs" />
     <Compile Include="Repository\IIDGenerator.cs" />
     <Compile Include="Repository\InMemoryRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\IRepositoryItem.cs" />
-    <Compile Include="UI\DirectionConfig.cs" />
     <Compile Include="Repository\DefaultConfiguration.cs" />
     <Compile Include="Commands\RasmalifYanalif.cs" />
     <Compile Include="Commands\YanalifRasmalif.cs" />
     <Compile Include="Model\Direction.cs" />
-    <Compile Include="Model\DirectionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
