@@ -68,8 +68,12 @@
     <Content Include="TestData\corrupted\NoYanalif.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Alifba1025.xml" />
-    <Content Include="TestData\Prepared\Direction777.xml" />
+    <Content Include="TestData\Prepared\Alifba1025.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Prepared\Direction777.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

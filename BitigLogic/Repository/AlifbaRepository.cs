@@ -9,80 +9,19 @@ namespace Bitig.Logic.Repository
     //repo: is it bad to require IDs to be int? no, because ID in business entity is int
     public abstract class AlifbaRepository : IRepository<Alifba, int>
     {
-        protected void EnsureDefaults()
-        {
-            var _list = GetListNoCreate();
-            if (_list == null || _list.Count == 0)
-            {
-                CreateDefaultConfiguration();
-            }
-        }
+        public abstract List<Alifba> GetList();
 
-        public List<Alifba> GetList()
-        {
-            EnsureDefaults();
-            return GetListNoCreate();
-        }
-
-        protected abstract List<Alifba> GetListNoCreate();
-
-        public virtual void Insert(Alifba Item)
-        {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            EnsureDefaults();
-            Item.ID = GenerateAlifbaID();
-            InsertExactID(Item);
-        }
-
-        protected abstract void InsertExactID(Alifba Item);
+        public abstract void Insert(Alifba Item); //repo: bitig repo method (generate ID) + base repo method (assign ID)?
 
         public abstract void Update(Alifba Item);
 
-        public virtual void Delete(Alifba Item)
-        {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            if (Item.ID == DefaultConfiguration.YANALIF)
-                throw new InvalidOperationException("Cannot delete Yanalif.");
-            EnsureDefaults();
-            DeleteNoCheck(Item);
-        }
+        public abstract void Delete(Alifba Item);
 
-        protected abstract void DeleteNoCheck(Alifba Item);
+        public abstract Alifba Get(int ID);
 
-        public Alifba Get(int ID)
-        {
-            EnsureDefaults();
-            var _list = GetListNoCreate();
-            var _result = GetIfExists(ID);
-            if (_result == null && ID == DefaultConfiguration.YANALIF)
-            {
-                CreateYanalif();
-                _result = GetIfExists(ID);
-            }
-            return _result;
-        }
-
-        protected abstract Alifba GetIfExists(int ID);
+        public abstract bool IsEmpty();
 
         public bool IsFlushable { get; protected set; }
-
-        public Alifba Yanalif
-        {
-            get
-            {
-                return Get(DefaultConfiguration.YANALIF);
-            }
-        }
-
-        //public IIDGenerator<Alifba, int> IDGenerator
-        //{
-        //    get
-        //    {
-        //        return DefaultConfiguration.AlifbaIDGenerator;
-        //    }
-        //}
 
         protected abstract void FlushChanges();
 
@@ -91,23 +30,6 @@ namespace Bitig.Logic.Repository
             if (!IsFlushable)
                 throw new InvalidOperationException("Repository does not support flushing.");
             FlushChanges();
-        }
-
-        protected void CreateDefaultConfiguration()
-        {
-            foreach (var _alif in DefaultConfiguration.BuiltInAlifbaList)
-            {
-                InsertExactID(_alif);
-            }
-            if (IsFlushable)
-                FlushChanges();
-        }
-
-        protected void CreateYanalif()
-        {
-            InsertExactID(DefaultConfiguration.Yanalif);
-            if (IsFlushable)
-                FlushChanges();
         }
 
         protected virtual int GenerateAlifbaID()

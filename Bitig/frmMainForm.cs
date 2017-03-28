@@ -54,9 +54,9 @@ namespace Bitig.UI
 
         private Regex x_LineBreaksFinder;
 
-        private readonly AlifbaRepository x_AlifbaRepository;
+        private readonly BitigAlifbaRepository x_AlifbaRepository;
 
-        private readonly DirectionRepository x_DirectionRepository;
+        private readonly BitigDirectionRepository x_DirectionRepository;
 
         #endregion
 
@@ -82,7 +82,10 @@ namespace Bitig.UI
             //config:bind setting to menuitem.checked property for it is always visible and can be changed either programmatically or by user
             mniAlifba.Checked = false;//config
 
-            x_AlifbaRepository = new XmlAlifbaRepository(Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
+            x_AlifbaRepository = new BitigAlifbaRepository(new XmlAlifbaRepository(
+                Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml")));
+            x_DirectionRepository = new BitigDirectionRepository(new XmlDirectionRepository(
+                Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"), x_AlifbaRepository));
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)

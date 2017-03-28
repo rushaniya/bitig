@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Bitig.Data.Model;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
@@ -21,83 +20,7 @@ namespace Bitig.Data.Storage
             alifbaRepo = AlifbaRepo;
         }
 
-        public override bool IsFlushable
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public override void Delete(Direction Item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GenerateID(IEnumerable<int> ExsitingIDs)
-        {
-            int _result = -1;
-            for (int i = 0; i < int.MaxValue; i++)
-            {
-                if (ExsitingIDs.All(_id => _id != i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
-        }
-
-        public override Direction Get(int ID)
-        {
-            //if (xmlList == null)
-            //{
-            //    ReadListFromFile();
-            //}
-            //if (xmlList == null || xmlList.Count == 0)
-            //{
-            //    CreateDefaultConfiguration();
-            //}
-            //var _direction = xmlList.Find(_item => _item.ID == ID);
-            //if (_direction == null)
-            //    return null;
-            //return MapToModel(_direction);
-            return GetOrCreate(ID, true);
-        }
-
-        private Direction GetOrCreate(int ID, bool AllowCreate)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            if ((xmlList == null || xmlList.Count == 0) && AllowCreate)
-            {
-                CreateDefaultConfiguration();
-            }
-            var _direction = xmlList.Find(_item => _item.ID == ID);
-            if (_direction == null)
-                return null;
-            return MapToModel(_direction);
-        }
-
-        public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<Direction> GetList()
-        {
-            var _list = GetListNoCreate();
-            if (_list == null || _list.Count == 0)
-            {
-                CreateDefaultConfiguration();
-                _list = GetListNoCreate();
-            }
-            return _list;
-        }
-
-        protected override List<Direction> GetListNoCreate()
         {
             if (xmlList == null)
                 ReadListFromFile();
@@ -109,10 +32,113 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
-        public List<Direction> GetListNoCreateDefaults()
+        public override Direction Get(int ID)
         {
-            return GetListNoCreate();
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _direction = xmlList.Find(_item => _item.ID == ID);
+            if (_direction == null)
+                return null;
+            return MapToModel(_direction);
         }
+
+        public override bool IsEmpty()
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            return xmlList.Count == 0;
+        }
+
+        public override void Insert(Direction Item)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            xmlList.Add(MapToStorage(Item));
+        }
+
+        public override void Delete(Direction Item)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _direction = xmlList.Find(_item => _item.ID == Item.ID);
+            if (_direction != null)
+                xmlList.Remove(_direction);
+        }
+
+        public override void Update(Direction Item)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _direction = xmlList.Find(_item => _item.ID == Item.ID);
+            if (_direction == null)
+                throw new InvalidOperationException("Direction does not exist.");
+            xmlList.Remove(_direction);
+            xmlList.Add(MapToStorage(Item));
+        }
+
+        public override bool IsFlushable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override void SaveChanges()
+        {
+            DirectionSerializer.SaveToFile(path, xmlList);
+        }
+
+        public override void InsertBuiltIn(int ID, BuiltInDirection BuiltIn)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            xmlList.Add(new XmlDirection
+                (
+                    ID,
+                    BuiltIn.SourceAlifbaID,
+                    BuiltIn.TargetAlifbaID,
+                    BuiltInID: BuiltIn.ID
+                ));
+        }
+
+       /* public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _direction = xmlList.Find(_item =>
+                _item.SourceAlifbaID == SourceID && _item.TargetAlifbaID == TargetID);
+            if (_direction == null)
+                return null;
+            return MapToModel(_direction);
+        }
+
+        public override List<Alifba> GetTargets(int SourceID)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _targets = xmlList.Where(_item =>
+                _item.SourceAlifbaID == SourceID).ToList();
+            var _result = new List<Alifba>();
+            _targets.ForEach(_target => _result.Add(_target));
+            return _result;
+        }*/
 
         private Direction MapToModel(XmlDirection StoredDirection)
         {
@@ -128,46 +154,6 @@ namespace Bitig.Data.Storage
             xmlList = DirectionSerializer.ReadFromFile(path);
             if (xmlList == null)
                 xmlList = new List<XmlDirection>();
-        }
-
-        protected override void CreateDefaultConfiguration() 
-        {
-            xmlList = new List<XmlDirection>();
-            int _count = DefaultConfiguration.BuiltInDirections.Count;
-            for (int i = 0; i < _count; i++)
-            {
-                xmlList.Add(new XmlDirection
-                (
-                    i,
-                    DefaultConfiguration.BuiltInDirections[i].SourceAlifbaID,
-                    DefaultConfiguration.BuiltInDirections[i].TargetAlifbaID,
-                    BuiltInID: DefaultConfiguration.BuiltInDirections[i].ID
-                ));
-            }
-            SaveChanges();
-        }
-
-        public override List<Alifba> GetTargets(int SourceID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Insert(Direction Item)
-        {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            Item.ID = GenerateDirectionID();
-            if (GetOrCreate(Item.ID, false) != null)
-                throw new Exception("Same ID exists.");
-            xmlList.Add(MapToStorage(Item));
-        }
-
-        private int GenerateDirectionID()
-        {
-            if (xmlList == null)
-                ReadListFromFile();
-            var _existingIDs = xmlList.Select(_dir => _dir.ID);
-            return GenerateID(_existingIDs);
         }
 
         private XmlDirection MapToStorage(Direction ModelDirection)
@@ -189,21 +175,6 @@ namespace Bitig.Data.Storage
                 TypeName: ModelDirection.TypeName,
                 BuiltInID: _builtInID
             );
-        }
-
-        public override void SaveChanges()
-        {
-            DirectionSerializer.SaveToFile(path, xmlList);
-        }
-
-        public override void Update(Direction Item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsInUse(int AlifbaID)
-        {
-            throw new NotImplementedException();
         }
     }
 }

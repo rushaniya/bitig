@@ -88,7 +88,7 @@ namespace Bitig.Data.Storage
             };
         }
 
-        protected override List<Alifba> GetListNoCreate()
+        public override List<Alifba> GetList()
         {
             if (xmlList == null) 
                 ReadListFromFile();
@@ -100,23 +100,17 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
-        public List<Alifba> GetListNoCreateDefaults()
+        public override void Insert(Alifba Item)
         {
-            return GetListNoCreate();
-        }
-
-        protected override void InsertExactID(Alifba Item)
-        {
-            if (GetIfExists(Item.ID) != null)
-                throw new Exception("Same ID exists.");
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
             xmlList.Add(MapToStorage(Item));
         }
 
         public override void Update(Alifba Item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            EnsureDefaults();
             if (xmlList == null)
             {
                 ReadListFromFile();
@@ -128,7 +122,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        protected override Alifba GetIfExists(int ID)
+        public override Alifba Get(int ID)
         {
             if (xmlList == null)
             {
@@ -141,7 +135,7 @@ namespace Bitig.Data.Storage
         }
 
 
-        protected override void DeleteNoCheck(Alifba Item)
+        public override void Delete(Alifba Item)
         {
             if (xmlList == null)
             {
@@ -155,6 +149,15 @@ namespace Bitig.Data.Storage
         protected override void FlushChanges()
         {
             AlifbaSerializer.SaveToFile(path, xmlList);
+        }
+
+        public override bool IsEmpty()
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            return xmlList.Count == 0;
         }
     }
 }

@@ -39,20 +39,23 @@ namespace BitigDataTests
         //
         #endregion
 
-        private readonly string testFilePath = @"..\..\TestData\Alphabets.xml";
-        private readonly string preparedFile = @"..\..\TestData\Prepared\Alifba1025.xml";
+        private const string dataFolder = @"..\..\..\BitigDataTests\TestData\";
+        private readonly string testFilePath = dataFolder + "Alphabets.xml";
+        private readonly string preparedFile = dataFolder + @"Prepared\Alifba1025.xml";
+        private readonly string corruptedFile = dataFolder + @"Corrupted\NoYanalif.xml";
 
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
         {
-            File.Delete(testFilePath);
+            if (File.Exists(testFilePath))
+                File.Delete(testFilePath);
         }
 
         [TestMethod]
         public void Insert()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _testRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(testFilePath));
             var _name = "Test alifba " + Guid.NewGuid();
             var _symbolText = Guid.NewGuid().ToString();
             var _symbolDisplayText = Guid.NewGuid().ToString();
@@ -86,7 +89,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Insert_AssignID()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _testRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(testFilePath));
             var _name1 = "Test alifba " + Guid.NewGuid();
             var _name2 = "Test alifba " + Guid.NewGuid();
             const int _id = -1;
@@ -103,12 +106,13 @@ namespace BitigDataTests
         [TestMethod]
         public void Insert_CreateDefault()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new BitigAlifbaRepository(_xmlRepo);
             var _name1 = "Test alifba " + Guid.NewGuid();
             var _alifba1 = new Alifba(-1, _name1);
-            _testRepo.Insert(_alifba1);
-            _testRepo.SaveChanges();
-            var _list = _testRepo.GetListNoCreateDefaults();
+            _bitigRepo.Insert(_alifba1);
+            _bitigRepo.SaveChanges();
+            var _list = _xmlRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count + 1, _list.Count);
         }
 
@@ -125,14 +129,15 @@ namespace BitigDataTests
         [TestMethod]
         public void GetList_CreateDefault()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
-            Assert.IsNotNull(_testRepo.Yanalif);
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new BitigAlifbaRepository(_xmlRepo);
+            Assert.IsNotNull(_bitigRepo.Yanalif);
 
             var _yanalif = DefaultConfiguration.Yanalif;
             Assert.AreNotEqual(0, _yanalif.CustomSymbols.Count);
-            Assert.AreEqual(_yanalif.CustomSymbols.Count, _testRepo.Yanalif.CustomSymbols.Count);
+            Assert.AreEqual(_yanalif.CustomSymbols.Count, _bitigRepo.Yanalif.CustomSymbols.Count);
 
-            var _list = _testRepo.GetList();
+            var _list = _bitigRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _list.Count);
         }
 
@@ -149,7 +154,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Get_CreateDefault()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _testRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(testFilePath));
             var _alifba = _testRepo.Get(0); //Cyrillic
             Assert.IsNotNull(_alifba);
         }
@@ -190,12 +195,13 @@ namespace BitigDataTests
         [TestMethod]
         public void Update_CreateDefault()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new BitigAlifbaRepository(_xmlRepo);
             var _name = "Test alifba " + Guid.NewGuid();
             var _alifba = new Alifba(0, _name);
-            _testRepo.Update(_alifba);
-            _testRepo.SaveChanges();
-            var _list = _testRepo.GetListNoCreateDefaults();
+            _bitigRepo.Update(_alifba);
+            _xmlRepo.SaveChanges();
+            var _list = _xmlRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _list.Count);
         }
 
@@ -219,19 +225,20 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_CreateDefault()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new BitigAlifbaRepository(_xmlRepo);
             var _name = "Test alifba " + Guid.NewGuid();
             var _alifba = new Alifba(0, _name);
-            _testRepo.Delete(_alifba);
-            _testRepo.SaveChanges();
-            var _list = _testRepo.GetListNoCreateDefaults();
+            _bitigRepo.Delete(_alifba);
+            _bitigRepo.SaveChanges();
+            var _list = _xmlRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count - 1, _list.Count);
         }
 
         [TestMethod]
         public void Delete_Yanalif()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _testRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(testFilePath));
             var _yanalif = _testRepo.Get(DefaultConfiguration.YANALIF);
             Assert.IsNotNull(_yanalif);
             try
@@ -254,7 +261,7 @@ namespace BitigDataTests
         [TestMethod]
         public void GenerateAlifbaID()
         {
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
+            var _testRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(testFilePath));
             var _name1 = "Test alifba " + Guid.NewGuid();
             var _name2 = "Test alifba " + Guid.NewGuid();
             var _alifba1 = new Alifba(-1, _name1);
@@ -268,10 +275,11 @@ namespace BitigDataTests
         [TestMethod]
         public void CreateYanalif()
         {
-            File.Copy(@"..\..\TestData\Corrupted\NoYanalif.xml", testFilePath);
+            File.Copy(corruptedFile, testFilePath);
 
-            var _testRepo = new XmlAlifbaRepository(testFilePath);
-            var _newYanalif = _testRepo.Yanalif;
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new BitigAlifbaRepository(_xmlRepo);
+            var _newYanalif = _bitigRepo.Yanalif;
             var _builtIn = DefaultConfiguration.BuiltInAlifbaList.Find(_item => _item.IsYanalif);
             Assert.IsNotNull(_newYanalif);
             Assert.AreNotEqual(0, _builtIn.CustomSymbols.Count);

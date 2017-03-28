@@ -84,6 +84,7 @@
     <Compile Include="Repository\AlifbaRepository.cs" />
     <Compile Include="Model\AlifbaSymbol.cs" />
     <Compile Include="Repository\BitigAlifbaRepository.cs" />
+    <Compile Include="Repository\BitigDirectionRepository.cs" />
     <Compile Include="Repository\DirectionRepository.cs" />
     <Compile Include="Repository\IDeepCloneable.cs" />
     <Compile Include="Repository\IIDGenerator.cs" />
