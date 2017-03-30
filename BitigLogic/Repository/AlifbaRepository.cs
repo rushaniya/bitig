@@ -9,6 +9,8 @@ namespace Bitig.Logic.Repository
     //repo: is it bad to require IDs to be int? no, because ID in business entity is int
     public abstract class AlifbaRepository : IRepository<Alifba, int>
     {
+        public virtual RepositoryProvider RepositoryProvider { get; set; }
+
         public abstract List<Alifba> GetList();
 
         public abstract void Insert(Alifba Item); //repo: bitig repo method (generate ID) + base repo method (assign ID)?

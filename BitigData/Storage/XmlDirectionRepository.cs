@@ -12,12 +12,10 @@ namespace Bitig.Data.Storage
         private readonly string path;
 
         private List<XmlDirection> xmlList;
-        private AlifbaRepository alifbaRepo;
 
-        public XmlDirectionRepository(string Path, AlifbaRepository AlifbaRepo)
+        public XmlDirectionRepository(string Path)
         {
             path = Path;
-            alifbaRepo = AlifbaRepo;
         }
 
         public override List<Direction> GetList()
@@ -142,8 +140,10 @@ namespace Bitig.Data.Storage
 
         private Direction MapToModel(XmlDirection StoredDirection)
         {
-            var _source = alifbaRepo.Get(StoredDirection.SourceAlifbaID);
-            var _target = alifbaRepo.Get(StoredDirection.TargetAlifbaID);
+            if (RepositoryProvider == null)
+                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository.");
+            var _source = RepositoryProvider.AlifbaRepository.Get(StoredDirection.SourceAlifbaID);
+            var _target = RepositoryProvider.AlifbaRepository.Get(StoredDirection.TargetAlifbaID);
             var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
             return new Direction(StoredDirection.ID, _source, _target,
                 StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn);

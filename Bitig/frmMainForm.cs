@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.IO;
-using Bitig.Logic;
 using System.Runtime.InteropServices;
 using Bitig.RtbControl;
 using Bitig.UI.Controls;
@@ -82,10 +76,13 @@ namespace Bitig.UI
             //config:bind setting to menuitem.checked property for it is always visible and can be changed either programmatically or by user
             mniAlifba.Checked = false;//config
 
-            x_AlifbaRepository = new BitigAlifbaRepository(new XmlAlifbaRepository(
-                Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml")));
-            x_DirectionRepository = new BitigDirectionRepository(new XmlDirectionRepository(
-                Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"), x_AlifbaRepository));
+            var _xmlAlifRepo = new XmlAlifbaRepository(
+                Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
+            var _xmlDirRepo = new XmlDirectionRepository(
+                Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"));
+            var _repoProvider = new RepositoryProvider(_xmlAlifRepo, _xmlDirRepo);
+            x_AlifbaRepository = _repoProvider.AlifbaRepository;
+            x_DirectionRepository = _repoProvider.DirectionRepository;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)

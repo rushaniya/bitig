@@ -6,6 +6,7 @@ namespace Bitig.Logic.Repository
 {
     public abstract class DirectionRepository : IRepository<Direction, int>
     {
+        public virtual RepositoryProvider RepositoryProvider { get; set; }
 
         public abstract List<Direction> GetList();
         public abstract Direction Get(int ID);
@@ -17,8 +18,7 @@ namespace Bitig.Logic.Repository
 
         public abstract bool IsFlushable { get; }
         public abstract void SaveChanges();
-        //public abstract void CreateDefaultConfiguration();
-
+        
         public abstract void InsertBuiltIn(int ID, BuiltInDirection BuiltIn);
 
         public int GenerateID(IEnumerable<int> ExsitingIDs)
@@ -41,9 +41,5 @@ namespace Bitig.Logic.Repository
             var _existingIDs = _list.Select(_dir => _dir.ID);
             return GenerateID(_existingIDs);
         }
-
-        //public abstract Direction GetByAlifbaIDs(int SourceID, int TargetID);
-        //public abstract List<Alifba> GetTargets(int SourceID);
-        //public abstract bool IsInUse(int AlifbaID);
     }
 }
