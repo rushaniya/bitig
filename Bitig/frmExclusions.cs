@@ -7,15 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Bitig.Logic;
+using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
 
 namespace Bitig.UI
 {
     public partial class frmExclusions : Form
     {
-        public frmExclusions()
+        private DirectionRepository x_DirectionRepo;
+
+        public frmExclusions(DirectionRepository DirectionRepo, Direction DefaultDirection)
         {
             InitializeComponent();
-            
+            var _bindingList = new BindingList<Exclusion>(DefaultDirection.Exclusions);
+            dataGridView1.DataSource = _bindingList;
+            x_DirectionRepo = DirectionRepo;
         }
 
         //excl
@@ -53,6 +59,7 @@ namespace Bitig.UI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            //excl: update directions' exclusions
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)

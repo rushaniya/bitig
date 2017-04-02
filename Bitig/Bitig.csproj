@@ -203,6 +203,7 @@
       <DependentUpon>frmNumericList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Bitig.Logic.Model.Exclusion.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

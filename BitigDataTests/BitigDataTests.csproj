@@ -55,6 +55,10 @@
     <Compile Include="XmlAlifbaRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">
+      <Project>{83407590-eef6-4822-8cce-fed8beebd83a}</Project>
+      <Name>BitigBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BitigData\BitigData.csproj">
       <Project>{2be970c9-50ff-4038-be4c-80275ef802e4}</Project>
       <Name>BitigData</Name>

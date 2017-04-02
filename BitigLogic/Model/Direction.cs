@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using Bitig.Base;
-using System.Collections.Specialized;
-using System.Xml.Serialization;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
@@ -22,47 +18,15 @@ namespace Bitig.Logic.Model
                 id = value; 
             }
         }
-
       
         private TranslitCommand translitCommand;
 
-        //private int sourceAlifbaID = -1;
-
-        //public int SourceAlifbaID
-        //{
-        //    get { return sourceAlifbaID; }
-        //    set { sourceAlifbaID = value; }
-        //}
-
-        //private int targetAlifbaID = -1;
-
-        //public int TargetAlifbaID
-        //{
-        //    get { return targetAlifbaID; }
-        //    set { targetAlifbaID = value; }
-        //}
-
-        //private int builtInID = -1;
-
-        //public int BuiltInID
-        //{
-        //    get { return builtInID; }
-        //    set
-        //    {
-        //        builtInID = value;
-        //        translitCommand = null;
-        //        friendlyName = null;
-        //    }
-        //}
-
-            public Alifba Source { get; set; }
+        public Alifba Source { get; set; }
 
         public Alifba Target { get; set; }
 
         public BuiltInDirection BuiltIn { get; set; }
 
-        private string friendlyName;
-        [XmlIgnore]
         public string FriendlyName
         {
             get
@@ -83,9 +47,11 @@ namespace Bitig.Logic.Model
             set;
         }
 
+        public List<Exclusion> Exclusions { get; set; }
+
         private bool exclusionsSet;
 
-        public Direction(int ID, Alifba Source, Alifba Target, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null)
+        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null)
         {
             this.AssemblyPath = AssemblyPath;
             this.TypeName = TypeName;
@@ -93,6 +59,7 @@ namespace Bitig.Logic.Model
             this.Source = Source;
             this.Target = Target;
             this.BuiltIn = BuiltIn;
+            this.Exclusions = Exclusions;
         }
 
         public Direction()
@@ -122,16 +89,13 @@ namespace Bitig.Logic.Model
                     throw new InvalidOperationException(string.Format("Type {0} not found in assembly {1}", TypeName, AssemblyPath));
                 translitCommand = (TranslitCommand)Activator.CreateInstance(_t);
             }
+                translitCommand.Exclusions = LoadExclusions();
         }
 
         public string Transliterate(string Text)
         {
-            if (translitCommand == null) InitializeTranslitCommand();
-            if (!exclusionsSet && ExclusionManager.ReloadExclusions)
-            {
-                translitCommand.Exclusions = LoadExclusions();
-                exclusionsSet = true;
-            }
+            if (translitCommand == null)
+                InitializeTranslitCommand();
             return translitCommand.Convert(Text);
         }
 
@@ -139,9 +103,9 @@ namespace Bitig.Logic.Model
         private ExclusionCollection LoadExclusions()
         {
             ExclusionCollection _resultDict = new ExclusionCollection();
-            foreach (Exclusion _excl in ExclusionManager.GetExclusions(this.id))
+            foreach (Exclusion _excl in Exclusions)
             {
-                _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.MatchMiddle);
+                _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
             }
             return _resultDict;
         }
@@ -174,8 +138,16 @@ namespace Bitig.Logic.Model
 
         public Direction Clone()
         {
+            var _exclusions = new List<Exclusion>();
+            if (Exclusions != null)
+            {
+                foreach (var _item in Exclusions)
+                {
+                    _exclusions.Add(_item.Clone());
+                }
+            }
             //repo: clone BuiltIn?
-            return new Direction(ID, Source.Clone(), Target.Clone(), AssemblyPath, TypeName, BuiltIn);
+            return new Direction(ID, Source.Clone(), Target.Clone(), _exclusions, AssemblyPath, TypeName, BuiltIn);
         }
     }
 }

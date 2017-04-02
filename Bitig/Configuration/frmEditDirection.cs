@@ -173,7 +173,7 @@ namespace Bitig.UI.Configuration
             }
             if (x_Direction == null)
             {
-                x_Direction = new Direction(-1, _source, _target,
+                x_Direction = new Direction(-1, _source, _target, null,
                 x_SelectedAssemblyPath, _type, _builtIn); //repo: , cmbType.Text.Trim() ?
                 x_DirectionRepository.Insert(x_Direction);
             }

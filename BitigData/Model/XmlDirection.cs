@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Bitig.Data.Storage;
 
 namespace Bitig.Data.Model
@@ -47,6 +48,8 @@ namespace Bitig.Data.Model
             set;
         }
 
+        public List<XmlExclusion> Exclusions { get; set; }
+
         public XmlDirection()
         {
             if (!DirectionSerializer.Deserializing)
@@ -54,7 +57,7 @@ namespace Bitig.Data.Model
             BuiltInID = -1;
         }
 
-        public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID,
+        public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, List<XmlExclusion> Exclusions,
             string AssemblyPath = null, string TypeName = null, int BuiltInID = -1)
         {
             this.AssemblyPath = AssemblyPath;
@@ -63,6 +66,7 @@ namespace Bitig.Data.Model
             this.SourceAlifbaID = SourceAlifbaID;
             this.TargetAlifbaID = TargetAlifbaID;
             this.TypeName = TypeName;
+            this.Exclusions = Exclusions;
         }
 
         public override bool Equals(object obj)

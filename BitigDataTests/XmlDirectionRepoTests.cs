@@ -103,7 +103,7 @@ namespace BitigDataTests
             var _source = new Alifba(1, "alifba1");
             var _target = new Alifba(0, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, _assemblyName, "TestType");
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
             _testRepo.Insert(_direction);
             var _insertedID = _direction.ID;
             _testRepo.SaveChanges();
@@ -128,9 +128,9 @@ namespace BitigDataTests
             var _target = new Alifba(0, "alifba2");
             var _source2 = new Alifba(2, "alifba3");
             const int _id = -1;
-            var _dir1 = new Direction(_id, _source1, _target);
+            var _dir1 = new Direction(_id, _source1, _target, null);
             _testRepo.Insert(_dir1);
-            var _dir2 = new Direction(_id, _source2, _target);
+            var _dir2 = new Direction(_id, _source2, _target, null);
             _testRepo.Insert(_dir2);
             Assert.AreNotEqual(-1, _dir1.ID);
             Assert.AreNotEqual(-1, _dir2.ID);
@@ -150,7 +150,7 @@ namespace BitigDataTests
             var _source = new Alifba(1, "alifba1");
             var _target = new Alifba(0, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, _assemblyName, "TestType");
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
             _testRepo.Insert(_direction);
             _testRepo.SaveChanges();
 
@@ -166,7 +166,7 @@ namespace BitigDataTests
             var _source = new Alifba(0, "alifba1");
             var _target = new Alifba(1, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, _assemblyName, "TestType");
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
             try
             {
                 _testRepo.Insert(_direction);
@@ -219,7 +219,7 @@ namespace BitigDataTests
             var _assembly = "TestAssembly " + Guid.NewGuid();
             var _source = _alifbaRepo.Get(2);
             var _target = _alifbaRepo.Get(3);
-            var _direction = new Direction(0, _source, _target, _assembly);
+            var _direction = new Direction(0, _source, _target, null, _assembly);
             _testRepo.Update(_direction);
             _testRepo.SaveChanges();
 
@@ -246,7 +246,7 @@ namespace BitigDataTests
         public void Delete_CreateDefault()
         {
             var _testRepo = InitTestRepo();
-            var _direction = new Direction(0, null, null); //repo: Repo.FirstID? (together with Repo.DefaultID)
+            var _direction = new Direction(0, null, null, null); //repo: Repo.FirstID? (together with Repo.DefaultID)
             _testRepo.Delete(_direction);
             _testRepo.SaveChanges();
 
@@ -282,6 +282,39 @@ namespace BitigDataTests
             Assert.AreEqual(3, _targets.Count);
             var _expectedIDs = new List<int> { 1, 2, 3 };
             Assert.IsTrue(_expectedIDs.All(_id => _targets.Exists(_t => _t.ID == _id)));
+        }
+
+        [TestMethod]
+        public void GetExclusions()
+        {
+            var _testRepo = InitTestRepo(preparedFile);
+            var _direction = _testRepo.Get(777);
+            Assert.IsNotNull(_direction.Exclusions);
+            Assert.AreEqual(1, _direction.Exclusions.Count);
+            var _checkExcl = _direction.Exclusions[0];
+            Assert.AreEqual(true, _checkExcl.AnyPosition);
+            Assert.AreEqual("1", _checkExcl.SourceWord);
+            Assert.AreEqual("2", _checkExcl.TargetWord);
+        }
+
+        [TestMethod]
+        public void SaveExclusions()
+        {
+            var _testRepo = InitTestRepo();
+            var _exclusion = new Exclusion { AnyPosition = true, SourceWord = "1", TargetWord = "2" };
+            var _direction = _testRepo.Get(0);
+            _direction.Exclusions = new List<Exclusion> { _exclusion };
+            _testRepo.Update(_direction);
+            _testRepo.SaveChanges();
+
+            var _checkRepo = InitCheckRepo(_testRepo);
+            var _updated = _checkRepo.Get(0);
+            Assert.IsNotNull(_updated.Exclusions);
+            Assert.AreEqual(1, _updated.Exclusions.Count);
+            var _checkExcl = _updated.Exclusions[0];
+            Assert.AreEqual(true, _checkExcl.AnyPosition);
+            Assert.AreEqual("1", _checkExcl.SourceWord);
+            Assert.AreEqual("2", _checkExcl.TargetWord);
         }
     }
 }

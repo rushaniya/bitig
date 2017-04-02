@@ -108,7 +108,8 @@ namespace Bitig.Data.Storage
                     ID,
                     BuiltIn.SourceAlifbaID,
                     BuiltIn.TargetAlifbaID,
-                    BuiltInID: BuiltIn.ID
+                    BuiltInID: BuiltIn.ID,
+                    Exclusions: null
                 ));
         }
 
@@ -141,12 +142,27 @@ namespace Bitig.Data.Storage
         private Direction MapToModel(XmlDirection StoredDirection)
         {
             if (RepositoryProvider == null)
-                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository.");
+                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository & ExclusionsRepository.");
             var _source = RepositoryProvider.AlifbaRepository.Get(StoredDirection.SourceAlifbaID);
             var _target = RepositoryProvider.AlifbaRepository.Get(StoredDirection.TargetAlifbaID);
             var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
-            return new Direction(StoredDirection.ID, _source, _target,
+            var _exclusions = new List<Exclusion>();
+            if (StoredDirection.Exclusions != null)
+                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(MapToModel(_excl)));
+            return new Direction(StoredDirection.ID, _source, _target, _exclusions,
                 StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn);
+        }
+
+        private Exclusion MapToModel(XmlExclusion StoredExclusion)
+        {
+            return new Exclusion
+            {
+                AnyPosition = StoredExclusion.AnyPosition,
+                MatchBeginning = StoredExclusion.MatchBeginning,
+                MatchCase = StoredExclusion.MatchCase,
+                SourceWord = StoredExclusion.SourceWord,
+                TargetWord = StoredExclusion.TargetWord
+            };
         }
 
         private void ReadListFromFile()
@@ -166,6 +182,10 @@ namespace Bitig.Data.Storage
             var _builtInID = ModelDirection.BuiltIn == null ? -1 : //repo: default id? (depends on repo implementation)
                 ModelDirection.BuiltIn.ID;
 
+            var _exclusions = new List<XmlExclusion>();
+            if (ModelDirection.Exclusions != null)
+                ModelDirection.Exclusions.ForEach(_excl => _exclusions.Add(MapToStorage(_excl, ModelDirection.ID)));
+
             return new XmlDirection
             (
                 ModelDirection.ID,
@@ -173,8 +193,22 @@ namespace Bitig.Data.Storage
                 ModelDirection.Target.ID,
                 AssemblyPath: ModelDirection.AssemblyPath,
                 TypeName: ModelDirection.TypeName,
-                BuiltInID: _builtInID
+                BuiltInID: _builtInID,
+                Exclusions: _exclusions
             );
+        }
+
+        private XmlExclusion MapToStorage(Exclusion ModelExclusion, int DirectionID)
+        {
+            return new XmlExclusion
+            {
+                AnyPosition = ModelExclusion.AnyPosition,
+                MatchBeginning = ModelExclusion.MatchBeginning,
+                MatchCase = ModelExclusion.MatchCase,
+                SourceWord = ModelExclusion.SourceWord,
+                TargetWord = ModelExclusion.TargetWord,
+                DirectionID = DirectionID
+            };
         }
     }
 }

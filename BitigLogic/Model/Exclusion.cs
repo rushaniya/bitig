@@ -1,70 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {
-    public class Exclusion
+    public class Exclusion : Bitig.Base.Exclusion, IDeepCloneable<Exclusion>
     {
-        private int id = -1;
+        //private int id = -1;
 
-        public int ID
+        //public int ID
+        //{
+        //    get { return id; }
+        //    set
+        //    {
+        //        id = value;
+        //    }
+        //}
+
+       // public Direction Direction { get; set; }
+
+        public Exclusion Clone()
         {
-            get { return id; }
-            set { id = value; }
+            return new Exclusion
+            {
+                AnyPosition = AnyPosition,
+                MatchCase = MatchCase,
+                MatchBeginning = MatchBeginning,
+                SourceWord = SourceWord,
+                TargetWord = TargetWord
+            };
         }
 
-        private int directionID = -1;
-
-        public int DirectionID
-        {
-            get { return directionID; }
-            set { directionID = value; }
-        }
-
-        private string sourceWord;
-
-        public string SourceWord
-        {
-            get { return sourceWord; }
-            set { sourceWord = value; }
-        }
-
-        private string targetWord;
-
-        public string TargetWord
-        {
-            get { return targetWord; }
-            set { targetWord = value; }
-        }
-
-        private bool matchCase;
-
-        public bool MatchCase
-        {
-            get { return matchCase; }
-            set { matchCase = value; }
-        }
-
-        private bool matchBeginning;
-
-        public bool MatchBeginning
-        {
-            get { return matchBeginning; }
-            set { matchBeginning = value; }
-        }
-
-        private bool matchMiddle;
-
-        public bool MatchMiddle
-        {
-            get { return matchMiddle; }
-            set { matchMiddle = value; }
-        }
-        public Exclusion()
-        {
-
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    var cast = obj as Exclusion;
+        //    if (cast == null)
+        //        return false;
+        //    return cast.ID.Equals(this.ID);
+        //}
     }
 }
