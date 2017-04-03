@@ -75,7 +75,7 @@
     <Compile Include="Storage\XmlAlifbaRepository.cs" />
     <Compile Include="Storage\AlifbaSerializer.cs" />
     <Compile Include="Storage\DirectionSerializer.cs" />
-    <Compile Include="Storage\ExclusionSerializer.cs" />
+    <Compile Include="Storage\XmlDirectionRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
@@ -12,13 +10,16 @@ namespace BitigDataTests
     [TestClass]
     public class InMemoryRepoTests
     {
-        private readonly string testFilePath = @"..\..\TestData\Alphabets.xml";
+        private const string dataFolder = @"..\..\..\BitigDataTests\TestData\";
+        private readonly string testFilePath = dataFolder + "Alphabets.xml";
+        private readonly string preparedFile = dataFolder + @"Prepared\Alifba1025.xml";
 
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
         {
-            File.Delete(testFilePath);
+            if (File.Exists(testFilePath))
+                File.Delete(testFilePath);
         }
         
 
@@ -42,8 +43,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
-            var _preparedFile = @"..\..\TestData\Prepared\1025.xml";
-            File.Copy(_preparedFile, testFilePath);
+            File.Copy(preparedFile, testFilePath);
             var _xmlRepo = new XmlAlifbaRepository(testFilePath);
             var _testRepo = new InMemoryRepository<Alifba, int>(_xmlRepo);
             var _alifba = _testRepo.Get(1025);
@@ -116,8 +116,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            var _preparedFile = @"..\..\TestData\Prepared\1025.xml";
-            File.Copy(_preparedFile, testFilePath);
+            File.Copy(preparedFile, testFilePath);
             var _xmlRepo = new XmlAlifbaRepository(testFilePath);
             var _testRepo = new InMemoryRepository<Alifba, int>(_xmlRepo);
             var _alifba = _testRepo.Get(1025);
@@ -147,3 +146,5 @@ namespace BitigDataTests
         }
     }
 }
+
+//repo: test creating a direction with newly added alifbas

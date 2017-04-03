@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Bitig.Logic.Repository;
 using Bitig.Data.Model;
 using Bitig.Logic.Model;
-using System.Drawing;
 
 namespace Bitig.Data.Storage
 {
@@ -24,15 +23,6 @@ namespace Bitig.Data.Storage
             xmlList = AlifbaSerializer.ReadFromFile(path);
             if (xmlList == null)
                 xmlList = new List<XmlAlifba>();
-            //if (xmlList.Count == 0)
-            //{
-            //    CreateDefaultConfiguration();
-            //}
-            //var xmlYanalif = xmlList.Find(_alif => _alif.ID == DefaultConfiguration.YANALIF);
-            //if (xmlYanalif == null) //repo: in base (abstract) class?
-            //{
-            //    CreateYanalif();
-            //}
         }
 
         private Alifba MapToModel(XmlAlifba StoredAlifba)
@@ -98,7 +88,7 @@ namespace Bitig.Data.Storage
             };
         }
 
-        protected override List<Alifba> GetListNoCreate()
+        public override List<Alifba> GetList()
         {
             if (xmlList == null) 
                 ReadListFromFile();
@@ -110,17 +100,17 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
-        protected override void InsertExactID(Alifba Item)
+        public override void Insert(Alifba Item)
         {
-            if (GetNoCreate(Item.ID) != null)
-                throw new Exception("Same ID exists.");
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
             xmlList.Add(MapToStorage(Item));
         }
 
         public override void Update(Alifba Item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
             if (xmlList == null)
             {
                 ReadListFromFile();
@@ -132,7 +122,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        protected override Alifba GetNoCreate(int ID)
+        public override Alifba Get(int ID)
         {
             if (xmlList == null)
             {
@@ -147,8 +137,6 @@ namespace Bitig.Data.Storage
 
         public override void Delete(Alifba Item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
             if (xmlList == null)
             {
                 ReadListFromFile();
@@ -161,6 +149,15 @@ namespace Bitig.Data.Storage
         protected override void FlushChanges()
         {
             AlifbaSerializer.SaveToFile(path, xmlList);
+        }
+
+        public override bool IsEmpty()
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            return xmlList.Count == 0;
         }
     }
 }

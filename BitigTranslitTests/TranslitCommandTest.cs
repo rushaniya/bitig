@@ -7,6 +7,7 @@ namespace BitigTranslitTests
     [TestClass()]
     public class TranslitCommandTest
     {
+        //excl: test that custom exclusions override built-in ones
         class NonAlphabetTranslitCommand : SubstituteTranslitCommand
         {
             private Dictionary<string, string> translitTable;
