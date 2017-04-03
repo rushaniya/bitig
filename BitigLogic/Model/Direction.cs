@@ -21,6 +21,16 @@ namespace Bitig.Logic.Model
       
         private TranslitCommand translitCommand;
 
+        public TranslitCommand TranslitCommand
+        {
+            get
+            {
+                if (translitCommand == null)
+                    InitializeTranslitCommand();
+                return translitCommand;
+            }
+        }
+
         public Alifba Source { get; set; }
 
         public Alifba Target { get; set; }
@@ -62,11 +72,6 @@ namespace Bitig.Logic.Model
             this.Exclusions = Exclusions;
         }
 
-        public Direction()
-        {
-            
-        }
-
         public bool IsBuiltIn()
         {
             if (Source == null || Target == null)
@@ -89,7 +94,7 @@ namespace Bitig.Logic.Model
                     throw new InvalidOperationException(string.Format("Type {0} not found in assembly {1}", TypeName, AssemblyPath));
                 translitCommand = (TranslitCommand)Activator.CreateInstance(_t);
             }
-                translitCommand.Exclusions = LoadExclusions();
+            translitCommand.Exclusions = LoadExclusions();
         }
 
         public string Transliterate(string Text)
@@ -103,9 +108,12 @@ namespace Bitig.Logic.Model
         private ExclusionCollection LoadExclusions()
         {
             ExclusionCollection _resultDict = new ExclusionCollection();
-            foreach (Exclusion _excl in Exclusions)
+            if (Exclusions != null)
             {
-                _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
+                foreach (Exclusion _excl in Exclusions)
+                {
+                    _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
+                }
             }
             return _resultDict;
         }

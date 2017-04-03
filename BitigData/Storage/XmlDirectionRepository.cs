@@ -142,7 +142,7 @@ namespace Bitig.Data.Storage
         private Direction MapToModel(XmlDirection StoredDirection)
         {
             if (RepositoryProvider == null)
-                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository & ExclusionsRepository.");
+                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository.");
             var _source = RepositoryProvider.AlifbaRepository.Get(StoredDirection.SourceAlifbaID);
             var _target = RepositoryProvider.AlifbaRepository.Get(StoredDirection.TargetAlifbaID);
             var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);

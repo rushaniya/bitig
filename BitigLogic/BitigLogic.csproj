@@ -85,7 +85,6 @@
     <Compile Include="Repository\BitigAlifbaRepository.cs" />
     <Compile Include="Repository\BitigDirectionRepository.cs" />
     <Compile Include="Repository\DirectionRepository.cs" />
-    <Compile Include="Repository\ExclusionRepository.cs" />
     <Compile Include="Repository\IDeepCloneable.cs" />
     <Compile Include="Repository\IIDGenerator.cs" />
     <Compile Include="Repository\InMemoryRepository.cs" />

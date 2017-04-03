@@ -146,13 +146,11 @@ namespace Bitig.Logic.Repository
     {
         public T Item { get; private set; }
         public ItemState State { get; set; }
-       // public Guid ID { get; private set; }
 
         public InMemoryItem(T Item)
         {
             this.Item = Item;
             this.State = ItemState.Unmodified;
-           // ID = Guid.NewGuid();
         }
     }
 

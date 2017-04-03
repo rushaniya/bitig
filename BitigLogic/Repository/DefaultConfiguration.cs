@@ -24,10 +24,10 @@ namespace Bitig.Logic.Repository
 
         #region Alifbas
 
-        private const int CYRILLIC = 0; //repo: what if repo does not support zero IDs? 
+        public const int CYRILLIC = 0; //repo: what if repo does not support zero IDs? 
         public const int YANALIF = 1;
-        private const int ZAMANALIF = 2;
-        private const int RASMALIF = 3;
+        public const int ZAMANALIF = 2;
+        public const int RASMALIF = 3;
         public const int MIN_CUSTOM_ID = 1024;
 
         public const string YANALIF_NAME = "Yanalif";
@@ -170,24 +170,24 @@ namespace Bitig.Logic.Repository
             return _builtIn.ID;
         }
 
-        public static int GetBuiltInSourceID(int BuiltInDirectionNumber)
+        public static int GetBuiltInSourceID(int BuiltInID)
         {
-            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInDirectionNumber);
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
             if (_builtIn != null) return _builtIn.SourceAlifbaID;
             return -1;
         }
 
-        public static int GetBuiltInTargetID(int BuiltInDirectionNumber)
+        public static int GetBuiltInTargetID(int BuiltInID)
         {
-            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInDirectionNumber);
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
             if (_builtIn != null) return _builtIn.TargetAlifbaID;
             return -1;
         }
 
-        public static TranslitCommand GetTranslitCommand(int BuiltInDirectionNo)
+        public static TranslitCommand GetTranslitCommand(int BuiltInID)
         {
             TranslitCommand _commandObject = null;
-            switch (BuiltInDirectionNo)
+            switch (BuiltInID)
             {
                 case CYRILLIC_YANALIF:
                     _commandObject = new Commands.CyrillicYanalif();

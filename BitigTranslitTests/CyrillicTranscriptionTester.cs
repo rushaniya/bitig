@@ -1,9 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Bitig.Logic.Commands;
+using System;
 
 namespace BitigTranslitTests
 {
@@ -46,6 +43,16 @@ namespace BitigTranslitTests
         public void RunCyrillicTranscriptionTest()
         {
             base.TestTranslit();
+        }
+
+        [TestMethod]
+        public void ExclusionPriority()
+        {
+            var _translitCommand = new CyrillicYanalif();
+            var _targetWord = "target word " + Guid.NewGuid();
+            _translitCommand.Exclusions.Add("колхоз", _targetWord, false, true, false);
+            var _result = _translitCommand.Convert("колхоз");
+            Assert.AreEqual(_targetWord, _result);
         }
     }
 }
