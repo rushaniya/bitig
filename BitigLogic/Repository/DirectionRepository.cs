@@ -21,6 +21,8 @@ namespace Bitig.Logic.Repository
         
         public abstract void InsertBuiltIn(int ID, BuiltInDirection BuiltIn);
 
+        public abstract bool IsInUse(Alifba Alifba);
+
         public int GenerateID(IEnumerable<int> ExsitingIDs)
         {
             int _result = -1;

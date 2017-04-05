@@ -137,6 +137,10 @@ namespace Bitig.Data.Storage
 
         public override void Delete(Alifba Item)
         {
+            if (RepositoryProvider == null)
+                throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
+            if (RepositoryProvider.DirectionRepository.IsInUse(Item))
+                throw new Exception("Cannot delete alphabet in use.");
             if (xmlList == null)
             {
                 ReadListFromFile();

@@ -210,5 +210,16 @@ namespace Bitig.Data.Storage
                 DirectionID = DirectionID
             };
         }
+
+        public override bool IsInUse(Alifba Alifba)
+        {
+            if (xmlList == null)
+            {
+                ReadListFromFile();
+            }
+            var _direction = xmlList.Find(_item =>
+                _item.SourceAlifbaID == Alifba.ID || _item.TargetAlifbaID == Alifba.ID);
+            return _direction != null;
+        }
     }
 }

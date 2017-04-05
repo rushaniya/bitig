@@ -43,6 +43,7 @@ namespace BitigDataTests
         private readonly string testFilePath = dataFolder + "Alphabets.xml";
         private readonly string preparedFile = dataFolder + @"Prepared\Alifba1025.xml";
         private readonly string corruptedFile = dataFolder + @"Corrupted\NoYanalif.xml";
+        private readonly string directionsPath = dataFolder + "Directions.xml";
 
         [TestInitialize]
         [TestCleanup]
@@ -50,6 +51,8 @@ namespace BitigDataTests
         {
             if (File.Exists(testFilePath))
                 File.Delete(testFilePath);
+            if (File.Exists(directionsPath))
+                File.Delete(directionsPath);
         }
 
         [TestMethod]
@@ -208,7 +211,6 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            //repo: cascade delete directions or forbid deleting?
             File.Copy(preparedFile, testFilePath);
 
             var _testRepo = new XmlAlifbaRepository(testFilePath);
@@ -233,6 +235,25 @@ namespace BitigDataTests
             _bitigRepo.SaveChanges();
             var _list = _xmlRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count - 1, _list.Count);
+        }
+
+        [TestMethod]
+        public void Delete_InUse()
+        {
+            var _alifRepo =  new XmlAlifbaRepository(testFilePath);
+            var _dirRepo = new XmlDirectionRepository(directionsPath);
+            var _repoProvider = new RepositoryProvider(_alifRepo, _dirRepo);
+            var _bitigRepo = _repoProvider.AlifbaRepository;
+            var _testAlifba = _bitigRepo.Get(0); //Cyrillic
+            try
+            {
+                _bitigRepo.Delete(_testAlifba);
+                Assert.Fail("Shouldn't have deleted");
+            }
+            catch(Exception ex)
+            {
+                Assert.AreEqual("Cannot delete alphabet in use.", ex.Message);
+            }            
         }
 
         [TestMethod]

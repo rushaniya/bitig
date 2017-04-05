@@ -171,6 +171,34 @@ namespace BitigDataTests
         }
 
         [TestMethod]
+        public void Delete_InUse()
+        {
+            var _alifbaRepo = new XmlAlifbaRepository(testAlifbaPath);
+            var _directionRepo = new XmlDirectionRepository(testDirectionPath);
+            var _repoProvider = new RepositoryProvider(_alifbaRepo, _directionRepo);
+            var _alifbaInMemory = new InMemoryRepository<Alifba, int>(_repoProvider.AlifbaRepository);
+            var _directionInMemory = new InMemoryRepository<Direction, int>(_repoProvider.DirectionRepository);
+            var _name1 = "Test name " + Guid.NewGuid();
+            var _newAlif1 = new Alifba(-1, _name1);
+            _alifbaInMemory.Insert(_newAlif1);
+            var _name2 = "Test name " + Guid.NewGuid();
+            var _newAlif2 = new Alifba(-1, _name2);
+            _alifbaInMemory.Insert(_newAlif2);
+            var _assembly = "Assembly " + Guid.NewGuid();
+            var _newDir = new Direction(-1, _newAlif1, _newAlif2, null, _assembly);
+            _directionInMemory.Insert(_newDir);
+            try
+            {
+                _alifbaInMemory.Delete(_newAlif1);
+                Assert.Fail("Shouldn't have deleted");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Cannot delete alphabet in use.", ex.Message);
+            }
+        }
+
+        [TestMethod]
         public void DirectionWithNewAlphabets()
         {
             var _alifbaRepo= new XmlAlifbaRepository(testAlifbaPath);

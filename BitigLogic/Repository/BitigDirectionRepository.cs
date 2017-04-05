@@ -11,7 +11,6 @@ namespace Bitig.Logic.Repository
     public class BitigDirectionRepository : DirectionRepository
     {
         private readonly DirectionRepository directionRepository;
-       // private readonly AlifbaRepository alifbaRepository;
 
         public override bool IsFlushable
         {
@@ -118,6 +117,12 @@ namespace Bitig.Logic.Repository
         public override void InsertBuiltIn(int ID, BuiltInDirection BuiltIn)
         {
             directionRepository.InsertBuiltIn(ID, BuiltIn);
+        }
+
+        public override bool IsInUse(Alifba Alifba)
+        {
+            EnsureDefaults();
+            return directionRepository.IsInUse(Alifba);
         }
     }
 }
