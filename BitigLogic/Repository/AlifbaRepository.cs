@@ -5,65 +5,141 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
-    //repo: change non-custom IDs to built-in IDs like in directions?
-    //repo: is it bad to require IDs to be int? no, because ID in business entity is int
-    public abstract class AlifbaRepository : IRepository<Alifba, int>
+    public class AlifbaRepository : IRepository<Alifba, int>
     {
-        public virtual RepositoryProvider RepositoryProvider { get; set; }
+        private readonly  IRepository<Alifba, int> alifbaRepository;
 
-        public abstract List<Alifba> GetList();
+        public AlifbaRepository(IRepository<Alifba, int> innerRepository)
+        {
+            alifbaRepository = innerRepository;
+        }
 
-        public abstract void Insert(Alifba Item); //repo: bitig repo method (generate ID) + base repo method (assign ID)?
+        private void EnsureDefaults()
+        {
+            if (alifbaRepository.GetList().Count == 0)
+            {
+                CreateDefaultConfiguration();
+            }
+        }
 
-        public abstract void Update(Alifba Item);
+        public List<Alifba> GetList()
+        {
+            EnsureDefaults();
+            return alifbaRepository.GetList();
+        }
 
-        public abstract void Delete(Alifba Item);
+        public Alifba Get(int ID)
+        {
+            EnsureDefaults();
+            var _result = alifbaRepository.Get(ID);
+            if (_result == null && ID == DefaultConfiguration.YANALIF)
+            {
+                CreateYanalif();
+                _result = alifbaRepository.Get(ID);
+            }
+            return _result;
+        }
 
-        public abstract Alifba Get(int ID);
+        public void Insert(Alifba Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+            EnsureDefaults();
+            Item.ID = GenerateAlifbaID();
+            if (alifbaRepository.Get(Item.ID) != null)
+                throw new Exception("Same ID exists.");
+            alifbaRepository.Insert(Item);
+        }
 
-        public abstract bool IsEmpty();
+        public void Delete(Alifba Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+            if (Item.ID == DefaultConfiguration.YANALIF)
+                throw new InvalidOperationException("Cannot delete Yanalif.");
+            if (RepositoryProvider == null)
+                throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
+            EnsureDefaults();
+            if (RepositoryProvider.DirectionRepository.IsInUse(Item))
+                throw new Exception("Cannot delete alphabet in use.");
+            alifbaRepository.Delete(Item);
+        }
 
-        public bool IsFlushable { get; protected set; }
+        public void Update(Alifba Item)
+        {
+            EnsureDefaults();
+            alifbaRepository.Update(Item);
+        }
 
-        protected abstract void FlushChanges();
+        public Alifba Yanalif
+        {
+            get
+            {
+                return Get(DefaultConfiguration.YANALIF);
+            }
+        }
+
+        public bool IsFlushable
+        {
+            get
+            {
+                return alifbaRepository.IsFlushable;
+            }
+        }
+
+        public RepositoryProvider RepositoryProvider
+        {
+            get
+            {
+                return alifbaRepository.RepositoryProvider;
+            }
+
+            set
+            {
+                alifbaRepository.RepositoryProvider = value;
+            }
+        }
+
+        protected void CreateDefaultConfiguration()
+        {
+            foreach (var _alif in DefaultConfiguration.BuiltInAlifbaList)
+            {
+                alifbaRepository.Insert(_alif);
+            }
+            if (alifbaRepository.IsFlushable)
+                alifbaRepository.SaveChanges();
+        }
+
+        protected void CreateYanalif()
+        {
+            alifbaRepository.Insert(DefaultConfiguration.Yanalif);
+            if (alifbaRepository.IsFlushable)
+                alifbaRepository.SaveChanges();
+        }
+
+        public bool IsEmpty()
+        {
+            return alifbaRepository.GetList().Count == 0;
+        }
 
         public void SaveChanges()
         {
-            if (!IsFlushable)
+            if (!alifbaRepository.IsFlushable)
                 throw new InvalidOperationException("Repository does not support flushing.");
-            FlushChanges();
+            alifbaRepository.SaveChanges();
         }
 
-        protected virtual int GenerateAlifbaID()
+        public int GenerateID(IEnumerable<int> ExistingIDs)
         {
-            /*int _result = -1;
-            var _list = GetList();
-            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
-            {
-                if (!_list.Exists(_alif => _alif.ID == i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;*/
+            return alifbaRepository.GenerateID(ExistingIDs);
+        }
+
+
+        private int GenerateAlifbaID()
+        {
             var _list = GetList();
             var _existingIDs = _list.Select(_alif => _alif.ID);
-            return GenerateID(_existingIDs);
-        }
-
-        public int GenerateID(IEnumerable<int> ExsitingIDs)
-        {
-            int _result = -1;
-            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
-            {
-                if (ExsitingIDs.All(_id => _id != i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
+            return alifbaRepository.GenerateID(_existingIDs);
         }
     }
 }

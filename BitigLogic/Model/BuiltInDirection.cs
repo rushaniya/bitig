@@ -12,41 +12,20 @@ namespace Bitig.Logic.Model
         public int ID
         {
             get { return id; }
-            //set { id = value; }
         }
 
-        private int sourceID = -1;
+        public Alifba Source { get; private set; }
 
-        public int SourceAlifbaID //repo: Alifba
-        {
-            get { return sourceID; }
-            //set { sourceID = value; }
-        }
-
-        private int targetID = -1;
-
-        public int TargetAlifbaID //repo: Alifba
-        {
-            get { return targetID; }
-           // set { targetID = value; }
-        }
-
-        private bool isInUse;
-
-        public bool IsInUse
-        {
-            get { return isInUse; }
-            set { isInUse = value; }
-        }
+        public Alifba Target { get; private set; }
 
         private string friendlyName;
 
         //repo
-        internal BuiltInDirection(int ID, int SourceID, int TargetID)
+        internal BuiltInDirection(int ID, Alifba Source, Alifba Target)
         {
             this.id = ID;
-            this.sourceID = SourceID;
-            this.targetID = TargetID;
+            this.Source = Source;
+            this.Target = Target;
             //string _source = AlifbaManager.GetAlifbaNameByID(this.sourceID);
             //string _target = AlifbaManager.GetAlifbaNameByID(this.targetID);
             //if (string.IsNullOrEmpty(_source)) _source = "(none)";

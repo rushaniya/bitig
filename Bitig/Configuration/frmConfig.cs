@@ -11,14 +11,14 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmConfig : Form
     {
-        private InMemoryRepository<Alifba, int> x_EditableAlifbaRepo;
-        private InMemoryRepository<Direction, int> x_EditableDirectionRepo;
+        private IRepository<Alifba, int> x_EditableAlifbaRepo;
+        private IRepository<Direction, int> x_EditableDirectionRepo;
 
-        public frmConfig(AlifbaRepository AlifbaRepository, DirectionRepository DirectionRepository)
+        public frmConfig(IRepository<Alifba, int> AlifbaRepository, IRepository<Direction, int> DirectionRepository)
         {
             InitializeComponent();
-            x_EditableAlifbaRepo = new InMemoryRepository<Alifba, int>(AlifbaRepository);
-            x_EditableDirectionRepo = new InMemoryRepository<Direction, int>(DirectionRepository);
+            x_EditableAlifbaRepo = AlifbaRepository;
+            x_EditableDirectionRepo = DirectionRepository;
             DisplayAlphabets();
             DisplayDirections();
         }

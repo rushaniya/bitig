@@ -34,9 +34,9 @@ namespace Bitig.UI.Configuration
 
         private Font x_SelectedFont;// = new Font("DejaVu Sans", 10F);
 
-        private InMemoryRepository<Alifba, int> x_AlifbaRepository;
+        private IRepository<Alifba, int> x_AlifbaRepository;
 
-        public frmEditAlphabet(InMemoryRepository<Alifba, int> AlifbaRepo)
+        public frmEditAlphabet(IRepository<Alifba, int> AlifbaRepo)
         {
             InitializeComponent();
             x_AlifbaRepository = AlifbaRepo;

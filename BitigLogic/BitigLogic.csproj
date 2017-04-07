@@ -80,13 +80,12 @@
     <Compile Include="Model\BuiltInDirection.cs" />
     <Compile Include="Model\Exclusion.cs" />
     <Compile Include="Model\AlifbaFont.cs" />
-    <Compile Include="Repository\AlifbaRepository.cs" />
     <Compile Include="Model\AlifbaSymbol.cs" />
-    <Compile Include="Repository\BitigAlifbaRepository.cs" />
-    <Compile Include="Repository\BitigDirectionRepository.cs" />
+    <Compile Include="Repository\AlifbaRepository.cs" />
     <Compile Include="Repository\DirectionRepository.cs" />
     <Compile Include="Repository\IDeepCloneable.cs" />
     <Compile Include="Repository\IIDGenerator.cs" />
+    <Compile Include="Repository\InMemoryRepoProvider.cs" />
     <Compile Include="Repository\InMemoryRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\EquatableByID.cs" />

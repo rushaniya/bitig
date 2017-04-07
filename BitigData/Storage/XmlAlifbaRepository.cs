@@ -3,18 +3,32 @@ using System.Collections.Generic;
 using Bitig.Logic.Repository;
 using Bitig.Data.Model;
 using Bitig.Logic.Model;
+using System.Linq;
 
 namespace Bitig.Data.Storage
 {
-    public class XmlAlifbaRepository : AlifbaRepository
+    public class XmlAlifbaRepository : IRepository<Alifba, int>
     {
         private readonly string path;
 
         private List<XmlAlifba> xmlList;
 
+        public RepositoryProvider RepositoryProvider
+        {
+            get;
+            set;
+        }
+
+        public bool IsFlushable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public XmlAlifbaRepository(string Path)
         {
-            IsFlushable = true;
             path = Path;
         }
 
@@ -88,7 +102,7 @@ namespace Bitig.Data.Storage
             };
         }
 
-        public override List<Alifba> GetList()
+        public List<Alifba> GetList()
         {
             if (xmlList == null) 
                 ReadListFromFile();
@@ -100,7 +114,7 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
-        public override void Insert(Alifba Item)
+        public void Insert(Alifba Item)
         {
             if (xmlList == null)
             {
@@ -109,7 +123,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        public override void Update(Alifba Item)
+        public void Update(Alifba Item)
         {
             if (xmlList == null)
             {
@@ -122,7 +136,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        public override Alifba Get(int ID)
+        public Alifba Get(int ID)
         {
             if (xmlList == null)
             {
@@ -135,12 +149,12 @@ namespace Bitig.Data.Storage
         }
 
 
-        public override void Delete(Alifba Item)
+        public void Delete(Alifba Item)
         {
-            if (RepositoryProvider == null)
-                throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
-            if (RepositoryProvider.DirectionRepository.IsInUse(Item))
-                throw new Exception("Cannot delete alphabet in use.");
+            //if (RepositoryProvider == null)
+            //    throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
+            //if (RepositoryProvider.DirectionRepository.IsInUse(Item))
+            //    throw new Exception("Cannot delete alphabet in use.");
             if (xmlList == null)
             {
                 ReadListFromFile();
@@ -150,18 +164,32 @@ namespace Bitig.Data.Storage
                 xmlList.Remove(_alifba);
         }
 
-        protected override void FlushChanges()
+        public void SaveChanges()
         {
             AlifbaSerializer.SaveToFile(path, xmlList);
         }
 
-        public override bool IsEmpty()
+        public int GenerateID(IEnumerable<int> ExistingIDs)
         {
-            if (xmlList == null)
+            int _result = -1;
+            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
             {
-                ReadListFromFile();
+                if (ExistingIDs.All(_id => _id != i))
+                {
+                    _result = i;
+                    break;
+                }
             }
-            return xmlList.Count == 0;
+            return _result;
         }
+
+        //public override bool IsEmpty()
+        //{
+        //    if (xmlList == null)
+        //    {
+        //        ReadListFromFile();
+        //    }
+        //    return xmlList.Count == 0;
+        //}
     }
 }

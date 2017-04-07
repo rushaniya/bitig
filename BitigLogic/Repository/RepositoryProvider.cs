@@ -1,18 +1,25 @@
-﻿namespace Bitig.Logic.Repository
+﻿using Bitig.Logic.Model;
+
+namespace Bitig.Logic.Repository
 {
     public class RepositoryProvider
     {
-        public BitigAlifbaRepository AlifbaRepository { get; private set; }
-        public BitigDirectionRepository DirectionRepository { get; private set; }
+        public virtual AlifbaRepository AlifbaRepository { get; protected set; }
+        public virtual DirectionRepository DirectionRepository { get; protected set; }
 
-        public RepositoryProvider(AlifbaRepository AlifbaRepository, DirectionRepository DirectionRepository)
+        public RepositoryProvider(IRepository<Alifba, int> AlifbaRepository, IRepository<Direction, int> DirectionRepository)
         {
             AlifbaRepository.RepositoryProvider = this;
             DirectionRepository.RepositoryProvider = this;
-            this.AlifbaRepository = new BitigAlifbaRepository(AlifbaRepository);
-            this.DirectionRepository = new BitigDirectionRepository(DirectionRepository);
-            this.AlifbaRepository.RepositoryProvider = this;
-            this.DirectionRepository.RepositoryProvider = this;
+            this.AlifbaRepository = new AlifbaRepository(AlifbaRepository);
+            this.DirectionRepository = new DirectionRepository(DirectionRepository);
+           // this.AlifbaRepository.RepositoryProvider = this;
+            //this.DirectionRepository.RepositoryProvider = this;
+        }
+
+        protected RepositoryProvider()
+        {
+
         }
     }
 }

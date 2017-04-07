@@ -55,10 +55,10 @@ namespace Bitig.UI.Configuration
         private object x_AssemblyComboSelectedItem;
         private object x_TypeComboSelectedItem;
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
-        private InMemoryRepository<Direction, int> x_DirectionRepository;
-        private InMemoryRepository<Alifba, int> x_AlifbaRepository;
+        private IRepository<Direction, int> x_DirectionRepository;
+        private IRepository<Alifba, int> x_AlifbaRepository;
 
-        public frmEditDirection(InMemoryRepository<Direction, int> DirectionsRepo, InMemoryRepository<Alifba, int> AlifbaRepo)
+        public frmEditDirection(IRepository<Direction, int> DirectionsRepo, IRepository<Alifba, int> AlifbaRepo)
         {
             InitializeComponent();
             x_DirectionRepository = DirectionsRepo;
@@ -129,13 +129,13 @@ namespace Bitig.UI.Configuration
             if (cmbType.SelectedItem is BuiltInDirection)
             {
                 if (DefaultConfiguration.IsBuiltIn(_source.ID) &&
-                    _source.ID != (cmbType.SelectedItem as BuiltInDirection).SourceAlifbaID)
+                    _source.ID != (cmbType.SelectedItem as BuiltInDirection).Source.ID)
                 {
                     MessageBox.Show("Transliteration source mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
                 if (DefaultConfiguration.IsBuiltIn(_target.ID) &&
-                    _target.ID != (cmbType.SelectedItem as BuiltInDirection).TargetAlifbaID)
+                    _target.ID != (cmbType.SelectedItem as BuiltInDirection).Target.ID)
                 {
                     MessageBox.Show("Transliteration target mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;

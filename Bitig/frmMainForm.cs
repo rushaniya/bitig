@@ -48,9 +48,13 @@ namespace Bitig.UI
 
         private Regex x_LineBreaksFinder;
 
-        private readonly BitigAlifbaRepository x_AlifbaRepository;
+        private readonly AlifbaRepository x_AlifbaRepository;
 
-        private readonly BitigDirectionRepository x_DirectionRepository;
+        private readonly DirectionRepository x_DirectionRepository;
+
+        private readonly AlifbaRepository x_ConfigAlifbaRepository;
+
+        private readonly DirectionRepository x_ConfigDirectionRepository;
 
         #endregion
 
@@ -83,6 +87,10 @@ namespace Bitig.UI
             var _repoProvider = new RepositoryProvider(_xmlAlifRepo, _xmlDirRepo);
             x_AlifbaRepository = _repoProvider.AlifbaRepository;
             x_DirectionRepository = _repoProvider.DirectionRepository;
+
+            var _configRepoProvider = new InMemoryRepoProvider(_xmlAlifRepo, _xmlDirRepo);
+            x_ConfigAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            x_ConfigDirectionRepository = _configRepoProvider.DirectionRepository;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)
@@ -898,7 +906,7 @@ namespace Bitig.UI
 
         private void mniConfiguration_Click(object sender, EventArgs e)
         {
-            using (frmConfig _configForm = new frmConfig(x_AlifbaRepository, x_DirectionRepository))
+            using (frmConfig _configForm = new frmConfig(x_ConfigAlifbaRepository, x_ConfigDirectionRepository))
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {

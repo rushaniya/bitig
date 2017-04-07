@@ -175,9 +175,9 @@ namespace BitigDataTests
         {
             var _alifbaRepo = new XmlAlifbaRepository(testAlifbaPath);
             var _directionRepo = new XmlDirectionRepository(testDirectionPath);
-            var _repoProvider = new RepositoryProvider(_alifbaRepo, _directionRepo);
-            var _alifbaInMemory = new InMemoryRepository<Alifba, int>(_repoProvider.AlifbaRepository);
-            var _directionInMemory = new InMemoryRepository<Direction, int>(_repoProvider.DirectionRepository);
+            var _repoProvider = new InMemoryRepoProvider(_alifbaRepo, _directionRepo);
+            var _alifbaInMemory = _repoProvider.AlifbaRepository;
+            var _directionInMemory = _repoProvider.DirectionRepository;
             var _name1 = "Test name " + Guid.NewGuid();
             var _newAlif1 = new Alifba(-1, _name1);
             _alifbaInMemory.Insert(_newAlif1);

@@ -20,6 +20,12 @@ namespace Bitig.Logic.Repository
             }
         }
 
+        public RepositoryProvider RepositoryProvider
+        {
+            get { return persistentRepo.RepositoryProvider; } //repo: ok?
+            set { persistentRepo.RepositoryProvider = value; }
+        }
+
         //public IDType DefaultID
         //{
         //    get
@@ -136,9 +142,9 @@ namespace Bitig.Logic.Repository
                 persistentRepo.SaveChanges();
         }
 
-        public IDType GenerateID(IEnumerable<IDType> ExsitingIDs)
+        public IDType GenerateID(IEnumerable<IDType> ExistingIDs)
         {
-            throw new NotImplementedException();
+            return persistentRepo.GenerateID(ExistingIDs);
         }
     }
 

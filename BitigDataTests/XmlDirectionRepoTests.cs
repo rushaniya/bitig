@@ -21,7 +21,7 @@ namespace BitigDataTests
         private readonly string preparedFile = dataFolder + @"Prepared\Direction777.xml";
         private readonly string testFilePath = dataFolder + "Directions.xml";
 
-        private BitigDirectionRepository InitTestRepo(string preparedFile = null)
+        private DirectionRepository InitTestRepo(string preparedFile = null)
         {
             var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
             if (preparedFile != null)
@@ -31,7 +31,7 @@ namespace BitigDataTests
             return _repoProvider.DirectionRepository;
         }
 
-        private DirectionRepository InitCheckRepo(DirectionRepository TestRepo)
+        private XmlDirectionRepository InitCheckRepo(IRepository<Direction, int> TestRepo)
         {
             var _checkRepo = new XmlDirectionRepository(testFilePath);
             _checkRepo.RepositoryProvider = TestRepo.RepositoryProvider;
@@ -65,7 +65,8 @@ namespace BitigDataTests
             var _defaultList = _testRepo.GetList();
             foreach (var _item in _builtInList)
             {
-                Assert.IsNotNull(_defaultList.Single(_dir => _item.Equals(_dir.BuiltIn)));
+                Assert.IsNotNull(_defaultList.Single(_dir =>
+                _dir.BuiltIn.ID == _item.ID && _dir.Source.Equals(_item.Source) && _dir.Target.Equals(_item.Target)));
             }
         }
 
@@ -182,7 +183,7 @@ namespace BitigDataTests
         public void Update()
         {
             var _testRepo = InitTestRepo(preparedFile);
-            var _alifbaRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(alifbaPath));
+            var _alifbaRepo = new AlifbaRepository(new XmlAlifbaRepository(alifbaPath));
             var _direction = _testRepo.Get(777);
             Assert.AreEqual(null, _direction.BuiltIn);
             Assert.AreEqual(0, _direction.Source.ID);
@@ -215,7 +216,7 @@ namespace BitigDataTests
         public void Update_CreateDefault()
         {
             var _testRepo = InitTestRepo();
-            var _alifbaRepo = new BitigAlifbaRepository(new XmlAlifbaRepository(alifbaPath));
+            var _alifbaRepo = new AlifbaRepository(new XmlAlifbaRepository(alifbaPath));
             var _assembly = "TestAssembly " + Guid.NewGuid();
             var _source = _alifbaRepo.Get(2);
             var _target = _alifbaRepo.Get(3);

@@ -149,23 +149,30 @@ namespace Bitig.Logic.Repository
         private static void FillBuiltInDirections()
         {
             builtInDirections = new List<BuiltInDirection>();
-            builtInDirections.Add(new BuiltInDirection(CYRILLIC_YANALIF, CYRILLIC, YANALIF));
-            builtInDirections.Add(new BuiltInDirection(CYRILLIC_ZAMANALIF, CYRILLIC, ZAMANALIF));
-            builtInDirections.Add(new BuiltInDirection(CYRILLIC_RASMALIF, CYRILLIC, RASMALIF));
-            builtInDirections.Add(new BuiltInDirection(YANALIF_ZAMANALIF, YANALIF, ZAMANALIF));
-            builtInDirections.Add(new BuiltInDirection(YANALIF_RASMALIF, YANALIF, RASMALIF));
-            builtInDirections.Add(new BuiltInDirection(ZAMANALIF_YANALIF, ZAMANALIF, YANALIF));
-            builtInDirections.Add(new BuiltInDirection(RASMALIF_YANALIF, RASMALIF, YANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_YANALIF, CYRILLIC, YANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_ZAMANALIF, CYRILLIC, ZAMANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_RASMALIF, CYRILLIC, RASMALIF));
+            builtInDirections.Add(CreateBuiltInDirection(YANALIF_ZAMANALIF, YANALIF, ZAMANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(YANALIF_RASMALIF, YANALIF, RASMALIF));
+            builtInDirections.Add(CreateBuiltInDirection(ZAMANALIF_YANALIF, ZAMANALIF, YANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(RASMALIF_YANALIF, RASMALIF, YANALIF));
+        }
+
+        private static BuiltInDirection CreateBuiltInDirection(int ID, int SourceID, int TargetID)
+        {
+            var _source = builtInAlifbaList.Find(_alif => _alif.ID == SourceID);
+            var _target = builtInAlifbaList.Find(_alif => _alif.ID == TargetID);
+            return new Model.BuiltInDirection(ID, _source, _target);
         }
 
         public static BuiltInDirection GetBuiltInDirection(int SourceID, int TargetID)
         {
-            return builtInDirections.Find(_dir => _dir.SourceAlifbaID == SourceID && _dir.TargetAlifbaID == TargetID);
+            return builtInDirections.Find(_dir => _dir.Source.ID == SourceID && _dir.Target.ID == TargetID);
         }
 
         internal static int GetBuiltInID(int SourceID, int TargetID)
         {
-            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.SourceAlifbaID == SourceID && _dir.TargetAlifbaID == TargetID);
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.Source.ID == SourceID && _dir.Target.ID == TargetID);
             if (_builtIn == null) return -1;
             return _builtIn.ID;
         }
@@ -173,14 +180,16 @@ namespace Bitig.Logic.Repository
         public static int GetBuiltInSourceID(int BuiltInID)
         {
             BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
-            if (_builtIn != null) return _builtIn.SourceAlifbaID;
+            if (_builtIn != null)
+                return _builtIn.Source.ID;
             return -1;
         }
 
         public static int GetBuiltInTargetID(int BuiltInID)
         {
             BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
-            if (_builtIn != null) return _builtIn.TargetAlifbaID;
+            if (_builtIn != null)
+                return _builtIn.Target.ID;
             return -1;
         }
 

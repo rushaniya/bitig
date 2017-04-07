@@ -7,7 +7,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Storage
 {
-    public class XmlDirectionRepository : DirectionRepository
+    public class XmlDirectionRepository : IRepository<Direction, int>
     {
         private readonly string path;
 
@@ -18,7 +18,13 @@ namespace Bitig.Data.Storage
             path = Path;
         }
 
-        public override List<Direction> GetList()
+        public RepositoryProvider RepositoryProvider
+        {
+            get;
+            set;
+        }
+
+        public List<Direction> GetList()
         {
             if (xmlList == null)
                 ReadListFromFile();
@@ -30,7 +36,7 @@ namespace Bitig.Data.Storage
             return _result;
         }
 
-        public override Direction Get(int ID)
+        public Direction Get(int ID)
         {
             if (xmlList == null)
             {
@@ -42,16 +48,16 @@ namespace Bitig.Data.Storage
             return MapToModel(_direction);
         }
 
-        public override bool IsEmpty()
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            return xmlList.Count == 0;
-        }
+        //public override bool IsEmpty()
+        //{
+        //    if (xmlList == null)
+        //    {
+        //        ReadListFromFile();
+        //    }
+        //    return xmlList.Count == 0;
+        //}
 
-        public override void Insert(Direction Item)
+        public void Insert(Direction Item)
         {
             if (xmlList == null)
             {
@@ -60,7 +66,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        public override void Delete(Direction Item)
+        public void Delete(Direction Item)
         {
             if (xmlList == null)
             {
@@ -71,7 +77,7 @@ namespace Bitig.Data.Storage
                 xmlList.Remove(_direction);
         }
 
-        public override void Update(Direction Item)
+        public void Update(Direction Item)
         {
             if (xmlList == null)
             {
@@ -84,7 +90,7 @@ namespace Bitig.Data.Storage
             xmlList.Add(MapToStorage(Item));
         }
 
-        public override bool IsFlushable
+        public bool IsFlushable
         {
             get
             {
@@ -92,26 +98,26 @@ namespace Bitig.Data.Storage
             }
         }
 
-        public override void SaveChanges()
+        public void SaveChanges()
         {
             DirectionSerializer.SaveToFile(path, xmlList);
         }
 
-        public override void InsertBuiltIn(int ID, BuiltInDirection BuiltIn)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            xmlList.Add(new XmlDirection
-                (
-                    ID,
-                    BuiltIn.SourceAlifbaID,
-                    BuiltIn.TargetAlifbaID,
-                    BuiltInID: BuiltIn.ID,
-                    Exclusions: null
-                ));
-        }
+        //public override void InsertBuiltIn(int ID, BuiltInDirection BuiltIn)
+        //{
+        //    if (xmlList == null)
+        //    {
+        //        ReadListFromFile();
+        //    }
+        //    xmlList.Add(new XmlDirection
+        //        (
+        //            ID,
+        //            BuiltIn.SourceAlifbaID,
+        //            BuiltIn.TargetAlifbaID,
+        //            BuiltInID: BuiltIn.ID,
+        //            Exclusions: null
+        //        ));
+        //}
 
        /* public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
         {
@@ -211,15 +217,29 @@ namespace Bitig.Data.Storage
             };
         }
 
-        public override bool IsInUse(Alifba Alifba)
+        public int GenerateID(IEnumerable<int> ExistingIDs)
         {
-            if (xmlList == null)
+            int _result = -1;
+            for (int i = 0; i < int.MaxValue; i++)
             {
-                ReadListFromFile();
+                if (ExistingIDs.All(_id => _id != i))
+                {
+                    _result = i;
+                    break;
+                }
             }
-            var _direction = xmlList.Find(_item =>
-                _item.SourceAlifbaID == Alifba.ID || _item.TargetAlifbaID == Alifba.ID);
-            return _direction != null;
+            return _result;
         }
+
+        //public override bool IsInUse(Alifba Alifba)
+        //{
+        //    if (xmlList == null)
+        //    {
+        //        ReadListFromFile();
+        //    }
+        //    var _direction = xmlList.Find(_item =>
+        //        _item.SourceAlifbaID == Alifba.ID || _item.TargetAlifbaID == Alifba.ID);
+        //    return _direction != null;
+        //}
     }
 }
