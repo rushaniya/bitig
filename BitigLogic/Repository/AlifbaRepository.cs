@@ -5,52 +5,71 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
-    public abstract class AlifbaRepository : IRepository<Alifba, int>
+    public class AlifbaRepository : IRepository<Alifba, int>
     {
-        public List<Alifba> GetList()
+        private readonly  IRepository<Alifba, int> alifbaRepository;
+
+        public AlifbaRepository(IRepository<Alifba, int> innerRepository)
         {
-            var _list = GetListNoCreate();
-            if (_list == null || _list.Count == 0)
+            alifbaRepository = innerRepository;
+        }
+
+        private void EnsureDefaults()
+        {
+            if (alifbaRepository.GetList().Count == 0)
             {
                 CreateDefaultConfiguration();
-                _list = GetListNoCreate();
             }
-            return _list;
         }
 
-        protected abstract List<Alifba> GetListNoCreate();
-
-        public virtual void Insert(Alifba Item)
+        public List<Alifba> GetList()
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            Item.ID = GenerateAlifbaID();
-            InsertExactID(Item);
+            EnsureDefaults();
+            return alifbaRepository.GetList();
         }
-
-        protected abstract void InsertExactID(Alifba Item);
-
-        public abstract void Update(Alifba Item);
-        public abstract void Delete(Alifba Item);
 
         public Alifba Get(int ID)
         {
-            var _result = GetNoCreate(ID);
+            EnsureDefaults();
+            var _result = alifbaRepository.Get(ID);
             if (_result == null && ID == DefaultConfiguration.YANALIF)
             {
-                var _list = GetListNoCreate();
-                if (_list == null || _list.Count == 0)
-                    CreateDefaultConfiguration();
-                else
-                    CreateYanalif();
-                _result = GetNoCreate(ID);
+                CreateYanalif();
+                _result = alifbaRepository.Get(ID);
             }
             return _result;
         }
 
-        protected abstract Alifba GetNoCreate(int ID);
+        public void Insert(Alifba Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+            EnsureDefaults();
+            Item.ID = GenerateAlifbaID();
+            if (alifbaRepository.Get(Item.ID) != null)
+                throw new Exception("Same ID exists.");
+            alifbaRepository.Insert(Item);
+        }
 
-        public bool IsFlushable { get; protected set; }
+        public void Delete(Alifba Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+            if (Item.ID == DefaultConfiguration.YANALIF)
+                throw new InvalidOperationException("Cannot delete Yanalif.");
+            if (RepositoryProvider == null)
+                throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
+            EnsureDefaults();
+            if (RepositoryProvider.DirectionRepository.IsInUse(Item))
+                throw new Exception("Cannot delete alphabet in use.");
+            alifbaRepository.Delete(Item);
+        }
+
+        public void Update(Alifba Item)
+        {
+            EnsureDefaults();
+            alifbaRepository.Update(Item);
+        }
 
         public Alifba Yanalif
         {
@@ -60,68 +79,67 @@ namespace Bitig.Logic.Repository
             }
         }
 
-        //public IIDGenerator<Alifba, int> IDGenerator
-        //{
-        //    get
-        //    {
-        //        return DefaultConfiguration.AlifbaIDGenerator;
-        //    }
-        //}
-
-        protected abstract void FlushChanges();
-
-        public void SaveChanges()
+        public bool IsFlushable
         {
-            if (!IsFlushable)
-                throw new InvalidOperationException("Repository does not support flushing.");
-            FlushChanges();
+            get
+            {
+                return alifbaRepository.IsFlushable;
+            }
+        }
+
+        public RepositoryProvider RepositoryProvider
+        {
+            get
+            {
+                return alifbaRepository.RepositoryProvider;
+            }
+
+            set
+            {
+                alifbaRepository.RepositoryProvider = value;
+            }
         }
 
         protected void CreateDefaultConfiguration()
         {
             foreach (var _alif in DefaultConfiguration.BuiltInAlifbaList)
             {
-                InsertExactID(_alif);
+                alifbaRepository.Insert(_alif);
             }
-            if (IsFlushable)
-                FlushChanges();
+            if (alifbaRepository.IsFlushable)
+                alifbaRepository.SaveChanges();
         }
 
         protected void CreateYanalif()
         {
-            InsertExactID(DefaultConfiguration.Yanalif);
-            if (IsFlushable)
-                FlushChanges();
+            alifbaRepository.Insert(DefaultConfiguration.Yanalif);
+            if (alifbaRepository.IsFlushable)
+                alifbaRepository.SaveChanges();
         }
 
-        protected virtual int GenerateAlifbaID()
+        public bool IsEmpty()
         {
-            int _result = -1;
+            return alifbaRepository.GetList().Count == 0;
+        }
+
+        public void SaveChanges()
+        {
+            if (!alifbaRepository.IsFlushable)
+                throw new InvalidOperationException("Repository does not support flushing.");
+            alifbaRepository.SaveChanges();
+        }
+
+        public int GenerateID(IEnumerable<int> ExistingIDs)
+        {
+            return alifbaRepository.GenerateID(ExistingIDs);
+        }
+
+
+        private int GenerateAlifbaID()
+        {
             var _list = GetList();
-            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
-            {
-                if (!_list.Exists(_alif => _alif.ID == i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
-        }
-
-        public int GenerateID(IEnumerable<int> ExsitingIDs)
-        {
-            int _result = -1;
-            //var _list = GetList();
-            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
-            {
-                if (ExsitingIDs.All(_id => _id != i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
+            var _existingIDs = _list.Select(_alif => _alif.ID);
+            return alifbaRepository.GenerateID(_existingIDs);
         }
     }
 }

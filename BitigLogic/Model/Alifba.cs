@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
@@ -67,7 +62,7 @@ namespace Bitig.Logic.Model
             id = ID;
             this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
             this.FriendlyName = FriendlyName;
-            this.RightToLeft=RightToLeft;
+            this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
         }
 

@@ -39,9 +39,9 @@
             this.dlgBrowseAssembly = new System.Windows.Forms.OpenFileDialog();
             this.cmbSource = new System.Windows.Forms.ComboBox();
             this.cmbTarget = new System.Windows.Forms.ComboBox();
-            this.cmbAssembly = new Bitig.UI.Controls.ctlCustomCombo();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.tipAssembly = new System.Windows.Forms.ToolTip(this.components);
+            this.cmbAssembly = new Bitig.UI.Controls.ctlCustomCombo();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,8 +115,8 @@
             // 
             // cmbSource
             // 
-            this.cmbSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSource.FormattingEnabled = true;
             this.cmbSource.Location = new System.Drawing.Point(124, 18);
@@ -126,8 +126,8 @@
             // 
             // cmbTarget
             // 
-            this.cmbTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTarget.FormattingEnabled = true;
             this.cmbTarget.Location = new System.Drawing.Point(124, 58);
@@ -135,28 +135,28 @@
             this.cmbTarget.Size = new System.Drawing.Size(236, 21);
             this.cmbTarget.TabIndex = 1;
             // 
+            // cmbType
+            // 
+            this.cmbType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Location = new System.Drawing.Point(124, 138);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(236, 21);
+            this.cmbType.TabIndex = 3;
+            // 
             // cmbAssembly
             // 
-            this.cmbAssembly.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbAssembly.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbAssembly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAssembly.FormattingEnabled = true;
             this.cmbAssembly.Location = new System.Drawing.Point(124, 98);
             this.cmbAssembly.Name = "cmbAssembly";
             this.cmbAssembly.Size = new System.Drawing.Size(236, 21);
             this.cmbAssembly.TabIndex = 2;
-            this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
             this.cmbAssembly.SelectedIndexChanging += new System.EventHandler<System.ComponentModel.CancelEventArgs>(this.cmbAssembly_SelectedIndexChanging);
-            // 
-            // cmbType
-            // 
-            this.cmbType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(124, 138);
-            this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(236, 21);
-            this.cmbType.TabIndex = 3;
+            this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
             // 
             // frmEditDirection
             // 

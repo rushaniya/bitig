@@ -1,52 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Bitig.Logic;
 using System.Reflection;
 using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
+using Bitig.UI.ViewModel;
 
 namespace Bitig.UI.Configuration
 {
     public partial class frmEditDirection : Form
     {
-        private DirectionConfig x_DirectionConfig;
+        private Direction x_Direction;
 
-        public DirectionConfig X_DirectionConfig
+        public Direction X_Direction
         {
-            get { return x_DirectionConfig; }
+            get { return x_Direction; }
             set
             {
-                x_DirectionConfig = value;
-                if (x_DirectionConfig != null)
+                x_Direction = value;
+                if (x_Direction != null)
                 {
-                    if (x_DirectionConfig.IsBuiltIn)
+                    if (x_Direction.IsBuiltIn())
                     {
                         cmbSource.Enabled = false;
                         cmbTarget.Enabled = false;
-                        //x_AssemblyComboSelectedItem = x_DirectionConfig.GetBuiltInDirectionObject();
                         x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                        x_TypeComboSelectedItem = x_DirectionConfig.GetBuiltInDirectionObject();
+                        x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.ID);
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(x_DirectionConfig.AssemblyPath))
+                        if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
                         {
-                            //x_AssemblyComboSelectedItem = x_DirectionConfig.GetBuiltInDirectionObject();
                             x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                            x_TypeComboSelectedItem = x_DirectionConfig.GetBuiltInDirectionObject();
+                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.ID);
                         }
                         else
                         {
-                            x_SelectedAssemblyPath = x_DirectionConfig.AssemblyPath;
-                            x_CurrentDisplayedAssembly = x_DirectionConfig.AssemblyFileName;
-                            x_AssemblyComboSelectedItem = x_DirectionConfig.AssemblyFileName;
-                            //cmbType.Text = x_DirectionConfig.TypeName;
-                            x_TypeComboSelectedItem = x_DirectionConfig.TypeName;
+                            x_SelectedAssemblyPath = x_Direction.AssemblyPath;
+                            x_CurrentDisplayedAssembly = x_Direction.GetAssemblyFileName(); 
+                            x_AssemblyComboSelectedItem = x_Direction.GetAssemblyFileName();
+                            x_TypeComboSelectedItem = x_Direction.TypeName;
                         }
                     }
                 }
@@ -60,10 +55,14 @@ namespace Bitig.UI.Configuration
         private object x_AssemblyComboSelectedItem;
         private object x_TypeComboSelectedItem;
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
+        private IRepository<Direction, int> x_DirectionRepository;
+        private IRepository<Alifba, int> x_AlifbaRepository;
 
-        public frmEditDirection()
+        public frmEditDirection(IRepository<Direction, int> DirectionsRepo, IRepository<Alifba, int> AlifbaRepo)
         {
             InitializeComponent();
+            x_DirectionRepository = DirectionsRepo;
+            x_AlifbaRepository = AlifbaRepo;
             try
             {
                 string _exePath = Application.StartupPath;
@@ -91,56 +90,58 @@ namespace Bitig.UI.Configuration
         //repo
         private void btnOK_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-           /* AlifbaConfig _source = cmbSource.SelectedItem as AlifbaConfig;
+            var _source = cmbSource.SelectedItem as Alifba;
             if (_source == null)
             {
                 MessageBox.Show("Source is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            AlifbaConfig _target = cmbTarget.SelectedItem as AlifbaConfig;
+            var _target = cmbTarget.SelectedItem as Alifba;
             if (_target == null)
             {
                 MessageBox.Show("Target is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            if (_target.AlifbaID == _source.AlifbaID)
+            if (_target.Equals(_source))
             {
                 MessageBox.Show("Source and target are the same", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            DirectionConfig _duplicate = null;
-            if (x_DirectionConfig == null)
+            Direction _duplicate = null;
+            if (x_Direction == null)
             {
-                _duplicate = BitigConfigManager.DirectionConfigurations.Find(_dir => _dir.SourceID == _source.AlifbaID && _dir.TargetID == _target.AlifbaID);
+                _duplicate = x_DirectionRepository.GetList().Find(_dir => 
+                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
             }
             else
             {
-                _duplicate = BitigConfigManager.DirectionConfigurations.Find(_dir => _dir.DirectionID != x_DirectionConfig.DirectionID &&
-                    _dir.SourceID == _source.AlifbaID && _dir.TargetID == _target.AlifbaID);
+                _duplicate = x_DirectionRepository.GetList().Find(_dir => !_dir.Equals(x_Direction) &&
+                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
             }
             if (_duplicate != null)
             {
-                if (MessageBox.Show("Transliteration direction already exists. Replace?", "?", 
+                if (MessageBox.Show("Transliteration direction already exists. Replace?", "?",  //loc
                     MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
                     return;
             }
-            int _builtInID = -1;
+            //int _builtInID = -1;
+            BuiltInDirection _builtIn = null;
             if (cmbType.SelectedItem is BuiltInDirection)
             {
-                if (AlifbaManager.IsBuiltIn(_source.AlifbaID) &&
-                    _source.AlifbaID != (cmbType.SelectedItem as BuiltInDirection).SourceAlifbaID)
+                if (DefaultConfiguration.IsBuiltIn(_source.ID) &&
+                    _source.ID != (cmbType.SelectedItem as BuiltInDirection).Source.ID)
                 {
                     MessageBox.Show("Transliteration source mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                if (AlifbaManager.IsBuiltIn(_target.AlifbaID) &&
-                    _target.AlifbaID != (cmbType.SelectedItem as BuiltInDirection).TargetAlifbaID)
+                if (DefaultConfiguration.IsBuiltIn(_target.ID) &&
+                    _target.ID != (cmbType.SelectedItem as BuiltInDirection).Target.ID)
                 {
                     MessageBox.Show("Transliteration target mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                _builtInID = (cmbType.SelectedItem as BuiltInDirection).ID;
+                _builtIn = (cmbType.SelectedItem as BuiltInDirection);
+               // _builtInID = (cmbType.SelectedItem as BuiltInDirection).ID;
             }
             else
             {
@@ -157,10 +158,10 @@ namespace Bitig.UI.Configuration
             }
             if (_duplicate != null)
             {
-                BitigConfigManager.DeleteDirectionConfig(_duplicate);
+                x_DirectionRepository.Delete(_duplicate);
             }
             string _assembly, _type;
-            if (_builtInID == -1)
+            if (_builtIn == null)
             {
                 _assembly = x_SelectedAssemblyPath;
                 _type = cmbType.Text.Trim();
@@ -170,19 +171,24 @@ namespace Bitig.UI.Configuration
                 _assembly = string.Empty;
                 _type = string.Empty;
             }
-            if (x_DirectionConfig == null) x_DirectionConfig = BitigConfigManager.CreateDirectionConfig(_source.AlifbaID, _target.AlifbaID, 
-                x_SelectedAssemblyPath, _type, cmbType.Text.Trim(), _builtInID);
+            if (x_Direction == null)
+            {
+                x_Direction = new Direction(-1, _source, _target, null,
+                x_SelectedAssemblyPath, _type, _builtIn); //repo: , cmbType.Text.Trim() ?
+                x_DirectionRepository.Insert(x_Direction);
+            }
             else
             {
-                
-                x_DirectionConfig.AssemblyPath = _assembly;
-                x_DirectionConfig.TypeName = _type;
-                x_DirectionConfig.DisplayedTypeName = cmbType.Text.Trim();
-                x_DirectionConfig.SourceID = _source.AlifbaID;
-                x_DirectionConfig.TargetID = _target.AlifbaID;
-                x_DirectionConfig.BuiltInID = _builtInID;
+
+                x_Direction.AssemblyPath = _assembly;
+                x_Direction.TypeName = _type;
+                //repo: needed? x_Direction.DisplayedTypeName = cmbType.Text.Trim();
+                x_Direction.Source = _source;
+                x_Direction.Target = _target;
+                x_Direction.BuiltIn = _builtIn;
+                x_DirectionRepository.Update(x_Direction);
             }
-            this.DialogResult = DialogResult.OK;*/
+            this.DialogResult = DialogResult.OK;
         }
 
         private void cmbAssembly_SelectedIndexChanged(object sender, EventArgs e)
@@ -236,11 +242,11 @@ namespace Bitig.UI.Configuration
         {
             x_BuiltInTypes = new List<BuiltInDirection>();
             BuiltInDirection _builtIn = null;
-            if (x_DirectionConfig != null)
-                _builtIn = DirectionManager.GetBuiltInDirection(x_DirectionConfig.SourceID, x_DirectionConfig.TargetID);
+            if (x_Direction != null)
+                _builtIn = DefaultConfiguration.GetBuiltInDirection(x_Direction.Source.ID, x_Direction.Target.ID); //repo: null reference?
             if (_builtIn == null)
             {
-                DirectionManager.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
+                DefaultConfiguration.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
             }
             else
             {
@@ -265,25 +271,25 @@ namespace Bitig.UI.Configuration
             x_FillingAssemblyCombo = false;
         }
 
-        //repo
         private void FillAlifbaCombos()
         {
-            throw new NotImplementedException();
-            //int _sourceIndex = -1, _targetIndex = -1;
-            //for (int i = 0; i < BitigConfigManager.AlifbaConfigurations.Count; i++)
-            //{
-            //    cmbSource.Items.Add(BitigConfigManager.AlifbaConfigurations[i]);
-            //    cmbTarget.Items.Add(BitigConfigManager.AlifbaConfigurations[i]);
-            //    if (x_DirectionConfig != null)
-            //    {
-            //        if (x_DirectionConfig.SourceID == BitigConfigManager.AlifbaConfigurations[i].AlifbaID)
-            //            _sourceIndex = i;
-            //        if (x_DirectionConfig.TargetID == BitigConfigManager.AlifbaConfigurations[i].AlifbaID)
-            //            _targetIndex = i;
-            //    }
-            //}
-            //cmbSource.SelectedIndex = _sourceIndex;
-            //cmbTarget.SelectedIndex = _targetIndex;
+            int _sourceIndex = -1, _targetIndex = -1;
+            var _alifbaList = x_AlifbaRepository.GetList();
+            for (int i = 0; i < _alifbaList.Count; i++)
+            {
+                var _alifba = _alifbaList[i];
+                cmbSource.Items.Add(_alifba);
+                cmbTarget.Items.Add(_alifba);
+                if (x_Direction != null)
+                {
+                    if (x_Direction.Source.Equals(_alifba))
+                        _sourceIndex = i;
+                    if (x_Direction.Target.Equals(_alifba))
+                        _targetIndex = i;
+                }
+            }
+            cmbSource.SelectedIndex = _sourceIndex;
+            cmbTarget.SelectedIndex = _targetIndex;
         }
 
         private void FillAssemblyTypes()
@@ -324,7 +330,8 @@ namespace Bitig.UI.Configuration
             cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
             x_BuiltInTypes.ForEach(_type => cmbType.Items.Add(_type));
             //cmbType.SelectedItem = x_TypeComboSelectedItem;
-            if (cmbType.Items.Count == 1) cmbType.SelectedIndex = 0;
+            if (cmbType.Items.Count == 1)
+                cmbType.SelectedIndex = 0;
         }
     }
 }

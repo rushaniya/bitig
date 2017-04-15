@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Bitig.Base;
 using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
@@ -10,10 +11,23 @@ namespace Bitig.Logic.Repository
         public static readonly string LocalFolder = System.IO.Path.Combine(
            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bitig");
 
-        private const int CYRILLIC = 0;
+        static DefaultConfiguration()
+        {
+            FillBuiltInLists();
+        }
+
+        private static void FillBuiltInLists()
+        {
+            FillBuiltInAlifbas();
+            FillBuiltInDirections();
+        }
+
+        #region Alifbas
+
+        public const int CYRILLIC = 0; //repo: what if repo does not support zero IDs? 
         public const int YANALIF = 1;
-        private const int ZAMANALIF = 2;
-        private const int RASMALIF = 3;
+        public const int ZAMANALIF = 2;
+        public const int RASMALIF = 3;
         public const int MIN_CUSTOM_ID = 1024;
 
         public const string YANALIF_NAME = "Yanalif";
@@ -23,15 +37,6 @@ namespace Bitig.Logic.Repository
 
         private static List<Alifba> builtInAlifbaList;
         private static Alifba yanalif;
-        //private static AlifbaIDGenerator alifbaIDGenerator;
-
-        //public static AlifbaIDGenerator AlifbaIDGenerator
-        //{
-        //    get
-        //    {
-        //        return alifbaIDGenerator;
-        //    }
-        //}
 
         public static List<Alifba> BuiltInAlifbaList
         {
@@ -56,13 +61,7 @@ namespace Bitig.Logic.Repository
             get { return defaultYanalifFont; }
         }
 
-        static DefaultConfiguration()
-        {
-            FillBuiltInList();
-           // alifbaIDGenerator = new AlifbaIDGenerator();
-        }
-
-        private static void FillBuiltInList()
+        private static void FillBuiltInAlifbas()
         {
             builtInAlifbaList = new List<Alifba>();
             yanalif = new Alifba(YANALIF, YANALIF_NAME, GetDefaultSymbols(YANALIF), false, defaultYanalifFont);
@@ -70,15 +69,14 @@ namespace Bitig.Logic.Repository
             builtInAlifbaList.Add(yanalif);
             builtInAlifbaList.Add(new Alifba(ZAMANALIF, ZAMANALIF_NAME, GetDefaultSymbols(ZAMANALIF)));
             builtInAlifbaList.Add(new Alifba(RASMALIF, RASMALIF_NAME, GetDefaultSymbols(RASMALIF)));
-
-        }        
+        }
 
         private static List<AlifbaSymbol> GetDefaultSymbols(int AlifbaID)
         {
             List<AlifbaSymbol> _result = new List<AlifbaSymbol>();
-            switch (AlifbaID) 
+            switch (AlifbaID)
             {
-                    //excl: get alphabet symbols from directions' alphabet patterns?
+                //excl: get alphabet symbols from directions' alphabet patterns?
                 case CYRILLIC:
                     _result.Add(new AlifbaSymbol("\u04d9", "\u04d9", "\u04d8", "\u04d8"));//Ә
                     _result.Add(new AlifbaSymbol("\u04e9", "\u04e9", "\u04e8", "\u04e8"));//Ө
@@ -112,7 +110,7 @@ namespace Bitig.Logic.Repository
                     _result.Add(new AlifbaSymbol("\u015f", "\u015f", "\u015e", "\u015e"));//Ş
                     _result.Add(new AlifbaSymbol("\u00fc", "\u00fc", "\u00dc", "\u00dc"));//Ü
                     break;
-                case YANALIF:
+                case YANALIF: //config: add all yanalif symbols and let UI decide?
                     _result.Add(new AlifbaSymbol("\u00ab", "\u00ab"));//«
                     _result.Add(new AlifbaSymbol("\u00bb", "\u00bb"));//»
                     _result.Add(new AlifbaSymbol("\u2014", "\u2014"));//—
@@ -126,43 +124,111 @@ namespace Bitig.Logic.Repository
             return AlifbaID < MIN_CUSTOM_ID;
         }
 
-        //public static int GenerateNewAlifbaID(List<Alifba> AlifbaList)
-        //{
-        //    int _result = -1;
-        //    for (int i = MIN_CUSTOM_ID; i < int.MaxValue; i++)
-        //    {
-        //        if (!AlifbaList.Exists(_alif => _alif.ID == i))
-        //        {
-        //            _result = i;
-        //            break;
-        //        }
-        //    }
-        //    return _result;
-        //}
+        #endregion
+
+
+        #region Directions
+
+        private const int CYRILLIC_YANALIF = 0;
+        private const int CYRILLIC_ZAMANALIF = 1;
+        private const int CYRILLIC_RASMALIF = 2;
+        private const int YANALIF_ZAMANALIF = 3;
+        private const int YANALIF_RASMALIF = 4;
+        private const int ZAMANALIF_YANALIF = 5;
+        private const int RASMALIF_YANALIF = 6;
+
+        private static List<Direction> directionsList;
+
+        private static List<BuiltInDirection> builtInDirections;
+
+        public static List<BuiltInDirection> BuiltInDirections
+        {
+            get { return builtInDirections; }
+        }
+
+        private static void FillBuiltInDirections()
+        {
+            builtInDirections = new List<BuiltInDirection>();
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_YANALIF, CYRILLIC, YANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_ZAMANALIF, CYRILLIC, ZAMANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(CYRILLIC_RASMALIF, CYRILLIC, RASMALIF));
+            builtInDirections.Add(CreateBuiltInDirection(YANALIF_ZAMANALIF, YANALIF, ZAMANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(YANALIF_RASMALIF, YANALIF, RASMALIF));
+            builtInDirections.Add(CreateBuiltInDirection(ZAMANALIF_YANALIF, ZAMANALIF, YANALIF));
+            builtInDirections.Add(CreateBuiltInDirection(RASMALIF_YANALIF, RASMALIF, YANALIF));
+        }
+
+        private static BuiltInDirection CreateBuiltInDirection(int ID, int SourceID, int TargetID)
+        {
+            var _source = builtInAlifbaList.Find(_alif => _alif.ID == SourceID);
+            var _target = builtInAlifbaList.Find(_alif => _alif.ID == TargetID);
+            return new Model.BuiltInDirection(ID, _source, _target);
+        }
+
+        public static BuiltInDirection GetBuiltInDirection(int SourceID, int TargetID)
+        {
+            return builtInDirections.Find(_dir => _dir.Source.ID == SourceID && _dir.Target.ID == TargetID);
+        }
+
+        internal static int GetBuiltInID(int SourceID, int TargetID)
+        {
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.Source.ID == SourceID && _dir.Target.ID == TargetID);
+            if (_builtIn == null) return -1;
+            return _builtIn.ID;
+        }
+
+        public static int GetBuiltInSourceID(int BuiltInID)
+        {
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
+            if (_builtIn != null)
+                return _builtIn.Source.ID;
+            return -1;
+        }
+
+        public static int GetBuiltInTargetID(int BuiltInID)
+        {
+            BuiltInDirection _builtIn = builtInDirections.Find(_dir => _dir.ID == BuiltInID);
+            if (_builtIn != null)
+                return _builtIn.Target.ID;
+            return -1;
+        }
+
+        public static TranslitCommand GetTranslitCommand(int BuiltInID)
+        {
+            TranslitCommand _commandObject = null;
+            switch (BuiltInID)
+            {
+                case CYRILLIC_YANALIF:
+                    _commandObject = new Commands.CyrillicYanalif();
+                    break;
+                case CYRILLIC_ZAMANALIF:
+                    _commandObject = new Commands.CyrillicZamanalif();
+                    break;
+                case CYRILLIC_RASMALIF:
+                    _commandObject = new Commands.CyrillicRasmalif();
+                    break;
+                case YANALIF_ZAMANALIF:
+                    _commandObject = new Commands.YanalifZamanalif();
+                    break;
+                case YANALIF_RASMALIF:
+                    _commandObject = new Commands.YanalifRasmalif();
+                    break;
+                case ZAMANALIF_YANALIF:
+                    _commandObject = new Commands.ZamanalifYanalif();
+                    break;
+                case RASMALIF_YANALIF:
+                    _commandObject = new Commands.RasmalifYanalif();
+                    break;
+            }
+            return _commandObject;
+        }
+
+        public static BuiltInDirection GetBuiltInDirection(int BuiltInID)
+        {
+            return builtInDirections.Find(_dir => _dir.ID == BuiltInID);
+        }
+
+        #endregion
     }
-
-        //public class AlifbaIDGenerator : IIDGenerator<Alifba, int>
-        //{
-        //public int DefaultID
-        //{
-        //    get
-        //    {
-        //        return -1;
-        //    }
-        //}
-
-        //public int GenerateID(List<Alifba> List)
-        //    {
-        //        int _result = -1;
-        //        for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
-        //        {
-        //            if (!List.Exists(_alif => _alif.ID == i))
-        //            {
-        //                _result = i;
-        //                break;
-        //            }
-        //        }
-        //        return _result;
-        //    }
-        //}
+    
 }

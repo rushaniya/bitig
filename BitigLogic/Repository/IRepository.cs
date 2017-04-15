@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Bitig.Logic.Repository
 {
-    public interface IRepository<T, IDType> where T:EquatableByID<IDType>
+    public interface IRepository<T, IDType> where T:IRepositoryItem<IDType>
     {
+        RepositoryProvider RepositoryProvider { get; set; }
         void Insert(T Item);
         void Update(T Item);
         void Delete(T Item);
@@ -14,8 +12,6 @@ namespace Bitig.Logic.Repository
         void SaveChanges();
         List<T> GetList();
         T Get(IDType ID);
-        //IIDGenerator<T, IDType> IDGenerator { get; }
-       // IDType DefaultID { get; }
-        IDType GenerateID(IEnumerable<IDType> ExsitingIDs);
+        IDType GenerateID(IEnumerable<IDType> ExistingIDs);
     }
 }

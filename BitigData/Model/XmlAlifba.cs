@@ -17,6 +17,7 @@ namespace Bitig.Data.Model
             {
                 if (AlifbaSerializer.Deserializing)
                     id = value;
+                else System.Diagnostics.Debug.Fail("XmlAlifba.ID set");
             }
         }
 

@@ -6,35 +6,25 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
-    public class InMemoryRepository<T, IDType>
-        where T:EquatableByID<IDType>, IDeepCloneable<T>
+    public class InMemoryRepository<T, IDType> : IRepository<T, IDType>
+        where T:EquatableByID<IDType>, IDeepCloneable<T> 
     {
         private List<InMemoryItem<T>> list;
         private IRepository<T, IDType> persistentRepo;
 
-        //public bool IsFlushable
-        //{
-        //    get
-        //    {
-        //        return true;
-        //    }
-        //}
+        public bool IsFlushable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
-        //public IDType DefaultID
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.DefaultID;
-        //    }
-        //}
-
-        //public IIDGenerator<T, IDType> IDGenerator
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.IDGenerator;
-        //    }
-        //}
+        public RepositoryProvider RepositoryProvider
+        {
+            get { return persistentRepo.RepositoryProvider; } //repo: ok?
+            set { persistentRepo.RepositoryProvider = value; }
+        }
 
         public InMemoryRepository(IRepository<T, IDType> PersistentRepository)
         {
@@ -135,19 +125,22 @@ namespace Bitig.Logic.Repository
             if (persistentRepo.IsFlushable)
                 persistentRepo.SaveChanges();
         }
+
+        public IDType GenerateID(IEnumerable<IDType> ExistingIDs)
+        {
+            return persistentRepo.GenerateID(ExistingIDs);
+        }
     }
 
     public class InMemoryItem<T>
     {
         public T Item { get; private set; }
         public ItemState State { get; set; }
-       // public Guid ID { get; private set; }
 
         public InMemoryItem(T Item)
         {
             this.Item = Item;
             this.State = ItemState.Unmodified;
-           // ID = Guid.NewGuid();
         }
     }
 

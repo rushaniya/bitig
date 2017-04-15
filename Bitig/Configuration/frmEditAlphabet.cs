@@ -26,7 +26,7 @@ namespace Bitig.UI.Configuration
                 {
                     txtDisplayName.Text = x_AlphabetConfig.FriendlyName;
                     //kbl cmbLayout.Text = x_AlphabetConfig.KeyboardLayoutName;
-                    x_SelectedFont = x_AlphabetConfig.DefaultFont;
+                    x_SelectedFont = (Font)x_AlphabetConfig.DefaultFont;
                     chkRightToLeft.Checked = x_AlphabetConfig.RightToLeft;
                 }
             }
@@ -34,11 +34,12 @@ namespace Bitig.UI.Configuration
 
         private Font x_SelectedFont;// = new Font("DejaVu Sans", 10F);
 
-        private AlifbaRepository x_AlifbaRepository;
+        private IRepository<Alifba, int> x_AlifbaRepository;
 
-        public frmEditAlphabet()
+        public frmEditAlphabet(IRepository<Alifba, int> AlifbaRepo)
         {
             InitializeComponent();
+            x_AlifbaRepository = AlifbaRepo;
         }
 
         private void frmEditAlphabet_Load(object sender, EventArgs e)
@@ -70,13 +71,14 @@ namespace Bitig.UI.Configuration
             }
             if (x_AlphabetConfig == null)
             {
-                x_AlphabetConfig = new Alifba(-1, txtDisplayName.Text.Trim(), RightToLeft: chkRightToLeft.Checked, DefaultFont: x_SelectedFont);
+                x_AlphabetConfig = new Alifba(-1, txtDisplayName.Text.Trim(), 
+                    RightToLeft: chkRightToLeft.Checked, DefaultFont: (AlifbaFont)x_SelectedFont);
                     
                 x_AlifbaRepository.Insert(x_AlphabetConfig);
             }
             else
             {
-                x_AlphabetConfig.DefaultFont = x_SelectedFont;
+                x_AlphabetConfig.DefaultFont = (AlifbaFont)x_SelectedFont;
                 x_AlphabetConfig.FriendlyName = txtDisplayName.Text.Trim();
                 //kbl x_AlphabetConfig.KeyboardLayoutName = string.Empty;
                 x_AlphabetConfig.RightToLeft = chkRightToLeft.Checked;

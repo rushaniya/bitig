@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\DirectionExtensions.cs" />
     <EmbeddedResource Include="Configuration\frmAlphabetSymbols.resx">
       <DependentUpon>frmAlphabetSymbols.cs</DependentUpon>
     </EmbeddedResource>
@@ -202,6 +203,7 @@
       <DependentUpon>frmNumericList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Bitig.Logic.Model.Exclusion.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
