@@ -241,7 +241,7 @@ namespace BitigDataTests
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _dirList.Count);
             var _alifList = _configAlifbaRepository.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _alifList.Count);
-            Assert.IsTrue(_alifList.All(_alif => DefaultConfiguration.BuiltInAlifbaList.Any(_b => _b.ID == _alif.ID)));
+            Assert.IsTrue(_alifList.All(_alif => DefaultConfiguration.BuiltInAlifbaList.Any(_b => _b.ID == _alif.BuiltIn)));
         }
     }
 }

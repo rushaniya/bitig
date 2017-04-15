@@ -113,8 +113,8 @@ namespace Bitig.Logic.Repository
             for (int i = 0; i < _count; i++)
             {
                 var _builtIn = DefaultConfiguration.BuiltInDirections[i];
-                var _source = RepositoryProvider.AlifbaRepository.Get(_builtIn.Source.ID);
-                var _target = RepositoryProvider.AlifbaRepository.Get(_builtIn.Target.ID);
+                var _source = RepositoryProvider.AlifbaRepository.GetBuiltIn(_builtIn.Source);
+                var _target = RepositoryProvider.AlifbaRepository.GetBuiltIn(_builtIn.Target);
                 if (_source != null && _target != null)
                 {
                     var _direction = new Direction(i, _source, _target, null, BuiltIn: _builtIn);

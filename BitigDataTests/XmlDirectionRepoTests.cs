@@ -66,7 +66,8 @@ namespace BitigDataTests
             foreach (var _item in _builtInList)
             {
                 Assert.IsNotNull(_defaultList.Single(_dir =>
-                _dir.BuiltIn.ID == _item.ID && _dir.Source.Equals(_item.Source) && _dir.Target.Equals(_item.Target)));
+                _dir.BuiltIn.ID == _item.ID && 
+                _dir.Source.BuiltIn == _item.Source && _dir.Target.BuiltIn == _item.Target));
             }
         }
 

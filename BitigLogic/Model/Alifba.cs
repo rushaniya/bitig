@@ -16,6 +16,8 @@ namespace Bitig.Logic.Model
             }
         }
 
+        public BuiltInAlifbaType BuiltIn { get; set; }
+
         public string FriendlyName
         {
             get;
@@ -24,7 +26,7 @@ namespace Bitig.Logic.Model
 
         public bool IsYanalif
         {
-            get { return this.id == DefaultConfiguration.YANALIF; }
+            get { return BuiltIn == BuiltInAlifbaType.Yanalif; }
         }
 
         public List<AlifbaSymbol> CustomSymbols
@@ -51,19 +53,19 @@ namespace Bitig.Logic.Model
             set;
         }
 
-        public BuiltInAlifba BuiltInAlifba { get; set; }
-
         public Alifba()
         {
         }
 
-        public Alifba(int ID, string FriendlyName, List<AlifbaSymbol> CustomSymbols = null, bool RightToLeft = false, AlifbaFont DefaultFont = null)
+        public Alifba(int ID, string FriendlyName, List<AlifbaSymbol> CustomSymbols = null, 
+            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn= BuiltInAlifbaType.None)
         {
             id = ID;
             this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
             this.FriendlyName = FriendlyName;
             this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
+            this.BuiltIn = BuiltIn;
         }
 
         public override string ToString()
@@ -91,7 +93,7 @@ namespace Bitig.Logic.Model
             }
             var _clonedFont = DefaultFont == null ? null :
                 new AlifbaFont(DefaultFont.Description);
-            return new Alifba(ID, FriendlyName, _clonedSymbols, RightToLeft, _clonedFont);
+            return new Alifba(ID, FriendlyName, _clonedSymbols, RightToLeft, _clonedFont, BuiltIn);
         }
     }
 }

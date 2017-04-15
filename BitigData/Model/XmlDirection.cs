@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bitig.Data.Storage;
+using Bitig.Logic.Model;
 
 namespace Bitig.Data.Model
 {
@@ -30,7 +31,7 @@ namespace Bitig.Data.Model
             set;
         }
 
-        public int BuiltInID
+        public BuiltInDirectionType BuiltInID
         {
             get;
             set;
@@ -53,12 +54,11 @@ namespace Bitig.Data.Model
         public XmlDirection()
         {
             if (!DirectionSerializer.Deserializing)
-                throw new InvalidOperationException("XmlDirection instances cannot be created with default constructor.");
-            BuiltInID = -1;
+                throw new InvalidOperationException("XmlDirection instances cannot be created with default constructor.");            
         }
 
         public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, List<XmlExclusion> Exclusions,
-            string AssemblyPath = null, string TypeName = null, int BuiltInID = -1)
+            string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None)
         {
             this.AssemblyPath = AssemblyPath;
             this.BuiltInID = BuiltInID;

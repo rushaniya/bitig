@@ -16,9 +16,18 @@ namespace Bitig.Logic.Repository
 
         private void EnsureDefaults()
         {
-            if (alifbaRepository.GetList().Count == 0)
+            var _list = alifbaRepository.GetList();
+            if (_list.Count == 0)
             {
                 CreateDefaultConfiguration();
+            }
+            else
+            {
+                if (!_list.Any(_alif => _alif.BuiltIn == BuiltInAlifbaType.Yanalif))
+                {
+                    var _id = alifbaRepository.GenerateID(_list.Select(_item => _item.ID));
+                    CreateYanalif(_id);
+                }
             }
         }
 
@@ -32,12 +41,14 @@ namespace Bitig.Logic.Repository
         {
             EnsureDefaults();
             var _result = alifbaRepository.Get(ID);
-            if (_result == null && ID == DefaultConfiguration.YANALIF)
-            {
-                CreateYanalif();
-                _result = alifbaRepository.Get(ID);
-            }
             return _result;
+        }
+
+        public Alifba GetBuiltIn(BuiltInAlifbaType BuiltIn) //repo: generic filter
+        {
+            EnsureDefaults();
+            var _list = alifbaRepository.GetList();
+            return _list.SingleOrDefault(_alif => _alif.BuiltIn == BuiltIn);
         }
 
         public void Insert(Alifba Item)
@@ -55,7 +66,7 @@ namespace Bitig.Logic.Repository
         {
             if (Item == null)
                 throw new ArgumentNullException("Item");
-            if (Item.ID == DefaultConfiguration.YANALIF)
+            if (Item.BuiltIn == BuiltInAlifbaType.Yanalif)
                 throw new InvalidOperationException("Cannot delete Yanalif.");
             if (RepositoryProvider == null)
                 throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
@@ -71,12 +82,9 @@ namespace Bitig.Logic.Repository
             alifbaRepository.Update(Item);
         }
 
-        public Alifba Yanalif
+        public Alifba GetYanalif()
         {
-            get
-            {
-                return Get(DefaultConfiguration.YANALIF);
-            }
+            return GetBuiltIn(BuiltInAlifbaType.Yanalif);
         }
 
         public bool IsFlushable
@@ -102,17 +110,24 @@ namespace Bitig.Logic.Repository
 
         protected void CreateDefaultConfiguration()
         {
-            foreach (var _alif in DefaultConfiguration.BuiltInAlifbaList)
+            var _IDs = new List<int>();
+            foreach (var _builtIn in DefaultConfiguration.BuiltInAlifbaList)
             {
-                alifbaRepository.Insert(_alif);
+                var _id = alifbaRepository.GenerateID(_IDs);
+                _IDs.Add(_id);
+                var _alifba = new Alifba(_id, _builtIn.DefaultName, _builtIn.CustomSymbols, 
+                    _builtIn.RightToLeft, _builtIn.DefaultFont, _builtIn.ID);
+                alifbaRepository.Insert(_alifba);
             }
             if (alifbaRepository.IsFlushable)
                 alifbaRepository.SaveChanges();
         }
 
-        protected void CreateYanalif()
+        protected void CreateYanalif(int ID)
         {
-            alifbaRepository.Insert(DefaultConfiguration.Yanalif);
+            var _yanalif = new Alifba(ID, DefaultConfiguration.Yanalif.DefaultName, DefaultConfiguration.Yanalif.CustomSymbols,
+                    DefaultConfiguration.Yanalif.RightToLeft, DefaultConfiguration.Yanalif.DefaultFont, DefaultConfiguration.Yanalif.ID);
+            alifbaRepository.Insert(_yanalif);
             if (alifbaRepository.IsFlushable)
                 alifbaRepository.SaveChanges();
         }

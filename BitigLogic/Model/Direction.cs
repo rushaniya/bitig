@@ -77,7 +77,7 @@ namespace Bitig.Logic.Model
             if (Source == null || Target == null)
                 throw new InvalidOperationException("Source or target alphabet is not defined.");
             return string.IsNullOrEmpty(AssemblyPath) && BuiltIn != null &&
-                BuiltIn.ID == DefaultConfiguration.GetBuiltInID(Source.ID, Target.ID);
+                BuiltIn.ID == DefaultConfiguration.GetBuiltInID(Source.BuiltIn, Target.BuiltIn);
         }
 
         private void InitializeTranslitCommand()

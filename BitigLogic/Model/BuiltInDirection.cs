@@ -2,32 +2,41 @@
 {
     public class BuiltInDirection
     {
-        private int id = -1;
-
-        public int ID
+        public BuiltInDirectionType ID
         {
-            get { return id; }
+            get; private set;
         }
 
-        public Alifba Source { get; private set; }
+        public BuiltInAlifbaType Source { get; private set; }
 
-        public Alifba Target { get; private set; }
+        public BuiltInAlifbaType Target { get; private set; }
 
         public string FriendlyName { get; private set; }
 
-        internal BuiltInDirection(int ID, Alifba Source, Alifba Target)
+        internal BuiltInDirection(BuiltInDirectionType ID, BuiltInAlifba Source, BuiltInAlifba Target)
         {
-            this.id = ID;
-            this.Source = Source;
-            this.Target = Target;
-            string _source = Source == null ? "(none)" : Source.FriendlyName; //loc
-            string _target = Target == null ? "(none)" : Target.FriendlyName;
-            FriendlyName = string.Format("Built-in {0} - {1}", _source, _target);
+            this.ID = ID;
+            this.Source = Source.ID;
+            this.Target = Target.ID;
+            FriendlyName = string.Format("Built-in {0} - {1}", Source.DefaultName, Target.DefaultName);
+            //repo: what if user has changed default alifba names?
         }
 
         public override string ToString()
         {
             return FriendlyName;
         }
+    }
+
+    public enum BuiltInDirectionType
+    {
+        None,
+        CyrillicYanalif,
+        CyrillicZamanalif,
+        CyrillicRasmalif,
+        YanalifZamanalif,
+        YanalifRasmalif,
+        ZamanalifYanalif,
+        RasmalifYanalif
     }
 }

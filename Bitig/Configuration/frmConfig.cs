@@ -204,7 +204,7 @@ namespace Bitig.UI.Configuration
             {
                 //loc
                 if (MessageBox.Show(string.Format("Remove transliteration direction {0}?", 
-                    x_CurrentDirection.GetFriendlyName(x_EditableAlifbaRepo)),
+                    x_CurrentDirection.FriendlyName),
                     "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     x_EditableDirectionRepo.Delete(x_CurrentDirection);

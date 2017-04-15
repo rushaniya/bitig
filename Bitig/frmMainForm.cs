@@ -84,7 +84,7 @@ namespace Bitig.UI
             x_AlifbaRepository = _repoProvider.AlifbaRepository;
             x_DirectionRepository = _repoProvider.DirectionRepository;           
 
-            ctlYanalif1.X_CustomSymbols = x_AlifbaRepository.Yanalif.CustomSymbols;
+            ctlYanalif1.X_CustomSymbols = x_AlifbaRepository.GetYanalif().CustomSymbols;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)
