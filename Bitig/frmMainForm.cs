@@ -52,10 +52,6 @@ namespace Bitig.UI
 
         private readonly DirectionRepository x_DirectionRepository;
 
-        private readonly AlifbaRepository x_ConfigAlifbaRepository;
-
-        private readonly DirectionRepository x_ConfigDirectionRepository;
-
         #endregion
 
 
@@ -86,11 +82,9 @@ namespace Bitig.UI
                 Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"));
             var _repoProvider = new RepositoryProvider(_xmlAlifRepo, _xmlDirRepo);
             x_AlifbaRepository = _repoProvider.AlifbaRepository;
-            x_DirectionRepository = _repoProvider.DirectionRepository;
+            x_DirectionRepository = _repoProvider.DirectionRepository;           
 
-            var _configRepoProvider = new InMemoryRepoProvider(_xmlAlifRepo, _xmlDirRepo);
-            x_ConfigAlifbaRepository = _configRepoProvider.AlifbaRepository;
-            x_ConfigDirectionRepository = _configRepoProvider.DirectionRepository;
+            ctlYanalif1.X_CustomSymbols = x_AlifbaRepository.Yanalif.CustomSymbols;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)
@@ -906,7 +900,14 @@ namespace Bitig.UI
 
         private void mniConfiguration_Click(object sender, EventArgs e)
         {
-            using (frmConfig _configForm = new frmConfig(x_ConfigAlifbaRepository, x_ConfigDirectionRepository))
+            var _xmlAlifRepo = new XmlAlifbaRepository(
+               Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
+            var _xmlDirRepo = new XmlDirectionRepository(
+                Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"));
+            var _configRepoProvider = new InMemoryRepoProvider(_xmlAlifRepo, _xmlDirRepo);
+            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
+            using (frmConfig _configForm = new frmConfig(_configAlifbaRepository, _configDirectionRepository))
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {

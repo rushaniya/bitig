@@ -330,7 +330,8 @@ namespace Bitig.UI.Configuration
             cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
             x_BuiltInTypes.ForEach(_type => cmbType.Items.Add(_type));
             //cmbType.SelectedItem = x_TypeComboSelectedItem;
-            if (cmbType.Items.Count == 1) cmbType.SelectedIndex = 0;
+            if (cmbType.Items.Count == 1)
+                cmbType.SelectedIndex = 0;
         }
     }
 }

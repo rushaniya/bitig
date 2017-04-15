@@ -247,5 +247,14 @@ namespace Bitig.UI.Configuration
         #endregion
 
         private bool x_ExclusionsModified;
+
+        private void btnExclusions_Click(object sender, EventArgs e)
+        {
+            var _exclusionsForm = new frmExclusions(x_EditableDirectionRepo, x_CurrentDirection);
+            if (_exclusionsForm.ShowDialog() == DialogResult.OK)
+            {
+                x_DirectionsModified = true;
+            }
+        }
     }
 }

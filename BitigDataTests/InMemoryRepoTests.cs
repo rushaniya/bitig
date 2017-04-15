@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
@@ -226,6 +227,21 @@ namespace BitigDataTests
               _dir.Source.ID == _alif1.ID && _dir.Target.ID == _alif2.ID
               && _dir.AssemblyPath == _assembly);
             Assert.IsNotNull(_direction);
+        }
+
+        [TestMethod]
+        public void Initialization()
+        {
+            var _xmlAlifRepo = new XmlAlifbaRepository(testAlifbaPath);
+            var _xmlDirRepo = new XmlDirectionRepository(testDirectionPath);
+            var _configRepoProvider = new InMemoryRepoProvider(_xmlAlifRepo, _xmlDirRepo);
+            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
+            var _dirList = _configDirectionRepository.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _dirList.Count);
+            var _alifList = _configAlifbaRepository.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _alifList.Count);
+            Assert.IsTrue(_alifList.All(_alif => DefaultConfiguration.BuiltInAlifbaList.Any(_b => _b.ID == _alif.ID)));
         }
     }
 }

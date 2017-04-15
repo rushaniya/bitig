@@ -14,13 +14,17 @@ namespace Bitig.UI
 {
     public partial class frmExclusions : Form
     {
-        private DirectionRepository x_DirectionRepo;
+        private IRepository<Direction,int> x_DirectionRepo;
+        private BindingList<Exclusion> x_BindingList;
+        private Direction x_Direction;
 
-        public frmExclusions(DirectionRepository DirectionRepo, Direction DefaultDirection)
+        public frmExclusions(IRepository<Direction, int> DirectionRepo, Direction Direction, bool DirectionReadonly = true)
         {
             InitializeComponent();
-            var _bindingList = new BindingList<Exclusion>(DefaultDirection.Exclusions);
-            dataGridView1.DataSource = _bindingList;
+            //excl: default direction == null
+            x_Direction = Direction;
+            x_BindingList = new BindingList<Exclusion>(Direction.Exclusions);
+            dgvExclusions.DataSource = x_BindingList;
             x_DirectionRepo = DirectionRepo;
         }
 
@@ -121,6 +125,19 @@ namespace Bitig.UI
             _cell.DataSource = _queryList.Where(_item => _item._sourceID == SourceID).ToList();
             _cell.DisplayMember = "_friendlyName";
             _cell.ValueMember = "_targetID";*/
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            //excl: validate
+            x_Direction.Exclusions = x_BindingList.ToList();
+            x_DirectionRepo.Update(x_Direction);
+            DialogResult = DialogResult.OK;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -139,6 +139,16 @@ namespace Bitig.Logic.Model
         //    return _friendlyName;
         //}
 
+        public string AssemblyFileName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(AssemblyPath))
+                    return "(Built-in)"; // loc
+                return System.IO.Path.GetFileName(AssemblyPath);
+            }
+        }
+
         public override string ToString()
         {
             return this.FriendlyName;

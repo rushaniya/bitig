@@ -7,7 +7,7 @@ using Bitig.Logic.Model;
 namespace Bitig.Logic.Repository
 {
     public class InMemoryRepository<T, IDType> : IRepository<T, IDType>
-        where T:EquatableByID<IDType>, IDeepCloneable<T>
+        where T:EquatableByID<IDType>, IDeepCloneable<T> 
     {
         private List<InMemoryItem<T>> list;
         private IRepository<T, IDType> persistentRepo;
@@ -25,22 +25,6 @@ namespace Bitig.Logic.Repository
             get { return persistentRepo.RepositoryProvider; } //repo: ok?
             set { persistentRepo.RepositoryProvider = value; }
         }
-
-        //public IDType DefaultID
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.DefaultID;
-        //    }
-        //}
-
-        //public IIDGenerator<T, IDType> IDGenerator
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.IDGenerator;
-        //    }
-        //}
 
         public InMemoryRepository(IRepository<T, IDType> PersistentRepository)
         {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Bitig.Logic.Model
+﻿namespace Bitig.Logic.Model
 {
     public class BuiltInDirection
     {
@@ -18,24 +13,21 @@ namespace Bitig.Logic.Model
 
         public Alifba Target { get; private set; }
 
-        private string friendlyName;
+        public string FriendlyName { get; private set; }
 
-        //repo
         internal BuiltInDirection(int ID, Alifba Source, Alifba Target)
         {
             this.id = ID;
             this.Source = Source;
             this.Target = Target;
-            //string _source = AlifbaManager.GetAlifbaNameByID(this.sourceID);
-            //string _target = AlifbaManager.GetAlifbaNameByID(this.targetID);
-            //if (string.IsNullOrEmpty(_source)) _source = "(none)";
-            //if (string.IsNullOrEmpty(_target)) _target = "(none)";
-            //this.friendlyName = string.Format("Built-in {0} - {1}", _source, _target);
+            string _source = Source == null ? "(none)" : Source.FriendlyName; //loc
+            string _target = Target == null ? "(none)" : Target.FriendlyName;
+            FriendlyName = string.Format("Built-in {0} - {1}", _source, _target);
         }
 
         public override string ToString()
         {
-            return friendlyName;
+            return FriendlyName;
         }
     }
 }
