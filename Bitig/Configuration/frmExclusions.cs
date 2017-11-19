@@ -1,42 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Bitig.Logic;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
-namespace Bitig.UI
+namespace Bitig.UI.Configuration
 {
     public partial class frmExclusions : Form
     {
         private IRepository<Direction,int> x_DirectionRepo;
         private Dictionary<int, BindingList<Exclusion>> x_BindingLists = new Dictionary<int, BindingList<Exclusion>>();
         private Direction x_Direction;
-        private List<Direction> x_Directions;
+        private bool x_IndependentMode;
 
-        public frmExclusions(IRepository<Direction, int> DirectionRepo, Direction Direction, bool DirectionReadonly = true)
+        public frmExclusions(Direction CurrentDirection, IRepository<Direction, int> DirectionRepo, bool AllowChangeDirection = false)
         {
             InitializeComponent();
-            x_Directions = DirectionRepo.GetList();
-            if (Direction == null)
+            if (AllowChangeDirection)
             {
-                x_Direction = x_Directions[0];
+                x_IndependentMode = true;
+                var _directions = DirectionRepo.GetList();
+                x_Direction = CurrentDirection ?? _directions[0];
+                cmbDirection.Items.AddRange(_directions.ToArray());
             }
             else
-                x_Direction = Direction.Clone();
-            if (Direction != null && DirectionReadonly)
             {
+                if (CurrentDirection == null)
+                    throw new InvalidOperationException("Must pass current direction");
+                x_Direction = CurrentDirection;
                 cmbDirection.Items.Add(x_Direction);
                 cmbDirection.Enabled = false;
-            }
-            else
-            {
-                cmbDirection.Items.AddRange(x_Directions.ToArray());
             }
             cmbDirection.SelectedItem = x_Direction;
             x_DirectionRepo = DirectionRepo;
@@ -162,6 +157,10 @@ namespace Bitig.UI
                 var _direction = x_DirectionRepo.Get(_exclList.Key);
                 _direction.Exclusions = _exclList.Value.ToList();
                 x_DirectionRepo.Update(_direction);
+            }
+            if(x_IndependentMode)
+            {
+                x_DirectionRepo.SaveChanges();
             }
             DialogResult = DialogResult.OK;
         }

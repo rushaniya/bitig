@@ -320,7 +320,7 @@
             this.mniTranslitPanel.CheckOnClick = true;
             this.mniTranslitPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniTranslitPanel.Name = "mniTranslitPanel";
-            this.mniTranslitPanel.Size = new System.Drawing.Size(145, 22);
+            this.mniTranslitPanel.Size = new System.Drawing.Size(144, 22);
             this.mniTranslitPanel.Text = "Translit Panel";
             this.mniTranslitPanel.CheckedChanged += new System.EventHandler(this.mniTranslitPanel_CheckedChanged);
             // 
@@ -330,7 +330,7 @@
             this.mniAlifba.CheckOnClick = true;
             this.mniAlifba.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniAlifba.Name = "mniAlifba";
-            this.mniAlifba.Size = new System.Drawing.Size(145, 22);
+            this.mniAlifba.Size = new System.Drawing.Size(144, 22);
             this.mniAlifba.Text = "Alifba";
             this.mniAlifba.CheckedChanged += new System.EventHandler(this.mniAlifba_CheckedChanged);
             // 
@@ -345,11 +345,10 @@
             // 
             // mniExclusions
             // 
-            this.mniExclusions.Enabled = false;
             this.mniExclusions.Name = "mniExclusions";
             this.mniExclusions.Size = new System.Drawing.Size(157, 22);
             this.mniExclusions.Text = "Exclusions";
-            this.mniExclusions.Click += new System.EventHandler(this.exclusionsToolStripMenuItem_Click);
+            this.mniExclusions.Click += new System.EventHandler(this.mniExclusions_Click);
             // 
             // mniConfiguration
             // 
@@ -429,7 +428,7 @@
             // 
             this.txtTranslit1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTranslit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTranslit1.Font = new System.Drawing.Font("Arial Unicode MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTranslit1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtTranslit1.HideSelection = false;
             this.txtTranslit1.Location = new System.Drawing.Point(0, 0);
             this.txtTranslit1.Multiline = true;
@@ -537,7 +536,7 @@
             // 
             this.txtTranslit2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTranslit2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTranslit2.Font = new System.Drawing.Font("Arial Unicode MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTranslit2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtTranslit2.HideSelection = false;
             this.txtTranslit2.Location = new System.Drawing.Point(0, 0);
             this.txtTranslit2.Multiline = true;
@@ -576,7 +575,7 @@
             // lblTarget
             // 
             this.lblTarget.Name = "lblTarget";
-            this.lblTarget.Size = new System.Drawing.Size(41, 28);
+            this.lblTarget.Size = new System.Drawing.Size(40, 28);
             this.lblTarget.Text = "Target";
             // 
             // toolStripSeparator4
@@ -643,6 +642,7 @@
             this.ctlYanalif1.Name = "ctlYanalif1";
             this.ctlYanalif1.Size = new System.Drawing.Size(853, 40);
             this.ctlYanalif1.TabIndex = 1;
+            this.ctlYanalif1.X_CustomSymbols = null;
             this.ctlYanalif1.VisibleChanged += new System.EventHandler(this.ctlYanalif1_VisibleChanged);
             // 
             // pnlTop
@@ -670,10 +670,10 @@
             this.Name = "frmMainForm";
             this.Text = "Bitig";
             this.WindowState = global::Bitig.UI.Properties.Settings.Default.k_WindowState;
-            this.Load += new System.EventHandler(this.frmMainForm_Load);
-            this.SizeChanged += new System.EventHandler(this.frmMainForm_SizeChanged);
-            this.Shown += new System.EventHandler(this.frmMainForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainForm_FormClosing);
+            this.Load += new System.EventHandler(this.frmMainForm_Load);
+            this.Shown += new System.EventHandler(this.frmMainForm_Shown);
+            this.SizeChanged += new System.EventHandler(this.frmMainForm_SizeChanged);
             this.tlsMain.ResumeLayout(false);
             this.tlsMain.PerformLayout();
             this.mnuMain.ResumeLayout(false);

@@ -240,7 +240,7 @@ namespace Bitig.UI.Configuration
 
         private void btnExclusions_Click(object sender, EventArgs e)
         {
-            var _exclusionsForm = new frmExclusions(x_EditableDirectionRepo, x_CurrentDirection);
+            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_EditableDirectionRepo);
             if (_exclusionsForm.ShowDialog() == DialogResult.OK)
             {
                 x_DirectionsModified = true;

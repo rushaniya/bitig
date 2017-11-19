@@ -805,11 +805,15 @@ namespace Bitig.UI
 
         #endregion
 
-        private void exclusionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mniExclusions_Click(object sender, EventArgs e)
         {
-            //excl
-            //frmExclusions _exclForm = new frmExclusions();
-            //_exclForm.ShowDialog();
+            var _configRepoProvider = new InMemoryRepoProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
+            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
+            using (var _configForm = new frmExclusions(x_CurrentDirection, _configDirectionRepository, true))
+            {
+                _configForm.ShowDialog();
+            }
         }
         private void txtTranslit1_Enter(object sender, EventArgs e)
         {           

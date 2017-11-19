@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Bitig.Logic;
 using System.Reflection;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
-using Bitig.UI.ViewModel;
 
 namespace Bitig.UI.Configuration
 {
