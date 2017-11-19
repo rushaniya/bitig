@@ -104,19 +104,10 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols())
+                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_CurrentAlphabet, x_EditableAlifbaRepo))
                 {
-                    if (x_CurrentAlphabet.IsYanalif)
-                    {
-                        _symbolsForm.X_Yanalif = true;
-                        _symbolsForm.Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
-                    }
-                    _symbolsForm.X_Symbols = x_CurrentAlphabet.CustomSymbols;
-                    if (x_CurrentAlphabet.DefaultFont != null)
-                        _symbolsForm.X_DefaultFont = (Font)x_CurrentAlphabet.DefaultFont;
                     if (_symbolsForm.ShowDialog() == DialogResult.OK)
                     {
-                        x_CurrentAlphabet.CustomSymbols = _symbolsForm.X_Symbols;
                         x_AlphabetsModified = true;
                     }
                 }
