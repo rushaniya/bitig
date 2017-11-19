@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Bitig.Logic;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
@@ -26,13 +20,13 @@ namespace Bitig.UI.Configuration
                 {
                     txtDisplayName.Text = x_AlphabetConfig.FriendlyName;
                     //kbl cmbLayout.Text = x_AlphabetConfig.KeyboardLayoutName;
-                    x_SelectedFont = (Font)x_AlphabetConfig.DefaultFont;
+                    x_SelectedFont = x_AlphabetConfig.DefaultFont;
                     chkRightToLeft.Checked = x_AlphabetConfig.RightToLeft;
                 }
             }
         }
 
-        private Font x_SelectedFont;// = new Font("DejaVu Sans", 10F);
+        private AlifbaFont x_SelectedFont;// = new Font("DejaVu Sans", 10F);
 
         private IRepository<Alifba, int> x_AlifbaRepository;
 
@@ -53,10 +47,10 @@ namespace Bitig.UI.Configuration
 
         private void btnFont_Click(object sender, EventArgs e)
         {
-            dlgFont.Font = x_SelectedFont;
+            dlgFont.Font = (Font)x_SelectedFont;
             if (dlgFont.ShowDialog() == DialogResult.OK)
             {
-                x_SelectedFont = dlgFont.Font;
+                x_SelectedFont = (AlifbaFont) dlgFont.Font;
                 lblFont.Text = "Font: " + x_SelectedFont.ToString();
             }
         }

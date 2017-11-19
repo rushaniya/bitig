@@ -70,7 +70,7 @@ namespace Bitig.Logic.Repository
                 throw new InvalidOperationException("Item does not exist.");
             }
             var _currentState = _existingItem.State;
-            if(_currentState== ItemState.Deleted)
+            if (_currentState== ItemState.Deleted)
             {
                 throw new InvalidOperationException("Item deleted.");
             }
@@ -94,13 +94,13 @@ namespace Bitig.Logic.Repository
 
         public List<T> GetList()
         {
-            return list.Select(_item =>_item.Item.Clone()).ToList();
+            return list.Where(_item => _item.State != ItemState.Deleted).Select(_item => _item.Item.Clone()).ToList();
         }
 
         public T Get(IDType ID)
         {
             var _found = list.Find(_item => _item.Item.ID.Equals(ID));
-            if (_found == null)
+            if (_found == null || _found.State == ItemState.Deleted)
                 return null;
             return _found.Item.Clone();
         }
@@ -121,6 +121,7 @@ namespace Bitig.Logic.Repository
                         persistentRepo.Delete(_item.Item);
                         break;
                 }
+                _item.State = ItemState.Unmodified;
             }
             if (persistentRepo.IsFlushable)
                 persistentRepo.SaveChanges();

@@ -248,7 +248,7 @@ namespace BitigDataTests
         public void Delete_CreateDefault()
         {
             var _testRepo = InitTestRepo();
-            var _direction = new Direction(0, null, null, null); //repo: Repo.FirstID? (together with Repo.DefaultID)
+            var _direction = new Direction(0, null, null, null);
             _testRepo.Delete(_direction);
             _testRepo.SaveChanges();
 
@@ -317,6 +317,24 @@ namespace BitigDataTests
             Assert.AreEqual(true, _checkExcl.AnyPosition);
             Assert.AreEqual("1", _checkExcl.SourceWord);
             Assert.AreEqual("2", _checkExcl.TargetWord);
+        }
+
+        [TestMethod]
+        public void InvalidConfig()
+        {
+            var _invalidFile = dataFolder + @"corrupted\InvalidDirections.xml";
+            var _testRepo = InitTestRepo(_invalidFile);
+            var _list = _testRepo.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
+        }
+
+        [TestMethod]
+        public void ObsoleteConfig()
+        {
+            var _invalidFile = dataFolder + @"corrupted\ObsoleteDirections.xml";
+            var _testRepo = InitTestRepo(_invalidFile);
+            var _list = _testRepo.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
         }
     }
 }

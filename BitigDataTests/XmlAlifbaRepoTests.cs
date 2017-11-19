@@ -318,5 +318,18 @@ namespace BitigDataTests
             Assert.IsFalse(_IDs.Any(_id => _id == _newID));
             Assert.AreEqual(2, _newID);
         }
+
+        [TestMethod]
+        public void InvalidConfig()
+        {
+            var _invalidFile = dataFolder + @"corrupted\InvalidAlphabets.xml";
+            File.Copy(_invalidFile, testFilePath);
+
+            var _xmlRepo = new XmlAlifbaRepository(testFilePath);
+            var _bitigRepo = new AlifbaRepository(_xmlRepo);
+            var _list = _bitigRepo.GetList();
+
+            Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _list.Count);
+        }
     }
 }

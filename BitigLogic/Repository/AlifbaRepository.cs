@@ -5,6 +5,9 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
+    /// <summary>
+    /// Repository with business & integrity logic
+    /// </summary>
     public class AlifbaRepository : IRepository<Alifba, int>
     {
         private readonly  IRepository<Alifba, int> alifbaRepository;
@@ -44,7 +47,7 @@ namespace Bitig.Logic.Repository
             return _result;
         }
 
-        public Alifba GetBuiltIn(BuiltInAlifbaType BuiltIn) //repo: generic filter
+        public Alifba GetBuiltIn(BuiltInAlifbaType BuiltIn)
         {
             EnsureDefaults();
             var _list = alifbaRepository.GetList();
@@ -80,6 +83,8 @@ namespace Bitig.Logic.Repository
         {
             EnsureDefaults();
             alifbaRepository.Update(Item);
+            if (RepositoryProvider != null)
+                RepositoryProvider.DirectionRepository.UpdateReferences(Item.ID);
         }
 
         public Alifba GetYanalif()

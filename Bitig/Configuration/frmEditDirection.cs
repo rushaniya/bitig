@@ -107,23 +107,6 @@ namespace Bitig.UI.Configuration
                 MessageBox.Show("Source and target are the same", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            Direction _duplicate = null;
-            if (x_Direction == null)
-            {
-                _duplicate = x_DirectionRepository.GetList().Find(_dir => 
-                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
-            }
-            else
-            {
-                _duplicate = x_DirectionRepository.GetList().Find(_dir => !_dir.Equals(x_Direction) &&
-                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
-            }
-            if (_duplicate != null)
-            {
-                if (MessageBox.Show("Transliteration direction already exists. Replace?", "?",  //loc
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
-                    return;
-            }
             //int _builtInID = -1;
             BuiltInDirection _builtIn = null;
             if (cmbType.SelectedItem is BuiltInDirection)
@@ -145,7 +128,7 @@ namespace Bitig.UI.Configuration
             }
             else
             {
-                if (string.IsNullOrEmpty(x_SelectedAssemblyPath))
+                if (cmbAssembly.SelectedItem == null)
                 {
                     MessageBox.Show("Library is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                     return;
@@ -155,6 +138,23 @@ namespace Bitig.UI.Configuration
                     MessageBox.Show("Type name is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                     return;
                 }
+            }
+            Direction _duplicate = null;
+            if (x_Direction == null)
+            {
+                _duplicate = x_DirectionRepository.GetList().Find(_dir =>
+                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
+            }
+            else
+            {
+                _duplicate = x_DirectionRepository.GetList().Find(_dir => !_dir.Equals(x_Direction) &&
+                _source.Equals(_dir.Source) && _target.Equals(_dir.Target));
+            }
+            if (_duplicate != null)
+            {
+                if (MessageBox.Show("Transliteration direction already exists. Replace?", "?",  //loc
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                    return;
             }
             if (_duplicate != null)
             {
@@ -173,8 +173,7 @@ namespace Bitig.UI.Configuration
             }
             if (x_Direction == null)
             {
-                x_Direction = new Direction(-1, _source, _target, null,
-                x_SelectedAssemblyPath, _type, _builtIn); //repo: , cmbType.Text.Trim() ?
+                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn); //repo: , cmbType.Text.Trim() ?
                 x_DirectionRepository.Insert(x_Direction);
             }
             else
@@ -188,7 +187,7 @@ namespace Bitig.UI.Configuration
                 x_Direction.BuiltIn = _builtIn;
                 x_DirectionRepository.Update(x_Direction);
             }
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         private void cmbAssembly_SelectedIndexChanged(object sender, EventArgs e)

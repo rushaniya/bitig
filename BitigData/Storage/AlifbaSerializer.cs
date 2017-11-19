@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 using Bitig.Data.Model;
+using System;
 
 namespace Bitig.Data.Storage
 {
@@ -69,6 +70,10 @@ namespace Bitig.Data.Storage
                     }
                     return instance.alifbaList;
                 }
+                return null;
+            }
+            catch(InvalidOperationException ex)
+            {
                 return null;
             }
             finally

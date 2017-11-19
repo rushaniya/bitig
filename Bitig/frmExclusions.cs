@@ -15,16 +15,30 @@ namespace Bitig.UI
     public partial class frmExclusions : Form
     {
         private IRepository<Direction,int> x_DirectionRepo;
-        private BindingList<Exclusion> x_BindingList;
+        private Dictionary<int, BindingList<Exclusion>> x_BindingLists = new Dictionary<int, BindingList<Exclusion>>();
         private Direction x_Direction;
+        private List<Direction> x_Directions;
 
         public frmExclusions(IRepository<Direction, int> DirectionRepo, Direction Direction, bool DirectionReadonly = true)
         {
             InitializeComponent();
-            //excl: default direction == null
-            x_Direction = Direction;
-            x_BindingList = new BindingList<Exclusion>(Direction.Exclusions);
-            dgvExclusions.DataSource = x_BindingList;
+            x_Directions = DirectionRepo.GetList();
+            if (Direction == null)
+            {
+                x_Direction = x_Directions[0];
+            }
+            else
+                x_Direction = Direction.Clone();
+            if (Direction != null && DirectionReadonly)
+            {
+                cmbDirection.Items.Add(x_Direction);
+                cmbDirection.Enabled = false;
+            }
+            else
+            {
+                cmbDirection.Items.AddRange(x_Directions.ToArray());
+            }
+            cmbDirection.SelectedItem = x_Direction;
             x_DirectionRepo = DirectionRepo;
         }
 
@@ -49,6 +63,24 @@ namespace Bitig.UI
             */
         }
 
+        private void cmbDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetSelectedDirection();
+        }
+
+        private void GetSelectedDirection()
+        {
+            x_Direction = cmbDirection.SelectedItem as Direction;
+            dgvExclusions.DataSource = null;
+            if (x_Direction == null)
+                return;
+            if(!x_BindingLists.ContainsKey(x_Direction.ID))
+            {
+                x_BindingLists.Add(x_Direction.ID, new BindingList<Exclusion>(x_Direction.Exclusions));
+            }
+            dgvExclusions.DataSource = x_BindingLists[x_Direction.ID];
+        }
+
         private void frmExclusions_FormClosing(object sender, FormClosingEventArgs e)
         {
           //  StorageManager.Instance.SaveExclusionsTable();
@@ -59,11 +91,6 @@ namespace Bitig.UI
         {
             
 
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            //excl: update directions' exclusions
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -130,8 +157,12 @@ namespace Bitig.UI
         private void btnOK_Click(object sender, EventArgs e)
         {
             //excl: validate
-            x_Direction.Exclusions = x_BindingList.ToList();
-            x_DirectionRepo.Update(x_Direction);
+            foreach (var _exclList in x_BindingLists)
+            {
+                var _direction = x_DirectionRepo.Get(_exclList.Key);
+                _direction.Exclusions = _exclList.Value.ToList();
+                x_DirectionRepo.Update(_direction);
+            }
             DialogResult = DialogResult.OK;
         }
 
