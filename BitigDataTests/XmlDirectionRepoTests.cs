@@ -21,11 +21,11 @@ namespace BitigDataTests
         private readonly string preparedFile = dataFolder + @"Prepared\Direction777.xml";
         private readonly string testFilePath = dataFolder + "Directions.xml";
 
-        private DirectionRepository InitTestRepo(string preparedFile = null)
+        private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
             var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
-            if (preparedFile != null)
-                File.Copy(preparedFile, testFilePath);
+            if (preparedFilePath != null)
+                File.Copy(preparedFilePath, testFilePath);
             var _dirRepo = new XmlDirectionRepository(testFilePath);
             var _repoProvider = new RepositoryProvider(_alifbaRepo, _dirRepo);
             return _repoProvider.DirectionRepository;

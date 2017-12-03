@@ -69,7 +69,7 @@ namespace Bitig.Logic.Model
             this.Source = Source;
             this.Target = Target;
             this.BuiltIn = BuiltIn;
-            this.Exclusions = Exclusions;
+            this.Exclusions = Exclusions ?? new List<Exclusion>();
         }
 
         public bool IsBuiltIn()
@@ -104,16 +104,13 @@ namespace Bitig.Logic.Model
             return translitCommand.Convert(Text);
         }
 
-              
+
         private ExclusionCollection LoadExclusions()
         {
             ExclusionCollection _resultDict = new ExclusionCollection();
-            if (Exclusions != null)
+            foreach (Exclusion _excl in Exclusions)
             {
-                foreach (Exclusion _excl in Exclusions)
-                {
-                    _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
-                }
+                _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
             }
             return _resultDict;
         }

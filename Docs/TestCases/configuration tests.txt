@@ -60,17 +60,11 @@ Expected result: symbol does not change on Main Form.
 
 4. Exclusions.
 4a. Fill new exclusion row and press Enter. Press OK on Exclusions form and on Configuration Form.
-Expected result: new exclusion is added and applied accordingly.
+Expected result: when the corresponding direction is selected, new exclusion is added and applied accordingly.
 4b. Clear exclusion cells. Press OK on Exclusions form and on Configuration Form.
-Expected result: exclusion is deleted and is not applied.
+Expected result: exclusion is deleted and is not applied to the corresponding direction.
 4c. Edit exclusion row. Press OK on Exclusions form and on Configuration Form.
 Expected result: exclusion is applied accordingly.
-4d. Fill new symbol row and press Enter. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
-Expected result: new symbol is not added (and is not displayed on Main Form).
-4e. Clear Symbol cell. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
-Expected result: new symbol is not deleted and is still displayed on Main Form.
-4f. Edit symbol row. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
-Expected result: symbol does not change on Main Form.
 
 4.1. Exclusions opened directly from Main Form.
 4.1a. Can edit each direction's exclusions.
