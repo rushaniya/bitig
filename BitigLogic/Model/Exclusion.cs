@@ -1,5 +1,4 @@
-﻿using System;
-using Bitig.Logic.Repository;
+﻿using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {

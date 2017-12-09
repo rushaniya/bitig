@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Bitig.Base;
-using System.Text.RegularExpressions;
 
 namespace Bitig.Logic.Commands
 {

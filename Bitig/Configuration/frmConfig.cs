@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using Bitig.Logic.Repository;
 using Bitig.Logic.Model;

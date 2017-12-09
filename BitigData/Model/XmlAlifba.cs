@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
-using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {

@@ -381,8 +381,6 @@ namespace Bitig.Base
             //warning if this exclusion conflicts with other exclusions
             throw new NotImplementedException();
         }
-
-        //excl: use this when setting up on-screen keys
     }
 
 }

@@ -115,27 +115,6 @@ namespace Bitig.Logic.Model
             return _resultDict;
         }
 
-        //public string GetFriendlyName()
-        //{
-        //    string _friendlyName, _source, _target, _prefix;
-        //    if (IsBuiltIn())
-        //    {
-        //        _source = DefaultConfiguration.GetBuiltInSourceID(BuiltIn.ID);
-        //        _target = AlifbaManager.GetAlifbaNameByID(DirectionManager.GetBuiltInTargetID(BuiltInID));
-        //        _prefix = "Built-in ";
-        //    }
-        //    else
-        //    {
-        //        _source = Source.FriendlyName;
-        //        _target = Target.FriendlyName;
-        //        _prefix = string.Empty;
-        //    }
-        //    if (string.IsNullOrEmpty(_source)) _source = "(none)"; //loc
-        //    if (string.IsNullOrEmpty(_target)) _target = "(none)";
-        //    _friendlyName = string.Format("{0}{1} - {2}", _prefix, _source, _target);
-        //    return _friendlyName;
-        //}
-
         public string AssemblyFileName
         {
             get

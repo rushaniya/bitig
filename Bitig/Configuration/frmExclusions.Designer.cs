@@ -67,8 +67,6 @@
             this.dgvExclusions.TabIndex = 1;
             this.dgvExclusions.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dataGridView1_CellParsing);
             this.dgvExclusions.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
-            this.dgvExclusions.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-            this.dgvExclusions.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
             // 
             // bndExclusions
             // 
@@ -182,8 +180,6 @@
             this.Controls.Add(this.pnlTop);
             this.Name = "frmExclusions";
             this.Text = "frmExclusions";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmExclusions_FormClosing);
-            this.Load += new System.EventHandler(this.frmExclusions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvExclusions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndExclusions)).EndInit();
             this.pnlTop.ResumeLayout(false);
