@@ -21,11 +21,11 @@ namespace BitigDataTests
         private readonly string preparedFile = dataFolder + @"Prepared\Direction777.xml";
         private readonly string testFilePath = dataFolder + "Directions.xml";
 
-        private DirectionRepository InitTestRepo(string preparedFile = null)
+        private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
             var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
-            if (preparedFile != null)
-                File.Copy(preparedFile, testFilePath);
+            if (preparedFilePath != null)
+                File.Copy(preparedFilePath, testFilePath);
             var _dirRepo = new XmlDirectionRepository(testFilePath);
             var _repoProvider = new RepositoryProvider(_alifbaRepo, _dirRepo);
             return _repoProvider.DirectionRepository;
@@ -66,7 +66,8 @@ namespace BitigDataTests
             foreach (var _item in _builtInList)
             {
                 Assert.IsNotNull(_defaultList.Single(_dir =>
-                _dir.BuiltIn.ID == _item.ID && _dir.Source.Equals(_item.Source) && _dir.Target.Equals(_item.Target)));
+                _dir.BuiltIn.ID == _item.ID && 
+                _dir.Source.BuiltIn == _item.Source && _dir.Target.BuiltIn == _item.Target));
             }
         }
 
@@ -247,7 +248,7 @@ namespace BitigDataTests
         public void Delete_CreateDefault()
         {
             var _testRepo = InitTestRepo();
-            var _direction = new Direction(0, null, null, null); //repo: Repo.FirstID? (together with Repo.DefaultID)
+            var _direction = new Direction(0, null, null, null);
             _testRepo.Delete(_direction);
             _testRepo.SaveChanges();
 
@@ -316,6 +317,24 @@ namespace BitigDataTests
             Assert.AreEqual(true, _checkExcl.AnyPosition);
             Assert.AreEqual("1", _checkExcl.SourceWord);
             Assert.AreEqual("2", _checkExcl.TargetWord);
+        }
+
+        [TestMethod]
+        public void InvalidConfig()
+        {
+            var _invalidFile = dataFolder + @"corrupted\InvalidDirections.xml";
+            var _testRepo = InitTestRepo(_invalidFile);
+            var _list = _testRepo.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
+        }
+
+        [TestMethod]
+        public void ObsoleteConfig()
+        {
+            var _invalidFile = dataFolder + @"corrupted\ObsoleteDirections.xml";
+            var _testRepo = InitTestRepo(_invalidFile);
+            var _list = _testRepo.GetList();
+            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
         }
     }
 }

@@ -1,41 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Bitig.Logic.Model
+﻿namespace Bitig.Logic.Model
 {
     public class BuiltInDirection
     {
-        private int id = -1;
-
-        public int ID
+        public BuiltInDirectionType ID
         {
-            get { return id; }
+            get; private set;
         }
 
-        public Alifba Source { get; private set; }
+        public BuiltInAlifbaType Source { get; private set; }
 
-        public Alifba Target { get; private set; }
+        public BuiltInAlifbaType Target { get; private set; }
 
-        private string friendlyName;
+        public string FriendlyName { get; private set; }
 
-        //repo
-        internal BuiltInDirection(int ID, Alifba Source, Alifba Target)
+        internal BuiltInDirection(BuiltInDirectionType ID, BuiltInAlifba Source, BuiltInAlifba Target)
         {
-            this.id = ID;
-            this.Source = Source;
-            this.Target = Target;
-            //string _source = AlifbaManager.GetAlifbaNameByID(this.sourceID);
-            //string _target = AlifbaManager.GetAlifbaNameByID(this.targetID);
-            //if (string.IsNullOrEmpty(_source)) _source = "(none)";
-            //if (string.IsNullOrEmpty(_target)) _target = "(none)";
-            //this.friendlyName = string.Format("Built-in {0} - {1}", _source, _target);
+            this.ID = ID;
+            this.Source = Source.ID;
+            this.Target = Target.ID;
+            FriendlyName = string.Format("Built-in {0} - {1}", Source.DefaultName, Target.DefaultName);
+            //repo: what if user has changed default alifba names?
         }
 
         public override string ToString()
         {
-            return friendlyName;
+            return FriendlyName;
         }
+    }
+
+    public enum BuiltInDirectionType
+    {
+        None,
+        CyrillicYanalif,
+        CyrillicZamanalif,
+        CyrillicRasmalif,
+        YanalifZamanalif,
+        YanalifRasmalif,
+        ZamanalifYanalif,
+        RasmalifYanalif
     }
 }

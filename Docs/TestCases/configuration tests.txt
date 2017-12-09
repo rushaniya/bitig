@@ -1,0 +1,78 @@
+﻿Configuration test sheet.
+All expected results, such as alphabets' displayed names, alphabet lists, transliteration results, on-screen symbols, etc., are tested on Main form immediately after Configuration form is closed. 
+
+1. Alphabets.
+1a. Edit alhpabet's name. Press OK on Configuration form.
+Expected result: name changed.
+1b. Edit alhpabet's name. Press Cancel on Configuration form.
+Expected result: name not changed.
+1c. Add alphabet. Press OK on Configuration form.
+Expected result: alphabet added.
+1d. Add alphabet. Press Cancel on Configuration form.
+Expected result: alphabet not added.
+1e. Delete alphabet. Press OK on Configuration form.
+Expected result: alphabet deleted.
+1f. Delete alphabet. Press Cancel on Configuration form.
+Expected result: alphabet not deleted.
+
+1.1. Validation.
+1.1a. Display name is not empty.
+
+
+2. Directions.
+2a. Edit library and type name. Press OK on Configuration form.
+Expected result: transliteration algorithm changes accordingly.
+2b. Add direction.
+Expected result: direction and its transliteration algorithm are added.
+2c. Delete direction.
+Expected result: direction deleted.
+
+2.1. Validation.
+2.1a. Source is not empty.
+2.1b. Target is not empty.
+2.1c. Library is not empty.
+2.1d. Type name is not empty.
+2.1e. When library is built-in, source is same as built-in source.
+2.1f. When library is built-in, target is same as built-in target.
+2.1g. Can't have more than one directions with same target and source.
+2.1h. Source and target cannot be same.
+
+3. On-screen symbols.
+3a. Fill new symbol row and press Enter. Press OK on Custom Symbols form and on Configuration Form.
+Expected result: new symbol is added (and is displayed on Main Form).
+3b. Clear Symbol cell. Press OK on Custom Symbols form and on Configuration Form.
+Expected result: symbol is deleted (and is not displayed on Main Form).
+3c. Edit symbol row. Press OK on Custom Symbols form and on Configuration Form.
+Expected result: edited symbol is displayed accordingly on Main Form.
+3d. Fill new symbol row and press Enter. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
+Expected result: new symbol is not added (and is not displayed on Main Form).
+3e. Clear Symbol cell. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
+Expected result: symbol is not deleted and is still displayed on Main Form.
+3f. Edit symbol row. Press OK on Custom Symbols form. Press Cancel on Configuration Form.
+Expected result: symbol does not change on Main Form.
+
+3.1. Validation.
+3.1a. Symbol cannot be empty. Custom symbol with empty Symbol cell is deleted.
+
+3.2. Yanalif custom symbols.
+3.2a. Checkbox "Show all Yanalif letters" is visible.
+3.2b. Cannot add more than 30 custom symbols.
+
+4. Exclusions.
+4a. Fill new exclusion row and press Enter. Press OK on Exclusions form and on Configuration Form.
+Expected result: when the corresponding direction is selected, new exclusion is added and applied accordingly.
+4b. Clear exclusion cells. Press OK on Exclusions form and on Configuration Form.
+Expected result: exclusion is deleted and is not applied to the corresponding direction.
+4c. Edit exclusion row. Press OK on Exclusions form and on Configuration Form.
+Expected result: exclusion is applied accordingly.
+
+4.1. Exclusions opened directly from Main Form.
+4.1a. Can edit each direction's exclusions.
+4.1b. Current transliteration direction is selected by default.
+4.1c. Changes are applied after OK button is pressed on Exclusions form.
+
+4.2. Validation.
+4.2a. Source cannot be empty.
+4.2b. Source cannot contain characters not present in source alphabet.
+4.2c. Match Begining and Any Position cannot be both set.
+4.2d. Intersections??? (case & position)

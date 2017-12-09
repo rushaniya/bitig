@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Bitig.Logic.Model;
-using Bitig.Logic.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BitigDataTests

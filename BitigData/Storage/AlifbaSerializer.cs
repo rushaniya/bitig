@@ -3,22 +3,13 @@ using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 using Bitig.Data.Model;
+using System;
 
 namespace Bitig.Data.Storage
 {
     [XmlRoot(ElementName = "Alphabets")]
     public class AlifbaSerializer
     {
-
-        private const string NOTE = "Reserved Alifba IDs: 0 - Cyrillic, 1 - Yanalif, 2 - Zamanalif, 3 - Official 2012 Alphabet. Custom IDs start at 1024.";
-
-        private string note = NOTE;
-
-        public string Note
-        {
-            get { return NOTE; }
-            set {  }
-        }
         
         private static AlifbaSerializer instance;
 
@@ -79,6 +70,10 @@ namespace Bitig.Data.Storage
                     }
                     return instance.alifbaList;
                 }
+                return null;
+            }
+            catch(InvalidOperationException ex)
+            {
                 return null;
             }
             finally

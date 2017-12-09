@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
     public class InMemoryRepository<T, IDType> : IRepository<T, IDType>
-        where T:EquatableByID<IDType>, IDeepCloneable<T>
+        where T:EquatableByID<IDType>, IDeepCloneable<T> 
     {
         private List<InMemoryItem<T>> list;
         private IRepository<T, IDType> persistentRepo;
@@ -25,22 +23,6 @@ namespace Bitig.Logic.Repository
             get { return persistentRepo.RepositoryProvider; } //repo: ok?
             set { persistentRepo.RepositoryProvider = value; }
         }
-
-        //public IDType DefaultID
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.DefaultID;
-        //    }
-        //}
-
-        //public IIDGenerator<T, IDType> IDGenerator
-        //{
-        //    get
-        //    {
-        //        return persistentRepo.IDGenerator;
-        //    }
-        //}
 
         public InMemoryRepository(IRepository<T, IDType> PersistentRepository)
         {
@@ -86,7 +68,7 @@ namespace Bitig.Logic.Repository
                 throw new InvalidOperationException("Item does not exist.");
             }
             var _currentState = _existingItem.State;
-            if(_currentState== ItemState.Deleted)
+            if (_currentState== ItemState.Deleted)
             {
                 throw new InvalidOperationException("Item deleted.");
             }
@@ -110,13 +92,13 @@ namespace Bitig.Logic.Repository
 
         public List<T> GetList()
         {
-            return list.Select(_item =>_item.Item.Clone()).ToList();
+            return list.Where(_item => _item.State != ItemState.Deleted).Select(_item => _item.Item.Clone()).ToList();
         }
 
         public T Get(IDType ID)
         {
             var _found = list.Find(_item => _item.Item.ID.Equals(ID));
-            if (_found == null)
+            if (_found == null || _found.State == ItemState.Deleted)
                 return null;
             return _found.Item.Clone();
         }
@@ -137,6 +119,7 @@ namespace Bitig.Logic.Repository
                         persistentRepo.Delete(_item.Item);
                         break;
                 }
+                _item.State = ItemState.Unmodified;
             }
             if (persistentRepo.IsFlushable)
                 persistentRepo.SaveChanges();

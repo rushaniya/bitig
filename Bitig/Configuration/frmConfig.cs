@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
-using Bitig.Logic;
 using Bitig.Logic.Repository;
 using Bitig.Logic.Model;
-using System.Collections.Generic;
-using Bitig.UI.ViewModel;
 
 namespace Bitig.UI.Configuration
 {
@@ -66,7 +62,7 @@ namespace Bitig.UI.Configuration
             {
                 if (_editForm.ShowDialog() == DialogResult.OK)
                 {
-                    bndAlphabet.ResetBindings(false);
+                    DisplayAlphabets();
                     x_AlphabetsModified = true;
                 }
             }
@@ -81,7 +77,9 @@ namespace Bitig.UI.Configuration
                     _editForm.X_AlphabetConfig = x_CurrentAlphabet;
                     if (_editForm.ShowDialog() == DialogResult.OK)
                     {
-                        bndAlphabet.ResetBindings(false);
+                        DisplayAlphabets();
+                        DisplayDirections();
+                        bndDirection.ResetBindings(false);
                         x_AlphabetsModified = true;
                     }
                 }
@@ -95,7 +93,7 @@ namespace Bitig.UI.Configuration
                 if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     x_EditableAlifbaRepo.Delete(x_CurrentAlphabet);
-                    bndAlphabet.ResetBindings(false);
+                    DisplayAlphabets();
                     x_AlphabetsModified = true;
                 }
             }
@@ -105,19 +103,10 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols())
+                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_CurrentAlphabet, x_EditableAlifbaRepo))
                 {
-                    if (x_CurrentAlphabet.IsYanalif)
-                    {
-                        _symbolsForm.X_Yanalif = true;
-                        _symbolsForm.Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
-                    }
-                    _symbolsForm.X_Symbols = x_CurrentAlphabet.CustomSymbols;
-                    if (x_CurrentAlphabet.DefaultFont != null)
-                        _symbolsForm.X_DefaultFont = (Font)x_CurrentAlphabet.DefaultFont;
                     if (_symbolsForm.ShowDialog() == DialogResult.OK)
                     {
-                        x_CurrentAlphabet.CustomSymbols = _symbolsForm.X_Symbols;
                         x_AlphabetsModified = true;
                     }
                 }
@@ -137,7 +126,7 @@ namespace Bitig.UI.Configuration
 
         private void GetCurrentAlphabet()
         {
-            if (x_CurrentAlphabet == null) 
+            if (x_CurrentAlphabet == null)
             {
                 btnAlphabetSymbols.Enabled = false;
                 btnDeleteAlphabet.Enabled = false;
@@ -166,7 +155,7 @@ namespace Bitig.UI.Configuration
         public bool X_DirectionsModified
         {
             get { return x_DirectionsModified; }
-        } 
+        }
 
         private Direction x_CurrentDirection;
 
@@ -176,7 +165,7 @@ namespace Bitig.UI.Configuration
             {
                 if (_editDir.ShowDialog() == DialogResult.OK)
                 {
-                    bndDirection.ResetBindings(false);
+                    DisplayDirections();
                     x_DirectionsModified = true;
                 }
             }
@@ -191,7 +180,7 @@ namespace Bitig.UI.Configuration
                     _editDir.X_Direction = x_CurrentDirection;
                     if (_editDir.ShowDialog() == DialogResult.OK)
                     {
-                        bndDirection.ResetBindings(false);
+                        DisplayDirections();
                         x_DirectionsModified = true;
                     }
                 }
@@ -203,12 +192,12 @@ namespace Bitig.UI.Configuration
             if (x_CurrentDirection != null)
             {
                 //loc
-                if (MessageBox.Show(string.Format("Remove transliteration direction {0}?", 
-                    x_CurrentDirection.GetFriendlyName(x_EditableAlifbaRepo)),
+                if (MessageBox.Show(string.Format("Remove transliteration direction {0}?",
+                    x_CurrentDirection.FriendlyName),
                     "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     x_EditableDirectionRepo.Delete(x_CurrentDirection);
-                    bndDirection.ResetBindings(false);
+                    DisplayDirections();
                     x_DirectionsModified = true;
                 }
             }
@@ -247,5 +236,16 @@ namespace Bitig.UI.Configuration
         #endregion
 
         private bool x_ExclusionsModified;
+
+        private void btnExclusions_Click(object sender, EventArgs e)
+        {
+            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_EditableDirectionRepo);
+            if (_exclusionsForm.ShowDialog() == DialogResult.OK)
+            {
+                x_DirectionsModified = true;
+                x_ExclusionsModified = true;
+                DisplayDirections();
+            }
+        }
     }
 }

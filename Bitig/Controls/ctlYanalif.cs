@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Bitig.Logic;
 using Bitig.UI.Classes;
 using Bitig.Logic.Model;
 
@@ -15,17 +9,24 @@ namespace Bitig.UI.Controls
     public partial class ctlYanalif : UserControl
     {
         internal event EventHandler<SymbolEventArgs> SymbolPressed;
-
-        private List<AlifbaSymbol> x_CustomSymbols;
         private List<ToolStripButton> x_CustomButtons = new List<ToolStripButton>();
 
         private bool x_CapitalizeYanalif;
         private bool x_HoldCapitalizeButton;
 
+        public List<AlifbaSymbol> X_CustomSymbols
+        {
+            get; set;
+        }
+
         public ctlYanalif()
         {
             InitializeComponent();
             this.SymbolPressed += new EventHandler<SymbolEventArgs>(ctlYanalif_SymbolPressed);
+        }
+
+        private void ctlYanalif_Load(object sender, EventArgs e)
+        {
             SetAlifbaTags();
             SetKeyboard();
         }
@@ -102,19 +103,14 @@ namespace Bitig.UI.Controls
             x_HoldCapitalizeButton = true;
         }
 
-        //repo
         private void SetKeyboard()
         {
-            throw new NotImplementedException();
-            //if (AlifbaManager.Yanalif != null)
-            //{
-            //    //config:remove 'user button visible' settings
-            //    x_CustomSymbols = AlifbaManager.Yanalif.CustomSymbols;
-            //    SetCustomButtons();
-            //    SetCapitalizeButton();
-            //}
-            //x_CapitalizeYanalif = !TempConfig.ShowAllYanalifSymbols && btnCapitalize.Visible;
-            //if (x_CapitalizeYanalif && btnCapitalize.Visible) SetAlifbaCapitals();            
+            //config:remove 'user button visible' settings
+            SetCustomButtons();
+            SetCapitalizeButton();
+            x_CapitalizeYanalif = !TempConfig.ShowAllYanalifSymbols && btnCapitalize.Visible;
+            if (x_CapitalizeYanalif && btnCapitalize.Visible)
+                SetAlifbaCapitals();
         }
 
         private void SetAlifbaTags()
@@ -187,7 +183,9 @@ namespace Bitig.UI.Controls
                 x_CustomButtons[i].Dispose();
             }
             x_CustomButtons.Clear();
-            foreach(AlifbaSymbol _symbol in x_CustomSymbols)
+            if (X_CustomSymbols == null)
+                return;
+            foreach(AlifbaSymbol _symbol in X_CustomSymbols)
             {
                 AddAlifbaButton(_symbol);
             }
@@ -195,7 +193,7 @@ namespace Bitig.UI.Controls
 
         private void SetCapitalizeButton()
         {
-            if (x_CustomSymbols != null && x_CustomSymbols.Exists(_symbol => !string.IsNullOrEmpty(_symbol.CapitalizedText)))
+            if (X_CustomSymbols != null && X_CustomSymbols.Exists(_symbol => !string.IsNullOrEmpty(_symbol.CapitalizedText)))
             {
                 btnCapitalize.Visible = true;
             }
@@ -203,7 +201,8 @@ namespace Bitig.UI.Controls
 
         private void AddAlifbaButton(AlifbaSymbol ButtonSymbol)
         {
-            if (ButtonSymbol == null) return;
+            if (ButtonSymbol == null)
+                return;
             ToolStripButton _newButton = new ToolStripButton();
             _newButton.ForeColor = System.Drawing.Color.Gray;
             _newButton.Image = global::Bitig.UI.Properties.Resources.blank;

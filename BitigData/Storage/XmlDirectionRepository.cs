@@ -185,7 +185,7 @@ namespace Bitig.Data.Storage
             if (ModelDirection.Target == null)
                 throw new InvalidOperationException("Target alphabet is required.");//loc
 
-            var _builtInID = ModelDirection.BuiltIn == null ? -1 : //repo: default id? (depends on repo implementation)
+            var _builtInID = ModelDirection.BuiltIn == null ? BuiltInDirectionType.None :
                 ModelDirection.BuiltIn.ID;
 
             var _exclusions = new List<XmlExclusion>();

@@ -1,6 +1,4 @@
-﻿using Bitig.Data.Storage;
-
-namespace Bitig.Data.Model
+﻿namespace Bitig.Data.Model
 {
     public class XmlExclusion
     {

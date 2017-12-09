@@ -69,7 +69,7 @@ namespace Bitig.Logic.Model
             this.Source = Source;
             this.Target = Target;
             this.BuiltIn = BuiltIn;
-            this.Exclusions = Exclusions;
+            this.Exclusions = Exclusions ?? new List<Exclusion>();
         }
 
         public bool IsBuiltIn()
@@ -77,7 +77,7 @@ namespace Bitig.Logic.Model
             if (Source == null || Target == null)
                 throw new InvalidOperationException("Source or target alphabet is not defined.");
             return string.IsNullOrEmpty(AssemblyPath) && BuiltIn != null &&
-                BuiltIn.ID == DefaultConfiguration.GetBuiltInID(Source.ID, Target.ID);
+                BuiltIn.ID == DefaultConfiguration.GetBuiltInID(Source.BuiltIn, Target.BuiltIn);
         }
 
         private void InitializeTranslitCommand()
@@ -104,40 +104,26 @@ namespace Bitig.Logic.Model
             return translitCommand.Convert(Text);
         }
 
-              
+
         private ExclusionCollection LoadExclusions()
         {
             ExclusionCollection _resultDict = new ExclusionCollection();
-            if (Exclusions != null)
+            foreach (Exclusion _excl in Exclusions)
             {
-                foreach (Exclusion _excl in Exclusions)
-                {
-                    _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
-                }
+                _resultDict.Add(_excl.SourceWord, _excl.TargetWord, _excl.MatchCase, _excl.MatchBeginning, _excl.AnyPosition);
             }
             return _resultDict;
         }
 
-        //public string GetFriendlyName()
-        //{
-        //    string _friendlyName, _source, _target, _prefix;
-        //    if (IsBuiltIn())
-        //    {
-        //        _source = DefaultConfiguration.GetBuiltInSourceID(BuiltIn.ID);
-        //        _target = AlifbaManager.GetAlifbaNameByID(DirectionManager.GetBuiltInTargetID(BuiltInID));
-        //        _prefix = "Built-in ";
-        //    }
-        //    else
-        //    {
-        //        _source = Source.FriendlyName;
-        //        _target = Target.FriendlyName;
-        //        _prefix = string.Empty;
-        //    }
-        //    if (string.IsNullOrEmpty(_source)) _source = "(none)"; //loc
-        //    if (string.IsNullOrEmpty(_target)) _target = "(none)";
-        //    _friendlyName = string.Format("{0}{1} - {2}", _prefix, _source, _target);
-        //    return _friendlyName;
-        //}
+        public string AssemblyFileName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(AssemblyPath))
+                    return "(Built-in)"; // loc
+                return System.IO.Path.GetFileName(AssemblyPath);
+            }
+        }
 
         public override string ToString()
         {

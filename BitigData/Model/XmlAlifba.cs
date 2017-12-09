@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Bitig.Data.Storage;
-using Bitig.Logic.Repository;
+using Bitig.Logic.Model;
 
 namespace Bitig.Data.Model
 {
@@ -51,6 +50,8 @@ namespace Bitig.Data.Model
             set;
         }
 
+        public BuiltInAlifbaType BuiltIn { get; set; }
+
         public XmlAlifba()
         {
             if (!AlifbaSerializer.Deserializing)
@@ -59,13 +60,14 @@ namespace Bitig.Data.Model
         }
 
         internal XmlAlifba(int ID, string FriendlyName, List<XmlAlifbaSymbol> CustomSymbols = null,
-            bool RightToLeft = false, XmlFont DefaultFont = null)
+            bool RightToLeft = false, XmlFont DefaultFont = null, BuiltInAlifbaType BuiltIn = BuiltInAlifbaType.None)
         {
             id = ID;
             this.FriendlyName = FriendlyName;
             this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
             this.CustomSymbols = CustomSymbols ?? new List<XmlAlifbaSymbol>();
+            this.BuiltIn = BuiltIn;
         }
 
         public override string ToString()

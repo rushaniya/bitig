@@ -34,6 +34,7 @@
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbpAlphabets = new System.Windows.Forms.TabPage();
             this.dgvAlphabets = new System.Windows.Forms.DataGridView();
+            this.bndAlphabet = new System.Windows.Forms.BindingSource(this.components);
             this.pnlAlphabetCommands = new System.Windows.Forms.Panel();
             this.btnAlphabetSymbols = new System.Windows.Forms.Button();
             this.btnDeleteAlphabet = new System.Windows.Forms.Button();
@@ -41,45 +42,39 @@
             this.btnAddAlphabet = new System.Windows.Forms.Button();
             this.tbpDirections = new System.Windows.Forms.TabPage();
             this.dgvDirections = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnRemoveDirection = new System.Windows.Forms.Button();
-            this.btnEditDirection = new System.Windows.Forms.Button();
-            this.btnAddDirection = new System.Windows.Forms.Button();
-            this.tbpExclusions = new System.Windows.Forms.TabPage();
-            this.pnlBottom = new System.Windows.Forms.Panel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlphName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlphLayout = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightToLeft = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlphFont = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlifbaID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bndAlphabet = new System.Windows.Forms.BindingSource(this.components);
-            this.bndDirection = new System.Windows.Forms.BindingSource(this.components);
-            this.colDirectionID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSourceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTargetName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAssembly = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTypeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bndDirection = new System.Windows.Forms.BindingSource(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExclusions = new System.Windows.Forms.Button();
+            this.btnRemoveDirection = new System.Windows.Forms.Button();
+            this.btnEditDirection = new System.Windows.Forms.Button();
+            this.btnAddDirection = new System.Windows.Forms.Button();
+            this.pnlBottom = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.colAlphName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAlphLayout = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAlphFont = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightToLeft = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tbcMain.SuspendLayout();
             this.tbpAlphabets.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabets)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).BeginInit();
             this.pnlAlphabetCommands.SuspendLayout();
             this.tbpDirections.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlBottom.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).BeginInit();
             this.SuspendLayout();
             // 
             // tbcMain
             // 
             this.tbcMain.Controls.Add(this.tbpAlphabets);
             this.tbcMain.Controls.Add(this.tbpDirections);
-            this.tbcMain.Controls.Add(this.tbpExclusions);
             this.tbcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbcMain.Location = new System.Drawing.Point(0, 0);
             this.tbcMain.Name = "tbcMain";
@@ -118,7 +113,6 @@
             this.colAlphName,
             this.colAlphLayout,
             this.colAlphFont,
-            this.colAlifbaID,
             this.colRightToLeft});
             this.dgvAlphabets.DataSource = this.bndAlphabet;
             this.dgvAlphabets.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -131,6 +125,11 @@
             this.dgvAlphabets.Size = new System.Drawing.Size(665, 354);
             this.dgvAlphabets.TabIndex = 0;
             this.dgvAlphabets.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlphabets_RowEnter);
+            this.dgvAlphabets.DoubleClick += new System.EventHandler(this.btnEditAlphabet_Click);
+            // 
+            // bndAlphabet
+            // 
+            this.bndAlphabet.DataSource = typeof(Bitig.Logic.Model.Alifba);
             // 
             // pnlAlphabetCommands
             // 
@@ -219,7 +218,6 @@
             this.dgvDirections.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDirections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDirections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colDirectionID,
             this.colSourceName,
             this.colTargetName,
             this.colAssembly,
@@ -235,9 +233,43 @@
             this.dgvDirections.Size = new System.Drawing.Size(665, 354);
             this.dgvDirections.TabIndex = 2;
             this.dgvDirections.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDirections_RowEnter);
+            this.dgvDirections.DoubleClick += new System.EventHandler(this.btnEditDirection_Click);
+            // 
+            // colSourceName
+            // 
+            this.colSourceName.DataPropertyName = "Source";
+            this.colSourceName.HeaderText = "Source";
+            this.colSourceName.Name = "colSourceName";
+            this.colSourceName.ReadOnly = true;
+            // 
+            // colTargetName
+            // 
+            this.colTargetName.DataPropertyName = "Target";
+            this.colTargetName.HeaderText = "Target";
+            this.colTargetName.Name = "colTargetName";
+            this.colTargetName.ReadOnly = true;
+            // 
+            // colAssembly
+            // 
+            this.colAssembly.DataPropertyName = "AssemblyFileName";
+            this.colAssembly.HeaderText = "Assembly";
+            this.colAssembly.Name = "colAssembly";
+            this.colAssembly.ReadOnly = true;
+            // 
+            // colTypeName
+            // 
+            this.colTypeName.DataPropertyName = "TypeName";
+            this.colTypeName.HeaderText = "Type Name";
+            this.colTypeName.Name = "colTypeName";
+            this.colTypeName.ReadOnly = true;
+            // 
+            // bndDirection
+            // 
+            this.bndDirection.DataSource = typeof(Bitig.Logic.Model.Direction);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnExclusions);
             this.panel1.Controls.Add(this.btnRemoveDirection);
             this.panel1.Controls.Add(this.btnEditDirection);
             this.panel1.Controls.Add(this.btnAddDirection);
@@ -246,6 +278,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(665, 60);
             this.panel1.TabIndex = 3;
+            // 
+            // btnExclusions
+            // 
+            this.btnExclusions.Location = new System.Drawing.Point(365, 16);
+            this.btnExclusions.Name = "btnExclusions";
+            this.btnExclusions.Size = new System.Drawing.Size(110, 30);
+            this.btnExclusions.TabIndex = 11;
+            this.btnExclusions.Text = "Exclusions...";
+            this.btnExclusions.UseVisualStyleBackColor = true;
+            this.btnExclusions.Click += new System.EventHandler(this.btnExclusions_Click);
             // 
             // btnRemoveDirection
             // 
@@ -282,16 +324,6 @@
             this.btnAddDirection.UseVisualStyleBackColor = true;
             this.btnAddDirection.Click += new System.EventHandler(this.btnAddDirection_Click);
             // 
-            // tbpExclusions
-            // 
-            this.tbpExclusions.Location = new System.Drawing.Point(4, 22);
-            this.tbpExclusions.Name = "tbpExclusions";
-            this.tbpExclusions.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpExclusions.Size = new System.Drawing.Size(671, 420);
-            this.tbpExclusions.TabIndex = 2;
-            this.tbpExclusions.Text = "Exclusions";
-            this.tbpExclusions.UseVisualStyleBackColor = true;
-            // 
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnCancel);
@@ -324,13 +356,6 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "DefaultFont";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Default Font";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
             // colAlphName
             // 
             this.colAlphName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -351,20 +376,6 @@
             this.colAlphLayout.ReadOnly = true;
             this.colAlphLayout.Width = 200;
             // 
-            // colRightToLeft
-            // 
-            this.colRightToLeft.DataPropertyName = "RightToLeft";
-            this.colRightToLeft.HeaderText = "Right to Left";
-            this.colRightToLeft.Name = "colRightToLeft";
-            this.colRightToLeft.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "DefaultFont";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Default Font";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
             // colAlphFont
             // 
             this.colAlphFont.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -373,57 +384,12 @@
             this.colAlphFont.Name = "colAlphFont";
             this.colAlphFont.ReadOnly = true;
             // 
-            // colAlifbaID
+            // colRightToLeft
             // 
-            this.colAlifbaID.DataPropertyName = "AlifbaID";
-            this.colAlifbaID.HeaderText = "AlifbaID";
-            this.colAlifbaID.Name = "colAlifbaID";
-            this.colAlifbaID.ReadOnly = true;
-            this.colAlifbaID.Visible = false;
-            // 
-            // bndAlphabet
-            // 
-            this.bndAlphabet.DataSource = typeof(Logic.Model.Alifba);
-            // 
-            // bndDirection
-            // 
-            this.bndDirection.DataSource = typeof(Bitig.Logic.Model.Direction);
-            // 
-            // colDirectionID
-            // 
-            this.colDirectionID.DataPropertyName = "DirectionID";
-            this.colDirectionID.HeaderText = "DirectionID";
-            this.colDirectionID.Name = "colDirectionID";
-            this.colDirectionID.ReadOnly = true;
-            this.colDirectionID.Visible = false;
-            // 
-            // colSourceName
-            // 
-            this.colSourceName.DataPropertyName = "SourceName";
-            this.colSourceName.HeaderText = "Source";
-            this.colSourceName.Name = "colSourceName";
-            this.colSourceName.ReadOnly = true;
-            // 
-            // colTargetName
-            // 
-            this.colTargetName.DataPropertyName = "TargetName";
-            this.colTargetName.HeaderText = "Target";
-            this.colTargetName.Name = "colTargetName";
-            this.colTargetName.ReadOnly = true;
-            // 
-            // colAssembly
-            // 
-            this.colAssembly.DataPropertyName = "AssemblyFileName";
-            this.colAssembly.HeaderText = "Library";
-            this.colAssembly.Name = "colAssembly";
-            this.colAssembly.ReadOnly = true;
-            // 
-            // colTypeName
-            // 
-            this.colTypeName.DataPropertyName = "DisplayedTypeName";
-            this.colTypeName.HeaderText = "Type Name";
-            this.colTypeName.Name = "colTypeName";
-            this.colTypeName.ReadOnly = true;
+            this.colRightToLeft.DataPropertyName = "RightToLeft";
+            this.colRightToLeft.HeaderText = "Right to Left";
+            this.colRightToLeft.Name = "colRightToLeft";
+            this.colRightToLeft.ReadOnly = true;
             // 
             // frmConfig
             // 
@@ -438,13 +404,13 @@
             this.tbcMain.ResumeLayout(false);
             this.tbpAlphabets.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabets)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).EndInit();
             this.pnlAlphabetCommands.ResumeLayout(false);
             this.tbpDirections.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).EndInit();
             this.panel1.ResumeLayout(false);
             this.pnlBottom.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -455,7 +421,6 @@
         private System.Windows.Forms.TabPage tbpAlphabets;
         private System.Windows.Forms.TabPage tbpDirections;
         private System.Windows.Forms.Panel pnlBottom;
-        private System.Windows.Forms.TabPage tbpExclusions;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Panel pnlAlphabetCommands;
@@ -465,23 +430,20 @@
         private System.Windows.Forms.Button btnAddAlphabet;
         private System.Windows.Forms.DataGridView dgvAlphabets;
         private System.Windows.Forms.BindingSource bndAlphabet;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.BindingSource bndDirection;
         private System.Windows.Forms.DataGridView dgvDirections;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnRemoveDirection;
         private System.Windows.Forms.Button btnEditDirection;
         private System.Windows.Forms.Button btnAddDirection;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphLayout;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphFont;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlifbaID;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colRightToLeft;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDirectionID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSourceName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTargetName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAssembly;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTypeName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.Button btnExclusions;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphLayout;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphFont;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colRightToLeft;
     }
 }

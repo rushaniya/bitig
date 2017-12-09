@@ -13,8 +13,6 @@ namespace Bitig.Logic.Repository
             DirectionRepository.RepositoryProvider = this;
             this.AlifbaRepository = new AlifbaRepository(AlifbaRepository);
             this.DirectionRepository = new DirectionRepository(DirectionRepository);
-           // this.AlifbaRepository.RepositoryProvider = this;
-            //this.DirectionRepository.RepositoryProvider = this;
         }
 
         protected RepositoryProvider()

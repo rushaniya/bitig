@@ -279,6 +279,7 @@
             this.Controls.Add(this.tlsAlifba);
             this.Name = "ctlYanalif";
             this.Size = new System.Drawing.Size(846, 40);
+            this.Load += new System.EventHandler(this.ctlYanalif_Load);
             this.tlsAlifba.ResumeLayout(false);
             this.tlsAlifba.PerformLayout();
             this.ResumeLayout(false);

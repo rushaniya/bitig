@@ -44,17 +44,13 @@ namespace Bitig.UI
             set { x_FilePath = value; }
         }
 
-        private bool x_ProcessingTranslitArea, x_ProcessingAlifbaVisibility;
+        private bool x_ProcessingTranslitArea;
 
         private Regex x_LineBreaksFinder;
-
-        private readonly AlifbaRepository x_AlifbaRepository;
-
-        private readonly DirectionRepository x_DirectionRepository;
-
-        private readonly AlifbaRepository x_ConfigAlifbaRepository;
-
-        private readonly DirectionRepository x_ConfigDirectionRepository;
+        private IRepository<Alifba, int> x_PersistentAlifbaRepo;
+        private AlifbaRepository x_AlifbaRepository;
+        private IRepository<Direction, int> x_PersistentDirectionRepo;
+        private DirectionRepository x_DirectionRepository;
 
         #endregion
 
@@ -65,14 +61,18 @@ namespace Bitig.UI
         {
             InitializeComponent();
 
+            InitializeRepositories();
+
             FillSourceCmb();
-            if (cmbSource.Items.Count > 0) cmbSource.SelectedIndex = 0;
+            if (cmbSource.Items.Count > 0)
+                cmbSource.SelectedIndex = 0;
+
             ctlMultiRtb1.MessageSent += new ctlMultiRtb.CtlMessage(ctlMultiRtb1_MessageSent);
             ctlMultiRtb1.RtbMain.Enter += new EventHandler(RtbMain_Enter);
             SetYanalifFont();
             ctlMultiRtb1.ResetFormatDisplay();
             ctlYanalif1.SymbolPressed += new EventHandler<SymbolEventArgs>(ctlYanalif1_SymbolPressed);
-			//this returns hexadeciaml value equal to 04090409
+            //this returns hexadeciaml value equal to 04090409
             //int _ptr =  (int) LoadKeyboardLayoutW("00000409", KLF_ACTIVATE);
             //and this returns hexadecimal value equal to FXXX0444 where XXX is layout id
             //int _ptr =  (int) LoadKeyboardLayoutW(LAYOUT_YANALIF, KLF_ACTIVATE);
@@ -80,17 +80,18 @@ namespace Bitig.UI
             //config:bind setting to menuitem.checked property for it is always visible and can be changed either programmatically or by user
             mniAlifba.Checked = false;//config
 
-            var _xmlAlifRepo = new XmlAlifbaRepository(
-                Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
-            var _xmlDirRepo = new XmlDirectionRepository(
+            ctlYanalif1.X_CustomSymbols = x_AlifbaRepository.GetYanalif().CustomSymbols;
+        }
+
+        private void InitializeRepositories()
+        {
+            x_PersistentAlifbaRepo = new XmlAlifbaRepository(
+                            Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
+            x_PersistentDirectionRepo = new XmlDirectionRepository(
                 Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"));
-            var _repoProvider = new RepositoryProvider(_xmlAlifRepo, _xmlDirRepo);
+            var _repoProvider = new RepositoryProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
             x_AlifbaRepository = _repoProvider.AlifbaRepository;
             x_DirectionRepository = _repoProvider.DirectionRepository;
-
-            var _configRepoProvider = new InMemoryRepoProvider(_xmlAlifRepo, _xmlDirRepo);
-            x_ConfigAlifbaRepository = _configRepoProvider.AlifbaRepository;
-            x_ConfigDirectionRepository = _configRepoProvider.DirectionRepository;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)
@@ -184,10 +185,10 @@ namespace Bitig.UI
 
         private void SetYanalifFont()
         {
-            //repo Font _test = BitigConfigManager.YanalifFont;
-            //if (_test == null)
-            //    _test = new Font("DejaVu Sans", 12, FontStyle.Regular);
-            //ctlMultiRtb1.RtbMain.Font = _test;
+            var _font = (Font)x_AlifbaRepository.GetYanalif().DefaultFont;
+            if (_font == null)
+                _font = new Font("DejaVu Sans", 12, FontStyle.Regular);
+            ctlMultiRtb1.RtbMain.Font = _font;
         }
 
         #endregion
@@ -318,16 +319,15 @@ namespace Bitig.UI
 
         private bool x_FillingCombos;
 
-        //repo
         private void FillSourceCmb()
         {
-            //x_FillingCombos = true;
-            //cmbSource.Items.Clear();
-            //foreach (Alifba _alifba in AlifbaManager.AlifbaList)
-            //{
-            //    cmbSource.Items.Add(_alifba);
-            //}
-            //x_FillingCombos = false;
+            x_FillingCombos = true;
+            cmbSource.Items.Clear();
+            foreach (Alifba _alifba in x_AlifbaRepository.GetList())
+            {
+                cmbSource.Items.Add(_alifba);
+            }
+            x_FillingCombos = false;
         }
 
         private void cmbSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -630,20 +630,18 @@ namespace Bitig.UI
             return OnscreenKeyboardAvailable(Alphabet.ID);
         }
 
-        //repo
         private bool OnscreenKeyboardAvailable(int AlphabetID)
         {
-            throw new NotImplementedException();
-            //if (!x_OnscreenSymbols.ContainsKey(AlphabetID))
-            //{
-            //    AlifbaConfig _config = BitigConfigManager.GetAlifbaConfig(AlphabetID);
-            //    if (_config != null && _config.CustomSymbols != null && _config.CustomSymbols.Count > 0)
-            //    {
-            //        x_OnscreenSymbols.Add(AlphabetID, _config.CustomSymbols);
-            //    }
-            //    else x_OnscreenSymbols.Add(AlphabetID, null);
-            //}
-            //return x_OnscreenSymbols[AlphabetID] != null;
+            if (!x_OnscreenSymbols.ContainsKey(AlphabetID))
+            {
+                var _config = x_AlifbaRepository.Get(AlphabetID);
+                if (_config != null && _config.CustomSymbols != null && _config.CustomSymbols.Count > 0)
+                {
+                    x_OnscreenSymbols.Add(AlphabetID, _config.CustomSymbols);
+                }
+                else x_OnscreenSymbols.Add(AlphabetID, null);
+            }
+            return x_OnscreenSymbols[AlphabetID] != null;
         }
 
         private void LoadOnscreenKeyboard(Alifba Alphabet, bool TranslitBox1)
@@ -807,11 +805,15 @@ namespace Bitig.UI
 
         #endregion
 
-        private void exclusionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mniExclusions_Click(object sender, EventArgs e)
         {
-            //excl
-            //frmExclusions _exclForm = new frmExclusions();
-            //_exclForm.ShowDialog();
+            var _configRepoProvider = new InMemoryRepoProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
+            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
+            using (var _configForm = new frmExclusions(x_CurrentDirection, _configDirectionRepository, true))
+            {
+                _configForm.ShowDialog();
+            }
         }
         private void txtTranslit1_Enter(object sender, EventArgs e)
         {           
@@ -906,7 +908,10 @@ namespace Bitig.UI
 
         private void mniConfiguration_Click(object sender, EventArgs e)
         {
-            using (frmConfig _configForm = new frmConfig(x_ConfigAlifbaRepository, x_ConfigDirectionRepository))
+            var _configRepoProvider = new InMemoryRepoProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
+            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
+            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
+            using (frmConfig _configForm = new frmConfig(_configAlifbaRepository, _configDirectionRepository))
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {

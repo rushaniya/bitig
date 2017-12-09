@@ -51,7 +51,7 @@ namespace Bitig.Data.Storage
             }
 
             var _alifba = new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName,
-                _customSymbols, StoredAlifba.RightToLeft, MapToModel(StoredAlifba.DefaultFont));
+                _customSymbols, StoredAlifba.RightToLeft, MapToModel(StoredAlifba.DefaultFont), StoredAlifba.BuiltIn);
             return _alifba;
         }
 
@@ -79,7 +79,7 @@ namespace Bitig.Data.Storage
                 }
             }
             var _xmlAlifba = new XmlAlifba(ModelAlifba.ID, ModelAlifba.FriendlyName, _customSymbols,
-                ModelAlifba.RightToLeft, MapToStorage(ModelAlifba.DefaultFont));
+                ModelAlifba.RightToLeft, MapToStorage(ModelAlifba.DefaultFont), ModelAlifba.BuiltIn);
            
             return _xmlAlifba;
         }
@@ -172,7 +172,7 @@ namespace Bitig.Data.Storage
         public int GenerateID(IEnumerable<int> ExistingIDs)
         {
             int _result = -1;
-            for (int i = DefaultConfiguration.MIN_CUSTOM_ID; i < int.MaxValue; i++)
+            for (int i = 0; i < int.MaxValue; i++)
             {
                 if (ExistingIDs.All(_id => _id != i))
                 {
@@ -182,14 +182,5 @@ namespace Bitig.Data.Storage
             }
             return _result;
         }
-
-        //public override bool IsEmpty()
-        //{
-        //    if (xmlList == null)
-        //    {
-        //        ReadListFromFile();
-        //    }
-        //    return xmlList.Count == 0;
-        //}
     }
 }

@@ -6,7 +6,7 @@ using Bitig.Logic.Model;
 namespace Bitig.Logic.Repository
 {
     /// <summary>
-    /// Repository with business logic
+    /// Repository with business & integrity logic
     /// </summary>
     public class DirectionRepository : IRepository<Direction, int>
     {
@@ -100,6 +100,23 @@ namespace Bitig.Logic.Repository
             return directionRepository.GenerateID(_existingIDs);
         }
 
+        internal void UpdateReferences(int AlifbaID)
+        {
+            var _alifba = RepositoryProvider.AlifbaRepository.Get(AlifbaID);
+            var _sources = GetList().Where(_i => _i.Source.ID == AlifbaID);
+            foreach (var _source in _sources)
+            {
+                _source.Source = _alifba;
+                Update(_source);
+            }
+            var _targets = GetList().Where(_i => _i.Target.ID == AlifbaID);
+            foreach (var _target in _targets)
+            {
+                _target.Target = _alifba;
+                Update(_target);
+            }
+        }
+
         public void SaveChanges()
         {
             directionRepository.SaveChanges();
@@ -113,8 +130,8 @@ namespace Bitig.Logic.Repository
             for (int i = 0; i < _count; i++)
             {
                 var _builtIn = DefaultConfiguration.BuiltInDirections[i];
-                var _source = RepositoryProvider.AlifbaRepository.Get(_builtIn.Source.ID);
-                var _target = RepositoryProvider.AlifbaRepository.Get(_builtIn.Target.ID);
+                var _source = RepositoryProvider.AlifbaRepository.GetBuiltIn(_builtIn.Source);
+                var _target = RepositoryProvider.AlifbaRepository.GetBuiltIn(_builtIn.Target);
                 if (_source != null && _target != null)
                 {
                     var _direction = new Direction(i, _source, _target, null, BuiltIn: _builtIn);
