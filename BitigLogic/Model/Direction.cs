@@ -15,10 +15,10 @@ namespace Bitig.Logic.Model
             get { return id; }
             set
             {
-                id = value; 
+                id = value;
             }
         }
-      
+
         private TranslitCommand translitCommand;
 
         public TranslitCommand TranslitCommand
@@ -57,9 +57,21 @@ namespace Bitig.Logic.Model
             set;
         }
 
-        public List<Exclusion> Exclusions { get; set; }
+        private List<Exclusion> exclusions;
 
-        private bool exclusionsSet;
+        public List<Exclusion> Exclusions
+        {
+            get
+            {
+                return exclusions;
+            }
+            set
+            {
+                exclusions = value;
+                if (translitCommand != null)
+                    translitCommand.Exclusions = LoadExclusions();
+            }
+        }    
 
         public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null)
         {
@@ -102,6 +114,13 @@ namespace Bitig.Logic.Model
             if (translitCommand == null)
                 InitializeTranslitCommand();
             return translitCommand.Convert(Text);
+        }
+
+        public bool IsValidExclusion(Exclusion Exclusion, out List<string> Errors, out List<string> Warnings)
+        {
+            if (translitCommand == null)
+                InitializeTranslitCommand();
+            return translitCommand.IsValidExclusion(Exclusion, out Errors, out Warnings);
         }
 
 

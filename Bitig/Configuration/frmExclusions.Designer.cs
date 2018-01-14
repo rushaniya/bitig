@@ -42,6 +42,7 @@
             this.colMatchCase = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colMatchBeginning = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colAnyPosition = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colValidationResult = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExclusions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndExclusions)).BeginInit();
             this.pnlTop.SuspendLayout();
@@ -58,15 +59,17 @@
             this.colTargetWord,
             this.colMatchCase,
             this.colMatchBeginning,
-            this.colAnyPosition});
+            this.colAnyPosition,
+            this.colValidationResult});
             this.dgvExclusions.DataSource = this.bndExclusions;
             this.dgvExclusions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExclusions.Location = new System.Drawing.Point(0, 42);
             this.dgvExclusions.Name = "dgvExclusions";
             this.dgvExclusions.Size = new System.Drawing.Size(807, 366);
             this.dgvExclusions.TabIndex = 1;
-            this.dgvExclusions.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dataGridView1_CellParsing);
-            this.dgvExclusions.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
+            this.dgvExclusions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExclusions_CellContentClick);
+            this.dgvExclusions.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvExclusions_CellValidating);
+            this.dgvExclusions.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvExclusions_RowValidating);
             // 
             // bndExclusions
             // 
@@ -118,6 +121,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.CausesValidation = false;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(708, 15);
             this.btnCancel.Name = "btnCancel";
@@ -159,7 +163,7 @@
             // colMatchBeginning
             // 
             this.colMatchBeginning.DataPropertyName = "MatchBeginning";
-            this.colMatchBeginning.HeaderText = "Only in beginning";
+            this.colMatchBeginning.HeaderText = "Match in beginning";
             this.colMatchBeginning.Name = "colMatchBeginning";
             // 
             // colAnyPosition
@@ -167,19 +171,27 @@
             this.colAnyPosition.DataPropertyName = "AnyPosition";
             this.colAnyPosition.HeaderText = "Any position";
             this.colAnyPosition.Name = "colAnyPosition";
-            this.colAnyPosition.ReadOnly = true;
+            // 
+            // colValidationResult
+            // 
+            this.colValidationResult.HeaderText = "Warnings";
+            this.colValidationResult.Name = "colValidationResult";
+            this.colValidationResult.ReadOnly = true;
+            this.colValidationResult.Text = "";
             // 
             // frmExclusions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(807, 408);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.dgvExclusions);
             this.Controls.Add(this.pnlTop);
             this.Name = "frmExclusions";
-            this.Text = "frmExclusions";
+            this.Text = "Exclusions";
+            this.Load += new System.EventHandler(this.frmExclusions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvExclusions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndExclusions)).EndInit();
             this.pnlTop.ResumeLayout(false);
@@ -209,5 +221,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colMatchCase;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colMatchBeginning;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colAnyPosition;
+        private System.Windows.Forms.DataGridViewButtonColumn colValidationResult;
     }
 }

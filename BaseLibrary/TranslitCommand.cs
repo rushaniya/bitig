@@ -213,46 +213,7 @@ namespace Bitig.Base
             {
                 if (string.IsNullOrEmpty(_excl.SourceWord))
                     continue;
-                int _nextStart = 0;
-                int _limit = Word.Length - _excl.SourceWord.Length;
-                int _index;
-                //find all occurrences of this exclusion
-                while (true)
-                {
-                    if (_nextStart > _limit)
-                    {
-                        break;
-                    }
-                    _index = _excl.MatchCase ?
-                        Word.IndexOf(_excl.SourceWord, _nextStart, StringComparison.InvariantCulture) ://excl: CultureInfo field in TranslitCommand?
-                        TextHelper.IndexOfIgnoreCase(Word, _excl.SourceWord, _nextStart, CustomSourceUpLowPairs);
-                    if (_index < 0)
-                        break;
-                    var _sourceLength = _excl.SourceWord.Length;
-                    if (FindIntersections(_index, _sourceLength, _foundExclusions))
-                        break;
-                    int _exclusionEnd = _index + _excl.SourceWord.Length;
-                    if (_excl.AnyPosition ||
-                        _index == 0 && (_excl.MatchBeginning || _exclusionEnd == Word.Length))
-                    {
-                        //match found
-                        _nextStart = _exclusionEnd;
-                        if (_excl.MatchCase)
-                        {
-                            _foundExclusions.Add(_index, new FoundExclusion { Target = _excl.TargetWord, SourceLength = _sourceLength });
-                        }
-                        else
-                        {
-                            _foundExclusions.Add(_index, new FoundExclusion
-                            {
-                                SourceLength = _sourceLength,
-                                Target = MimicCapitals(Word.Substring(_index, _sourceLength), _excl.TargetWord)
-                            });
-                        }
-                    }
-                    else
-                        _nextStart++;
-                }
+                GetExclusionOccurences(Word, _excl, _foundExclusions);
             }
             if (_foundExclusions.Count == 0)
             {
@@ -291,6 +252,50 @@ namespace Bitig.Base
             return _fragments;
         }
 
+        private void GetExclusionOccurences(string Word, Exclusion Exclusion, SortedDictionary<int, FoundExclusion> FoundExclusions)
+        {
+            int _nextStart = 0;
+            int _limit = Word.Length - Exclusion.SourceWord.Length;
+            int _index;
+            //find all occurrences of this exclusion
+            while (true)
+            {
+                if (_nextStart > _limit)
+                {
+                    break;
+                }
+                _index = Exclusion.MatchCase ?
+                    Word.IndexOf(Exclusion.SourceWord, _nextStart, StringComparison.InvariantCulture) ://excl: CultureInfo field in TranslitCommand?
+                    TextHelper.IndexOfIgnoreCase(Word, Exclusion.SourceWord, _nextStart, CustomSourceUpLowPairs);
+                if (_index < 0)
+                    break;
+                var _sourceLength = Exclusion.SourceWord.Length;
+                if (FindIntersections(_index, _sourceLength, FoundExclusions))
+                    break;
+                int _exclusionEnd = _index + Exclusion.SourceWord.Length;
+                if (Exclusion.AnyPosition ||
+                    _index == 0 && (Exclusion.MatchBeginning || _exclusionEnd == Word.Length))
+                {
+                    //match found
+                    _nextStart = _exclusionEnd;
+                    if (Exclusion.MatchCase)
+                    {
+                        FoundExclusions.Add(_index, new FoundExclusion { Target = Exclusion.TargetWord, SourceLength = _sourceLength });
+                    }
+                    else
+                    {
+                        FoundExclusions.Add(_index, new FoundExclusion
+                        {
+                            SourceLength = _sourceLength,
+                            Target = MimicCapitals(Word.Substring(_index, _sourceLength), Exclusion.TargetWord)
+                        });
+                    }
+                }
+                else
+                    _nextStart++;
+            }
+        }
+
         private bool FindIntersections(int Index, int Length, IDictionary<int, FoundExclusion> ExistingExclusions)
         {
             if (ExistingExclusions.ContainsKey(Index))
@@ -322,64 +327,60 @@ namespace Bitig.Base
             public string Target;
         }
 
-        //excl
-        public virtual bool ConflictsWithExistingExclusions(string SourceWord, string TargetWord, out List<Exclusion> Conflicts)
+        public bool ConflictsWithExistingExclusions(Exclusion Exclusion, out List<Exclusion> Conflicts)
         {
             Conflicts = new List<Exclusion>();
-            foreach (var _excl in Exclusions)
+            if (Exclusions != null)
             {
-                var _oneExclusion = new ExclusionCollection(new List<Exclusion> { _excl });
-                List<bool> _exclMapping;
-                List<string> _parts = SearchForExclusions(SourceWord, true, true, out _exclMapping);
-                string _result = string.Empty;
-                for (int i = 0; i < _parts.Count; i++)
+                var _foundExclusions = new SortedDictionary<int, FoundExclusion>();
+                foreach (var _excl in Exclusions)
                 {
-                    if (_exclMapping[i])//this is exclusion
-                    {
-                        _result += _parts[i];
-                    }
-                    else
-                    {
-                        _result += Translit(_parts[i], true, true);
-                    }
-                }
-                if (_result != TargetWord)//excl:match case?
-                {
-                    Conflicts.Add(_excl);
+                    if (_excl.Equals(Exclusion))
+                        continue;
+                    GetExclusionOccurences(Exclusion.SourceWord, _excl, _foundExclusions);
+                    if (_foundExclusions.Count > 0)
+                        Conflicts.Add(_excl);
+                    _foundExclusions.Clear();
                 }
             }
-            throw new NotImplementedException();
+            return Conflicts.Count > 0;
         }
 
-        //excl: use this when setting up on-screen keys
         protected bool IsAlphabetic(string Fragment)
         {
             var _matchPattern = GetMatchPattern(AlphabetPattern);
             return Regex.IsMatch(Fragment, _matchPattern);
         }
 
-        //excl
-        public virtual bool IsValidExclusionSource(string SourceWord, out List<string> Warnings, out List<string> Errors)
+        public virtual bool IsValidExclusion(Exclusion Exclusion, out List<string> Errors, out List<string> Warnings)
         {
             Warnings = new List<string>();
             Errors = new List<string>();
-            if (string.IsNullOrEmpty(SourceWord))
+            if (string.IsNullOrEmpty(Exclusion.SourceWord))
             {
                 Errors.Add("Source word is empty.");
                 return false;
             }
-            if (SourceWord.Length < 3)
+            if (Exclusion.SourceWord.Length < 2)
             {
                 Errors.Add("Source word is too short.");
                 return false;
             }
-            if (!Regex.IsMatch(SourceWord, AlphabetPattern))
+            if (!IsAlphabetic(Exclusion.SourceWord))
             {
                 Errors.Add("Source word contains non-alphabetical symbols.");
                 return false;
             }
-            //warning if this exclusion conflicts with other exclusions
-            throw new NotImplementedException();
+            List<Exclusion> _conflicts;
+            if(ConflictsWithExistingExclusions(Exclusion, out _conflicts))
+            {
+                foreach (var _excl in _conflicts)
+                {
+                    Warnings.Add(string.Format("Intersects with exclusion: {0} - {1}", _excl.SourceWord, _excl.TargetWord));
+                }
+            }
+            
+            return true;
         }
     }
 

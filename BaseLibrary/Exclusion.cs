@@ -26,7 +26,12 @@
         public bool MatchBeginning
         {
             get { return matchBeginning; }
-            set { matchBeginning = value; }
+            set
+            {
+                matchBeginning = value;
+                if (matchBeginning)
+                    anyPosition = false;
+            }
         }
 
         private bool anyPosition;
@@ -36,7 +41,12 @@
         public bool AnyPosition
         {
             get { return anyPosition; }
-            set { anyPosition = value; }
+            set
+            {
+                anyPosition = value;
+                if (anyPosition)
+                    matchBeginning = false;
+            }
         }
         
         protected string sourceWord;
@@ -58,11 +68,23 @@
 
         public Exclusion(string SourceWord, string TargetWord, bool MatchCase, bool MatchBeginning, bool AnyPosition)
         {
-            this.matchCase = MatchCase;
-            this.sourceWord = SourceWord.Normalize();
-            this.targetWord = TargetWord;
-            this.matchBeginning = MatchBeginning;
-            this.anyPosition = AnyPosition;
+            matchCase = MatchCase;
+            sourceWord = SourceWord.Normalize();
+            targetWord = TargetWord;
+            this.MatchBeginning = MatchBeginning;
+            this.AnyPosition = AnyPosition;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var _cast = obj as Exclusion;
+            if (_cast == null)
+                return false;
+            return _cast.sourceWord == sourceWord &&
+                _cast.targetWord == targetWord &&
+                _cast.matchCase == matchCase &&
+                _cast.matchBeginning == matchBeginning &&
+                _cast.anyPosition == anyPosition;
         }
 
         protected Exclusion() { }
