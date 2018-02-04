@@ -26,7 +26,7 @@ namespace Bitig.UI.Configuration
             if (x_CurrentAlphabet.IsYanalif)
             {
                 x_Yanalif = true;
-                chkShowAllYanalifLetters.Checked = Classes.TempConfig.ShowAllYanalifSymbols;//config:enable checkbox
+                chkShowAllYanalifLetters.Checked = Configuration.TempConfig.ShowAllYanalifSymbols;//config:enable checkbox
             }
             Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
             pnlYanalifSettings.Visible = x_Yanalif;
@@ -61,7 +61,7 @@ namespace Bitig.UI.Configuration
             }
             if (x_Yanalif)
             {
-                Classes.TempConfig.ShowAllYanalifSymbols = chkShowAllYanalifLetters.Checked;//config
+                Configuration.TempConfig.ShowAllYanalifSymbols = chkShowAllYanalifLetters.Checked;//config
             }
 
             x_CurrentAlphabet.CustomSymbols = x_Symbols;

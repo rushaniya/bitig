@@ -30,13 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainForm));
             this.tlsMain = new System.Windows.Forms.ToolStrip();
-            this.btnUndo = new System.Windows.Forms.ToolStripButton();
-            this.btnRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnCopy = new System.Windows.Forms.ToolStripButton();
-            this.btnCut = new System.Windows.Forms.ToolStripButton();
-            this.btnPaste = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnShowAlifba = new System.Windows.Forms.ToolStripButton();
             this.btnShowTranslit = new System.Windows.Forms.ToolStripButton();
             this.cmbSource = new System.Windows.Forms.ToolStripComboBox();
@@ -61,7 +55,7 @@
             this.spltMain = new System.Windows.Forms.SplitContainer();
             this.spltTranslitArea = new System.Windows.Forms.SplitContainer();
             this.pnlTranslit1 = new System.Windows.Forms.Panel();
-            this.txtTranslit1 = new System.Windows.Forms.TextBox();
+            this.txtTranslit1 = new System.Windows.Forms.RichTextBox();
             this.pnlTranslit1Bottom = new System.Windows.Forms.Panel();
             this.tlsTarnslit1 = new System.Windows.Forms.ToolStrip();
             this.lblSource = new System.Windows.Forms.ToolStripLabel();
@@ -71,7 +65,7 @@
             this.btnToYanalif = new System.Windows.Forms.ToolStripButton();
             this.btnTranslitAux = new System.Windows.Forms.ToolStripButton();
             this.pnlTranslit2 = new System.Windows.Forms.Panel();
-            this.txtTranslit2 = new System.Windows.Forms.TextBox();
+            this.txtTranslit2 = new System.Windows.Forms.RichTextBox();
             this.pnlTranslit2Bottom = new System.Windows.Forms.Panel();
             this.tlsTranslit2 = new System.Windows.Forms.ToolStrip();
             this.lblTarget = new System.Windows.Forms.ToolStripLabel();
@@ -106,13 +100,7 @@
             this.tlsMain.Dock = System.Windows.Forms.DockStyle.Left;
             this.tlsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tlsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnUndo,
-            this.btnRedo,
             this.toolStripSeparator2,
-            this.btnCopy,
-            this.btnCut,
-            this.btnPaste,
-            this.toolStripSeparator3,
             this.btnShowAlifba,
             this.btnShowTranslit,
             this.cmbSource,
@@ -121,76 +109,14 @@
             this.tlsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.tlsMain.Location = new System.Drawing.Point(0, 0);
             this.tlsMain.Name = "tlsMain";
-            this.tlsMain.Size = new System.Drawing.Size(589, 39);
+            this.tlsMain.Size = new System.Drawing.Size(434, 39);
             this.tlsMain.TabIndex = 0;
             this.tlsMain.Text = "Main Panel";
-            // 
-            // btnUndo
-            // 
-            this.btnUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnUndo.Enabled = false;
-            this.btnUndo.Image = global::Bitig.UI.Properties.Resources.undo;
-            this.btnUndo.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(36, 36);
-            this.btnUndo.Text = "Undo";
-            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
-            // 
-            // btnRedo
-            // 
-            this.btnRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnRedo.Enabled = false;
-            this.btnRedo.Image = global::Bitig.UI.Properties.Resources.redo;
-            this.btnRedo.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnRedo.Name = "btnRedo";
-            this.btnRedo.Size = new System.Drawing.Size(36, 36);
-            this.btnRedo.Text = "Redo";
-            this.btnRedo.Click += new System.EventHandler(this.btnRedo_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
-            // 
-            // btnCopy
-            // 
-            this.btnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCopy.Enabled = false;
-            this.btnCopy.Image = global::Bitig.UI.Properties.Resources.copy;
-            this.btnCopy.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(36, 36);
-            this.btnCopy.Text = "Copy";
-            // 
-            // btnCut
-            // 
-            this.btnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCut.Enabled = false;
-            this.btnCut.Image = global::Bitig.UI.Properties.Resources.cut;
-            this.btnCut.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCut.Name = "btnCut";
-            this.btnCut.Size = new System.Drawing.Size(36, 36);
-            this.btnCut.Text = "Cut";
-            // 
-            // btnPaste
-            // 
-            this.btnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnPaste.Enabled = false;
-            this.btnPaste.Image = global::Bitig.UI.Properties.Resources.paste;
-            this.btnPaste.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPaste.Name = "btnPaste";
-            this.btnPaste.Size = new System.Drawing.Size(36, 36);
-            this.btnPaste.Text = "Paste";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
             // 
             // btnShowAlifba
             // 
@@ -431,12 +357,12 @@
             this.txtTranslit1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtTranslit1.HideSelection = false;
             this.txtTranslit1.Location = new System.Drawing.Point(0, 0);
-            this.txtTranslit1.Multiline = true;
             this.txtTranslit1.Name = "txtTranslit1";
             this.txtTranslit1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTranslit1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtTranslit1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.txtTranslit1.Size = new System.Drawing.Size(456, 99);
             this.txtTranslit1.TabIndex = 1;
+            this.txtTranslit1.Text = "";
             this.txtTranslit1.Enter += new System.EventHandler(this.txtTranslit1_Enter);
             // 
             // pnlTranslit1Bottom
@@ -539,11 +465,11 @@
             this.txtTranslit2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtTranslit2.HideSelection = false;
             this.txtTranslit2.Location = new System.Drawing.Point(0, 0);
-            this.txtTranslit2.Multiline = true;
             this.txtTranslit2.Name = "txtTranslit2";
-            this.txtTranslit2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtTranslit2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.txtTranslit2.Size = new System.Drawing.Size(385, 99);
             this.txtTranslit2.TabIndex = 0;
+            this.txtTranslit2.Text = "";
             this.txtTranslit2.Enter += new System.EventHandler(this.txtTranslit2_Enter);
             // 
             // pnlTranslit2Bottom
@@ -714,19 +640,13 @@
         //private System.Windows.Forms.ToolStripContainer tscMain;
         private System.Windows.Forms.SplitContainer spltMain;
         private System.Windows.Forms.SplitContainer spltTranslitArea;
-        private System.Windows.Forms.TextBox txtTranslit1;
-        private System.Windows.Forms.TextBox txtTranslit2;
+        private System.Windows.Forms.RichTextBox txtTranslit1;
+        private System.Windows.Forms.RichTextBox txtTranslit2;
         private System.Windows.Forms.ToolStripMenuItem mniExclusions;
         private System.Windows.Forms.ColorDialog dlgColor;
         private Bitig.RtbControl.ctlMultiRtb ctlMultiRtb1;
-        private System.Windows.Forms.ToolStripButton btnCopy;
-        private System.Windows.Forms.ToolStripButton btnCut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton btnPaste;
         private System.Windows.Forms.FlowLayoutPanel pnlTop;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton btnUndo;
-        private System.Windows.Forms.ToolStripButton btnRedo;
         private System.Windows.Forms.ToolStrip tlsTarnslit1;
         private System.Windows.Forms.ToolStripButton btnTranslitAux;
         private System.Windows.Forms.ToolStripButton btnToYanalif;

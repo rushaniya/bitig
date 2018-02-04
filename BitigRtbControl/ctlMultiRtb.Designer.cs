@@ -37,18 +37,8 @@
             this.btnNumericList = new System.Windows.Forms.ToolStripButton();
             this.btnForecolor = new System.Windows.Forms.ToolStripButton();
             this.btnBackcolor = new System.Windows.Forms.ToolStripButton();
-            this.btnImage = new System.Windows.Forms.ToolStripButton();
-            this.btnSuperscript = new System.Windows.Forms.ToolStripButton();
-            this.btnSubscript = new System.Windows.Forms.ToolStripButton();
-            this.btnLineSpacing = new System.Windows.Forms.ToolStripDropDownButton();
-            this.mniSpacing10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniSpacing115 = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniSpacing15 = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniSpacing20 = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnHangingIndent = new System.Windows.Forms.ToolStripDropDownButton();
             this.btnIndent = new System.Windows.Forms.ToolStripButton();
             this.btnRemoveIndent = new System.Windows.Forms.ToolStripButton();
-            this.btnParagraph = new System.Windows.Forms.ToolStripButton();
             this.tlsBasic = new System.Windows.Forms.ToolStrip();
             this.btnOpen = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
@@ -97,12 +87,12 @@
             this.ctxText.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ctxiNumericList});
             this.ctxText.Name = "ctxText";
-            this.ctxText.Size = new System.Drawing.Size(141, 26);
+            this.ctxText.Size = new System.Drawing.Size(148, 26);
             // 
             // ctxiNumericList
             // 
             this.ctxiNumericList.Name = "ctxiNumericList";
-            this.ctxiNumericList.Size = new System.Drawing.Size(140, 22);
+            this.ctxiNumericList.Size = new System.Drawing.Size(147, 22);
             this.ctxiNumericList.Text = "Numeric list...";
             this.ctxiNumericList.Click += new System.EventHandler(this.ctxiNumericList_Click);
             // 
@@ -116,17 +106,11 @@
             this.btnNumericList,
             this.btnForecolor,
             this.btnBackcolor,
-            this.btnImage,
-            this.btnSuperscript,
-            this.btnSubscript,
-            this.btnLineSpacing,
-            this.btnHangingIndent,
             this.btnIndent,
-            this.btnRemoveIndent,
-            this.btnParagraph});
+            this.btnRemoveIndent});
             this.tlsAdditional.Location = new System.Drawing.Point(0, 3);
             this.tlsAdditional.Name = "tlsAdditional";
-            this.tlsAdditional.Size = new System.Drawing.Size(46, 470);
+            this.tlsAdditional.Size = new System.Drawing.Size(37, 255);
             this.tlsAdditional.TabIndex = 0;
             // 
             // btnBullet
@@ -137,8 +121,8 @@
             this.btnBullet.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnBullet.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnBullet.Name = "btnBullet";
-            this.btnBullet.Size = new System.Drawing.Size(44, 36);
-            this.btnBullet.Text = "Bulleted List";
+            this.btnBullet.Size = new System.Drawing.Size(35, 36);
+            this.btnBullet.Text = "Bulleted list";
             this.btnBullet.Click += new System.EventHandler(this.btnBullet_Click);
             // 
             // btnNumericList
@@ -150,165 +134,53 @@
             this.btnNumericList.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnNumericList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnNumericList.Name = "btnNumericList";
-            this.btnNumericList.Size = new System.Drawing.Size(44, 36);
-            this.btnNumericList.Text = "Numeric List";
+            this.btnNumericList.Size = new System.Drawing.Size(35, 36);
+            this.btnNumericList.Text = "Numeric list";
             this.btnNumericList.Click += new System.EventHandler(this.btnNumericList_Click);
             // 
             // btnForecolor
             // 
             this.btnForecolor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnForecolor.Enabled = false;
             this.btnForecolor.Image = global::Bitig.RtbControl.Properties.Resources.forecolor;
             this.btnForecolor.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnForecolor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnForecolor.Name = "btnForecolor";
-            this.btnForecolor.Size = new System.Drawing.Size(44, 36);
-            this.btnForecolor.Text = "Fore Color";
+            this.btnForecolor.Size = new System.Drawing.Size(35, 36);
+            this.btnForecolor.Text = "Text color";
             this.btnForecolor.Click += new System.EventHandler(this.btnForecolor_Click);
             // 
             // btnBackcolor
             // 
             this.btnBackcolor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnBackcolor.Enabled = false;
             this.btnBackcolor.Image = global::Bitig.RtbControl.Properties.Resources.backcolor;
             this.btnBackcolor.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnBackcolor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnBackcolor.Name = "btnBackcolor";
-            this.btnBackcolor.Size = new System.Drawing.Size(44, 36);
-            this.btnBackcolor.Text = "Back Color";
+            this.btnBackcolor.Size = new System.Drawing.Size(35, 36);
+            this.btnBackcolor.Text = "Background color";
             this.btnBackcolor.Click += new System.EventHandler(this.btnBackcolor_Click);
-            // 
-            // btnImage
-            // 
-            this.btnImage.BackColor = System.Drawing.SystemColors.Window;
-            this.btnImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnImage.Enabled = false;
-            this.btnImage.Image = global::Bitig.RtbControl.Properties.Resources.Photo;
-            this.btnImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnImage.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnImage.Name = "btnImage";
-            this.btnImage.Size = new System.Drawing.Size(44, 36);
-            this.btnImage.Text = "Insert an Image";
-            this.btnImage.Click += new System.EventHandler(this.btnImage_Click);
-            // 
-            // btnSuperscript
-            // 
-            this.btnSuperscript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSuperscript.Enabled = false;
-            this.btnSuperscript.Image = global::Bitig.RtbControl.Properties.Resources.superscript;
-            this.btnSuperscript.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnSuperscript.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSuperscript.Name = "btnSuperscript";
-            this.btnSuperscript.Size = new System.Drawing.Size(44, 36);
-            this.btnSuperscript.Text = "Superscript";
-            this.btnSuperscript.Click += new System.EventHandler(this.btnSuperscript_Click);
-            // 
-            // btnSubscript
-            // 
-            this.btnSubscript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSubscript.Enabled = false;
-            this.btnSubscript.Image = global::Bitig.RtbControl.Properties.Resources.subscript;
-            this.btnSubscript.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnSubscript.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSubscript.Name = "btnSubscript";
-            this.btnSubscript.Size = new System.Drawing.Size(44, 36);
-            this.btnSubscript.Text = "Subscript";
-            this.btnSubscript.Click += new System.EventHandler(this.btnSubscript_Click);
-            // 
-            // btnLineSpacing
-            // 
-            this.btnLineSpacing.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLineSpacing.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mniSpacing10,
-            this.mniSpacing115,
-            this.mniSpacing15,
-            this.mniSpacing20});
-            this.btnLineSpacing.Enabled = false;
-            this.btnLineSpacing.Image = global::Bitig.RtbControl.Properties.Resources.linespacing;
-            this.btnLineSpacing.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnLineSpacing.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLineSpacing.Name = "btnLineSpacing";
-            this.btnLineSpacing.Size = new System.Drawing.Size(44, 36);
-            this.btnLineSpacing.Text = "Line Spacing";
-            // 
-            // mniSpacing10
-            // 
-            this.mniSpacing10.CheckOnClick = true;
-            this.mniSpacing10.Name = "mniSpacing10";
-            this.mniSpacing10.Size = new System.Drawing.Size(96, 22);
-            this.mniSpacing10.Text = "1.0";
-            this.mniSpacing10.Click += new System.EventHandler(this.mniSpacing10_Click);
-            // 
-            // mniSpacing115
-            // 
-            this.mniSpacing115.CheckOnClick = true;
-            this.mniSpacing115.Name = "mniSpacing115";
-            this.mniSpacing115.Size = new System.Drawing.Size(96, 22);
-            this.mniSpacing115.Text = "1.15";
-            this.mniSpacing115.Click += new System.EventHandler(this.mniSpacing115_Click);
-            // 
-            // mniSpacing15
-            // 
-            this.mniSpacing15.CheckOnClick = true;
-            this.mniSpacing15.Name = "mniSpacing15";
-            this.mniSpacing15.Size = new System.Drawing.Size(96, 22);
-            this.mniSpacing15.Text = "1.5";
-            this.mniSpacing15.Click += new System.EventHandler(this.mniSpacing15_Click);
-            // 
-            // mniSpacing20
-            // 
-            this.mniSpacing20.CheckOnClick = true;
-            this.mniSpacing20.Name = "mniSpacing20";
-            this.mniSpacing20.Size = new System.Drawing.Size(96, 22);
-            this.mniSpacing20.Text = "2";
-            this.mniSpacing20.Click += new System.EventHandler(this.mniSpacing20_Click);
-            // 
-            // btnHangingIndent
-            // 
-            this.btnHangingIndent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnHangingIndent.Enabled = false;
-            this.btnHangingIndent.Image = global::Bitig.RtbControl.Properties.Resources.dropcaps;
-            this.btnHangingIndent.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnHangingIndent.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnHangingIndent.Name = "btnHangingIndent";
-            this.btnHangingIndent.Size = new System.Drawing.Size(44, 36);
-            this.btnHangingIndent.Text = "Hanging Indent";
             // 
             // btnIndent
             // 
             this.btnIndent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnIndent.Enabled = false;
             this.btnIndent.Image = global::Bitig.RtbControl.Properties.Resources.indent;
             this.btnIndent.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnIndent.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnIndent.Name = "btnIndent";
-            this.btnIndent.Size = new System.Drawing.Size(44, 36);
-            this.btnIndent.Text = "Indent";
+            this.btnIndent.Size = new System.Drawing.Size(35, 36);
+            this.btnIndent.Text = "Incease indent";
             this.btnIndent.Click += new System.EventHandler(this.btnIndent_Click);
             // 
             // btnRemoveIndent
             // 
             this.btnRemoveIndent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnRemoveIndent.Enabled = false;
             this.btnRemoveIndent.Image = global::Bitig.RtbControl.Properties.Resources.indent_remove;
             this.btnRemoveIndent.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRemoveIndent.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRemoveIndent.Name = "btnRemoveIndent";
-            this.btnRemoveIndent.Size = new System.Drawing.Size(44, 36);
-            this.btnRemoveIndent.Text = "Remove Indent";
+            this.btnRemoveIndent.Size = new System.Drawing.Size(35, 36);
+            this.btnRemoveIndent.Text = "Decrease indent";
             this.btnRemoveIndent.Click += new System.EventHandler(this.btnRemoveIndent_Click);
-            // 
-            // btnParagraph
-            // 
-            this.btnParagraph.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnParagraph.Enabled = false;
-            this.btnParagraph.Image = global::Bitig.RtbControl.Properties.Resources.paragraph;
-            this.btnParagraph.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnParagraph.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnParagraph.Name = "btnParagraph";
-            this.btnParagraph.Size = new System.Drawing.Size(44, 36);
-            this.btnParagraph.Text = "Paragraph Properties";
-            this.btnParagraph.Click += new System.EventHandler(this.btnParagraph_Click);
             // 
             // tlsBasic
             // 
@@ -330,7 +202,7 @@
             this.btnAlignJustified});
             this.tlsBasic.Location = new System.Drawing.Point(3, 0);
             this.tlsBasic.Name = "tlsBasic";
-            this.tlsBasic.Size = new System.Drawing.Size(653, 39);
+            this.tlsBasic.Size = new System.Drawing.Size(622, 39);
             this.tlsBasic.TabIndex = 0;
             // 
             // btnOpen
@@ -428,7 +300,7 @@
             this.btnAlignLeft.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAlignLeft.Name = "btnAlignLeft";
             this.btnAlignLeft.Size = new System.Drawing.Size(36, 36);
-            this.btnAlignLeft.Text = "Align Left";
+            this.btnAlignLeft.Text = "Align left";
             this.btnAlignLeft.CheckedChanged += new System.EventHandler(this.btnAlignLeft_CheckedChanged);
             this.btnAlignLeft.Click += new System.EventHandler(this.btnAlignLeft_Click);
             // 
@@ -440,7 +312,7 @@
             this.btnAlignRight.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAlignRight.Name = "btnAlignRight";
             this.btnAlignRight.Size = new System.Drawing.Size(36, 36);
-            this.btnAlignRight.Text = "Align Right";
+            this.btnAlignRight.Text = "Align right";
             this.btnAlignRight.CheckedChanged += new System.EventHandler(this.btnAlignRight_CheckedChanged);
             this.btnAlignRight.Click += new System.EventHandler(this.btnAlignRight_Click);
             // 
@@ -452,7 +324,7 @@
             this.btnAlignCenter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAlignCenter.Name = "btnAlignCenter";
             this.btnAlignCenter.Size = new System.Drawing.Size(36, 36);
-            this.btnAlignCenter.Text = "Align Center";
+            this.btnAlignCenter.Text = "Align center";
             this.btnAlignCenter.CheckedChanged += new System.EventHandler(this.btnAlignCenter_CheckedChanged);
             this.btnAlignCenter.Click += new System.EventHandler(this.btnAlignCenter_Click);
             // 
@@ -464,7 +336,7 @@
             this.btnAlignJustified.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAlignJustified.Name = "btnAlignJustified";
             this.btnAlignJustified.Size = new System.Drawing.Size(36, 36);
-            this.btnAlignJustified.Text = "Align Justified";
+            this.btnAlignJustified.Text = "Align justified";
             this.btnAlignJustified.CheckedChanged += new System.EventHandler(this.btnAlignJustified_CheckedChanged);
             this.btnAlignJustified.Click += new System.EventHandler(this.btnAlignJustified_Click);
             // 
@@ -474,7 +346,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.rtbMain);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(789, 637);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(798, 637);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -498,7 +370,7 @@
             this.rtbMain.HideSelection = false;
             this.rtbMain.Location = new System.Drawing.Point(0, 0);
             this.rtbMain.Name = "rtbMain";
-            this.rtbMain.Size = new System.Drawing.Size(789, 637);
+            this.rtbMain.Size = new System.Drawing.Size(798, 637);
             this.rtbMain.TabIndex = 0;
             this.rtbMain.Text = "";
             this.rtbMain.SelectionChanged += new System.EventHandler(this.rtbMain_SelectionChanged);
@@ -531,34 +403,34 @@
             this.mniReopen});
             this.mnuFile.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(35, 20);
+            this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "File";
             // 
             // mniNew
             // 
             this.mniNew.Name = "mniNew";
-            this.mniNew.Size = new System.Drawing.Size(180, 22);
+            this.mniNew.Size = new System.Drawing.Size(193, 22);
             this.mniNew.Text = "New";
             this.mniNew.Click += new System.EventHandler(this.mniNew_Click);
             // 
             // mniOpen
             // 
             this.mniOpen.Name = "mniOpen";
-            this.mniOpen.Size = new System.Drawing.Size(180, 22);
+            this.mniOpen.Size = new System.Drawing.Size(193, 22);
             this.mniOpen.Text = "Open...";
             this.mniOpen.Click += new System.EventHandler(this.mniOpen_Click);
             // 
             // mniSave
             // 
             this.mniSave.Name = "mniSave";
-            this.mniSave.Size = new System.Drawing.Size(180, 22);
+            this.mniSave.Size = new System.Drawing.Size(193, 22);
             this.mniSave.Text = "Save";
             this.mniSave.Click += new System.EventHandler(this.mniSave_Click);
             // 
             // mniSaveAs
             // 
             this.mniSaveAs.Name = "mniSaveAs";
-            this.mniSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.mniSaveAs.Size = new System.Drawing.Size(193, 22);
             this.mniSaveAs.Text = "Save as...";
             this.mniSaveAs.Click += new System.EventHandler(this.mniSaveAs_Click);
             // 
@@ -574,55 +446,55 @@
             this.mniAscii});
             this.mniReopen.Enabled = false;
             this.mniReopen.Name = "mniReopen";
-            this.mniReopen.Size = new System.Drawing.Size(180, 22);
+            this.mniReopen.Size = new System.Drawing.Size(193, 22);
             this.mniReopen.Text = "Reopen with encoding";
             // 
             // mniUtf8
             // 
             this.mniUtf8.Name = "mniUtf8";
-            this.mniUtf8.Size = new System.Drawing.Size(161, 22);
+            this.mniUtf8.Size = new System.Drawing.Size(171, 22);
             this.mniUtf8.Text = "UTF-8";
             this.mniUtf8.Click += new System.EventHandler(this.mniUtf8_Click);
             // 
             // mniUtf16
             // 
             this.mniUtf16.Name = "mniUtf16";
-            this.mniUtf16.Size = new System.Drawing.Size(161, 22);
+            this.mniUtf16.Size = new System.Drawing.Size(171, 22);
             this.mniUtf16.Text = "UTF-16";
             this.mniUtf16.Click += new System.EventHandler(this.mniUtf16_Click);
             // 
             // mniUtf7
             // 
             this.mniUtf7.Name = "mniUtf7";
-            this.mniUtf7.Size = new System.Drawing.Size(161, 22);
+            this.mniUtf7.Size = new System.Drawing.Size(171, 22);
             this.mniUtf7.Text = "UTF-7";
             this.mniUtf7.Click += new System.EventHandler(this.mniUtf7_Click);
             // 
             // mniUtf32
             // 
             this.mniUtf32.Name = "mniUtf32";
-            this.mniUtf32.Size = new System.Drawing.Size(161, 22);
+            this.mniUtf32.Size = new System.Drawing.Size(171, 22);
             this.mniUtf32.Text = "UTF-32";
             this.mniUtf32.Click += new System.EventHandler(this.mniUtf32_Click);
             // 
             // mniBigEndian
             // 
             this.mniBigEndian.Name = "mniBigEndian";
-            this.mniBigEndian.Size = new System.Drawing.Size(161, 22);
+            this.mniBigEndian.Size = new System.Drawing.Size(171, 22);
             this.mniBigEndian.Text = "Big Endian UTF-16";
             this.mniBigEndian.Click += new System.EventHandler(this.mniBigEndian_Click);
             // 
             // mniAnsi
             // 
             this.mniAnsi.Name = "mniAnsi";
-            this.mniAnsi.Size = new System.Drawing.Size(161, 22);
+            this.mniAnsi.Size = new System.Drawing.Size(171, 22);
             this.mniAnsi.Text = "ANSI";
             this.mniAnsi.Click += new System.EventHandler(this.mniAnsi_Click);
             // 
             // mniAscii
             // 
             this.mniAscii.Name = "mniAscii";
-            this.mniAscii.Size = new System.Drawing.Size(161, 22);
+            this.mniAscii.Size = new System.Drawing.Size(171, 22);
             this.mniAscii.Text = "ASCII";
             this.mniAscii.Click += new System.EventHandler(this.mniAscii_Click);
             // 
@@ -631,13 +503,13 @@
             this.mnuFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mniNumericList});
             this.mnuFormat.Name = "mnuFormat";
-            this.mnuFormat.Size = new System.Drawing.Size(53, 20);
+            this.mnuFormat.Size = new System.Drawing.Size(57, 20);
             this.mnuFormat.Text = "Format";
             // 
             // mniNumericList
             // 
             this.mniNumericList.Name = "mniNumericList";
-            this.mniNumericList.Size = new System.Drawing.Size(140, 22);
+            this.mniNumericList.Size = new System.Drawing.Size(147, 22);
             this.mniNumericList.Text = "Numeric list...";
             this.mniNumericList.Click += new System.EventHandler(this.mniNumericList_Click);
             // 
@@ -686,17 +558,7 @@
         private System.Windows.Forms.ToolStripButton btnNumericList;
         private System.Windows.Forms.ToolStripButton btnIndent;
         private System.Windows.Forms.ToolStripButton btnRemoveIndent;
-        private System.Windows.Forms.ToolStripDropDownButton btnHangingIndent;
-        private System.Windows.Forms.ToolStripDropDownButton btnLineSpacing;
-        private System.Windows.Forms.ToolStripMenuItem mniSpacing10;
-        private System.Windows.Forms.ToolStripMenuItem mniSpacing115;
-        private System.Windows.Forms.ToolStripMenuItem mniSpacing15;
-        private System.Windows.Forms.ToolStripMenuItem mniSpacing20;
-        private System.Windows.Forms.ToolStripButton btnParagraph;
         private System.Windows.Forms.ColorDialog dlgColor;
-        private System.Windows.Forms.ToolStripButton btnSubscript;
-        private System.Windows.Forms.ToolStripButton btnSuperscript;
-        private System.Windows.Forms.ToolStripButton btnImage;
         private System.Windows.Forms.ToolStripButton btnBackcolor;
         private System.Windows.Forms.ToolStripButton btnForecolor;
         private System.Windows.Forms.ToolStripButton btnAlignLeft;

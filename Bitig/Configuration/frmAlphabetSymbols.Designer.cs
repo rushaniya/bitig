@@ -1,4 +1,6 @@
-﻿namespace Bitig.UI.Configuration
+﻿using Bitig.Logic.Model;
+
+namespace Bitig.UI.Configuration
 {
     partial class frmAlphabetSymbols
     {
@@ -99,7 +101,7 @@
             // 
             // bndSymbol
             // 
-            this.bndSymbol.DataSource = typeof(Logic.Model.AlifbaSymbol);
+            this.bndSymbol.DataSource = typeof(AlifbaSymbol);
             this.bndSymbol.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.bndSymbol_ListChanged);
             // 
             // pnlYanalifSettings

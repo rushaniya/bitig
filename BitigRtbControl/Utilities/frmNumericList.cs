@@ -153,12 +153,12 @@ namespace Bitig.RtbControl.Utilities
             x_CurrentTabIndex = pnlThirdExtra.TabIndex;
         }
 
-        private void NoNumber_Click(object sender, EventArgs e)
-        {
-            SetCurrentListByTabIndex(pnlNoNumber.TabIndex);
-            SelectPanel(pnlNoNumber.TabIndex);
-            x_CurrentTabIndex = pnlNoNumber.TabIndex;
-        }
+        //private void NoNumber_Click(object sender, EventArgs e)
+        //{
+        //    SetCurrentListByTabIndex(pnlNoNumber.TabIndex);
+        //    SelectPanel(pnlNoNumber.TabIndex);
+        //    x_CurrentTabIndex = pnlNoNumber.TabIndex;
+        //}
 
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -184,7 +184,7 @@ namespace Bitig.RtbControl.Utilities
                     x_SecondExtraFormat = ENumericListFormat.Period;
                     x_ThirdExtraFormat = ENumericListFormat.Plain;
                     break;
-                case ENumericListFormat.NoNumber:
+                //case ENumericListFormat.NoNumber:
                 case ENumericListFormat.Parenthesis://default
                     x_FirstExtraFormat = ENumericListFormat.Period;
                     x_SecondExtraFormat = ENumericListFormat.Parentheses;
@@ -331,10 +331,10 @@ namespace Bitig.RtbControl.Utilities
                 case ENumericListFormat.Parenthesis:
                     _marker = "{0}) ";
                     break;
-                case ENumericListFormat.NoNumber:
-                    if (LabelIndex == 2) _result = "No marker";
-                    x_SampleTexts.Add(_key, _result);
-                    return _result;
+                //case ENumericListFormat.NoNumber:
+                //    if (LabelIndex == 2) _result = "No marker";
+                //    x_SampleTexts.Add(_key, _result);
+                //    return _result;
             }
             string _number = string.Empty;
             switch (ListType)
@@ -417,7 +417,7 @@ namespace Bitig.RtbControl.Utilities
             int _newTabIndex = -1;
             if (keyData == Keys.Tab || keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Up || keyData == Keys.Down)
             {
-                if (x_CurrentTabIndex >= 0 && x_CurrentTabIndex <= 6 || x_CurrentTabIndex >= 9 && x_CurrentTabIndex <= 12)
+                if (x_CurrentTabIndex >= 0 && x_CurrentTabIndex <= 6 || x_CurrentTabIndex >= 9 && x_CurrentTabIndex <= 11)
                 {
                     if (keyData == Keys.Left)
                     {
@@ -427,7 +427,7 @@ namespace Bitig.RtbControl.Utilities
                     }
                     else if (keyData == Keys.Right)
                     {
-                        if (x_CurrentTabIndex < 6 || x_CurrentTabIndex >= 9 && x_CurrentTabIndex < 12)
+                        if (x_CurrentTabIndex < 6 || x_CurrentTabIndex >= 9 && x_CurrentTabIndex < 11)
                             _newTabIndex = x_CurrentTabIndex + 1;
                         else _newTabIndex = x_CurrentTabIndex;
                     }
@@ -449,7 +449,7 @@ namespace Bitig.RtbControl.Utilities
                         {
                             _newTabIndex = nudIndent.Visible ? 7 : 13; //nudIndent : btnOK
                         }
-                        else if (x_CurrentTabIndex >= 9 && x_CurrentTabIndex <= 12)
+                        else if (x_CurrentTabIndex >= 9 && x_CurrentTabIndex <= 11)
                         {
                             _newTabIndex = 13;
                         }
@@ -513,7 +513,7 @@ namespace Bitig.RtbControl.Utilities
                     }
                 }
             }
-            else if (NewTabIndex >= 9 && NewTabIndex <= 12)
+            else if (NewTabIndex >= 9 && NewTabIndex <= 11)
             {
                 foreach (Control _child in tblOtherStyles.Controls)
                 {
@@ -587,9 +587,9 @@ namespace Bitig.RtbControl.Utilities
                 case 11:
                     x_ListFormat = x_ThirdExtraFormat;
                     break;
-                case 12:
-                    x_ListFormat = ENumericListFormat.NoNumber;
-                    break;
+                //case 12:
+                //    x_ListFormat = ENumericListFormat.NoNumber;
+                //    break;
             }
         }
     }

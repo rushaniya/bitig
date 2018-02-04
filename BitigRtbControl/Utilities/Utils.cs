@@ -48,7 +48,7 @@
         Parentheses = CRichTextBox.PFNS_PARENS,
         Period = CRichTextBox.PFNS_PERIOD,
         Plain = CRichTextBox.PFNS_PLAIN,
-        NoNumber = CRichTextBox.PFNS_NONUMBER
+       // NoNumber = CRichTextBox.PFNS_NONUMBER
     }
 
     internal enum EAlignment : ushort

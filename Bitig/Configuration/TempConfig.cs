@@ -1,4 +1,4 @@
-﻿namespace Bitig.UI.Classes
+﻿namespace Bitig.UI.Configuration
 {
     //config
     class TempConfig

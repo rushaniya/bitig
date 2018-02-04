@@ -40,8 +40,6 @@
             this.pnlNumericParams = new System.Windows.Forms.Panel();
             this.lblOther = new System.Windows.Forms.Label();
             this.tblOtherStyles = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlNoNumber = new System.Windows.Forms.Panel();
-            this.lblNoNumber2 = new System.Windows.Forms.Label();
             this.pnlFirstExtra = new System.Windows.Forms.Panel();
             this.lblFirstExtra3 = new System.Windows.Forms.Label();
             this.lblFirstExtra2 = new System.Windows.Forms.Label();
@@ -88,7 +86,6 @@
             this.pnlParams.SuspendLayout();
             this.pnlNumericParams.SuspendLayout();
             this.tblOtherStyles.SuspendLayout();
-            this.pnlNoNumber.SuspendLayout();
             this.pnlFirstExtra.SuspendLayout();
             this.pnlSecondExtra.SuspendLayout();
             this.pnlThirdExtra.SuspendLayout();
@@ -238,14 +235,13 @@
             // 
             // tblOtherStyles
             // 
-            this.tblOtherStyles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tblOtherStyles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tblOtherStyles.ColumnCount = 4;
             this.tblOtherStyles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tblOtherStyles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tblOtherStyles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tblOtherStyles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tblOtherStyles.Controls.Add(this.pnlNoNumber, 3, 0);
             this.tblOtherStyles.Controls.Add(this.pnlFirstExtra, 0, 0);
             this.tblOtherStyles.Controls.Add(this.pnlSecondExtra, 1, 0);
             this.tblOtherStyles.Controls.Add(this.pnlThirdExtra, 2, 0);
@@ -256,31 +252,6 @@
             this.tblOtherStyles.Size = new System.Drawing.Size(352, 88);
             this.tblOtherStyles.TabIndex = 0;
             this.tblOtherStyles.TabStop = true;
-            // 
-            // pnlNoNumber
-            // 
-            this.pnlNoNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlNoNumber.Controls.Add(this.lblNoNumber2);
-            this.pnlNoNumber.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlNoNumber.Location = new System.Drawing.Point(267, 3);
-            this.pnlNoNumber.Name = "pnlNoNumber";
-            this.pnlNoNumber.Size = new System.Drawing.Size(82, 82);
-            this.pnlNoNumber.TabIndex = 12;
-            this.pnlNoNumber.TabStop = true;
-            this.pnlNoNumber.Click += new System.EventHandler(this.NoNumber_Click);
-            this.pnlNoNumber.Enter += new System.EventHandler(this.NoNumber_Click);
-            // 
-            // lblNoNumber2
-            // 
-            this.lblNoNumber2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblNoNumber2.AutoSize = true;
-            this.lblNoNumber2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblNoNumber2.Location = new System.Drawing.Point(5, 30);
-            this.lblNoNumber2.Name = "lblNoNumber2";
-            this.lblNoNumber2.Size = new System.Drawing.Size(71, 16);
-            this.lblNoNumber2.TabIndex = 4;
-            this.lblNoNumber2.Text = "No marker";
-            this.lblNoNumber2.Click += new System.EventHandler(this.NoNumber_Click);
             // 
             // pnlFirstExtra
             // 
@@ -817,8 +788,6 @@
             this.pnlNumericParams.ResumeLayout(false);
             this.pnlNumericParams.PerformLayout();
             this.tblOtherStyles.ResumeLayout(false);
-            this.pnlNoNumber.ResumeLayout(false);
-            this.pnlNoNumber.PerformLayout();
             this.pnlFirstExtra.ResumeLayout(false);
             this.pnlFirstExtra.PerformLayout();
             this.pnlSecondExtra.ResumeLayout(false);
@@ -897,7 +866,5 @@
         private System.Windows.Forms.Label lblThirdExtra2;
         private System.Windows.Forms.Label lblThirdExtra1;
         private System.Windows.Forms.Panel pnlNumericParams;
-        private System.Windows.Forms.Panel pnlNoNumber;
-        private System.Windows.Forms.Label lblNoNumber2;
     }
 }

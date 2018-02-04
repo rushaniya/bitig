@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bitig.UI.Classes
+namespace Bitig.UI.Logic
 {
     class SymbolEventArgs : EventArgs
     {

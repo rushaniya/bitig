@@ -83,3 +83,5 @@ Expected result: exclusion does not change.
 4.2b. Source cannot contain characters not present in source alphabet.
 4.2c. Match Begining and Any Position cannot be both set.
 4.2d. Source word should not include other exclusions.
+
+4.3. Cancel button should not cause validation.

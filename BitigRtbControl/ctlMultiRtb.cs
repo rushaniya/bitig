@@ -50,7 +50,7 @@ namespace Bitig.RtbControl
 
         private void ctlMultiRtb_Load(object sender, EventArgs e)
         {
-            x_TlsAdditionalLength = btnBullet.Height * 10 + btnLineSpacing.Width * 2 + 5;
+            x_TlsAdditionalLength = btnBullet.Height * 6 + 5;
             x_TlsBasicLength = btnItalic.Width * 12 + cmbFont.Width + cmbFontSize.Width + 7;
             x_Loaded = true;
             ArrangeToolStrips();
@@ -694,93 +694,17 @@ namespace Bitig.RtbControl
 
         #endregion
 
-        #region Image
-
-        private void btnImage_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show(rtbMain.SelectedRtf);
-            //AlignmentsDiffer();        
-            //FontFacesDiffer();
-            //FontSizesDiffer();
-            //            rtbMain.Rtf = @"{\rtf1\fbidis\ansi\ansicpg1251\deff0\deflang1049\deflangfe1049\deftab708{\fonttbl{\f0\froman\fprq2\fcharset204{\*\fname Times New Roman;}Times New Roman CYR;}{\f1\fnil\fcharset2 Symbol;}}
-            //\uc1\pard{\pntext\f1\'2A\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'2A}}\ltrpar\fi-12000\li12360\f0\fs24 testtext}";
-        }
-
-        #endregion
-
-        #region Subscripts & Superscripts
-
-        private void btnSubscript_Click(object sender, EventArgs e)
-        {
-            rtbMain.SelectionCharOffset = -1;
-            rtbMain.RefreshCurrentCharFormat();
-        }
-
-        private void btnSuperscript_Click(object sender, EventArgs e)
-        {
-            rtbMain.SelectionCharOffset = 1;
-            rtbMain.RefreshCurrentCharFormat();
-        }
-
-        #endregion
-
-        #region Line Spacing
-
-        private void mniSpacing10_Click(object sender, EventArgs e)
-        {
-            mniSpacing115.Checked = false;
-            mniSpacing15.Checked = false;
-            mniSpacing20.Checked = false;
-            rtbMain.SetLineSpacing(1);
-        }
-
-        private void mniSpacing115_Click(object sender, EventArgs e)
-        {
-            mniSpacing10.Checked = false;
-            mniSpacing15.Checked = false;
-            mniSpacing20.Checked = false;
-            rtbMain.SetLineSpacing(1.15);
-        }
-
-        private void mniSpacing15_Click(object sender, EventArgs e)
-        {
-            mniSpacing115.Checked = false;
-            mniSpacing10.Checked = false;
-            mniSpacing20.Checked = false;
-            rtbMain.SetLineSpacing(1.5);
-        }
-
-        private void mniSpacing20_Click(object sender, EventArgs e)
-        {
-            mniSpacing115.Checked = false;
-            mniSpacing15.Checked = false;
-            mniSpacing10.Checked = false;
-            rtbMain.SetLineSpacing(2);
-        }
-
-
-        #endregion
-
         #region Indents
 
         private void btnIndent_Click(object sender, EventArgs e)
         {
-
+            rtbMain.SelectionIndent = Math.Min(rtbMain.SelectionIndent + 20, 800);
         }
 
 
         private void btnRemoveIndent_Click(object sender, EventArgs e)
         {
-
-        }
-
-        #endregion
-
-        #region Paragraph Properties
-
-        private void btnParagraph_Click(object sender, EventArgs e)
-        {
-
+            rtbMain.SelectionIndent = Math.Max(rtbMain.SelectionIndent - 20, 0);
         }
 
         #endregion

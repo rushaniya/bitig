@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Bitig.UI.Classes;
 using Bitig.Logic.Model;
+using Bitig.UI.Configuration;
+using Bitig.UI.Logic;
 
 namespace Bitig.UI.Controls
 {

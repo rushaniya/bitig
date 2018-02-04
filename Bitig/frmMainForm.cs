@@ -7,11 +7,11 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Bitig.RtbControl;
 using Bitig.UI.Controls;
-using Bitig.UI.Classes;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 using Bitig.UI.Configuration;
 using Bitig.Data.Storage;
+using Bitig.UI.Logic;
 
 namespace Bitig.UI
 {
@@ -124,6 +124,7 @@ namespace Bitig.UI
             //x_TlsMainLength = btnShowAlifba.Width * 8 + toolStripSeparator2.Width * 2 + 3;
             //ArrangeToolStrips();
             ctlMultiRtb1.RtbMain.Select(); //ctlMultiRtb1.RtbMain.Focus();
+            RtbMain_Enter(null, null);
             ToolStripManager.Merge(ctlMultiRtb1.mnuMultiRTB, mnuMain);
             if (!string.IsNullOrEmpty(x_FilePath))
                 ctlMultiRtb1.OpenFile(x_FilePath);
@@ -477,7 +478,7 @@ namespace Bitig.UI
             return _result;
         }
 
-        private void AssignAlphabetProperties(Alifba Alphabet, TextBox TargetTextBox)
+        private void AssignAlphabetProperties(Alifba Alphabet, RichTextBox TargetTextBox)
         {
             //AlifbaConfig _config = null;
             //if (Alphabet != null)
@@ -827,12 +828,7 @@ namespace Bitig.UI
                     //    break;
             //    }
             //}
-            //x_ActiveTextControl = EActiveTextControl.Translit1;
-        }
-
-        private void rtbMain_Enter(object sender, EventArgs e)
-        {
-            //x_HklYanalif = LoadKeyboardLayoutW(LAYOUT_YANALIF, KLF_ACTIVATE);
+            x_ActiveTextControl = EActiveTextControl.Translit1;
         }
 
       /*  private void btnTranslit1Load_Click(object sender, EventArgs e)
@@ -877,28 +873,6 @@ namespace Bitig.UI
         private void txtTranslit2_Enter(object sender, EventArgs e)
         {
             x_ActiveTextControl = EActiveTextControl.Translit2;
-        }
-
-        private void btnUndo_Click(object sender, EventArgs e)
-        {
-            //switch (x_ActiveTextControl)
-            //{
-            //    case EActiveTextControl.RTB:
-            //        ctlMultiRtb1.RtbMain.Undo();
-            //        break;
-            //    case EActiveTextControl.Translit1:
-            //        txtTranslit1.Undo();
-            //        break;
-            //    case EActiveTextControl.Translit2:
-            //        txtTranslit2.Undo();
-            //        break;
-            //}
-        }
-
-        private void btnRedo_Click(object sender, EventArgs e)
-        {
-
-            //ctlMultiRtb1.RtbMain.Redo();
         }
 
         private void mniAbout_Click(object sender, EventArgs e)
