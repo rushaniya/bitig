@@ -130,5 +130,25 @@ namespace BitigLogicTests
             Assert.AreEqual(1, _conflicts.Count);
             Assert.AreEqual(_word1, _conflicts[0].SourceWord);
         }
+
+        [TestMethod]
+        public void ConflictsWithExisitngExclusion_IgnoreCase_WordStart_Conflict()
+        {
+            var _word1 = "sss";
+            var _word2 = "target1";
+            var _exclusions = new List<Exclusion>
+            {
+                new Exclusion (_word1,_word2,true,true,false)
+            };
+            var _conflicting = "sss1";
+            var _conflictingExcl = new Exclusion(_conflicting, "target2", false, true, false);
+            var _translitCommand = new TestTranslitCommand();
+            _translitCommand.Exclusions = new ExclusionCollection(_exclusions);
+            List<Exclusion> _conflicts;
+            var _hasConflicts = _translitCommand.ConflictsWithExistingExclusions(_conflictingExcl, out _conflicts);
+            Assert.IsTrue(_hasConflicts);
+            Assert.AreEqual(1, _conflicts.Count);
+            Assert.AreEqual(_word1, _conflicts[0].SourceWord);
+        }
     }
 }

@@ -68,7 +68,6 @@
             this.dgvExclusions.Size = new System.Drawing.Size(807, 366);
             this.dgvExclusions.TabIndex = 1;
             this.dgvExclusions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExclusions_CellContentClick);
-            this.dgvExclusions.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvExclusions_CellValidating);
             this.dgvExclusions.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvExclusions_RowValidating);
             // 
             // bndExclusions

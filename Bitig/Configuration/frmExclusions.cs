@@ -89,19 +89,6 @@ namespace Bitig.UI.Configuration
                 MessageBox.Show("Source word is empty", "!", MessageBoxButtons.OK);
                 return false;
             }
-            var _anyPosition = false;
-            if(_row.Cells[ANY_POSITION_COLUMN].Value != null)
-            {
-                _anyPosition = Convert.ToBoolean(_row.Cells[ANY_POSITION_COLUMN].Value);
-                if (_anyPosition)
-                {
-                    dgvExclusions.CurrentCell = _row.Cells[MATCH_BEGINNING_COLUMN];
-                    dgvExclusions.BeginEdit(false);
-                    dgvExclusions.NotifyCurrentCellDirty(true);
-                    _row.Cells[MATCH_BEGINNING_COLUMN].Value = false;
-                    dgvExclusions.EndEdit();
-                }
-            }
             x_SelectedDirection.Exclusions = x_BindingLists[x_SelectedDirection.ID]
                 .Where(_excl => !string.IsNullOrEmpty(_excl.SourceWord))
                 .ToList();  
@@ -111,7 +98,7 @@ namespace Bitig.UI.Configuration
                 SourceWord = _source,
                 TargetWord = _target ?? string.Empty,
                 MatchBeginning = _row.Cells[MATCH_BEGINNING_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_BEGINNING_COLUMN].Value),
-                AnyPosition = _anyPosition,
+                AnyPosition = _row.Cells[ANY_POSITION_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[ANY_POSITION_COLUMN].Value),
                 MatchCase = _row.Cells[MATCH_CASE_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_CASE_COLUMN].Value)
             };
             if (!x_SelectedDirection.IsValidExclusion(_exclusion, out _errors, out _warnings) || _warnings.Count > 0)
@@ -172,38 +159,6 @@ namespace Bitig.UI.Configuration
                 if (x_ValidationResults.ContainsKey(e.RowIndex))
                 {
                     MessageBox.Show(x_ValidationResults[e.RowIndex], "!", MessageBoxButtons.OK);
-                }
-            }
-        }
-
-        private void dgvExclusions_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            if (e.ColumnIndex == ANY_POSITION_COLUMN || e.ColumnIndex == MATCH_BEGINNING_COLUMN)
-            {
-            if (e.RowIndex == -1)
-                return;
-                var _row = dgvExclusions.Rows[e.RowIndex];
-                if (e.ColumnIndex == ANY_POSITION_COLUMN)
-                {
-                    if (e.FormattedValue != null)
-                    {
-                        var _value = Convert.ToBoolean(e.FormattedValue);
-                        if (_value)
-                        {
-                            _row.Cells[MATCH_BEGINNING_COLUMN].Value = false;
-                        }
-                    }
-                }
-                else if (e.ColumnIndex == MATCH_BEGINNING_COLUMN)
-                {
-                    if (e.FormattedValue != null)
-                    {
-                        var _value = Convert.ToBoolean(e.FormattedValue);
-                        if (_value)
-                        {
-                            _row.Cells[ANY_POSITION_COLUMN].Value = false;
-                        }
-                    }
                 }
             }
         }
