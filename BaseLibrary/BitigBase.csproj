@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurableTranslitCommand.cs" />
     <Compile Include="Exclusion.cs" />
     <Compile Include="ExclusionCollection.cs" />
     <Compile Include="IgnoreCaseComparer.cs" />

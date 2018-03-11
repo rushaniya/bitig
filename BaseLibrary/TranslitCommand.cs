@@ -346,7 +346,7 @@ namespace Bitig.Base
             return Conflicts.Count > 0;
         }
 
-        protected bool IsAlphabetic(string Fragment)
+        public bool IsAlphabetic(string Fragment)
         {
             var _matchPattern = GetMatchPattern(AlphabetPattern);
             return Regex.IsMatch(Fragment, _matchPattern);

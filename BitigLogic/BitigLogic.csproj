@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ConfigurableTranslitCommand.cs" />
     <Compile Include="Commands\CyrillicTranscription.cs" />
     <Compile Include="Commands\CyrillicRasmalif.cs" />
     <Compile Include="Commands\CyrillicYanalif.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Model\Alifba.cs" />
     <Compile Include="Model\BuiltInAlifba.cs" />
     <Compile Include="Model\BuiltInDirection.cs" />
+    <Compile Include="Model\ManualCommand.cs" />
     <Compile Include="Model\Exclusion.cs" />
     <Compile Include="Model\AlifbaFont.cs" />
     <Compile Include="Model\AlifbaSymbol.cs" />

@@ -64,8 +64,8 @@ namespace Bitig.Data.Storage
 
         private AlifbaSymbol MapToModel(XmlAlifbaSymbol StoredSymbol)
         {
-            return new AlifbaSymbol(StoredSymbol.ActualText, StoredSymbol.DisplayText,
-                StoredSymbol.CapitalizedText, StoredSymbol.CapitalizedDisplayText);
+            return new AlifbaSymbol(StoredSymbol.ActualText, StoredSymbol.CapitalizedText,
+                StoredSymbol.DisplayText, StoredSymbol.CapitalizedDisplayText);
         }
 
         private XmlAlifba MapToStorage(Alifba ModelAlifba)

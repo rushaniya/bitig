@@ -49,6 +49,8 @@ namespace Bitig.Data.Model
             set;
         }
 
+        public bool UseManualCommand { get; set; } //custom: when false, ManualCommand property is ignored
+
         public List<XmlExclusion> Exclusions { get; set; }
 
         public XmlDirection()

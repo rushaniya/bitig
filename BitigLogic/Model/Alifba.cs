@@ -87,8 +87,8 @@ namespace Bitig.Logic.Model
             {
                 foreach (var _symbol in CustomSymbols)
                 {
-                    _clonedSymbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.DisplayText,
-                        _symbol.CapitalizedText, _symbol.CapitalizedDisplayText));
+                    _clonedSymbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText,
+                        _symbol.DisplayText, _symbol.CapitalizedDisplayText));
                 }
             }
             var _clonedFont = DefaultFont == null ? null :

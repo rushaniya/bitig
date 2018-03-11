@@ -157,11 +157,13 @@ namespace Bitig.Base
 
         public static char ToUpper(char Source, Dictionary<char, char> UpperLowerPairs)
         {
-            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0) return char.ToUpperInvariant(Source);
-            var _matches = from _pair in UpperLowerPairs
-                           where _pair.Value == Source
-                           select _pair.Key;
-            if (_matches.Count() > 0) return _matches.First();
+            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0)
+                return char.ToUpperInvariant(Source);
+            if (UpperLowerPairs.ContainsKey(Source))
+                return Source;
+            var _lowerMatch = UpperLowerPairs.FirstOrDefault(_pair => _pair.Value == Source).Key;
+            if (_lowerMatch != (char)0)
+                return _lowerMatch;
             return char.ToUpperInvariant(Source);
         }
 
@@ -173,37 +175,48 @@ namespace Bitig.Base
 
         private static string ToUpperPrivate(string Source, Dictionary<char, char> UpperLowerPairs)
         {
-            if (string.IsNullOrEmpty(Source)) return string.Empty;
-            int _matchIndex = Source.IndexOfAny(UpperLowerPairs.Values.ToArray());
-            if (_matchIndex < 0) return Source.ToUpperInvariant();
-            char _matchChar = Source[_matchIndex];
-            string _partBeforeMatch = Source.Substring(0, _matchIndex);
-            string _partAfterMatch = _matchIndex < Source.Length - 1 ? Source.Substring(_matchIndex + 1) : string.Empty;
-            return _partBeforeMatch.ToUpperInvariant() + UpperLowerPairs.First(_entry => _entry.Value == _matchChar).Key + ToUpperPrivate(_partAfterMatch, UpperLowerPairs);
+            if (string.IsNullOrEmpty(Source))
+                return string.Empty;
+            var _originalChars = Source.ToCharArray();
+            var _length = _originalChars.Length;
+            var _upperChars = new char[_length];
+            for (int i = 0; i < _length; i++)
+            {
+                _upperChars[i] = ToUpper(_originalChars[i], UpperLowerPairs);
+            }
+            return new string(_upperChars);
         }
 
         public static char ToLower(char Source, Dictionary<char, char> UpperLowerPairs)
         {
-            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0 || !UpperLowerPairs.ContainsKey(Source)) 
-                return char.ToUpperInvariant(Source);
-            return UpperLowerPairs[Source];
+            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0)
+                return char.ToLowerInvariant(Source);
+            if (UpperLowerPairs.ContainsKey(Source))
+                return UpperLowerPairs[Source];
+            if (UpperLowerPairs.ContainsValue(Source))
+                return Source;
+            return char.ToLowerInvariant(Source);
         }
 
         public static string ToLower(string Source, Dictionary<char, char> UpperLowerPairs)
         {
-            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0) return Source.ToLowerInvariant();
+            if (UpperLowerPairs == null || UpperLowerPairs.Count == 0)
+                return Source.ToLowerInvariant();
             return ToLowerPrivate(Source, UpperLowerPairs);
         }
 
         private static string ToLowerPrivate(string Source, Dictionary<char, char> UpperLowerPairs)
         {
-            if (string.IsNullOrEmpty(Source)) return string.Empty;
-            int _matchIndex = Source.IndexOfAny(UpperLowerPairs.Keys.ToArray());
-            if (_matchIndex < 0) return Source.ToLowerInvariant();
-            char _matchChar = Source[_matchIndex];
-            string _partBeforeMatch = Source.Substring(0, _matchIndex);
-            string _partAfterMatch = _matchIndex < Source.Length - 1 ? Source.Substring(_matchIndex + 1) : string.Empty;
-            return _partBeforeMatch.ToLowerInvariant() + UpperLowerPairs[_matchChar] + ToLowerPrivate(_partAfterMatch, UpperLowerPairs);
+            if (string.IsNullOrEmpty(Source))
+                return string.Empty;
+            var _originalChars = Source.ToCharArray();
+            var _length = _originalChars.Length;
+            var _lowerChars = new char[_length];
+            for (int i = 0; i < _length; i++)
+            {
+                _lowerChars[i] = ToLower(_originalChars[i], UpperLowerPairs);
+            }
+            return new string(_lowerChars);
         }
 
         public static bool IsLower(char Character, Dictionary<char, char> UpperLowerPairs)

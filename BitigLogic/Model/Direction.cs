@@ -73,7 +73,7 @@ namespace Bitig.Logic.Model
             }
         }    
 
-        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null)
+        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
         {
             this.AssemblyPath = AssemblyPath;
             this.TypeName = TypeName;
@@ -82,6 +82,7 @@ namespace Bitig.Logic.Model
             this.Target = Target;
             this.BuiltIn = BuiltIn;
             this.Exclusions = Exclusions ?? new List<Exclusion>();
+            this.ManualCommand = ManualCommand;
         }
 
         public bool IsBuiltIn()
@@ -94,17 +95,24 @@ namespace Bitig.Logic.Model
 
         private void InitializeTranslitCommand()
         {
-            if (IsBuiltIn() || string.IsNullOrEmpty(AssemblyPath)) 
+            if (ManualCommand == null)
             {
-                translitCommand = DefaultConfiguration.GetTranslitCommand(BuiltIn.ID);
+                if (IsBuiltIn() || string.IsNullOrEmpty(AssemblyPath))
+                {
+                    translitCommand = DefaultConfiguration.GetTranslitCommand(BuiltIn.ID);
+                }
+                else
+                {
+                    Assembly assembly = Assembly.LoadFrom(AssemblyPath);
+                    Type _t = assembly.GetType(TypeName);
+                    if (_t == null)
+                        throw new InvalidOperationException(string.Format("Type {0} not found in assembly {1}", TypeName, AssemblyPath));
+                    translitCommand = (TranslitCommand)Activator.CreateInstance(_t);
+                }
             }
             else
             {
-                Assembly assembly = Assembly.LoadFrom(AssemblyPath);
-                Type _t = assembly.GetType(TypeName);
-                if (_t == null)
-                    throw new InvalidOperationException(string.Format("Type {0} not found in assembly {1}", TypeName, AssemblyPath));
-                translitCommand = (TranslitCommand)Activator.CreateInstance(_t);
+                //custom translitCommand = new ConfigurableTranslitCommand();
             }
             translitCommand.Exclusions = LoadExclusions();
         }
@@ -143,6 +151,8 @@ namespace Bitig.Logic.Model
                 return System.IO.Path.GetFileName(AssemblyPath);
             }
         }
+
+        public ManualCommand ManualCommand { get; private set; }
 
         public override string ToString()
         {

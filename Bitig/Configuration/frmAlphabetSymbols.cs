@@ -36,7 +36,7 @@ namespace Bitig.UI.Configuration
             {
                 foreach (AlifbaSymbol _symbol in x_Symbols)
                 {
-                    AlifbaSymbol _copy = new AlifbaSymbol(_symbol.ActualText, _symbol.DisplayText, _symbol.CapitalizedText, _symbol.CapitalizedDisplayText);
+                    AlifbaSymbol _copy = new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText);
                     x_TemporaryList.Add(_copy);
                 }
             }
@@ -55,7 +55,7 @@ namespace Bitig.UI.Configuration
                     break;
                 if (_symbol.ActualText != null && _symbol.ActualText.Trim() != string.Empty)
                 {
-                    x_Symbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.DisplayText, _symbol.CapitalizedText, _symbol.CapitalizedDisplayText));
+                    x_Symbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText));
                 }
                 _counter++;
             }

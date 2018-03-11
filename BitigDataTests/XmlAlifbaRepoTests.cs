@@ -64,7 +64,7 @@ namespace BitigDataTests
             var _symbolDisplayText = Guid.NewGuid().ToString();
             var _symbols = new List<AlifbaSymbol>
             {
-                new AlifbaSymbol(_symbolText, _symbolDisplayText)
+                new AlifbaSymbol(_symbolText, DisplayText:_symbolDisplayText)
             };
             var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16));
             _testRepo.Insert(_alifba);

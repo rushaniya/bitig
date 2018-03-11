@@ -76,42 +76,42 @@ namespace Bitig.Logic.Repository
             {
                 //excl: get alphabet symbols from directions' alphabet patterns?
                 case BuiltInAlifbaType.Cyrillic:
-                    _result.Add(new AlifbaSymbol("\u04d9", "\u04d9", "\u04d8", "\u04d8"));//Ә
-                    _result.Add(new AlifbaSymbol("\u04e9", "\u04e9", "\u04e8", "\u04e8"));//Ө
-                    _result.Add(new AlifbaSymbol("\u04af", "\u04af", "\u04ae", "\u04ae"));//Ү
-                    _result.Add(new AlifbaSymbol("\u0497", "\u0497", "\u0496", "\u0496"));//Җ
-                    _result.Add(new AlifbaSymbol("\u04a3", "\u04a3", "\u04a2", "\u04a2"));//Ң
-                    _result.Add(new AlifbaSymbol("\u04bb", "\u04bb", "\u04ba", "\u04ba"));//Һ
+                    _result.Add(new AlifbaSymbol("\u04d9", "\u04d8", "\u04d9", "\u04d8"));//Ә
+                    _result.Add(new AlifbaSymbol("\u04e9", "\u04e8", "\u04e9", "\u04e8"));//Ө
+                    _result.Add(new AlifbaSymbol("\u04af", "\u04ae", "\u04af", "\u04ae"));//Ү
+                    _result.Add(new AlifbaSymbol("\u0497", "\u0496", "\u0497", "\u0496"));//Җ
+                    _result.Add(new AlifbaSymbol("\u04a3", "\u04a2", "\u04a3", "\u04a2"));//Ң
+                    _result.Add(new AlifbaSymbol("\u04bb", "\u04ba", "\u04bb", "\u04ba"));//Һ
                     break;
                 case BuiltInAlifbaType.Zamanalif:
-                    _result.Add(new AlifbaSymbol("\u00e4", "\u00e4", "\u00c4", "\u00c4"));//Ä
-                    _result.Add(new AlifbaSymbol("\u00e2", "\u00e2", "\u00c2", "\u00c2"));//Â
-                    _result.Add(new AlifbaSymbol("\u00e1", "\u00e1", "\u00c1", "\u00c1"));//Á
-                    _result.Add(new AlifbaSymbol("\u00e7", "\u00e7", "\u00c7", "\u00c7"));//Ç
-                    _result.Add(new AlifbaSymbol("\u00e9", "\u00e9", "\u00c9", "\u00c9"));//É
-                    _result.Add(new AlifbaSymbol("\u011f", "\u011f", "\u011e", "\u011e"));//Ğ
-                    _result.Add(new AlifbaSymbol("\u0131", "\u0131", "\u0130", "\u0130"));//İı
-                    _result.Add(new AlifbaSymbol("\u00ed", "\u00ed", "\u00cd", "\u00cd"));//Í
-                    _result.Add(new AlifbaSymbol("\u00f1", "\u00f1", "\u00d1", "\u00d1"));//Ñ
-                    _result.Add(new AlifbaSymbol("\u00f6", "\u00f6", "\u00d6", "\u00d6"));//Ö
-                    _result.Add(new AlifbaSymbol("\u00f3", "\u00f3", "\u00d3", "\u00d3"));//Ó
-                    _result.Add(new AlifbaSymbol("\u015f", "\u015f", "\u015e", "\u015e"));//Ş
-                    _result.Add(new AlifbaSymbol("\u00fc", "\u00fc", "\u00dc", "\u00dc"));//Ü
-                    _result.Add(new AlifbaSymbol("\u00fa", "\u00fa", "\u00da", "\u00da"));//Ú
+                    _result.Add(new AlifbaSymbol("\u00e4", "\u00c4", "\u00e4", "\u00c4"));//Ä
+                    _result.Add(new AlifbaSymbol("\u00e2", "\u00c2", "\u00e2", "\u00c2"));//Â
+                    _result.Add(new AlifbaSymbol("\u00e1", "\u00c1", "\u00e1", "\u00c1"));//Á
+                    _result.Add(new AlifbaSymbol("\u00e7", "\u00c7", "\u00e7", "\u00c7"));//Ç
+                    _result.Add(new AlifbaSymbol("\u00e9", "\u00c9", "\u00e9", "\u00c9"));//É
+                    _result.Add(new AlifbaSymbol("\u011f", "\u011e", "\u011f", "\u011e"));//Ğ
+                    _result.Add(new AlifbaSymbol("\u0131", "\u0130", "\u0131", "\u0130"));//İı
+                    _result.Add(new AlifbaSymbol("\u00ed", "\u00cd", "\u00ed", "\u00cd"));//Í
+                    _result.Add(new AlifbaSymbol("\u00f1", "\u00d1", "\u00f1", "\u00d1"));//Ñ
+                    _result.Add(new AlifbaSymbol("\u00f6", "\u00d6", "\u00f6", "\u00d6"));//Ö
+                    _result.Add(new AlifbaSymbol("\u00f3", "\u00d3", "\u00f3", "\u00d3"));//Ó
+                    _result.Add(new AlifbaSymbol("\u015f", "\u015e", "\u015f", "\u015e"));//Ş
+                    _result.Add(new AlifbaSymbol("\u00fc", "\u00dc", "\u00fc", "\u00dc"));//Ü
+                    _result.Add(new AlifbaSymbol("\u00fa", "\u00da", "\u00fa", "\u00da"));//Ú
                     break;
                 case BuiltInAlifbaType.Rasmalif:
-                    _result.Add(new AlifbaSymbol("\u00e4", "\u00e4", "\u00c4", "\u00c4"));//Ä
-                    _result.Add(new AlifbaSymbol("\u00e7", "\u00e7", "\u00c7", "\u00c7"));//Ç
-                    _result.Add(new AlifbaSymbol("\u0131", "\u0131", "\u0130", "\u0130"));//İı
-                    _result.Add(new AlifbaSymbol("\u00f1", "\u00f1", "\u00d1", "\u00d1"));//Ñ
-                    _result.Add(new AlifbaSymbol("\u00f6", "\u00f6", "\u00d6", "\u00d6"));//Ö
-                    _result.Add(new AlifbaSymbol("\u015f", "\u015f", "\u015e", "\u015e"));//Ş
-                    _result.Add(new AlifbaSymbol("\u00fc", "\u00fc", "\u00dc", "\u00dc"));//Ü
+                    _result.Add(new AlifbaSymbol("\u00e4", "\u00c4", "\u00e4", "\u00c4"));//Ä
+                    _result.Add(new AlifbaSymbol("\u00e7", "\u00c7", "\u00e7", "\u00c7"));//Ç
+                    _result.Add(new AlifbaSymbol("\u0131", "\u0130", "\u0131", "\u0130"));//İı
+                    _result.Add(new AlifbaSymbol("\u00f1", "\u00d1", "\u00f1", "\u00d1"));//Ñ
+                    _result.Add(new AlifbaSymbol("\u00f6", "\u00d6", "\u00f6", "\u00d6"));//Ö
+                    _result.Add(new AlifbaSymbol("\u015f", "\u015e", "\u015f", "\u015e"));//Ş
+                    _result.Add(new AlifbaSymbol("\u00fc", "\u00dc", "\u00fc", "\u00dc"));//Ü
                     break;
                 case BuiltInAlifbaType.Yanalif: //config: add all yanalif symbols and let UI decide? 
-                    _result.Add(new AlifbaSymbol("\u00ab", "\u00ab"));//«
-                    _result.Add(new AlifbaSymbol("\u00bb", "\u00bb"));//»
-                    _result.Add(new AlifbaSymbol("\u2014", "\u2014"));//—
+                    _result.Add(new AlifbaSymbol("\u00ab", DisplayText: "\u00ab"));//«
+                    _result.Add(new AlifbaSymbol("\u00bb", DisplayText: "\u00bb"));//»
+                    _result.Add(new AlifbaSymbol("\u2014", DisplayText: "\u2014"));//—
                     break;
             }
             return _result;
