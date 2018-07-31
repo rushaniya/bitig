@@ -29,17 +29,25 @@ namespace Bitig.UI.Configuration
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
+                        if(x_Direction.ManualCommand == null)
                         {
-                            x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
+                            rdbFromLibrary.Checked = true;
+                            if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
+                            {
+                                x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
+                                x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
+                            }
+                            else
+                            {
+                                x_SelectedAssemblyPath = x_Direction.AssemblyPath;
+                                x_CurrentDisplayedAssembly = x_Direction.AssemblyFileName;
+                                x_AssemblyComboSelectedItem = x_Direction.AssemblyFileName;
+                                x_TypeComboSelectedItem = x_Direction.TypeName;
+                            }
                         }
                         else
                         {
-                            x_SelectedAssemblyPath = x_Direction.AssemblyPath;
-                            x_CurrentDisplayedAssembly = x_Direction.AssemblyFileName; 
-                            x_AssemblyComboSelectedItem = x_Direction.AssemblyFileName;
-                            x_TypeComboSelectedItem = x_Direction.TypeName;
+                            rdbManual.Checked = true;
                         }
                     }
                 }
@@ -287,6 +295,16 @@ namespace Bitig.UI.Configuration
             }
             cmbSource.SelectedIndex = _sourceIndex;
             cmbTarget.SelectedIndex = _targetIndex;
+        }
+
+        private void rdbFromLibrary_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlFromLibrary.Enabled = rdbFromLibrary.Checked;
+        }
+
+        private void rdbManual_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlManual.Enabled = rdbManual.Checked;
         }
 
         private void FillAssemblyTypes()

@@ -36,7 +36,8 @@ namespace BitigLogicTests
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _translitResult = _command.Convert("2132");
-            Assert.AreEqual("AabA", _translitResult);
+            //not AabA because of MimicCapitals
+            Assert.AreEqual("Aaba", _translitResult);
         }
 
         [TestMethod]
@@ -79,6 +80,53 @@ namespace BitigLogicTests
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             Assert.IsTrue(_command.IsAlphabetic("\u0627\ufe8f"));
+        }
+
+        [TestMethod]
+        public void InitFromDirection()
+        {
+            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            {
+                { new AlifbaSymbol("1"), new AlifbaSymbol("a") },
+                { new AlifbaSymbol("2"), new AlifbaSymbol("b") },
+                { new AlifbaSymbol("3"), new AlifbaSymbol("c") }
+            };
+            var _command = new ManualCommand(_translitDictionary);
+            var _direction = new Direction(-1, null, null, null, ManualCommand: _command);
+            var _translitResult = _direction.Transliterate("2132");
+            Assert.AreEqual("bacb", _translitResult);
+        }
+
+        [TestMethod]
+        public void MultiLetterKeys_DifferentLengths()
+        {
+            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            {
+                { new AlifbaSymbol("11"), new AlifbaSymbol("A") },
+                { new AlifbaSymbol("22"), new AlifbaSymbol("B") },
+                { new AlifbaSymbol("33"), new AlifbaSymbol("C") },
+                { new AlifbaSymbol("45"), new AlifbaSymbol("D") },
+                { new AlifbaSymbol("6"), new AlifbaSymbol("E") },
+                { new AlifbaSymbol("777"), new AlifbaSymbol("F") },
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("22113324567773");
+            Assert.AreEqual("BAC2DEF3", _translitResult);
+        }
+
+        [TestMethod]
+        public void MultiLetterKeys_SameLengths()
+        {
+            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            {
+                { new AlifbaSymbol("11"), new AlifbaSymbol("A") },
+                { new AlifbaSymbol("22"), new AlifbaSymbol("B") },
+                { new AlifbaSymbol("33"), new AlifbaSymbol("C") },
+                { new AlifbaSymbol("45"), new AlifbaSymbol("D") },
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("2211332453");
+            Assert.AreEqual("BAC2D3", _translitResult);
         }
     }
 }

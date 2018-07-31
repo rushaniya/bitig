@@ -34,6 +34,57 @@ namespace BitigTranslitTests
             }
         }
 
+        class MultiSymbolTranslitCommand : SubstituteTranslitCommand
+        {
+            private Dictionary<string, string> translitTable;
+            private void FillTranslitTable()
+            {
+                translitTable = new Dictionary<string, string>();
+                translitTable.Add("11", "A");
+                translitTable.Add("22", "B");
+                translitTable.Add("33", "CD");
+                translitTable.Add("45", "E");
+                translitTable.Add("6", "F");
+            }
+
+            protected override Dictionary<string, string> TranslitTable
+            {
+                get { return translitTable; }
+            }
+
+            public MultiSymbolTranslitCommand()
+            {
+                AlphabetPattern = @"123456";
+                FillTranslitTable();
+                IgnoreCase = true;
+            }
+        }
+
+        class MultiSymbolTranslitCommand_NoLengthOfOne : SubstituteTranslitCommand
+        {
+            private Dictionary<string, string> translitTable;
+            private void FillTranslitTable()
+            {
+                translitTable = new Dictionary<string, string>();
+                translitTable.Add("11", "A");
+                translitTable.Add("22", "B");
+                translitTable.Add("33", "CD");
+                translitTable.Add("45", "E");
+            }
+
+            protected override Dictionary<string, string> TranslitTable
+            {
+                get { return translitTable; }
+            }
+
+            public MultiSymbolTranslitCommand_NoLengthOfOne()
+            {
+                AlphabetPattern = @"12345";
+                FillTranslitTable();
+                IgnoreCase = true;
+            }
+        }
+
         class NonAlphabeticChainedCommand : TranslitCommand
         {
             public NonAlphabeticChainedCommand()
@@ -121,6 +172,57 @@ namespace BitigTranslitTests
             {
                 var result = target.Convert(item.Key);
                 Assert.AreEqual(item.Value, result);
+            }
+        }
+
+        [TestMethod]
+        public void NotTranslittedSymbols()
+        {
+            var _command = new NonAlphabetTranslitCommand();
+            var _testPairs = new Dictionary<string, string>();
+            _testPairs.Add("CD.", "CD."); //symbols C and D are within AlphabetPattern
+            _testPairs.Add("@$.", "@$."); //symbols @ and $ are not within AlphabetPattern
+            _testPairs.Add("z!C", "26?C");
+            _testPairs.Add("z!$", "26?$");
+
+            foreach (var _pair in _testPairs)
+            {
+                var result = _command.Convert(_pair.Key);
+                Assert.AreEqual(_pair.Value, result);
+            }
+        }
+
+        [TestMethod]
+        public void MultiSymbolConvertTest()
+        {
+            var _command = new MultiSymbolTranslitCommand();
+            var _testPairs = new Dictionary<string, string>();
+            _testPairs.Add("221133", "BACD");
+            _testPairs.Add("2211332", "BACD2");
+            _testPairs.Add("221133!", "BACD!");
+            _testPairs.Add("22112456", "BA2EF");
+
+            foreach (var _pair in _testPairs)
+            {
+                var result = _command.Convert(_pair.Key);
+                Assert.AreEqual(_pair.Value, result);
+            }
+        }
+
+        [TestMethod]
+        public void MultiSymbolConvertTest_NoLengthOfOne()
+        {
+            var _command = new MultiSymbolTranslitCommand_NoLengthOfOne();
+            var _testPairs = new Dictionary<string, string>();
+            _testPairs.Add("221133", "BACD");
+            _testPairs.Add("2211332", "BACD2");
+            _testPairs.Add("221133!", "BACD!");
+            _testPairs.Add("22112456", "BA2E6");
+
+            foreach (var _pair in _testPairs)
+            {
+                var result = _command.Convert(_pair.Key);
+                Assert.AreEqual(_pair.Value, result);
             }
         }
     }
