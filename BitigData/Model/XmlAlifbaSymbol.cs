@@ -1,4 +1,6 @@
-﻿namespace Bitig.Data.Model
+﻿using Bitig.Logic.Model;
+
+namespace Bitig.Data.Model
 {
     public class XmlAlifbaSymbol
     {
@@ -38,6 +40,31 @@
         public XmlAlifbaSymbol()
         {
 
+        }
+
+        public XmlAlifbaSymbol(AlifbaSymbol ModelSymbol)
+        {
+            ActualText = ModelSymbol.ActualText;
+            DisplayText = ModelSymbol.DisplayText;
+            CapitalizedText = ModelSymbol.CapitalizedText;
+            CapitalizedDisplayText = ModelSymbol.CapitalizedDisplayText;
+        }
+
+        internal AlifbaSymbol ToModel()
+        {
+            return new AlifbaSymbol(ActualText, CapitalizedText,
+                DisplayText, CapitalizedDisplayText);
+        }
+
+        internal XmlAlifbaSymbol Clone()
+        {
+            return new XmlAlifbaSymbol
+            {
+                ActualText = ActualText,
+                DisplayText = DisplayText,
+                CapitalizedText = CapitalizedText,
+                CapitalizedDisplayText = CapitalizedDisplayText
+            };
         }
     }
 }

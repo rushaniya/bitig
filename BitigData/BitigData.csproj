@@ -72,10 +72,13 @@
     <Compile Include="Model\XmlAlifba.cs" />
     <Compile Include="Model\XmlFont.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\XmlAlifbaReader.cs" />
     <Compile Include="Storage\XmlAlifbaRepository.cs" />
     <Compile Include="Storage\AlifbaSerializer.cs" />
     <Compile Include="Storage\DirectionSerializer.cs" />
+    <Compile Include="Storage\XmlDirectionReader.cs" />
     <Compile Include="Storage\XmlDirectionRepository.cs" />
+    <Compile Include="Storage\XmlContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">

@@ -7,239 +7,89 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Storage
 {
-    public class XmlDirectionRepository : IRepository<Direction, int>
+    public class XmlDirectionRepository : DirectionRepository
     {
-        private readonly string path;
+        private XmlContext xmlContext;
 
-        private List<XmlDirection> xmlList;
-
-        public XmlDirectionRepository(string Path)
-        {
-            path = Path;
-        }
-
-        public RepositoryProvider RepositoryProvider
-        {
-            get;
-            set;
-        }
-
-        public List<Direction> GetList()
-        {
-            if (xmlList == null)
-                ReadListFromFile();
-            var _result = new List<Direction>();
-            foreach (var _xmlDir in xmlList)
-            {
-                _result.Add(MapToModel(_xmlDir));
-            }
-            return _result;
-        }
-
-        public Direction Get(int ID)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _direction = xmlList.Find(_item => _item.ID == ID);
-            if (_direction == null)
-                return null;
-            return MapToModel(_direction);
-        }
-
-        //public override bool IsEmpty()
-        //{
-        //    if (xmlList == null)
-        //    {
-        //        ReadListFromFile();
-        //    }
-        //    return xmlList.Count == 0;
-        //}
-
-        public void Insert(Direction Item)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            xmlList.Add(MapToStorage(Item));
-        }
-
-        public void Delete(Direction Item)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _direction = xmlList.Find(_item => _item.ID == Item.ID);
-            if (_direction != null)
-                xmlList.Remove(_direction);
-        }
-
-        public void Update(Direction Item)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _direction = xmlList.Find(_item => _item.ID == Item.ID);
-            if (_direction == null)
-                throw new InvalidOperationException("Direction does not exist.");
-            xmlList.Remove(_direction);
-            xmlList.Add(MapToStorage(Item));
-        }
-
-        public bool IsFlushable
+        public override IDataContext DataContext
         {
             get
             {
-                return true;
+                return xmlContext;
             }
         }
 
-        public void SaveChanges()
+        public XmlDirectionRepository(XmlContext XmlContext)
         {
-            DirectionSerializer.SaveToFile(path, xmlList);
+            xmlContext = XmlContext;
         }
 
-        //public override void InsertBuiltIn(int ID, BuiltInDirection BuiltIn)
-        //{
-        //    if (xmlList == null)
-        //    {
-        //        ReadListFromFile();
-        //    }
-        //    xmlList.Add(new XmlDirection
-        //        (
-        //            ID,
-        //            BuiltIn.SourceAlifbaID,
-        //            BuiltIn.TargetAlifbaID,
-        //            BuiltInID: BuiltIn.ID,
-        //            Exclusions: null
-        //        ));
-        //}
-
-       /* public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
+        private Direction MapWithReferences(XmlDirection StoredDirection)
         {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _direction = xmlList.Find(_item =>
-                _item.SourceAlifbaID == SourceID && _item.TargetAlifbaID == TargetID);
+            var _source = xmlContext.Alphabets.Get(StoredDirection.SourceAlifbaID);
+            var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
+            var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
+            var _exclusions = new List<Exclusion>();
+            if (StoredDirection.Exclusions != null)
+                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
+            return new Direction(StoredDirection.ID, _source.ToModel(), _target.ToModel(), _exclusions,
+                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn);
+        }
+
+        public override List<Direction> GetList()
+        {
+            var _xmlList = xmlContext.Directions.GetList();
+            return _xmlList.Select(MapWithReferences).ToList();
+        }
+
+        public override Direction Get(int ID)
+        {
+            var _xmlItem = xmlContext.Directions.Get(ID);
+            return _xmlItem == null ? null : MapWithReferences(_xmlItem);
+        }
+
+        public override void Insert(Direction Item)
+        {
+            var _sameAlphabets = xmlContext.Directions.GetList().Find(x =>
+              x.SourceAlifbaID == Item.Source.ID && x.TargetAlifbaID == Item.Target.ID);
+            if (_sameAlphabets != null)
+                throw new Exception("Direction with same source and target exists.");
+            var _xmlItem = new XmlDirection(Item);
+            xmlContext.Directions.Insert(_xmlItem);
+            Item.ID = _xmlItem.ID;
+        }
+
+        public override void Delete(int ID)
+        {
+            xmlContext.Directions.Delete(ID);
+        }
+
+        public override void Update(Direction Item)
+        {
+            var _sameAlphabets = xmlContext.Directions.GetList().Find(x =>
+              x.ID != Item.ID && x.SourceAlifbaID == Item.Source.ID && x.TargetAlifbaID == Item.Target.ID);
+            if (_sameAlphabets != null)
+                throw new Exception("Direction with same source and target exists.");
+            xmlContext.Directions.Update(new XmlDirection(Item));
+        }
+
+        public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
+        {
+            var _direction = xmlContext.Directions.GetList().Find(_item =>
+                 _item.SourceAlifbaID == SourceID && _item.TargetAlifbaID == TargetID);
             if (_direction == null)
                 return null;
-            return MapToModel(_direction);
+            return MapWithReferences(_direction);
         }
 
         public override List<Alifba> GetTargets(int SourceID)
         {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _targets = xmlList.Where(_item =>
-                _item.SourceAlifbaID == SourceID).ToList();
-            var _result = new List<Alifba>();
-            _targets.ForEach(_target => _result.Add(_target));
-            return _result;
-        }*/
-
-        private Direction MapToModel(XmlDirection StoredDirection)
-        {
-            if (RepositoryProvider == null)
-                throw new Exception("RepositoryProvider is null. Cannot access AlifbaRepository.");
-            var _source = RepositoryProvider.AlifbaRepository.Get(StoredDirection.SourceAlifbaID);
-            var _target = RepositoryProvider.AlifbaRepository.Get(StoredDirection.TargetAlifbaID);
-            var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
-            var _exclusions = new List<Exclusion>();
-            if (StoredDirection.Exclusions != null)
-                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(MapToModel(_excl)));
-            return new Direction(StoredDirection.ID, _source, _target, _exclusions,
-                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn);
+            var _targets = xmlContext.Directions.GetList()
+                .Where(_item => _item.SourceAlifbaID == SourceID)
+                .Select(MapWithReferences)
+                .Select(_dir => _dir.Target)
+                .ToList();
+            return _targets;
         }
-
-        private Exclusion MapToModel(XmlExclusion StoredExclusion)
-        {
-            return new Exclusion
-            {
-                AnyPosition = StoredExclusion.AnyPosition,
-                MatchBeginning = StoredExclusion.MatchBeginning,
-                MatchCase = StoredExclusion.MatchCase,
-                SourceWord = StoredExclusion.SourceWord,
-                TargetWord = StoredExclusion.TargetWord
-            };
-        }
-
-        private void ReadListFromFile()
-        {
-            xmlList = DirectionSerializer.ReadFromFile(path);
-            if (xmlList == null)
-                xmlList = new List<XmlDirection>();
-        }
-
-        private XmlDirection MapToStorage(Direction ModelDirection)
-        {
-            if (ModelDirection.Source == null)
-                throw new InvalidOperationException("Source alphabet is required.");//loc
-            if (ModelDirection.Target == null)
-                throw new InvalidOperationException("Target alphabet is required.");//loc
-
-            var _builtInID = ModelDirection.BuiltIn == null ? BuiltInDirectionType.None :
-                ModelDirection.BuiltIn.ID;
-
-            var _exclusions = new List<XmlExclusion>();
-            if (ModelDirection.Exclusions != null)
-                ModelDirection.Exclusions.ForEach(_excl => _exclusions.Add(MapToStorage(_excl, ModelDirection.ID)));
-
-            return new XmlDirection
-            (
-                ModelDirection.ID,
-                ModelDirection.Source.ID,
-                ModelDirection.Target.ID,
-                AssemblyPath: ModelDirection.AssemblyPath,
-                TypeName: ModelDirection.TypeName,
-                BuiltInID: _builtInID,
-                Exclusions: _exclusions
-            );
-        }
-
-        private XmlExclusion MapToStorage(Exclusion ModelExclusion, int DirectionID)
-        {
-            return new XmlExclusion
-            {
-                AnyPosition = ModelExclusion.AnyPosition,
-                MatchBeginning = ModelExclusion.MatchBeginning,
-                MatchCase = ModelExclusion.MatchCase,
-                SourceWord = ModelExclusion.SourceWord,
-                TargetWord = ModelExclusion.TargetWord,
-                DirectionID = DirectionID
-            };
-        }
-
-        public int GenerateID(IEnumerable<int> ExistingIDs)
-        {
-            int _result = -1;
-            for (int i = 0; i < int.MaxValue; i++)
-            {
-                if (ExistingIDs.All(_id => _id != i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
-        }
-
-        //public override bool IsInUse(Alifba Alifba)
-        //{
-        //    if (xmlList == null)
-        //    {
-        //        ReadListFromFile();
-        //    }
-        //    var _direction = xmlList.Find(_item =>
-        //        _item.SourceAlifbaID == Alifba.ID || _item.TargetAlifbaID == Alifba.ID);
-        //    return _direction != null;
-        //}
     }
 }

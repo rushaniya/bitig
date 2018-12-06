@@ -4,57 +4,33 @@ using System.Linq;
 
 namespace Bitig.Logic.Repository
 {
-    public class InMemoryRepository<T, IDType> : IRepository<T, IDType>
-        where T:EquatableByID<IDType>, IDeepCloneable<T> 
+    public class InMemoryList<T>
+        where T:EquatableByID<int>, IDeepCloneable<T> 
     {
         private List<InMemoryItem<T>> list;
-        private IRepository<T, IDType> persistentRepo;
 
-        public bool IsFlushable
+        public InMemoryList(List<T> List = null)
         {
-            get
+            if (List == null)
             {
-                return true;
+                list = new List<InMemoryItem<T>>();
+
+            }
+            else
+            {
+                list = List.Select(x => new InMemoryItem<T>(x)).ToList();
             }
         }
 
-        public RepositoryProvider RepositoryProvider
+        private int GenerateTempID()
         {
-            get { return persistentRepo.RepositoryProvider; } //repo: ok?
-            set { persistentRepo.RepositoryProvider = value; }
-        }
-
-        public InMemoryRepository(IRepository<T, IDType> PersistentRepository)
-        {
-            if (PersistentRepository == null)
-                throw new ArgumentNullException("PersistentRepository");
-            persistentRepo = PersistentRepository;
-            FillList();
-        }
-
-        private void FillList()
-        {
-            list = new List<InMemoryItem<T>>();
-            var _persistentList = persistentRepo.GetList();
-            foreach(var _item in _persistentList)
-            {
-                list.Add(new InMemoryItem<T>(_item));
-            }
-        }
-
-        private IDType GenerateID()
-        {
-            return persistentRepo.GenerateID(list.Select(_item => _item.Item.ID));
+            return IDGenerator.GenerateID(list.Select(x => x.Item.ID));
         }
 
         public void Insert(T Item)
         {
-            Item.ID = GenerateID();
+            Item.ID = GenerateTempID();
             var _clone = Item.Clone();
-            //if (Item.ID.Equals(IDGenerator.DefaultID))
-            //    _clone.ID = IDGenerator.GenerateID(GetList());
-            //else
-            //    list.RemoveAll(_item => _item.Item.Equals(Item));
             var _added = new InMemoryItem<T>(_clone);
             _added.State = ItemState.Added;
             list.Add(_added);
@@ -78,9 +54,9 @@ namespace Bitig.Logic.Repository
             list.Add(_updated);
         }
 
-        public void Delete(T Item)
+        public void Delete(int ID)
         {
-            var _existingItem = list.Find(_item => _item.Item.Equals(Item));
+            var _existingItem = list.Find(_item => _item.Item.ID.Equals(ID));
             if(_existingItem != null)
             {
                 if (_existingItem.State == ItemState.Added)
@@ -95,7 +71,7 @@ namespace Bitig.Logic.Repository
             return list.Where(_item => _item.State != ItemState.Deleted).Select(_item => _item.Item.Clone()).ToList();
         }
 
-        public T Get(IDType ID)
+        public T Get(int ID)
         {
             var _found = list.Find(_item => _item.Item.ID.Equals(ID));
             if (_found == null || _found.State == ItemState.Deleted)
@@ -103,31 +79,43 @@ namespace Bitig.Logic.Repository
             return _found.Item.Clone();
         }
 
-        public void SaveChanges()
+        public List<T> ApplyChanges(List<T> PersistentList)
         {
+            var _result = new List<T>(PersistentList);
             foreach (var _item in list)
             {
+                var _persistentItem = _result.FirstOrDefault(x => x.ID == _item.Item.ID);
                 switch(_item.State)
                 {
                     case ItemState.Added:
-                        persistentRepo.Insert(_item.Item);
+                        if (_persistentItem == null)
+                        {
+                            _result.Add(_item.Item);
+                        }
+                        else
+                        {
+                            var _clone = _item.Item.Clone();
+                            _clone.ID = IDGenerator.GenerateID(_result.Select(x => x.ID));
+                            _result.Add(_clone);
+                        }
                         break;
                     case ItemState.Updated:
-                        persistentRepo.Update(_item.Item);
+                        if (_persistentItem != null)
+                        {
+                            _result.Remove(_persistentItem);
+                            _result.Add(_item.Item);
+                        }
                         break;
                     case ItemState.Deleted:
-                        persistentRepo.Delete(_item.Item);
+                        if (_persistentItem != null)
+                        {
+                            _result.Remove(_persistentItem);
+                        }
                         break;
                 }
-                _item.State = ItemState.Unmodified;
+                list = _result.Select(x => new InMemoryItem<T>(x)).ToList();
             }
-            if (persistentRepo.IsFlushable)
-                persistentRepo.SaveChanges();
-        }
-
-        public IDType GenerateID(IEnumerable<IDType> ExistingIDs)
-        {
-            return persistentRepo.GenerateID(ExistingIDs);
+            return _result;
         }
     }
 

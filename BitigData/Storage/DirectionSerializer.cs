@@ -7,11 +7,11 @@ using System;
 
 namespace Bitig.Data.Storage
 {
-    [XmlRoot("Directions")]
+    [XmlRoot("DirectionsConfig")]
     public class DirectionSerializer
     {
         private List<XmlDirection> directionsList = new List<XmlDirection>();
-
+        
         public List<XmlDirection> DirectionsList
         {
             get { return directionsList; }

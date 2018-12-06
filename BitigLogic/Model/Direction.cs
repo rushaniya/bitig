@@ -6,7 +6,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {
-    public class Direction : EquatableByID<int>, IDeepCloneable<Direction>
+    public class Direction : EquatableByID<int>
     {
         private int id = -1;
 
@@ -156,21 +156,7 @@ namespace Bitig.Logic.Model
 
         public override string ToString()
         {
-            return this.FriendlyName;
-        }
-
-        public Direction Clone()
-        {
-            var _exclusions = new List<Exclusion>();
-            if (Exclusions != null)
-            {
-                foreach (var _item in Exclusions)
-                {
-                    _exclusions.Add(_item.Clone());
-                }
-            }
-            //repo: clone BuiltIn?
-            return new Direction(ID, Source.Clone(), Target.Clone(), _exclusions, AssemblyPath, TypeName, BuiltIn);
+            return FriendlyName;
         }
     }
 }

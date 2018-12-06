@@ -10,7 +10,8 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmExclusions : Form
     {
-        private IRepository<Direction,int> x_DirectionRepo;
+        private DirectionRepository x_DirectionRepo;
+        private IDataContext x_DataContext;
         private Dictionary<int, BindingList<Exclusion>> x_BindingLists = new Dictionary<int, BindingList<Exclusion>>();
         private Direction x_SelectedDirection;
         private bool x_IndependentMode;
@@ -25,13 +26,15 @@ namespace Bitig.UI.Configuration
 
         private bool x_Loading = true;
 
-        public frmExclusions(Direction CurrentDirection, IRepository<Direction, int> DirectionRepo, bool AllowChangeDirection = false)
+        public frmExclusions(Direction CurrentDirection, IDataContext DataContext, bool AllowChangeDirection = false)
         {
             InitializeComponent();
+            x_DataContext = DataContext;
+            x_DirectionRepo = DataContext.DirectionRepository;
             if (AllowChangeDirection)
             {
                 x_IndependentMode = true;
-                var _directions = DirectionRepo.GetList();
+                var _directions = x_DirectionRepo.GetList();
                 x_SelectedDirection = CurrentDirection ?? _directions[0];
                 cmbDirection.Items.AddRange(_directions.ToArray());
             }
@@ -39,12 +42,11 @@ namespace Bitig.UI.Configuration
             {
                 if (CurrentDirection == null)
                     throw new ArgumentException("Must pass current direction");
-                x_SelectedDirection = CurrentDirection.Clone();
+                x_SelectedDirection = CurrentDirection;
                 cmbDirection.Items.Add(x_SelectedDirection);
                 cmbDirection.Enabled = false;
             }
             cmbDirection.SelectedItem = x_SelectedDirection;
-            x_DirectionRepo = DirectionRepo;
         }
 
         private void frmExclusions_Load(object sender, EventArgs e)
@@ -77,6 +79,8 @@ namespace Bitig.UI.Configuration
         {
             if (x_Loading)
                 return true;
+            if (!x_BindingLists.ContainsKey(x_SelectedDirection.ID))
+                return true;
             x_ValidationResults[RowIndex] = null;
             dgvExclusions.Rows[RowIndex].Cells[VALIDATION_RESULT_COLUMN].Value = null;
             var _row = dgvExclusions.Rows[RowIndex];
@@ -94,13 +98,13 @@ namespace Bitig.UI.Configuration
                 .ToList();  
             List<string> _warnings, _errors;
             var _exclusion = new Exclusion
-            {
-                SourceWord = _source,
-                TargetWord = _target ?? string.Empty,
-                MatchBeginning = _row.Cells[MATCH_BEGINNING_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_BEGINNING_COLUMN].Value),
-                AnyPosition = _row.Cells[ANY_POSITION_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[ANY_POSITION_COLUMN].Value),
-                MatchCase = _row.Cells[MATCH_CASE_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_CASE_COLUMN].Value)
-            };
+            (
+                SourceWord: _source,
+                TargetWord: _target ?? string.Empty,
+                MatchBeginning: _row.Cells[MATCH_BEGINNING_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_BEGINNING_COLUMN].Value),
+                AnyPosition: _row.Cells[ANY_POSITION_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[ANY_POSITION_COLUMN].Value),
+                MatchCase: _row.Cells[MATCH_CASE_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_CASE_COLUMN].Value)
+            );
             if (!x_SelectedDirection.IsValidExclusion(_exclusion, out _errors, out _warnings) || _warnings.Count > 0)
             {
                 x_ValidationResults[RowIndex] = _errors.Union(_warnings).Aggregate((x, y) => x + Environment.NewLine + y);
@@ -133,7 +137,7 @@ namespace Bitig.UI.Configuration
             }
             if(x_IndependentMode)
             {
-                x_DirectionRepo.SaveChanges();
+                x_DataContext.SaveChanges();
             }
             DialogResult = DialogResult.OK;
         }

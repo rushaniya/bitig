@@ -1,27 +1,10 @@
-﻿namespace Bitig.Data.Model
+﻿using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
+
+namespace Bitig.Data.Model
 {
-    public class XmlExclusion
+    public class XmlExclusion : IDeepCloneable<XmlExclusion>
     {
-        //private int id = -1;
-
-        //public int ID
-        //{
-        //    get { return id; }
-        //    set
-        //    {
-        //        if (ExclusionSerializer.Deserializing)
-        //            id = value;
-        //        else System.Diagnostics.Debug.Fail("XmlExclusion.ID set");
-        //    }
-        //}
-
-        private int directionID = -1;
-
-        public int DirectionID
-        {
-            get { return directionID; }
-            set { directionID = value; }
-        }
 
         public string SourceWord
         {
@@ -53,9 +36,35 @@
             set;
         }
 
+        public Exclusion ToModel()
+        {
+            return new Exclusion(SourceWord, TargetWord, MatchCase, MatchBeginning, AnyPosition);
+        }
+
+        public XmlExclusion Clone()
+        {
+            return new XmlExclusion
+            {
+                AnyPosition = AnyPosition,
+                MatchCase = MatchCase,
+                MatchBeginning = MatchBeginning,
+                SourceWord = SourceWord,
+                TargetWord = TargetWord
+            };
+        }
+
         public XmlExclusion()
         {
 
+        }
+
+        public XmlExclusion(Exclusion ModelExclusion)
+        {
+            AnyPosition = ModelExclusion.AnyPosition;
+            MatchBeginning = ModelExclusion.MatchBeginning;
+            MatchCase = ModelExclusion.MatchCase;
+            SourceWord = ModelExclusion.SourceWord;
+            TargetWord = ModelExclusion.TargetWord;
         }
     }
 }

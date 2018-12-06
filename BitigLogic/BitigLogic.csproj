@@ -86,11 +86,10 @@
     <Compile Include="Model\AlifbaSymbol.cs" />
     <Compile Include="Repository\AlifbaRepository.cs" />
     <Compile Include="Repository\DirectionRepository.cs" />
+    <Compile Include="Repository\IDataContext.cs" />
     <Compile Include="Repository\IDeepCloneable.cs" />
-    <Compile Include="Repository\IIDGenerator.cs" />
-    <Compile Include="Repository\InMemoryRepoProvider.cs" />
-    <Compile Include="Repository\InMemoryRepository.cs" />
-    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IDGenerator.cs" />
+    <Compile Include="Repository\InMemoryList.cs" />
     <Compile Include="Repository\EquatableByID.cs" />
     <Compile Include="Repository\DefaultConfiguration.cs" />
     <Compile Include="Commands\RasmalifYanalif.cs" />
@@ -98,7 +97,6 @@
     <Compile Include="Model\Direction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IRepositoryItem.cs" />
-    <Compile Include="Repository\RepositoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">

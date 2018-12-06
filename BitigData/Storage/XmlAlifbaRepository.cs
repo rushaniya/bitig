@@ -1,186 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bitig.Logic.Repository;
-using Bitig.Data.Model;
 using Bitig.Logic.Model;
 using System.Linq;
+using Bitig.Data.Model;
 
 namespace Bitig.Data.Storage
 {
-    public class XmlAlifbaRepository : IRepository<Alifba, int>
+    public class XmlAlifbaRepository : AlifbaRepository
     {
-        private readonly string path;
+        private XmlContext xmlContext;
 
-        private List<XmlAlifba> xmlList;
-
-        public RepositoryProvider RepositoryProvider
-        {
-            get;
-            set;
-        }
-
-        public bool IsFlushable
+        public override IDataContext DataContext
         {
             get
             {
-                return true;
+                return xmlContext;
             }
         }
 
-        public XmlAlifbaRepository(string Path)
+        public XmlAlifbaRepository(XmlContext XmlContext)
         {
-            path = Path;
+            xmlContext = XmlContext;
         }
 
-        private void ReadListFromFile()
+        public override List<Alifba> GetList()
         {
-            xmlList = AlifbaSerializer.ReadFromFile(path);
-            if (xmlList == null)
-                xmlList = new List<XmlAlifba>();
+            var _xmlList = xmlContext.Alphabets.GetList();
+            return _xmlList.Select(_item => _item.ToModel()).ToList();
         }
 
-        private Alifba MapToModel(XmlAlifba StoredAlifba)
+        public override Alifba Get(int ID)
         {
-            var _customSymbols = new List<AlifbaSymbol>();
-            if(StoredAlifba.CustomSymbols != null)
-            {
-                foreach (var _symbol in StoredAlifba.CustomSymbols)
-                {
-                    _customSymbols.Add(MapToModel(_symbol));
-                }
-            }
-
-            var _alifba = new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName,
-                _customSymbols, StoredAlifba.RightToLeft, MapToModel(StoredAlifba.DefaultFont), StoredAlifba.BuiltIn);
-            return _alifba;
+            var _xmlItem = xmlContext.Alphabets.Get(ID);
+            return _xmlItem == null ? null : _xmlItem.ToModel();
         }
 
-        private AlifbaFont MapToModel(XmlFont StoredFont)
+        public override Alifba GetBuiltIn(BuiltInAlifbaType BuiltIn)
         {
-            if (StoredFont == null)
-                return null;
-            return new AlifbaFont(StoredFont.Description);
+            var _xmlItem = xmlContext.Alphabets.GetList().Find(x => x.BuiltIn == BuiltIn);
+            return _xmlItem.ToModel();
         }
 
-        private AlifbaSymbol MapToModel(XmlAlifbaSymbol StoredSymbol)
+        public override void Insert(Alifba Item)
         {
-            return new AlifbaSymbol(StoredSymbol.ActualText, StoredSymbol.CapitalizedText,
-                StoredSymbol.DisplayText, StoredSymbol.CapitalizedDisplayText);
+            var _xmlItem = new XmlAlifba(Item);
+            xmlContext.Alphabets.Insert(_xmlItem);
+            Item.ID = _xmlItem.ID;
         }
 
-        private XmlAlifba MapToStorage(Alifba ModelAlifba)
+        public override void Delete(int ID)
         {
-            var _customSymbols = new List<XmlAlifbaSymbol>();
-            if (ModelAlifba.CustomSymbols != null)
-            {
-                foreach (var _symbol in ModelAlifba.CustomSymbols)
-                {
-                    _customSymbols.Add(MapToStorage(_symbol));
-                }
-            }
-            var _xmlAlifba = new XmlAlifba(ModelAlifba.ID, ModelAlifba.FriendlyName, _customSymbols,
-                ModelAlifba.RightToLeft, MapToStorage(ModelAlifba.DefaultFont), ModelAlifba.BuiltIn);
-           
-            return _xmlAlifba;
+            var _xmlItem = xmlContext.Alphabets.Get(ID);
+            if (_xmlItem == null)
+                return;
+            if (_xmlItem.BuiltIn == BuiltInAlifbaType.Yanalif)
+                throw new InvalidOperationException("Cannot delete Yanalif.");
+            if (xmlContext.Directions.GetList().Any(x => x.SourceAlifbaID == ID || x.TargetAlifbaID == ID))
+                throw new InvalidOperationException("Cannot delete alphabet in use.");
+            xmlContext.Alphabets.Delete(ID);
         }
 
-        private XmlFont MapToStorage(AlifbaFont ModelFont)
+        public override void Update(Alifba Item)
         {
-            if (ModelFont == null)
-                return null;
-            return new XmlFont { Description = ModelFont.Description };
+            xmlContext.Alphabets.Update(new XmlAlifba(Item));
         }
 
-        private XmlAlifbaSymbol MapToStorage(AlifbaSymbol ModelSymbol)
+        public override Alifba GetYanalif()
         {
-            return new XmlAlifbaSymbol
-            {
-                ActualText = ModelSymbol.ActualText,
-                DisplayText = ModelSymbol.DisplayText,
-                CapitalizedText = ModelSymbol.CapitalizedText,
-                CapitalizedDisplayText = ModelSymbol.CapitalizedDisplayText
-            };
-        }
-
-        public List<Alifba> GetList()
-        {
-            if (xmlList == null) 
-                ReadListFromFile();
-            var _result = new List<Alifba>();
-            foreach (var _xmlAlifba in xmlList)
-            {
-                _result.Add(MapToModel(_xmlAlifba));
-            }
-            return _result;
-        }
-
-        public void Insert(Alifba Item)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            xmlList.Add(MapToStorage(Item));
-        }
-
-        public void Update(Alifba Item)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _alifba = xmlList.Find(_item => _item.ID == Item.ID);
-            if (_alifba == null)
-                throw new InvalidOperationException("Alifba does not exist.");
-            xmlList.Remove(_alifba);
-            xmlList.Add(MapToStorage(Item));
-        }
-
-        public Alifba Get(int ID)
-        {
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _alifba = xmlList.Find(_item => _item.ID == ID);
-            if (_alifba == null)
-                return null;
-            return MapToModel(_alifba);
-        }
-
-
-        public void Delete(Alifba Item)
-        {
-            //if (RepositoryProvider == null)
-            //    throw new Exception("RepositoryProvider is null. Cannot access DirectionRepository.");
-            //if (RepositoryProvider.DirectionRepository.IsInUse(Item))
-            //    throw new Exception("Cannot delete alphabet in use.");
-            if (xmlList == null)
-            {
-                ReadListFromFile();
-            }
-            var _alifba = xmlList.Find(_item => _item.ID == Item.ID);
-            if (_alifba != null)
-                xmlList.Remove(_alifba);
-        }
-
-        public void SaveChanges()
-        {
-            AlifbaSerializer.SaveToFile(path, xmlList);
-        }
-
-        public int GenerateID(IEnumerable<int> ExistingIDs)
-        {
-            int _result = -1;
-            for (int i = 0; i < int.MaxValue; i++)
-            {
-                if (ExistingIDs.All(_id => _id != i))
-                {
-                    _result = i;
-                    break;
-                }
-            }
-            return _result;
+            var _yanalif = xmlContext.Alphabets.GetList().Find(x => x.BuiltIn == BuiltInAlifbaType.Yanalif);
+            return _yanalif == null ? null : _yanalif.ToModel();
         }
     }
 }

@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlDirection
+    public class XmlDirection : EquatableByID<int>, IDeepCloneable<XmlDirection>
     {
-        private int id = -1;
-
-        public int ID
+        public override int ID
         {
-            get { return id; }
-            set
-            {
-                if (DirectionSerializer.Deserializing) id = value; 
-                else System.Diagnostics.Debug.Fail("XmlDirection.ID set");
-            }
+            get;
+            set;
         }
 
         public int SourceAlifbaID
@@ -64,18 +59,56 @@ namespace Bitig.Data.Model
         {
             this.AssemblyPath = AssemblyPath;
             this.BuiltInID = BuiltInID;
-            this.id = ID;
+            this.ID = ID;
             this.SourceAlifbaID = SourceAlifbaID;
             this.TargetAlifbaID = TargetAlifbaID;
             this.TypeName = TypeName;
             this.Exclusions = Exclusions;
         }
 
+        public XmlDirection(Direction ModelDirection)
+        {
+            if (ModelDirection.Source == null)
+                throw new InvalidOperationException("Source alphabet is required.");//loc
+            if (ModelDirection.Target == null)
+                throw new InvalidOperationException("Target alphabet is required.");//loc
+
+            var _builtInID = ModelDirection.BuiltIn == null ? BuiltInDirectionType.None :
+                ModelDirection.BuiltIn.ID;
+
+            var _exclusions = new List<XmlExclusion>();
+            if (ModelDirection.Exclusions != null)
+                ModelDirection.Exclusions.ForEach(_excl => _exclusions.Add(new XmlExclusion(_excl)));
+
+
+            ID = ModelDirection.ID;
+            SourceAlifbaID = ModelDirection.Source.ID;
+            TargetAlifbaID = ModelDirection.Target.ID;
+            AssemblyPath = ModelDirection.AssemblyPath;
+            TypeName = ModelDirection.TypeName;
+            BuiltInID = _builtInID;
+            Exclusions = _exclusions;
+            
+        }
+
         public override bool Equals(object obj)
         {
             XmlDirection _cast = obj as XmlDirection;
             if (_cast == null) return false;
-            return _cast.id == this.id;
+            return _cast.ID == ID;
+        }
+
+        public XmlDirection Clone()
+        {
+            var _exclusions = new List<XmlExclusion>();
+            if (Exclusions != null)
+            {
+                foreach (var _item in Exclusions)
+                {
+                    _exclusions.Add(_item.Clone());
+                }
+            }
+            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID);
         }
     }
 }

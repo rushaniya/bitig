@@ -16,26 +16,27 @@ namespace BitigDataTests
         {
         }
 
-        private const string dataFolder = @"..\..\..\BitigDataTests\TestData\";
+        private const string dataFolder = @"TestData\";
         private readonly string alifbaPath = dataFolder + "Alphabets.xml";
         private readonly string preparedFile = dataFolder + @"Prepared\Direction777.xml";
         private readonly string testFilePath = dataFolder + "Directions.xml";
 
         private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
-            var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
             if (preparedFilePath != null)
                 File.Copy(preparedFilePath, testFilePath);
-            var _dirRepo = new XmlDirectionRepository(testFilePath);
-            var _repoProvider = new RepositoryProvider(_alifbaRepo, _dirRepo);
-            return _repoProvider.DirectionRepository;
+            var _xmlContext = new XmlContext(alifbaPath, testFilePath);
+            var _dirRepo = _xmlContext.DirectionRepository;
+            return _dirRepo;
         }
 
-        private XmlDirectionRepository InitCheckRepo(IRepository<Direction, int> TestRepo)
+        private DirectionRepository InitCheckRepo()
         {
-            var _checkRepo = new XmlDirectionRepository(testFilePath);
-            _checkRepo.RepositoryProvider = TestRepo.RepositoryProvider;
-            return _checkRepo;
+            if (!File.Exists(testFilePath))
+                throw new Exception("File not created.");
+            var _xmlContext = new XmlContext(alifbaPath, testFilePath);
+            var _dirRepo = _xmlContext.DirectionRepository;
+            return _dirRepo;
         }
 
         [TestInitialize]
@@ -48,7 +49,7 @@ namespace BitigDataTests
                 File.Delete(alifbaPath);
         }
 
-        [TestMethod]
+       [TestMethod]
         public void GetList()
         {
             var _testRepo = InitTestRepo(preparedFile);
@@ -93,7 +94,7 @@ namespace BitigDataTests
             var _testRepo = InitTestRepo();
             _testRepo.Get(0);
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _count = _checkRepo.GetList().Count;
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _count);
         }
@@ -105,21 +106,20 @@ namespace BitigDataTests
             var _source = new Alifba(1, "alifba1");
             var _target = new Alifba(0, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
+            var _typeName = "TestType" + Guid.NewGuid();
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
             _testRepo.Insert(_direction);
-            var _insertedID = _direction.ID;
-            _testRepo.SaveChanges();
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _list = _checkRepo.GetList();
             Assert.IsTrue(_list.Count > 0);
-            var _inserted = _checkRepo.Get(_insertedID);
+            var _inserted = _checkRepo.GetList().Find(x =>
+                x.AssemblyFileName == _assemblyName && x.TypeName == _typeName);
             Assert.IsNotNull(_inserted);
             Assert.AreNotEqual(-1, _inserted.ID);
             Assert.AreEqual(_source, _inserted.Source);
             Assert.AreEqual(_target, _inserted.Target);
-            Assert.AreEqual(_assemblyName, _inserted.AssemblyPath);
-            Assert.AreEqual("TestType", _inserted.TypeName);
         }
 
         [TestMethod]
@@ -152,11 +152,12 @@ namespace BitigDataTests
             var _source = new Alifba(1, "alifba1");
             var _target = new Alifba(0, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
+            var _typeName = "TestType" + Guid.NewGuid();
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
             _testRepo.Insert(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _count = _checkRepo.GetList().Count;
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count + 1, _count);
         }
@@ -168,7 +169,8 @@ namespace BitigDataTests
             var _source = new Alifba(0, "alifba1");
             var _target = new Alifba(1, "alifba2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, null, _assemblyName, "TestType");
+            var _typeName = "TestType" + Guid.NewGuid();
+            var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
             try
             {
                 _testRepo.Insert(_direction);
@@ -184,7 +186,7 @@ namespace BitigDataTests
         public void Update()
         {
             var _testRepo = InitTestRepo(preparedFile);
-            var _alifbaRepo = new AlifbaRepository(new XmlAlifbaRepository(alifbaPath));
+            var _alifbaRepo = _testRepo.DataContext.AlifbaRepository;
             var _direction = _testRepo.Get(777);
             Assert.AreEqual(null, _direction.BuiltIn);
             Assert.AreEqual(0, _direction.Source.ID);
@@ -201,9 +203,9 @@ namespace BitigDataTests
             _direction.AssemblyPath = _assembly;
             _direction.TypeName = _type;
             _testRepo.Update(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _updated = _checkRepo.Get(777);
             Assert.IsNotNull(_updated);
             Assert.AreEqual(_assembly, _updated.AssemblyPath);
@@ -217,15 +219,15 @@ namespace BitigDataTests
         public void Update_CreateDefault()
         {
             var _testRepo = InitTestRepo();
-            var _alifbaRepo = new AlifbaRepository(new XmlAlifbaRepository(alifbaPath));
+            var _alifbaRepo = _testRepo.DataContext.AlifbaRepository;
             var _assembly = "TestAssembly " + Guid.NewGuid();
             var _source = _alifbaRepo.Get(2);
             var _target = _alifbaRepo.Get(3);
             var _direction = new Direction(0, _source, _target, null, _assembly);
             _testRepo.Update(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _list = _checkRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
         }
@@ -236,10 +238,10 @@ namespace BitigDataTests
             var _testRepo = InitTestRepo(preparedFile);
             var _direction = _testRepo.Get(777);
             Assert.IsNotNull(_direction);
-            _testRepo.Delete(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.Delete(_direction.ID);
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = new XmlDirectionRepository(testFilePath);
+            var _checkRepo = InitCheckRepo();
             var _deleted = _checkRepo.Get(777);
             Assert.IsNull(_deleted);
         }
@@ -249,22 +251,22 @@ namespace BitigDataTests
         {
             var _testRepo = InitTestRepo();
             var _direction = new Direction(0, null, null, null);
-            _testRepo.Delete(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.Delete(_direction.ID);
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _list = _checkRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count - 1, _list.Count);
         }
 
-        [TestMethod]
+      /*  [TestMethod]
         public void GenerateID()
         {
             var _testRepo = new XmlDirectionRepository(null);
             var _IDs = new int[] { 0, 1, 3, 4, 6 };
             var _newID = _testRepo.GenerateID(_IDs);
             Assert.IsFalse(_IDs.Any(_id => _id == _newID));
-        }
+        }*/
 
         [TestMethod]
         public void GetByAlifbaIDs()
@@ -303,13 +305,13 @@ namespace BitigDataTests
         public void SaveExclusions()
         {
             var _testRepo = InitTestRepo();
-            var _exclusion = new Exclusion { AnyPosition = true, SourceWord = "1", TargetWord = "2" };
+            var _exclusion = new Exclusion(SourceWord: "1", TargetWord: "2", MatchCase: false, MatchBeginning: false, AnyPosition: true);
             var _direction = _testRepo.Get(0);
             _direction.Exclusions = new List<Exclusion> { _exclusion };
             _testRepo.Update(_direction);
-            _testRepo.SaveChanges();
+            _testRepo.DataContext.SaveChanges();
 
-            var _checkRepo = InitCheckRepo(_testRepo);
+            var _checkRepo = InitCheckRepo();
             var _updated = _checkRepo.Get(0);
             Assert.IsNotNull(_updated.Exclusions);
             Assert.AreEqual(1, _updated.Exclusions.Count);

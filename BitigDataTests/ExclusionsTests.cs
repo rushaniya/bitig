@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Bitig.Data.Storage;
-using Bitig.Logic.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BitigDataTests
@@ -11,7 +10,7 @@ namespace BitigDataTests
     [TestClass]
     public class ExclusionsTests
     {
-        private const string dataFolder = @"..\..\..\BitigDataTests\TestData\";
+        private const string dataFolder = @"TestData\";
         private readonly string alifbaPath = dataFolder + "Alphabets.xml";
         private readonly string testFilePath = dataFolder + "Directions.xml";
         private readonly string preparedFile = dataFolder + @"Prepared\DirectionCyrYan.xml";
@@ -30,16 +29,14 @@ namespace BitigDataTests
         public void AddExclusion()
         {
             File.Copy(preparedFile, testFilePath);
-            var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
-            var _dirRepo = new XmlDirectionRepository(testFilePath);
-            var _repoProvider = new RepositoryProvider(_alifbaRepo, _dirRepo);
-            var _direction = _repoProvider.DirectionRepository.Get(0);
+            var _dirRepo = new XmlContext(alifbaPath, testFilePath).DirectionRepository;
+            var _direction = _dirRepo.Get(0);
             var _source = GenerateCyrillicWord();
             var _target = Guid.NewGuid().ToString();
             _direction.Exclusions.Add(new Bitig.Logic.Model.Exclusion { SourceWord = _source, TargetWord = _target });
-            _repoProvider.DirectionRepository.Update(_direction);
-            _repoProvider.DirectionRepository.SaveChanges();
-            _direction = _repoProvider.DirectionRepository.Get(_direction.ID);
+            _dirRepo.Update(_direction);
+            _dirRepo.DataContext.SaveChanges();
+            _direction = _dirRepo.Get(_direction.ID);
             var _result = _direction.Transliterate(_source);
             Assert.AreEqual(_target, _result);
         }
@@ -48,16 +45,14 @@ namespace BitigDataTests
         public void EditExclusion()
         {
             File.Copy(preparedFile, testFilePath);
-            var _alifbaRepo = new XmlAlifbaRepository(alifbaPath);
-            var _dirRepo = new XmlDirectionRepository(testFilePath);
-            var _repoProvider = new RepositoryProvider(_alifbaRepo, _dirRepo);
-            var _direction = _repoProvider.DirectionRepository.Get(0);
+            var _dirRepo = new XmlContext(alifbaPath, testFilePath).DirectionRepository;
+            var _direction = _dirRepo.Get(0);
             Assert.AreEqual("ike", _direction.Transliterate("бер"));
             var _target = Guid.NewGuid().ToString();
             _direction.Exclusions[0].TargetWord = _target;
-            _repoProvider.DirectionRepository.Update(_direction);
-            _repoProvider.DirectionRepository.SaveChanges();
-            _direction = _repoProvider.DirectionRepository.Get(_direction.ID);
+            _dirRepo.Update(_direction);
+            _dirRepo.DataContext.SaveChanges();
+            _direction = _dirRepo.Get(_direction.ID);
             var _result = _direction.Transliterate("бер");
             Assert.AreEqual(_target, _result);
         }

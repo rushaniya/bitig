@@ -53,14 +53,14 @@ namespace Bitig.UI.Configuration
         private object x_AssemblyComboSelectedItem;
         private object x_TypeComboSelectedItem;
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
-        private IRepository<Direction, int> x_DirectionRepository;
-        private IRepository<Alifba, int> x_AlifbaRepository;
+        private DirectionRepository x_DirectionRepository;
+        private AlifbaRepository x_AlifbaRepository;
 
-        public frmEditDirection(IRepository<Direction, int> DirectionsRepo, IRepository<Alifba, int> AlifbaRepo)
+        public frmEditDirection(IDataContext DataContext)
         {
             InitializeComponent();
-            x_DirectionRepository = DirectionsRepo;
-            x_AlifbaRepository = AlifbaRepo;
+            x_DirectionRepository = DataContext.DirectionRepository;
+            x_AlifbaRepository = DataContext.AlifbaRepository;
             try
             {
                 string _exePath = Application.StartupPath;
@@ -156,7 +156,7 @@ namespace Bitig.UI.Configuration
             }
             if (_duplicate != null)
             {
-                x_DirectionRepository.Delete(_duplicate);
+                x_DirectionRepository.Delete(_duplicate.ID);
             }
             string _assembly, _type;
             if (_builtIn == null)

@@ -61,6 +61,7 @@
             this.colMatchBeginning,
             this.colAnyPosition,
             this.colValidationResult});
+            this.dgvExclusions.AutoGenerateColumns = false;
             this.dgvExclusions.DataSource = this.bndExclusions;
             this.dgvExclusions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExclusions.Location = new System.Drawing.Point(0, 42);

@@ -7,7 +7,7 @@ using System;
 
 namespace Bitig.Data.Storage
 {
-    [XmlRoot(ElementName = "Alphabets")]
+    [XmlRoot(ElementName = "AlphabetsConfig")]
     public class AlifbaSerializer
     {
         

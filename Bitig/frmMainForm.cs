@@ -47,9 +47,9 @@ namespace Bitig.UI
         private bool x_ProcessingTranslitArea;
 
         private Regex x_LineBreaksFinder;
-        private IRepository<Alifba, int> x_PersistentAlifbaRepo;
+
+        private IDataContext x_DataContext;
         private AlifbaRepository x_AlifbaRepository;
-        private IRepository<Direction, int> x_PersistentDirectionRepo;
         private DirectionRepository x_DirectionRepository;
 
         #endregion
@@ -85,13 +85,9 @@ namespace Bitig.UI
 
         private void InitializeRepositories()
         {
-            x_PersistentAlifbaRepo = new XmlAlifbaRepository(
-                            Path.Combine(DefaultConfiguration.LocalFolder, "Alphabets.xml"));
-            x_PersistentDirectionRepo = new XmlDirectionRepository(
-                Path.Combine(DefaultConfiguration.LocalFolder, "Directions.xml"));
-            var _repoProvider = new RepositoryProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
-            x_AlifbaRepository = _repoProvider.AlifbaRepository;
-            x_DirectionRepository = _repoProvider.DirectionRepository;
+            x_DataContext = new XmlContext(DefaultConfiguration.LocalFolder);
+            x_AlifbaRepository = x_DataContext.AlifbaRepository;
+            x_DirectionRepository = x_DataContext.DirectionRepository;
         }
 
         private void RtbMain_Enter(object sender, EventArgs e)
@@ -808,10 +804,7 @@ namespace Bitig.UI
 
         private void mniExclusions_Click(object sender, EventArgs e)
         {
-            var _configRepoProvider = new InMemoryRepoProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
-            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
-            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
-            using (var _configForm = new frmExclusions(x_CurrentDirection, _configDirectionRepository, true))
+            using (var _configForm = new frmExclusions(x_CurrentDirection, x_DataContext, true))
             {
                 _configForm.ShowDialog();
             }
@@ -882,10 +875,7 @@ namespace Bitig.UI
 
         private void mniConfiguration_Click(object sender, EventArgs e)
         {
-            var _configRepoProvider = new InMemoryRepoProvider(x_PersistentAlifbaRepo, x_PersistentDirectionRepo);
-            var _configAlifbaRepository = _configRepoProvider.AlifbaRepository;
-            var _configDirectionRepository = _configRepoProvider.DirectionRepository;
-            using (frmConfig _configForm = new frmConfig(_configAlifbaRepository, _configDirectionRepository))
+            using (frmConfig _configForm = new frmConfig(x_DataContext))
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {

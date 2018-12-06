@@ -1,40 +1,15 @@
-﻿using Bitig.Logic.Repository;
-
-namespace Bitig.Logic.Model
+﻿namespace Bitig.Logic.Model
 {
-    public class Exclusion : Bitig.Base.Exclusion, IDeepCloneable<Exclusion>
+    public class Exclusion : Bitig.Base.Exclusion
     {
-        //private int id = -1;
-
-        //public int ID
-        //{
-        //    get { return id; }
-        //    set
-        //    {
-        //        id = value;
-        //    }
-        //}
-
-       // public Direction Direction { get; set; }
-
-        public Exclusion Clone()
+        public Exclusion(string SourceWord, string TargetWord, bool MatchCase, bool MatchBeginning, bool AnyPosition) 
+            : base(SourceWord, TargetWord, MatchCase, MatchBeginning, AnyPosition)
         {
-            return new Exclusion
-            {
-                AnyPosition = AnyPosition,
-                MatchCase = MatchCase,
-                MatchBeginning = MatchBeginning,
-                SourceWord = SourceWord,
-                TargetWord = TargetWord
-            };
         }
 
-        //public override bool Equals(object obj)
-        //{
-        //    var cast = obj as Exclusion;
-        //    if (cast == null)
-        //        return false;
-        //    return cast.ID.Equals(this.ID);
-        //}
+        public Exclusion()
+        {
+
+        }
     }
 }

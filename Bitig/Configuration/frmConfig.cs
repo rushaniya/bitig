@@ -2,19 +2,22 @@
 using System.Windows.Forms;
 using Bitig.Logic.Repository;
 using Bitig.Logic.Model;
+using Bitig.Data.Storage;
 
 namespace Bitig.UI.Configuration
 {
     public partial class frmConfig : Form
     {
-        private IRepository<Alifba, int> x_EditableAlifbaRepo;
-        private IRepository<Direction, int> x_EditableDirectionRepo;
+        private AlifbaRepository x_AlifbaRepo;
+        private DirectionRepository x_DirectionRepo;
+        private IDataContext x_DataContext;
 
-        public frmConfig(IRepository<Alifba, int> AlifbaRepository, IRepository<Direction, int> DirectionRepository)
+        public frmConfig(IDataContext DataContext)
         {
             InitializeComponent();
-            x_EditableAlifbaRepo = AlifbaRepository;
-            x_EditableDirectionRepo = DirectionRepository;
+            x_DataContext = DataContext;
+            x_AlifbaRepo = DataContext.AlifbaRepository;
+            x_DirectionRepo = DataContext.DirectionRepository;
             DisplayAlphabets();
             DisplayDirections();
         }
@@ -29,14 +32,14 @@ namespace Bitig.UI.Configuration
         {
             if (x_AlphabetsModified || x_DirectionsModified || x_ExclusionsModified)
             {
-                x_EditableAlifbaRepo.SaveChanges();
-                x_EditableDirectionRepo.SaveChanges();
+                x_DataContext.SaveChanges();
             }
             this.DialogResult = DialogResult.OK;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            x_DataContext.CancelChanges();
             this.DialogResult = DialogResult.Cancel;
         }
 
@@ -53,12 +56,12 @@ namespace Bitig.UI.Configuration
 
         private void DisplayAlphabets()
         {
-            bndAlphabet.DataSource = x_EditableAlifbaRepo.GetList();
+            bndAlphabet.DataSource = x_AlifbaRepo.GetList();
         }
 
         private void btnAddAlphabet_Click(object sender, EventArgs e)
         {
-            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_EditableAlifbaRepo))
+            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo))
             {
                 if (_editForm.ShowDialog() == DialogResult.OK)
                 {
@@ -72,7 +75,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_EditableAlifbaRepo))
+                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo))
                 {
                     _editForm.X_AlphabetConfig = x_CurrentAlphabet;
                     if (_editForm.ShowDialog() == DialogResult.OK)
@@ -92,7 +95,7 @@ namespace Bitig.UI.Configuration
             {//loc
                 if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
-                    x_EditableAlifbaRepo.Delete(x_CurrentAlphabet);
+                    x_AlifbaRepo.Delete(x_CurrentAlphabet.ID);
                     DisplayAlphabets();
                     x_AlphabetsModified = true;
                 }
@@ -103,7 +106,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_CurrentAlphabet, x_EditableAlifbaRepo))
+                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_CurrentAlphabet, x_AlifbaRepo))
                 {
                     if (_symbolsForm.ShowDialog() == DialogResult.OK)
                     {
@@ -161,7 +164,7 @@ namespace Bitig.UI.Configuration
 
         private void btnAddDirection_Click(object sender, EventArgs e)
         {
-            using (frmEditDirection _editDir = new frmEditDirection(x_EditableDirectionRepo, x_EditableAlifbaRepo))
+            using (frmEditDirection _editDir = new frmEditDirection(x_DataContext))
             {
                 if (_editDir.ShowDialog() == DialogResult.OK)
                 {
@@ -175,7 +178,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentDirection != null)
             {
-                using (frmEditDirection _editDir = new frmEditDirection(x_EditableDirectionRepo, x_EditableAlifbaRepo))
+                using (frmEditDirection _editDir = new frmEditDirection(x_DataContext))
                 {
                     _editDir.X_Direction = x_CurrentDirection;
                     if (_editDir.ShowDialog() == DialogResult.OK)
@@ -196,7 +199,7 @@ namespace Bitig.UI.Configuration
                     x_CurrentDirection.FriendlyName),
                     "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
-                    x_EditableDirectionRepo.Delete(x_CurrentDirection);
+                    x_DirectionRepo.Delete(x_CurrentDirection.ID);
                     DisplayDirections();
                     x_DirectionsModified = true;
                 }
@@ -230,7 +233,7 @@ namespace Bitig.UI.Configuration
 
         private void DisplayDirections()
         {
-            bndDirection.DataSource = x_EditableDirectionRepo.GetList();
+            bndDirection.DataSource = x_DirectionRepo.GetList();
         }
 
         #endregion
@@ -239,7 +242,7 @@ namespace Bitig.UI.Configuration
 
         private void btnExclusions_Click(object sender, EventArgs e)
         {
-            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_EditableDirectionRepo);
+            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_DataContext);
             if (_exclusionsForm.ShowDialog() == DialogResult.OK)
             {
                 x_DirectionsModified = true;

@@ -3,7 +3,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {
-    public class Alifba : EquatableByID<int>, IDeepCloneable<Alifba>
+    public class Alifba : EquatableByID<int>
     {
         private int id = -1;
 
@@ -71,29 +71,6 @@ namespace Bitig.Logic.Model
         public override string ToString()
         {
             return FriendlyName;
-        }
-
-        //public override bool Equals(object obj)
-        //{
-        //    Alifba _cast = obj as Alifba;
-        //    if (_cast == null) return false;
-        //    return _cast.id == this.id;
-        //}
-
-        public Alifba Clone()
-        {
-            var _clonedSymbols = new List<AlifbaSymbol>();
-            if (CustomSymbols != null)
-            {
-                foreach (var _symbol in CustomSymbols)
-                {
-                    _clonedSymbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText,
-                        _symbol.DisplayText, _symbol.CapitalizedDisplayText));
-                }
-            }
-            var _clonedFont = DefaultFont == null ? null :
-                new AlifbaFont(DefaultFont.Description);
-            return new Alifba(ID, FriendlyName, _clonedSymbols, RightToLeft, _clonedFont, BuiltIn);
         }
     }
 }

@@ -12,13 +12,13 @@ namespace Bitig.UI.Configuration
     {
         private bool x_Yanalif;
         private Alifba x_CurrentAlphabet;
-        private IRepository<Alifba, int> x_AlifbaRepository;
+        private AlifbaRepository x_AlifbaRepository;
 
         private List<AlifbaSymbol> x_TemporaryList = new List<AlifbaSymbol>();
 
         private List<AlifbaSymbol> x_Symbols;
 
-        public frmAlphabetSymbols(Alifba CurrentAlphabet, IRepository<Alifba, int> AlifbaRepo)
+        public frmAlphabetSymbols(Alifba CurrentAlphabet, AlifbaRepository AlifbaRepo)
         {
             InitializeComponent();
             x_CurrentAlphabet = CurrentAlphabet;
