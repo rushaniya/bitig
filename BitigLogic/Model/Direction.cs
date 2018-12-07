@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Bitig.Base;
+using Bitig.Logic.Commands;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
@@ -112,7 +113,7 @@ namespace Bitig.Logic.Model
             }
             else
             {
-                //custom translitCommand = new ConfigurableTranslitCommand();
+               translitCommand = new ConfigurableTranslitCommand(ManualCommand.SymbolMapping);
             }
             translitCommand.Exclusions = LoadExclusions();
         }

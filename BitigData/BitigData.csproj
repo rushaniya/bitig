@@ -71,6 +71,7 @@
     <Compile Include="Model\XmlExclusion.cs" />
     <Compile Include="Model\XmlAlifba.cs" />
     <Compile Include="Model\XmlFont.cs" />
+    <Compile Include="Model\XmlManualCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\XmlAlifbaReader.cs" />
     <Compile Include="Storage\XmlAlifbaRepository.cs" />

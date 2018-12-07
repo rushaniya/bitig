@@ -56,6 +56,12 @@ namespace Bitig.Base
                              .ToList();
             }
             var _minLength = keyGroups[keyGroups.Count() - 1].KeyLength;
+            if (_minLength != 1)
+            {
+                //we always assume that there will be single symbols to transliterate
+                keyGroups.Add(new TranslitKeyGroup { KeyLength = 1, Entries = new Dictionary<string, string>() });
+                _minLength = 1;
+            }
             StringBuilder _resultBuilder = new StringBuilder();
             var i = 0;
             var exactKey = true;
@@ -64,8 +70,17 @@ namespace Bitig.Base
                 string _sourceFragment;
                 foreach(var _group in keyGroups)
                 {
-                    if (i + _group.KeyLength - 1 >= Fragment.Length)
+                    if (i + _group.KeyLength > Fragment.Length)
+                    {
+                        if (_group.KeyLength == _minLength)
+                        {
+                            //untranslitted symbols remain
+                            _sourceFragment = Fragment.Substring(i);
+                            _resultBuilder.Append(_sourceFragment);
+                            i += _group.KeyLength;
+                        }
                         continue;
+                    }
                     _sourceFragment = Fragment.Substring(i, _group.KeyLength);
                     if (_group.Entries.ContainsKey(_sourceFragment))
                     {
