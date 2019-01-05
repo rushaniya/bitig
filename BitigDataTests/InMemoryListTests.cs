@@ -18,7 +18,7 @@ namespace BitigDataTests
         {
             var _persistentList = new List<XmlAlifba>
             {
-                new XmlAlifba (  0, "Unmodified"),
+                new XmlAlifba (0, "Unmodified"),
                 new XmlAlifba (1, "Deleted"),
                 new XmlAlifba (2, "Updated")
             };

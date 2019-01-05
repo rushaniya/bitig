@@ -53,5 +53,26 @@ namespace Bitig.Logic.Model
         {
 
         }
+
+        public override bool Equals(object obj)
+        {
+            var _cast = obj as AlifbaSymbol;
+            if (_cast == null)
+                return false;
+            return _cast.actualText == actualText &&
+                _cast.displayText == displayText &&
+                _cast.capitalizedText == capitalizedText &&
+                _cast.capitalizedDisplayText == capitalizedDisplayText;
+        }
+
+        public override int GetHashCode()
+        {
+            var _hash = 0;
+            if (actualText != null) _hash += 7 * actualText.GetHashCode();
+            if (displayText != null) _hash += 11 * displayText.GetHashCode();
+            if (capitalizedText != null) _hash += 13 * capitalizedText.GetHashCode();
+            if (capitalizedDisplayText != null) _hash += 17 * capitalizedDisplayText.GetHashCode();
+            return _hash;
+        }
     }
 }

@@ -259,15 +259,6 @@ namespace BitigDataTests
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count - 1, _list.Count);
         }
 
-      /*  [TestMethod]
-        public void GenerateID()
-        {
-            var _testRepo = new XmlDirectionRepository(null);
-            var _IDs = new int[] { 0, 1, 3, 4, 6 };
-            var _newID = _testRepo.GenerateID(_IDs);
-            Assert.IsFalse(_IDs.Any(_id => _id == _newID));
-        }*/
-
         [TestMethod]
         public void GetByAlifbaIDs()
         {
@@ -337,6 +328,27 @@ namespace BitigDataTests
             var _testRepo = InitTestRepo(_invalidFile);
             var _list = _testRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
+        }
+
+        [TestMethod]
+        public void ManualCommand()
+        {
+            var _testRepo = InitTestRepo();
+            var _source = _testRepo.DataContext.AlifbaRepository.GetBuiltIn(BuiltInAlifbaType.Yanalif);
+            var _target = _testRepo.DataContext.AlifbaRepository.GetBuiltIn(BuiltInAlifbaType.Cyrillic);
+            var _direction = new Direction(-1, _source, _target, null, 
+                ManualCommand: new ManualCommand(new Dictionary<AlifbaSymbol, AlifbaSymbol>
+                {
+                    { new AlifbaSymbol("1"), new AlifbaSymbol("2") }
+                }));
+            _testRepo.Insert(_direction);
+            _testRepo.DataContext.SaveChanges();
+            var _checkRepo = InitCheckRepo();
+            var _savedDirection = _testRepo.GetByAlifbaIDs(_source.ID, _target.ID);
+            Assert.IsNotNull(_savedDirection);
+            Assert.IsNotNull(_savedDirection.ManualCommand);
+            Assert.AreEqual(1, _savedDirection.ManualCommand.SymbolMapping.Count);
+            Assert.AreEqual(new AlifbaSymbol("2"), _savedDirection.ManualCommand.SymbolMapping[new AlifbaSymbol("1")]);
         }
     }
 }

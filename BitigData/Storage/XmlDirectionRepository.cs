@@ -32,8 +32,14 @@ namespace Bitig.Data.Storage
             var _exclusions = new List<Exclusion>();
             if (StoredDirection.Exclusions != null)
                 StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
+            ManualCommand _manualCommand = null;
+            if (StoredDirection.ManualCommand != null && StoredDirection.ManualCommand.SymbolMapping != null)
+            {
+                _manualCommand = new ManualCommand(StoredDirection.ManualCommand.SymbolMapping
+                    .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
+            }
             return new Direction(StoredDirection.ID, _source.ToModel(), _target.ToModel(), _exclusions,
-                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn);
+                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, _manualCommand);
         }
 
         public override List<Direction> GetList()

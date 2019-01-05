@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
@@ -57,7 +58,8 @@ namespace Bitig.Data.Model
         }
 
         public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, List<XmlExclusion> Exclusions,
-            string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None)
+            string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None,
+            bool UseManualCommand = false, XmlManualCommand ManualCommand = null )
         {
             this.AssemblyPath = AssemblyPath;
             this.BuiltInID = BuiltInID;
@@ -66,6 +68,8 @@ namespace Bitig.Data.Model
             this.TargetAlifbaID = TargetAlifbaID;
             this.TypeName = TypeName;
             this.Exclusions = Exclusions;
+            this.UseManualCommand = UseManualCommand;
+            this.ManualCommand = ManualCommand;
         }
 
         public XmlDirection(Direction ModelDirection)
@@ -90,7 +94,15 @@ namespace Bitig.Data.Model
             TypeName = ModelDirection.TypeName;
             BuiltInID = _builtInID;
             Exclusions = _exclusions;
-            
+            if (ModelDirection.ManualCommand != null)
+            {
+                ManualCommand = new XmlManualCommand
+                {
+                    SymbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>(
+                        ModelDirection.ManualCommand.SymbolMapping
+                    .ToDictionary(x => new XmlAlifbaSymbol(x.Key), x => new XmlAlifbaSymbol(x.Value)))
+                };
+            }
         }
 
         public override bool Equals(object obj)
@@ -110,7 +122,18 @@ namespace Bitig.Data.Model
                     _exclusions.Add(_item.Clone());
                 }
             }
-            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID);
+            XmlManualCommand _manualCommand = null;
+            if(ManualCommand != null && ManualCommand.SymbolMapping != null)
+            {
+                _manualCommand = new XmlManualCommand();
+                _manualCommand.SymbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>();
+                foreach(var _symbol in ManualCommand.SymbolMapping)
+                {
+                    _manualCommand.SymbolMapping.Add(
+                        new XmlKeyValuePair<XmlAlifbaSymbol, XmlAlifbaSymbol>(_symbol.Key.Clone(), _symbol.Value.Clone()));
+                }
+            }
+            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID, UseManualCommand, _manualCommand);
         }
     }
 }

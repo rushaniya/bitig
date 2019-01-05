@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Bitig.Data.Model
 {
     public class XmlManualCommand
     {
-        //custom: serialize Dictionary
-        public Dictionary<XmlAlifbaSymbol, XmlAlifbaSymbol> SymbolMapping { get; set; }
+        [XmlArrayItem("Symbol")]
+        public XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol> SymbolMapping { get; set; }
     }
 }

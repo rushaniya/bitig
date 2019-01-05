@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\XmlAlifbaSymbol.cs" />
+    <Compile Include="Model\XmlDictionary.cs" />
     <Compile Include="Model\XmlDirection.cs" />
     <Compile Include="Model\XmlExclusion.cs" />
     <Compile Include="Model\XmlAlifba.cs" />
