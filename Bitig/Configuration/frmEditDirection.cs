@@ -20,18 +20,19 @@ namespace Bitig.UI.Configuration
                 x_Direction = value;
                 if (x_Direction != null)
                 {
-                    if (x_Direction.IsBuiltIn())
+                    rdbFromLibrary.Checked = true;
+                    if (x_Direction.ManualCommand == null)
                     {
-                        cmbSource.Enabled = false;
-                        cmbTarget.Enabled = false;
-                        x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                        x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
-                    }
-                    else
-                    {
-                        if(x_Direction.ManualCommand == null)
+                        if (x_Direction.IsBuiltIn())
                         {
-                            rdbFromLibrary.Checked = true;
+                            cmbSource.Enabled = false;
+                            cmbTarget.Enabled = false;
+                            x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
+                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
+                        }
+                        else
+                        {
+
                             if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
                             {
                                 x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
@@ -45,10 +46,11 @@ namespace Bitig.UI.Configuration
                                 x_TypeComboSelectedItem = x_Direction.TypeName;
                             }
                         }
-                        else
-                        {
-                            rdbManual.Checked = true;
-                        }
+                    }
+                    else
+                    {
+                        rdbManual.Checked = true;
+                        x_SymbolMapping = x_Direction.ManualCommand.SymbolMapping;
                     }
                 }
             }
@@ -63,6 +65,7 @@ namespace Bitig.UI.Configuration
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
         private DirectionRepository x_DirectionRepository;
         private AlifbaRepository x_AlifbaRepository;
+        private Dictionary<AlifbaSymbol, AlifbaSymbol> x_SymbolMapping;
 
         public frmEditDirection(IDataContext DataContext)
         {
@@ -93,7 +96,6 @@ namespace Bitig.UI.Configuration
             }
         }
 
-        //repo
         private void btnOK_Click(object sender, EventArgs e)
         {
             var _source = cmbSource.SelectedItem as Alifba;
@@ -113,36 +115,39 @@ namespace Bitig.UI.Configuration
                 MessageBox.Show("Source and target are the same", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            //int _builtInID = -1;
+            //custom bool Direction.UseManualCommand?
+            var _manualCommand = rdbManual.Checked ? new ManualCommand(x_SymbolMapping) : null;
             BuiltInDirection _builtIn = null;
-            if (cmbType.SelectedItem is BuiltInDirection)
+            if (_manualCommand == null)
             {
-                if (_source.BuiltIn != BuiltInAlifbaType.None &&
-                    _source.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Source)
+                if (cmbType.SelectedItem is BuiltInDirection)
                 {
-                    MessageBox.Show("Transliteration source mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
+                    if (_source.BuiltIn != BuiltInAlifbaType.None &&
+                        _source.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Source)
+                    {
+                        MessageBox.Show("Transliteration source mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                    if (_target.BuiltIn != BuiltInAlifbaType.None &&
+                        _target.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Target)
+                    {
+                        MessageBox.Show("Transliteration target mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                    _builtIn = (cmbType.SelectedItem as BuiltInDirection);
                 }
-                if (_target.BuiltIn != BuiltInAlifbaType.None &&
-                    _target.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Target)
+                else
                 {
-                    MessageBox.Show("Transliteration target mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-                _builtIn = (cmbType.SelectedItem as BuiltInDirection);
-               // _builtInID = (cmbType.SelectedItem as BuiltInDirection).ID;
-            }
-            else
-            {
-                if (cmbAssembly.SelectedItem == null)
-                {
-                    MessageBox.Show("Library is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
-                    return;
-                }
-                if (cmbType.Text.Trim() == string.Empty)
-                {
-                    MessageBox.Show("Type name is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
-                    return;
+                    if (cmbAssembly.SelectedItem == null)
+                    {
+                        MessageBox.Show("Library is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
+                        return;
+                    }
+                    if (cmbType.Text.Trim() == string.Empty)
+                    {
+                        MessageBox.Show("Type name is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
+                        return;
+                    }
                 }
             }
             Direction _duplicate = null;
@@ -166,31 +171,26 @@ namespace Bitig.UI.Configuration
             {
                 x_DirectionRepository.Delete(_duplicate.ID);
             }
-            string _assembly, _type;
-            if (_builtIn == null)
+            var _assembly = string.Empty;
+            var _type = string.Empty;
+            if (_builtIn == null && _manualCommand == null)
             {
                 _assembly = x_SelectedAssemblyPath;
                 _type = cmbType.Text.Trim();
             }
-            else
-            {
-                _assembly = string.Empty;
-                _type = string.Empty;
-            }
             if (x_Direction == null)
             {
-                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn); //repo: , cmbType.Text.Trim() ?
+                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn, _manualCommand);
                 x_DirectionRepository.Insert(x_Direction);
             }
             else
             {
-
                 x_Direction.AssemblyPath = _assembly;
                 x_Direction.TypeName = _type;
-                //repo: needed? x_Direction.DisplayedTypeName = cmbType.Text.Trim();
                 x_Direction.Source = _source;
                 x_Direction.Target = _target;
                 x_Direction.BuiltIn = _builtIn;
+                x_Direction.ManualCommand = _manualCommand;
                 x_DirectionRepository.Update(x_Direction);
             }
             DialogResult = DialogResult.OK;
@@ -305,6 +305,18 @@ namespace Bitig.UI.Configuration
         private void rdbManual_CheckedChanged(object sender, EventArgs e)
         {
             pnlManual.Enabled = rdbManual.Checked;
+        }
+
+        private void btnManual_Click(object sender, EventArgs e)
+        {
+            //custom default symbols from alifbas
+            using (var _mappingForm = new frmSymbolMapping(x_SymbolMapping))
+            {
+                if (_mappingForm.ShowDialog() == DialogResult.OK)
+                {
+                    x_SymbolMapping = _mappingForm.SymbolMapping;
+                }
+            }
         }
 
         private void FillAssemblyTypes()

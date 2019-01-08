@@ -233,6 +233,7 @@
             this.btnManual.TabIndex = 0;
             this.btnManual.Text = "Manual mapping...";
             this.btnManual.UseVisualStyleBackColor = true;
+            this.btnManual.Click += new System.EventHandler(this.btnManual_Click);
             // 
             // frmEditDirection
             // 

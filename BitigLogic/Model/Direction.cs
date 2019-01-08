@@ -38,6 +38,8 @@ namespace Bitig.Logic.Model
 
         public BuiltInDirection BuiltIn { get; set; }
 
+        public ManualCommand ManualCommand { get; set; }
+
         public string FriendlyName
         {
             get
@@ -147,13 +149,14 @@ namespace Bitig.Logic.Model
         {
             get
             {
-                if (string.IsNullOrEmpty(AssemblyPath))
-                    return "(Built-in)"; // loc
-                return System.IO.Path.GetFileName(AssemblyPath);
+                // loc
+                if (!string.IsNullOrEmpty(AssemblyPath))
+                    return System.IO.Path.GetFileName(AssemblyPath);
+                if (ManualCommand != null)
+                    return ("(Manual)");
+                return "(Built-in)";
             }
         }
-
-        public ManualCommand ManualCommand { get; private set; }
 
         public override string ToString()
         {
