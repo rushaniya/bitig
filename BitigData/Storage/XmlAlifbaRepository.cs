@@ -51,6 +51,7 @@ namespace Bitig.Data.Storage
 
         public override void Delete(int ID)
         {
+            //custom: delete symbols
             var _xmlItem = xmlContext.Alphabets.Get(ID);
             if (_xmlItem == null)
                 return;

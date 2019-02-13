@@ -402,6 +402,7 @@ namespace Bitig.UI
                             spltTranslitArea.Panel1Collapsed = false;
                             spltTranslitArea.Panel2Collapsed = false;
                         }
+                        mniCurrentMapping.Enabled = x_CurrentDirection.ManualCommand != null;
                     }
                 }
             }
@@ -887,6 +888,19 @@ namespace Bitig.UI
                     {
                         ReloadDirections();
                     }
+                }
+            }
+        }
+
+        private void mniCurrentMapping_Click(object sender, EventArgs e)
+        {
+            if (x_CurrentDirection == null || x_CurrentDirection.ManualCommand == null)
+                return;
+            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.ManualCommand.SymbolMapping))
+            {
+                if (_mappingForm.DialogResult == DialogResult.OK)
+                {
+                    //custom: save and apply
                 }
             }
         }

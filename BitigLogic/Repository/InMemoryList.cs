@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Bitig.Logic.Repository
 {
-    public class InMemoryList<T>
-        where T:EquatableByID<int>, IDeepCloneable<T> 
+    public class InMemoryList<T> : IEnumerable<InMemoryItem<T>>
+        where T:EquatableByID<int>, IDeepCloneable<T>
     {
         private List<InMemoryItem<T>> list;
 
@@ -52,6 +53,30 @@ namespace Bitig.Logic.Repository
             var _updated = new InMemoryItem<T>(Item.Clone());
             _updated.State = _currentState == ItemState.Unmodified ? ItemState.Updated : _currentState;
             list.Add(_updated);
+        }
+
+        /// <summary>
+        /// Inert item with exact ID or update, if exists
+        /// </summary>
+        /// <param name="Item"></param>
+        public void InsertOrUpdate(T Item)
+        {
+            var _existingItem = list.Find(_item => _item.Item.Equals(Item));
+            if (_existingItem == null)
+            {
+                var _clone = Item.Clone();
+                var _added = new InMemoryItem<T>(_clone);
+                _added.State = ItemState.Added;
+                list.Add(_added);
+            }
+            else
+            {
+                var _currentState = _existingItem.State;
+                list.Remove(_existingItem);
+                var _updated = new InMemoryItem<T>(Item.Clone());
+                _updated.State = _currentState == ItemState.Unmodified ? ItemState.Updated : _currentState;
+                list.Add(_updated);
+            }
         }
 
         public void Delete(int ID)
@@ -116,6 +141,16 @@ namespace Bitig.Logic.Repository
                 list = _result.Select(x => new InMemoryItem<T>(x)).ToList();
             }
             return _result;
+        }
+
+        public IEnumerator<InMemoryItem<T>> GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return list.GetEnumerator();
         }
     }
 

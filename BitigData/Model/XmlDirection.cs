@@ -45,21 +45,18 @@ namespace Bitig.Data.Model
             set;
         }
 
-        public bool UseManualCommand { get; set; } //custom: when false, ManualCommand property is ignored
-
-        public XmlManualCommand ManualCommand { get; set; }
+        public bool UseManualCommand { get; set; } 
 
         public List<XmlExclusion> Exclusions { get; set; }
 
+        [Obsolete("For XML serialization only")]
         public XmlDirection()
         {
-            if (!DirectionSerializer.Deserializing)
-                throw new InvalidOperationException("XmlDirection instances cannot be created with default constructor.");            
         }
 
         public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, List<XmlExclusion> Exclusions,
             string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None,
-            bool UseManualCommand = false, XmlManualCommand ManualCommand = null )
+            bool UseManualCommand = false)
         {
             this.AssemblyPath = AssemblyPath;
             this.BuiltInID = BuiltInID;
@@ -69,7 +66,6 @@ namespace Bitig.Data.Model
             this.TypeName = TypeName;
             this.Exclusions = Exclusions;
             this.UseManualCommand = UseManualCommand;
-            this.ManualCommand = ManualCommand;
         }
 
         public XmlDirection(Direction ModelDirection)
@@ -94,15 +90,7 @@ namespace Bitig.Data.Model
             TypeName = ModelDirection.TypeName;
             BuiltInID = _builtInID;
             Exclusions = _exclusions;
-            if (ModelDirection.ManualCommand != null)
-            {
-                ManualCommand = new XmlManualCommand
-                {
-                    SymbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>(
-                        ModelDirection.ManualCommand.SymbolMapping
-                    .ToDictionary(x => new XmlAlifbaSymbol(x.Key), x => new XmlAlifbaSymbol(x.Value)))
-                };
-            }
+            UseManualCommand = ModelDirection.ManualCommand != null;
         }
 
         public override bool Equals(object obj)
@@ -122,18 +110,7 @@ namespace Bitig.Data.Model
                     _exclusions.Add(_item.Clone());
                 }
             }
-            XmlManualCommand _manualCommand = null;
-            if(ManualCommand != null && ManualCommand.SymbolMapping != null)
-            {
-                _manualCommand = new XmlManualCommand();
-                _manualCommand.SymbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>();
-                foreach(var _symbol in ManualCommand.SymbolMapping)
-                {
-                    _manualCommand.SymbolMapping.Add(
-                        new XmlKeyValuePair<XmlAlifbaSymbol, XmlAlifbaSymbol>(_symbol.Key.Clone(), _symbol.Value.Clone()));
-                }
-            }
-            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID, UseManualCommand, _manualCommand);
+            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID, UseManualCommand);
         }
     }
 }

@@ -1,0 +1,17 @@
+Test sheet for working with files.
+
+1. New file.
+
+2. Open file.
+2a. txt.
+2b. rtf.
+
+3. Save file.
+3a. txt.
+3b. rtf.
+
+4. Save file as.
+4a. txt. (consider encoding)
+4b. rtf.
+
+5. Reopen with encoding (txt only).

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
@@ -46,10 +45,9 @@ namespace Bitig.Data.Model
 
         public BuiltInAlifbaType BuiltIn { get; set; }
 
+        [Obsolete("For XML serialization only")]
         public XmlAlifba()
         {
-            if (!AlifbaSerializer.Deserializing)
-                throw new InvalidOperationException("XmlAlifba instances cannot be created with default constructor.");
             CustomSymbols = new List<XmlAlifbaSymbol>();
         }
 

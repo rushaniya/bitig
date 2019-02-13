@@ -1,83 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
-using System.IO;
 using Bitig.Data.Model;
-using System;
 
 namespace Bitig.Data.Storage
 {
     [XmlRoot("DirectionsConfig")]
-    public class DirectionSerializer
+    public class DirectionsConfig
     {
-        private List<XmlDirection> directionsList = new List<XmlDirection>();
-        
-        public List<XmlDirection> DirectionsList
-        {
-            get { return directionsList; }
-            set { directionsList = value; }
-        }
+        public List<XmlDirection> DirectionsList { get; set; }
+    }
 
-        private static DirectionSerializer instance;
-
-        private static XmlSerializer serializer = new XmlSerializer(typeof(DirectionSerializer));
-
-        private static bool deserializing;
-        [XmlIgnore]
-        internal static bool Deserializing
-        {
-            get { return deserializing; }
-        }
-
-        /// <summary>
-        /// Intended for xml serialization only
-        /// </summary>
-        public DirectionSerializer()
-        {
-
-        }
-
-        private void Save(string Path)
-        {
-            var _directoryPath = System.IO.Path.GetDirectoryName(Path);
-            if (!Directory.Exists(_directoryPath))
-                Directory.CreateDirectory(_directoryPath);
-            using (StreamWriter _writer = new StreamWriter(Path, false, Encoding.Unicode))
-            {
-                serializer.Serialize(_writer, this);
-            }
-        }
-
+    internal class DirectionSerializer
+    {
         internal static void SaveToFile(string Path, List<XmlDirection> Directions)
         {
-            if (instance == null) instance = new DirectionSerializer();
-            instance.directionsList = Directions;
-            instance.Save(Path);
+            ConfigSerializer<DirectionsConfig>.SaveToFile(Path, new DirectionsConfig { DirectionsList = Directions });
         }
 
         internal static List<XmlDirection> ReadFromFile(string Path)
         {
-            try
-            {
-                if (File.Exists(Path))
-                {
-                    using (StreamReader _reader = new StreamReader(Path, Encoding.Unicode))
-                    {
-                        deserializing = true;
-                        instance = (DirectionSerializer)serializer.Deserialize(_reader);
-                    }
-                    return instance.directionsList;
-                }
-                return null;
-            }
-            catch(InvalidOperationException ex)
-            {
-                return null;
-            }
-            finally
-            {
-                deserializing = false;
-            }
+            var _config = ConfigSerializer<DirectionsConfig>.ReadFromFile(Path);
+            return _config == null ? null : _config.DirectionsList;
         }
     }
 }

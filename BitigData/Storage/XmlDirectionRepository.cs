@@ -33,10 +33,12 @@ namespace Bitig.Data.Storage
             if (StoredDirection.Exclusions != null)
                 StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
             ManualCommand _manualCommand = null;
-            if (StoredDirection.ManualCommand != null && StoredDirection.ManualCommand.SymbolMapping != null)
+            if (StoredDirection.UseManualCommand)
             {
-                _manualCommand = new ManualCommand(StoredDirection.ManualCommand.SymbolMapping
-                    .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
+                var _mapping = xmlContext.Mappings.Get(StoredDirection.ID);
+                if (_mapping != null)
+                    _manualCommand = new ManualCommand(_mapping.SymbolMapping
+                        .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
             }
             return new Direction(StoredDirection.ID, _source.ToModel(), _target.ToModel(), _exclusions,
                 StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, _manualCommand);
@@ -63,11 +65,17 @@ namespace Bitig.Data.Storage
             var _xmlItem = new XmlDirection(Item);
             xmlContext.Directions.Insert(_xmlItem);
             Item.ID = _xmlItem.ID;
+            if (Item.ManualCommand != null)
+            {
+                var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
+                xmlContext.Mappings.InsertOrUpdate(_mapping);
+            }
         }
 
         public override void Delete(int ID)
         {
             xmlContext.Directions.Delete(ID);
+            xmlContext.Mappings.Delete(ID);
         }
 
         public override void Update(Direction Item)
@@ -77,6 +85,11 @@ namespace Bitig.Data.Storage
             if (_sameAlphabets != null)
                 throw new Exception("Direction with same source and target exists.");
             xmlContext.Directions.Update(new XmlDirection(Item));
+            if (Item.ManualCommand != null)
+            {
+                var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
+                xmlContext.Mappings.InsertOrUpdate(_mapping);
+            }
         }
 
         public override Direction GetByAlifbaIDs(int SourceID, int TargetID)

@@ -38,12 +38,6 @@
             this.cmbTarget = new System.Windows.Forms.ToolStripComboBox();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniUndo = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniRedo = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mniTranslitPanel = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAlifba = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +72,7 @@
             this.ctlYanalif1 = new Bitig.UI.Controls.ctlYanalif();
             this.dlgColor = new System.Windows.Forms.ColorDialog();
             this.pnlTop = new System.Windows.Forms.FlowLayoutPanel();
+            this.mniCurrentMapping = new System.Windows.Forms.ToolStripMenuItem();
             this.tlsMain.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.spltMain.Panel1.SuspendLayout();
@@ -109,7 +104,7 @@
             this.tlsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.tlsMain.Location = new System.Drawing.Point(0, 0);
             this.tlsMain.Name = "tlsMain";
-            this.tlsMain.Size = new System.Drawing.Size(434, 39);
+            this.tlsMain.Size = new System.Drawing.Size(403, 39);
             this.tlsMain.TabIndex = 0;
             this.tlsMain.Text = "Main Panel";
             // 
@@ -172,7 +167,6 @@
             this.mnuMain.BackColor = System.Drawing.SystemColors.Window;
             this.mnuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile,
-            this.mnuEdit,
             this.mnuView,
             this.mnuSettings,
             this.mnuHelp});
@@ -187,49 +181,6 @@
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "File";
-            // 
-            // mnuEdit
-            // 
-            this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mniUndo,
-            this.mniRedo,
-            this.mniCut,
-            this.mniCopy,
-            this.mniPaste});
-            this.mnuEdit.Enabled = false;
-            this.mnuEdit.Name = "mnuEdit";
-            this.mnuEdit.Size = new System.Drawing.Size(39, 20);
-            this.mnuEdit.Text = "Edit";
-            // 
-            // mniUndo
-            // 
-            this.mniUndo.Name = "mniUndo";
-            this.mniUndo.Size = new System.Drawing.Size(103, 22);
-            this.mniUndo.Text = "Undo";
-            // 
-            // mniRedo
-            // 
-            this.mniRedo.Name = "mniRedo";
-            this.mniRedo.Size = new System.Drawing.Size(103, 22);
-            this.mniRedo.Text = "Redo";
-            // 
-            // mniCut
-            // 
-            this.mniCut.Name = "mniCut";
-            this.mniCut.Size = new System.Drawing.Size(103, 22);
-            this.mniCut.Text = "Cut";
-            // 
-            // mniCopy
-            // 
-            this.mniCopy.Name = "mniCopy";
-            this.mniCopy.Size = new System.Drawing.Size(103, 22);
-            this.mniCopy.Text = "Copy";
-            // 
-            // mniPaste
-            // 
-            this.mniPaste.Name = "mniPaste";
-            this.mniPaste.Size = new System.Drawing.Size(103, 22);
-            this.mniPaste.Text = "Paste";
             // 
             // mnuView
             // 
@@ -246,7 +197,7 @@
             this.mniTranslitPanel.CheckOnClick = true;
             this.mniTranslitPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniTranslitPanel.Name = "mniTranslitPanel";
-            this.mniTranslitPanel.Size = new System.Drawing.Size(144, 22);
+            this.mniTranslitPanel.Size = new System.Drawing.Size(152, 22);
             this.mniTranslitPanel.Text = "Translit Panel";
             this.mniTranslitPanel.CheckedChanged += new System.EventHandler(this.mniTranslitPanel_CheckedChanged);
             // 
@@ -256,7 +207,7 @@
             this.mniAlifba.CheckOnClick = true;
             this.mniAlifba.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniAlifba.Name = "mniAlifba";
-            this.mniAlifba.Size = new System.Drawing.Size(144, 22);
+            this.mniAlifba.Size = new System.Drawing.Size(152, 22);
             this.mniAlifba.Text = "Alifba";
             this.mniAlifba.CheckedChanged += new System.EventHandler(this.mniAlifba_CheckedChanged);
             // 
@@ -264,7 +215,8 @@
             // 
             this.mnuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mniExclusions,
-            this.mniConfiguration});
+            this.mniConfiguration,
+            this.mniCurrentMapping});
             this.mnuSettings.Name = "mnuSettings";
             this.mnuSettings.Size = new System.Drawing.Size(61, 20);
             this.mnuSettings.Text = "Settings";
@@ -272,14 +224,14 @@
             // mniExclusions
             // 
             this.mniExclusions.Name = "mniExclusions";
-            this.mniExclusions.Size = new System.Drawing.Size(157, 22);
+            this.mniExclusions.Size = new System.Drawing.Size(174, 22);
             this.mniExclusions.Text = "Exclusions";
             this.mniExclusions.Click += new System.EventHandler(this.mniExclusions_Click);
             // 
             // mniConfiguration
             // 
             this.mniConfiguration.Name = "mniConfiguration";
-            this.mniConfiguration.Size = new System.Drawing.Size(157, 22);
+            this.mniConfiguration.Size = new System.Drawing.Size(174, 22);
             this.mniConfiguration.Text = "Configuration...";
             this.mniConfiguration.Click += new System.EventHandler(this.mniConfiguration_Click);
             // 
@@ -294,7 +246,7 @@
             // mniAbout
             // 
             this.mniAbout.Name = "mniAbout";
-            this.mniAbout.Size = new System.Drawing.Size(116, 22);
+            this.mniAbout.Size = new System.Drawing.Size(152, 22);
             this.mniAbout.Text = "About...";
             this.mniAbout.Click += new System.EventHandler(this.mniAbout_Click);
             // 
@@ -580,6 +532,14 @@
             this.pnlTop.Size = new System.Drawing.Size(853, 43);
             this.pnlTop.TabIndex = 27;
             // 
+            // mniCurrentMapping
+            // 
+            this.mniCurrentMapping.Enabled = false;
+            this.mniCurrentMapping.Name = "mniCurrentMapping";
+            this.mniCurrentMapping.Size = new System.Drawing.Size(174, 22);
+            this.mniCurrentMapping.Text = "Current mapping...";
+            this.mniCurrentMapping.Click += new System.EventHandler(this.mniCurrentMapping_Click);
+            // 
             // frmMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -633,7 +593,6 @@
         private System.Windows.Forms.ToolStripButton btnShowTranslit;
         private System.Windows.Forms.MenuStrip mnuMain;
         private System.Windows.Forms.ToolStripMenuItem mnuFile;
-        private System.Windows.Forms.ToolStripMenuItem mnuEdit;
         private System.Windows.Forms.ToolStripMenuItem mnuView;
         private System.Windows.Forms.ToolStripMenuItem mnuSettings;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
@@ -657,11 +616,6 @@
         private System.Windows.Forms.ToolStripButton btnT1Keyboard;
         private System.Windows.Forms.ToolStripMenuItem mniTranslitPanel;
         private System.Windows.Forms.ToolStripButton btnT2Keyboard;
-        private System.Windows.Forms.ToolStripMenuItem mniUndo;
-        private System.Windows.Forms.ToolStripMenuItem mniRedo;
-        private System.Windows.Forms.ToolStripMenuItem mniCut;
-        private System.Windows.Forms.ToolStripMenuItem mniCopy;
-        private System.Windows.Forms.ToolStripMenuItem mniPaste;
         private System.Windows.Forms.Panel pnlYanalif;
         private System.Windows.Forms.ToolStripComboBox cmbTarget;
         private System.Windows.Forms.ToolStripLabel lblTo;
@@ -678,6 +632,7 @@
         private System.Windows.Forms.Panel pnlTranslit1;
         private System.Windows.Forms.ToolStripMenuItem mniAlifba;
         private Bitig.UI.Controls.ctlYanalif ctlYanalif1;
+        private System.Windows.Forms.ToolStripMenuItem mniCurrentMapping;
     }
 }
 

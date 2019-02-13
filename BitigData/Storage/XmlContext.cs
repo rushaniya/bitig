@@ -11,9 +11,11 @@ namespace Bitig.Data.Storage
     {
         private InMemoryList<XmlAlifba> alifbaCache;
         private InMemoryList<XmlDirection> directionCache;
+        private InMemoryList<XmlSymbolMapping> mappingsCache;
 
         private XmlAlifbaReader xmlAlifbaReader;
         private XmlDirectionReader xmlDirectionReader;
+        private XmlSymbolMappingReader xmlSymbolMappingReader;
 
         private XmlAlifbaRepository alifbaRepository;
         private XmlDirectionRepository directionRepository;
@@ -38,6 +40,16 @@ namespace Bitig.Data.Storage
                 if (directionCache == null)
                     InitDirectionCache();
                 return directionCache;
+            }
+        }
+
+        internal InMemoryList<XmlSymbolMapping> Mappings
+        {
+            get
+            {
+                if (mappingsCache == null)
+                    InitMappingsCache();
+                return mappingsCache;
             }
         }
 
@@ -68,6 +80,8 @@ namespace Bitig.Data.Storage
             alifbaRepository = new XmlAlifbaRepository(this);
             xmlDirectionReader = new XmlDirectionReader(DirectionsPath);
             directionRepository = new XmlDirectionRepository(this);
+            var directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
+            xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(directionsDirectory, "Mappings"));
         }
 
         private void InitAlifbaCache()
@@ -118,13 +132,19 @@ namespace Bitig.Data.Storage
                     var _target = _alifbaList.Find(x => x.BuiltIn == _builtIn.Target);
                     if (_source != null && _target != null)
                     {
-                        var _direction = new XmlDirection(i, _source.ID, _target.ID,null, BuiltInID: _builtIn.ID);
+                        var _direction = new XmlDirection(i, _source.ID, _target.ID, null, BuiltInID: _builtIn.ID);
                         _xmlList.Add(_direction);
                     }
                 }
                 xmlDirectionReader.Save(_xmlList);
             }
             directionCache = new InMemoryList<XmlDirection>(_xmlList);
+        }
+
+        private void InitMappingsCache()
+        {
+            var _xmlList = xmlSymbolMappingReader.Read();
+            mappingsCache = new InMemoryList<XmlSymbolMapping>(_xmlList);
         }
 
         public void CancelChanges()
@@ -139,6 +159,8 @@ namespace Bitig.Data.Storage
                 xmlAlifbaReader.Save(alifbaCache);
             if (directionCache != null)
                 xmlDirectionReader.Save(directionCache);
+            if (mappingsCache != null)
+                xmlSymbolMappingReader.Save(mappingsCache);
         }
     }
 }
