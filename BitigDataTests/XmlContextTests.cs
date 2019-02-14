@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
@@ -13,20 +11,20 @@ namespace BitigDataTests
     [TestClass]
     public class XmlContextTests
     {
-        private const string dataFolder = @"TestData\";
-        private readonly string testAlifbaPath = dataFolder + "Alphabets.xml";
-        private readonly string testDirectionPath = dataFolder + "Directions.xml";
-        private readonly string preparedAlifbaFile = dataFolder + @"Prepared\Alifba1025.xml";
-        private readonly string preparedDirectionFile = dataFolder + @"Prepared\Direction777.xml";
+        private const string currentDataFolder = @"XmlContextTestData\";
+        private readonly string testAlifbaPath = currentDataFolder + "Alphabets.xml";
+        private readonly string preparedAlifbaFile = currentDataFolder + @"Prepared\Alifba1025.xml";
+        private readonly string testDirectionPath = currentDataFolder + "Directions.xml";
+        private readonly string preparedDirectionFile = currentDataFolder + @"Prepared\Direction777.xml";
 
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
         {
-            if (File.Exists(testAlifbaPath))
-                File.Delete(testAlifbaPath);
-            if (File.Exists(testDirectionPath))
-                File.Delete(testDirectionPath);
+            if (Directory.Exists(currentDataFolder))
+                Directory.Delete(currentDataFolder, true);
+            Directory.CreateDirectory(currentDataFolder);
+            TestUtils.CopyDirectory("TestData", currentDataFolder);
         }
 
 

@@ -120,6 +120,7 @@ namespace Bitig.Logic.Repository
                         else
                         {
                             var _clone = _item.Item.Clone();
+                            //custom: what happens to joins?
                             _clone.ID = IDGenerator.GenerateID(_result.Select(x => x.ID));
                             _result.Add(_clone);
                         }

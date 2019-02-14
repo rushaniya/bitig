@@ -37,6 +37,10 @@ namespace Bitig.Data.Model
             set { capitalizedDisplayText = value; }
         }
 
+        public bool IsAlphabetic { get; set; }
+
+        public bool IsOnScreen { get; set; }
+
         public XmlAlifbaSymbol()
         {
 
@@ -48,12 +52,14 @@ namespace Bitig.Data.Model
             DisplayText = ModelSymbol.DisplayText;
             CapitalizedText = ModelSymbol.CapitalizedText;
             CapitalizedDisplayText = ModelSymbol.CapitalizedDisplayText;
+            IsAlphabetic = ModelSymbol.IsAlphabetic;
+            IsOnScreen = ModelSymbol.IsOnScreen;
         }
 
         internal AlifbaSymbol ToModel()
         {
             return new AlifbaSymbol(ActualText, CapitalizedText,
-                DisplayText, CapitalizedDisplayText);
+                DisplayText, CapitalizedDisplayText, IsAlphabetic, IsOnScreen);
         }
 
         internal XmlAlifbaSymbol Clone()
@@ -63,7 +69,9 @@ namespace Bitig.Data.Model
                 ActualText = ActualText,
                 DisplayText = DisplayText,
                 CapitalizedText = CapitalizedText,
-                CapitalizedDisplayText = CapitalizedDisplayText
+                CapitalizedDisplayText = CapitalizedDisplayText,
+                IsAlphabetic = IsAlphabetic,
+                IsOnScreen = IsOnScreen
             };
         }
     }

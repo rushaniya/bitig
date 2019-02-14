@@ -7,6 +7,8 @@ namespace Bitig.Data.Storage
     [XmlRoot("DirectionsConfig")]
     public class DirectionsConfig
     {
+        [XmlArray("DirectionList")]
+        [XmlArrayItem("Direction")]
         public List<XmlDirection> DirectionsList { get; set; }
     }
 

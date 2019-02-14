@@ -39,7 +39,9 @@ namespace Bitig.Logic.Model
 
         public bool IsAlphabetic { get; set; }
 
-        public AlifbaSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitilzedDisplayText = null, bool OnScreen = true, bool IsAlphabetic = true)
+        public bool IsOnScreen { get; set; }
+
+        public AlifbaSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitilzedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
         {
             if (ActualText == null)
                 throw new ArgumentNullException("ActualText");
@@ -47,6 +49,8 @@ namespace Bitig.Logic.Model
             this.displayText = string.IsNullOrEmpty(DisplayText) ? this.actualText : DisplayText.Trim();
             this.capitalizedText = CapitalizedText == null ? null : CapitalizedText.Trim();
             this.capitalizedDisplayText = string.IsNullOrEmpty(CapitilzedDisplayText) ? this.capitalizedText : CapitilzedDisplayText.Trim();
+            this.IsAlphabetic = IsAlphabetic;
+            this.IsOnScreen = IsOnScreen;
         }
 
         public AlifbaSymbol()

@@ -26,12 +26,7 @@ namespace Bitig.Data.Storage
 
         private Direction MapWithReferences(XmlDirection StoredDirection)
         {
-            var _source = xmlContext.Alphabets.Get(StoredDirection.SourceAlifbaID);
-            var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
-            var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
-            var _exclusions = new List<Exclusion>();
-            if (StoredDirection.Exclusions != null)
-                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
+            //custom: exclusions from separate file
             ManualCommand _manualCommand = null;
             if (StoredDirection.UseManualCommand)
             {
@@ -40,14 +35,28 @@ namespace Bitig.Data.Storage
                     _manualCommand = new ManualCommand(_mapping.SymbolMapping
                         .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
             }
-            return new Direction(StoredDirection.ID, _source.ToModel(), _target.ToModel(), _exclusions,
-                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, _manualCommand);
+            var _shallowDirection = ShallowMap(StoredDirection);
+            return new Direction(StoredDirection.ID, _shallowDirection.Source, _shallowDirection.Target, _shallowDirection.Exclusions,
+                _shallowDirection.AssemblyPath, _shallowDirection.TypeName, _shallowDirection.BuiltIn, _manualCommand);
+        }
+
+        private Direction ShallowMap(XmlDirection StoredDirection)
+        {
+            var _source = xmlContext.Alphabets.Get(StoredDirection.SourceAlifbaID);
+            var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
+            var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
+            var _exclusions = new List<Exclusion>();
+            if (StoredDirection.Exclusions != null)
+                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
+            return new Direction(StoredDirection.ID, _source.ToShallowModel(), _target.ToShallowModel(), _exclusions,
+                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, null);
+
         }
 
         public override List<Direction> GetList()
         {
             var _xmlList = xmlContext.Directions.GetList();
-            return _xmlList.Select(MapWithReferences).ToList();
+            return _xmlList.Select(ShallowMap).ToList();
         }
 
         public override Direction Get(int ID)

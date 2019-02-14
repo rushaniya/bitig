@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -35,6 +36,7 @@ namespace Bitig.Data.Storage
             }
             catch (InvalidOperationException ex)
             {
+                Debug.Fail("Something is wrong with XML file.");
                 return null;
             }
         }

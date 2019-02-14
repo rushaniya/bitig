@@ -16,25 +16,30 @@ namespace BitigDataTests
         {
         }
 
-        private const string dataFolder = @"TestData\";
-        private readonly string alifbaPath = dataFolder + "Alphabets.xml";
-        private readonly string preparedFile = dataFolder + @"Prepared\Direction777.xml";
-        private readonly string testFilePath = dataFolder + "Directions.xml";
+        private const string sourceDataFolder = @"TestData\";
+        private const string currentDataFolder = @"DirectionRepoTestData\";
+     //   private readonly string sourceAlifbaPath = sourceDataFolder + "Alphabets.xml";
+        private readonly string sourcePreparedFile = sourceDataFolder + @"Prepared\Direction777.xml";
+     //   private readonly string sourceTestFilePath = sourceDataFolder + "Directions.xml";
+        private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
+        private readonly string currentAlifbaFilePath = currentDataFolder + "Alphabets.xml";
 
         private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
             if (preparedFilePath != null)
-                File.Copy(preparedFilePath, testFilePath);
-            var _xmlContext = new XmlContext(alifbaPath, testFilePath);
+                File.Copy(preparedFilePath, currentTestFilePath);
+           // else
+             //   File.Copy(sourceTestFilePath, currentTestFilePath);
+            var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
 
         private DirectionRepository InitCheckRepo()
         {
-            if (!File.Exists(testFilePath))
+            if (!File.Exists(currentTestFilePath))
                 throw new Exception("File not created.");
-            var _xmlContext = new XmlContext(alifbaPath, testFilePath);
+            var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
@@ -43,16 +48,15 @@ namespace BitigDataTests
         [TestCleanup]
         public void DeleteTestFile()
         {
-            if (File.Exists(testFilePath))
-                File.Delete(testFilePath);
-            if (File.Exists(alifbaPath))
-                File.Delete(alifbaPath);
+            if (Directory.Exists(currentDataFolder))
+                Directory.Delete(currentDataFolder, true);
+            Directory.CreateDirectory(currentDataFolder);
         }
 
        [TestMethod]
         public void GetList()
         {
-            var _testRepo = InitTestRepo(preparedFile);
+            var _testRepo = InitTestRepo(sourcePreparedFile);
             var _list = _testRepo.GetList();
             Assert.AreEqual(9, _list.Count);
         }
@@ -67,15 +71,15 @@ namespace BitigDataTests
             foreach (var _item in _builtInList)
             {
                 Assert.IsNotNull(_defaultList.Single(_dir =>
-                _dir.BuiltIn.ID == _item.ID && 
-                _dir.Source.BuiltIn == _item.Source && _dir.Target.BuiltIn == _item.Target));
+                    _dir.BuiltIn.ID == _item.ID &&
+                    _dir.Source.BuiltIn == _item.Source && _dir.Target.BuiltIn == _item.Target));
             }
         }
 
         [TestMethod]
         public void Get()
         {
-            var _testRepo = InitTestRepo(preparedFile);
+            var _testRepo = InitTestRepo(sourcePreparedFile);
             var _direction777 = _testRepo.Get(777);
             Assert.IsNotNull(_direction777);
             Assert.IsNotNull(_direction777.Source);
@@ -185,7 +189,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
-            var _testRepo = InitTestRepo(preparedFile);
+            var _testRepo = InitTestRepo(sourcePreparedFile);
             var _alifbaRepo = _testRepo.DataContext.AlifbaRepository;
             var _direction = _testRepo.Get(777);
             Assert.AreEqual(null, _direction.BuiltIn);
@@ -235,7 +239,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            var _testRepo = InitTestRepo(preparedFile);
+            var _testRepo = InitTestRepo(sourcePreparedFile);
             var _direction = _testRepo.Get(777);
             Assert.IsNotNull(_direction);
             _testRepo.Delete(_direction.ID);
@@ -282,7 +286,7 @@ namespace BitigDataTests
         [TestMethod]
         public void GetExclusions()
         {
-            var _testRepo = InitTestRepo(preparedFile);
+            var _testRepo = InitTestRepo(sourcePreparedFile);
             var _direction = _testRepo.Get(777);
             Assert.IsNotNull(_direction.Exclusions);
             Assert.AreEqual(1, _direction.Exclusions.Count);
@@ -315,7 +319,7 @@ namespace BitigDataTests
         [TestMethod]
         public void InvalidConfig()
         {
-            var _invalidFile = dataFolder + @"corrupted\InvalidDirections.xml";
+            var _invalidFile = sourceDataFolder + @"corrupted\InvalidDirections.xml";
             var _testRepo = InitTestRepo(_invalidFile);
             var _list = _testRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
@@ -324,7 +328,7 @@ namespace BitigDataTests
         [TestMethod]
         public void ObsoleteConfig()
         {
-            var _invalidFile = dataFolder + @"corrupted\ObsoleteDirections.xml";
+            var _invalidFile = sourceDataFolder + @"corrupted\ObsoleteDirections.xml";
             var _testRepo = InitTestRepo(_invalidFile);
             var _list = _testRepo.GetList();
             Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);

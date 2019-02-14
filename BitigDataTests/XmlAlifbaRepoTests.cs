@@ -17,42 +17,23 @@ namespace BitigDataTests
         {
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        private const string currentDataFolder = @"AlifbaRepoTestData\";
+        private readonly string testFilePath = currentDataFolder + "Alphabets.xml";
+        private readonly string preparedFile = currentDataFolder + @"Prepared\Alifba1025.xml";
+        private readonly string preparedFileSymbols = currentDataFolder + @"Prepared\Symbols\1025.xml";
+        private readonly string corruptedFile = currentDataFolder + @"Corrupted\NoYanalif.xml";
+        private readonly string directionsPath = currentDataFolder + "Directions.xml";
 
-        private const string dataFolder = @"TestData\";
-        private readonly string testFilePath = dataFolder + "Alphabets.xml";
-        private readonly string preparedFile = dataFolder + @"Prepared\Alifba1025.xml";
-        private readonly string corruptedFile = dataFolder + @"Corrupted\NoYanalif.xml";
-        private readonly string directionsPath = dataFolder + "Directions.xml";
+        
 
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
         {
-            if (File.Exists(testFilePath))
-                File.Delete(testFilePath);
-            if (File.Exists(directionsPath))
-                File.Delete(directionsPath);
+            if (Directory.Exists(currentDataFolder))
+                Directory.Delete(currentDataFolder, true);
+            Directory.CreateDirectory(currentDataFolder);
+            TestUtils.CopyDirectory("TestData", currentDataFolder);
         }
 
         [TestMethod]
@@ -76,6 +57,7 @@ namespace BitigDataTests
             var _list = _checkRepo.GetList();
             Assert.IsTrue(_list.Count > 0);
             var _inserted = _list.Find(_item => _item.FriendlyName == _name);
+            _inserted = _testRepo.Get(_inserted.ID);
             Assert.IsNotNull(_inserted);
             Assert.AreNotEqual(-1, _inserted.ID);
             Assert.IsTrue(_inserted.RightToLeft);
@@ -173,7 +155,8 @@ namespace BitigDataTests
         public void Update()
         {
             File.Copy(preparedFile, testFilePath);
-
+            Directory.CreateDirectory(currentDataFolder + @"Symbols");
+            File.Copy(preparedFileSymbols, currentDataFolder + @"Symbols\1025.xml");
             var _xmlContext = new XmlContext(testFilePath, directionsPath);
             var _testRepo = _xmlContext.AlifbaRepository;
             var _alifba = _testRepo.Get(1025);
@@ -238,7 +221,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_CreateDefault()
         {
-            File.Copy(dataFolder + @"Prepared\DirectionNoCyr.xml", directionsPath);
+            File.Copy(currentDataFolder + @"Prepared\DirectionNoCyr.xml", directionsPath);
 
             var _xmlContext = new XmlContext(testFilePath, directionsPath);
             var _testRepo = _xmlContext.AlifbaRepository;
@@ -319,7 +302,7 @@ namespace BitigDataTests
         [TestMethod]
         public void InvalidConfig()
         {
-            var _invalidFile = dataFolder + @"corrupted\InvalidAlphabets.xml";
+            var _invalidFile = currentDataFolder + @"corrupted\InvalidAlphabets.xml";
             File.Copy(_invalidFile, testFilePath);
 
             var _xmlContext = new XmlContext(testFilePath, directionsPath);

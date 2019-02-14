@@ -65,6 +65,7 @@
     <Compile Include="ExclusionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InMemoryListTests.cs" />
+    <Compile Include="TestUtils.cs" />
     <Compile Include="XmlContextTests.cs" />
     <Compile Include="XmlDirectionRepoTests.cs" />
     <Compile Include="XmlAlifbaRepoTests.cs" />
@@ -102,10 +103,10 @@
     <Content Include="TestData\Prepared\Direction777.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\DirectionCyrYan.xml">
+    <Content Include="TestData\Prepared\DirectionNoCyr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\DirectionNoCyr.xml">
+    <Content Include="TestData\Prepared\Symbols\1025.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

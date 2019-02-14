@@ -12,10 +12,12 @@ namespace Bitig.Data.Storage
         private InMemoryList<XmlAlifba> alifbaCache;
         private InMemoryList<XmlDirection> directionCache;
         private InMemoryList<XmlSymbolMapping> mappingsCache;
+        private InMemoryList<XmlSymbolCollection> customSymbolsCache;
 
         private XmlAlifbaReader xmlAlifbaReader;
         private XmlDirectionReader xmlDirectionReader;
         private XmlSymbolMappingReader xmlSymbolMappingReader;
+        private XmlSymbolCollectionReader xmlSymbolCollectionReader;
 
         private XmlAlifbaRepository alifbaRepository;
         private XmlDirectionRepository directionRepository;
@@ -53,6 +55,16 @@ namespace Bitig.Data.Storage
             }
         }
 
+        internal InMemoryList<XmlSymbolCollection> CustomSymbols
+        {
+            get
+            {
+                if (customSymbolsCache == null)
+                    InitCustomSymbolsCache();
+                return customSymbolsCache;
+            }
+        }
+
         public AlifbaRepository AlifbaRepository
         {
             get
@@ -80,8 +92,10 @@ namespace Bitig.Data.Storage
             alifbaRepository = new XmlAlifbaRepository(this);
             xmlDirectionReader = new XmlDirectionReader(DirectionsPath);
             directionRepository = new XmlDirectionRepository(this);
-            var directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
-            xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(directionsDirectory, "Mappings"));
+            var _alphabetsDirectory = Path.GetDirectoryName(AlphabetsPath) ?? string.Empty;
+            xmlSymbolCollectionReader = new XmlSymbolCollectionReader(Path.Combine(_alphabetsDirectory, "Symbols"));
+            var _directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
+            xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(_directionsDirectory, "Mappings"));
         }
 
         private void InitAlifbaCache()
@@ -90,26 +104,31 @@ namespace Bitig.Data.Storage
             if (_xmlList == null)
             {
                 _xmlList = new List<XmlAlifba>();
+                var _symbolLists = new List<XmlSymbolCollection>();
                 var _IDs = new List<int>();
                 foreach (var _builtIn in DefaultConfiguration.BuiltInAlifbaList)
                 {
                     var _id = IDGenerator.GenerateID(_IDs);
                     _IDs.Add(_id);
-                    var _alifba = new Alifba(_id, _builtIn.DefaultName, _builtIn.CustomSymbols,
+                    var _alifba = new Alifba(_id, _builtIn.DefaultName,null,
                         _builtIn.RightToLeft, _builtIn.DefaultFont, _builtIn.ID);
                     _xmlList.Add(new XmlAlifba(_alifba));
+                    if (_builtIn.CustomSymbols != null)
+                        _symbolLists.Add(new XmlSymbolCollection(_id, _builtIn.CustomSymbols));
                 }
                 xmlAlifbaReader.Save(_xmlList);
+                xmlSymbolCollectionReader.Save(_symbolLists);
             }
             else
             {
                 if (!_xmlList.Any(_alif => _alif.BuiltIn == BuiltInAlifbaType.Yanalif))
                 {
                     var _id = IDGenerator.GenerateID(_xmlList.Select(_item => _item.ID));
-                    var _yanalif = new Alifba(_id, DefaultConfiguration.Yanalif.DefaultName, DefaultConfiguration.Yanalif.CustomSymbols,
+                    var _yanalif = new Alifba(_id, DefaultConfiguration.Yanalif.DefaultName, null,
                     DefaultConfiguration.Yanalif.RightToLeft, DefaultConfiguration.Yanalif.DefaultFont, DefaultConfiguration.Yanalif.ID);
                     _xmlList.Add(new XmlAlifba(_yanalif));
                     xmlAlifbaReader.Save(_xmlList);
+                    xmlSymbolCollectionReader.Save(new List<XmlSymbolCollection> { new XmlSymbolCollection(_id, DefaultConfiguration.Yanalif.CustomSymbols) });
                 }
             }
             alifbaCache = new InMemoryList<XmlAlifba>(_xmlList);
@@ -147,6 +166,12 @@ namespace Bitig.Data.Storage
             mappingsCache = new InMemoryList<XmlSymbolMapping>(_xmlList);
         }
 
+        private void InitCustomSymbolsCache()
+        {
+            var _xmlList = xmlSymbolCollectionReader.Read();
+            customSymbolsCache = new InMemoryList<XmlSymbolCollection>(_xmlList);
+        }
+
         public void CancelChanges()
         {
             alifbaCache = null;
@@ -161,6 +186,8 @@ namespace Bitig.Data.Storage
                 xmlDirectionReader.Save(directionCache);
             if (mappingsCache != null)
                 xmlSymbolMappingReader.Save(mappingsCache);
+            if (customSymbolsCache != null)
+                xmlSymbolCollectionReader.Save(customSymbolsCache);
         }
     }
 }

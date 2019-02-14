@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Xml.Serialization;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
@@ -15,7 +12,6 @@ namespace Bitig.Data.Model
             get; set;
         }
 
-        [XmlArrayItem("Symbol")]
         public XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol> SymbolMapping { get; set; }
 
         public XmlSymbolMapping()

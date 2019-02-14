@@ -72,9 +72,11 @@
     <Compile Include="Model\XmlExclusion.cs" />
     <Compile Include="Model\XmlAlifba.cs" />
     <Compile Include="Model\XmlFont.cs" />
+    <Compile Include="Model\XmlSymbolCollection.cs" />
     <Compile Include="Model\XmlSymbolMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\ConfigSerializer.cs" />
+    <Compile Include="Storage\SymbolCollectionSerializer.cs" />
     <Compile Include="Storage\SymbolMappingSerializer.cs" />
     <Compile Include="Storage\XmlAlifbaReader.cs" />
     <Compile Include="Storage\XmlAlifbaRepository.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Storage\XmlDirectionReader.cs" />
     <Compile Include="Storage\XmlDirectionRepository.cs" />
     <Compile Include="Storage\XmlContext.cs" />
+    <Compile Include="Storage\XmlSymbolCollectionReader.cs" />
     <Compile Include="Storage\XmlSymbolMappingReader.cs" />
   </ItemGroup>
   <ItemGroup>

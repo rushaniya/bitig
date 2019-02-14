@@ -7,6 +7,8 @@ namespace Bitig.Data.Storage
     [XmlRoot(ElementName = "AlphabetsConfig")]
     public class AlphabetsConfig
     {
+        [XmlArray("AlphabetList")]
+        [XmlArrayItem("Alphabet")]
         public List<XmlAlifba> AlifbaList { get; set; }
     }
 
