@@ -3,7 +3,7 @@ using System.IO;
 using Bitig.Data.Model;
 using Bitig.Logic.Repository;
 
-namespace Bitig.Data.Storage
+namespace Bitig.Data.Serialization
 {
 
     internal class XmlSymbolCollectionReader

@@ -14,11 +14,11 @@ namespace BitigLogicTests
         [TestMethod]
         public void BasicTransliteration()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("1"), new AlifbaSymbol("a") },
-                { new AlifbaSymbol("2"), new AlifbaSymbol("b") },
-                { new AlifbaSymbol("3"), new AlifbaSymbol("c") }
+                { new TextSymbol("1"), new TextSymbol("a") },
+                { new TextSymbol("2"), new TextSymbol("b") },
+                { new TextSymbol("3"), new TextSymbol("c") }
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _translitResult = _command.Convert("2132");
@@ -28,11 +28,11 @@ namespace BitigLogicTests
         [TestMethod]
         public void Transliteration_UpperLower()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("1", "2"), new AlifbaSymbol("a", "A") },
-                { new AlifbaSymbol("3", "4"), new AlifbaSymbol("b", "B") },
-                { new AlifbaSymbol("5", "6"), new AlifbaSymbol("c", "C") }
+                { new TextSymbol("1", "2"), new TextSymbol("a", "A") },
+                { new TextSymbol("3", "4"), new TextSymbol("b", "B") },
+                { new TextSymbol("5", "6"), new TextSymbol("c", "C") }
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _translitResult = _command.Convert("2132");
@@ -43,11 +43,11 @@ namespace BitigLogicTests
         [TestMethod]
         public void Transliteration_ChangeCase()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("a", "b"), new AlifbaSymbol("1", "2") },
-                { new AlifbaSymbol("c", "d"), new AlifbaSymbol("3", "4") },
-                { new AlifbaSymbol("e", "f"), new AlifbaSymbol("13") }
+                { new TextSymbol("a", "b"), new TextSymbol("1", "2") },
+                { new TextSymbol("c", "d"), new TextSymbol("3", "4") },
+                { new TextSymbol("e", "f"), new TextSymbol("13") }
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _firstCapital = _command.Convert("fe");
@@ -59,11 +59,11 @@ namespace BitigLogicTests
         [TestMethod]
         public void AlphabetPattern()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("1", "!"), new AlifbaSymbol("a") },
-                { new AlifbaSymbol("2", "@"), new AlifbaSymbol("b") },
-                { new AlifbaSymbol("3", "."), new AlifbaSymbol("c") }
+                { new TextSymbol("1", "!"), new TextSymbol("a") },
+                { new TextSymbol("2", "@"), new TextSymbol("b") },
+                { new TextSymbol("3", "."), new TextSymbol("c") }
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             Assert.IsTrue(_command.IsAlphabetic("123!@."));
@@ -73,10 +73,10 @@ namespace BitigLogicTests
         [TestMethod]
         public void Unicode()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("\u0627"), new AlifbaSymbol("a") },
-                { new AlifbaSymbol("\uFE8F"), new AlifbaSymbol("b") }
+                { new TextSymbol("\u0627"), new TextSymbol("a") },
+                { new TextSymbol("\uFE8F"), new TextSymbol("b") }
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             Assert.IsTrue(_command.IsAlphabetic("\u0627\ufe8f"));
@@ -85,11 +85,11 @@ namespace BitigLogicTests
         [TestMethod]
         public void InitFromDirection()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("1"), new AlifbaSymbol("a") },
-                { new AlifbaSymbol("2"), new AlifbaSymbol("b") },
-                { new AlifbaSymbol("3"), new AlifbaSymbol("c") }
+                { new TextSymbol("1"), new TextSymbol("a") },
+                { new TextSymbol("2"), new TextSymbol("b") },
+                { new TextSymbol("3"), new TextSymbol("c") }
             };
             var _command = new ManualCommand(_translitDictionary);
             var _direction = new Direction(-1, null, null, null, ManualCommand: _command);
@@ -100,14 +100,14 @@ namespace BitigLogicTests
         [TestMethod]
         public void MultiLetterKeys_DifferentLengths()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("11"), new AlifbaSymbol("A") },
-                { new AlifbaSymbol("22"), new AlifbaSymbol("B") },
-                { new AlifbaSymbol("33"), new AlifbaSymbol("C") },
-                { new AlifbaSymbol("45"), new AlifbaSymbol("D") },
-                { new AlifbaSymbol("6"), new AlifbaSymbol("E") },
-                { new AlifbaSymbol("777"), new AlifbaSymbol("F") },
+                { new TextSymbol("11"), new TextSymbol("A") },
+                { new TextSymbol("22"), new TextSymbol("B") },
+                { new TextSymbol("33"), new TextSymbol("C") },
+                { new TextSymbol("45"), new TextSymbol("D") },
+                { new TextSymbol("6"), new TextSymbol("E") },
+                { new TextSymbol("777"), new TextSymbol("F") },
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _translitResult = _command.Convert("22113324567773");
@@ -117,12 +117,12 @@ namespace BitigLogicTests
         [TestMethod]
         public void MultiLetterKeys_SameLengths()
         {
-            var _translitDictionary = new Dictionary<AlifbaSymbol, AlifbaSymbol>
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
             {
-                { new AlifbaSymbol("11"), new AlifbaSymbol("A") },
-                { new AlifbaSymbol("22"), new AlifbaSymbol("B") },
-                { new AlifbaSymbol("33"), new AlifbaSymbol("C") },
-                { new AlifbaSymbol("45"), new AlifbaSymbol("D") },
+                { new TextSymbol("11"), new TextSymbol("A") },
+                { new TextSymbol("22"), new TextSymbol("B") },
+                { new TextSymbol("33"), new TextSymbol("C") },
+                { new TextSymbol("45"), new TextSymbol("D") },
             };
             var _command = new ConfigurableTranslitCommand(_translitDictionary);
             var _translitResult = _command.Convert("2211332453");

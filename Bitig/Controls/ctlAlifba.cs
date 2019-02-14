@@ -18,12 +18,6 @@ namespace Bitig.UI.Controls
 
         private bool x_HoldCapitalizeButton;
 
-        //internal ctlAlifba()
-        //{
-        //    InitializeComponent();
-        //    SymbolPressed += new EventHandler<SymbolEventArgs>(ctlAlifba_SymbolPressed);
-        //}
-
         internal ctlAlifba(List<AlifbaSymbol> Symbols)
         {
             InitializeComponent();

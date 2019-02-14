@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Bitig.Data.Model;
+using Bitig.Data.Serialization;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
@@ -13,11 +14,13 @@ namespace Bitig.Data.Storage
         private InMemoryList<XmlDirection> directionCache;
         private InMemoryList<XmlSymbolMapping> mappingsCache;
         private InMemoryList<XmlSymbolCollection> customSymbolsCache;
+        private InMemoryList<XmlExclusionCollection> exclusionsCache;
 
         private XmlAlifbaReader xmlAlifbaReader;
         private XmlDirectionReader xmlDirectionReader;
         private XmlSymbolMappingReader xmlSymbolMappingReader;
         private XmlSymbolCollectionReader xmlSymbolCollectionReader;
+        private XmlExclusionCollectionReader xmlExclusionReader;
 
         private XmlAlifbaRepository alifbaRepository;
         private XmlDirectionRepository directionRepository;
@@ -65,6 +68,16 @@ namespace Bitig.Data.Storage
             }
         }
 
+        internal InMemoryList<XmlExclusionCollection> Exclusions
+        {
+            get
+            {
+                if (exclusionsCache == null)
+                    InitExclusionsCache();
+                return exclusionsCache;
+            }
+        }
+
         public AlifbaRepository AlifbaRepository
         {
             get
@@ -96,6 +109,7 @@ namespace Bitig.Data.Storage
             xmlSymbolCollectionReader = new XmlSymbolCollectionReader(Path.Combine(_alphabetsDirectory, "Symbols"));
             var _directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
             xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(_directionsDirectory, "Mappings"));
+            xmlExclusionReader = new XmlExclusionCollectionReader(Path.Combine(_directionsDirectory, "Exclusions"));
         }
 
         private void InitAlifbaCache()
@@ -172,6 +186,12 @@ namespace Bitig.Data.Storage
             customSymbolsCache = new InMemoryList<XmlSymbolCollection>(_xmlList);
         }
 
+        private void InitExclusionsCache()
+        {
+            var _xmlList = xmlExclusionReader.Read();
+            exclusionsCache = new InMemoryList<XmlExclusionCollection>(_xmlList);
+        }
+
         public void CancelChanges()
         {
             alifbaCache = null;
@@ -188,6 +208,8 @@ namespace Bitig.Data.Storage
                 xmlSymbolMappingReader.Save(mappingsCache);
             if (customSymbolsCache != null)
                 xmlSymbolCollectionReader.Save(customSymbolsCache);
+            if (exclusionsCache != null)
+                xmlExclusionReader.Save(exclusionsCache);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Bitig.Logic.Commands
     {
         private Dictionary<string, string> translitTable = new Dictionary<string, string>();
 
-        public ConfigurableTranslitCommand(Dictionary<AlifbaSymbol, AlifbaSymbol> SymbolMapping)
+        public ConfigurableTranslitCommand(Dictionary<TextSymbol, TextSymbol> SymbolMapping)
         {
             var _alphabetPatternBuilder = new StringBuilder();
             CustomSourceUpLowPairs = new Dictionary<char, char>();
@@ -45,6 +45,7 @@ namespace Bitig.Logic.Commands
                 }
 
                 //if CapitalizedText is missing, the upper case letter is the same as lower
+                //custom: or upper case is from invariant culture?
                 var _upperSource = string.IsNullOrEmpty(_source.CapitalizedText) ? _source.ActualText : _source.CapitalizedText;
                 if (_source.ActualText.Length == 1 && _upperSource.Length == 1)
                 {

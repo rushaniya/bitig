@@ -11,25 +11,26 @@ namespace BitigDataTests
     public class ExclusionsTests
     {
         private const string dataFolder = @"TestData\";
-        private readonly string alifbaPath = dataFolder + "Alphabets.xml";
-        private readonly string testFilePath = dataFolder + "Directions.xml";
-        private readonly string preparedFile = dataFolder + @"Prepared\DirectionCyrYan.xml";
+        private const string currentDataFolder = @"ExclusionsTestData\";
+        private readonly string currentAlifbaPath = currentDataFolder + "Alphabets.xml";
+        private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
+        private readonly string sourcePreparedFile = dataFolder + @"Prepared\DirectionCyrYan.xml";
 
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
         {
-            if (File.Exists(testFilePath))
-                File.Delete(testFilePath);
-            if (File.Exists(alifbaPath))
-                File.Delete(alifbaPath);
+            if (Directory.Exists(currentDataFolder))
+                Directory.Delete(currentDataFolder, true);
+            Directory.CreateDirectory(currentDataFolder);
+            File.Copy(sourcePreparedFile, currentTestFilePath);
+            TestUtils.CopyDirectory(dataFolder + @"Prepared\Exclusions", currentDataFolder + "Exclusions");
         }
 
         [TestMethod]
         public void AddExclusion()
         {
-            File.Copy(preparedFile, testFilePath);
-            var _dirRepo = new XmlContext(alifbaPath, testFilePath).DirectionRepository;
+            var _dirRepo = new XmlContext(currentAlifbaPath, currentTestFilePath).DirectionRepository;
             var _direction = _dirRepo.Get(0);
             var _source = GenerateCyrillicWord();
             var _target = Guid.NewGuid().ToString();
@@ -44,8 +45,7 @@ namespace BitigDataTests
         [TestMethod]
         public void EditExclusion()
         {
-            File.Copy(preparedFile, testFilePath);
-            var _dirRepo = new XmlContext(alifbaPath, testFilePath).DirectionRepository;
+            var _dirRepo = new XmlContext(currentAlifbaPath, currentTestFilePath).DirectionRepository;
             var _direction = _dirRepo.Get(0);
             Assert.AreEqual("ike", _direction.Transliterate("бер"));
             var _target = Guid.NewGuid().ToString();

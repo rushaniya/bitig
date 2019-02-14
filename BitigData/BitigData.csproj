@@ -74,19 +74,23 @@
     <Compile Include="Model\XmlFont.cs" />
     <Compile Include="Model\XmlSymbolCollection.cs" />
     <Compile Include="Model\XmlSymbolMapping.cs" />
+    <Compile Include="Model\XmlTextSymbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\ConfigSerializer.cs" />
-    <Compile Include="Storage\SymbolCollectionSerializer.cs" />
-    <Compile Include="Storage\SymbolMappingSerializer.cs" />
-    <Compile Include="Storage\XmlAlifbaReader.cs" />
+    <Compile Include="Serialization\XmlExclusionCollectionReader.cs" />
+    <Compile Include="Serialization\ExclusionCollectionSerializer.cs" />
+    <Compile Include="Model\XmlExclusionCollection.cs" />
+    <Compile Include="Serialization\ConfigSerializer.cs" />
+    <Compile Include="Serialization\SymbolCollectionSerializer.cs" />
+    <Compile Include="Serialization\SymbolMappingSerializer.cs" />
+    <Compile Include="Serialization\XmlAlifbaReader.cs" />
     <Compile Include="Storage\XmlAlifbaRepository.cs" />
-    <Compile Include="Storage\AlifbaSerializer.cs" />
-    <Compile Include="Storage\DirectionSerializer.cs" />
-    <Compile Include="Storage\XmlDirectionReader.cs" />
+    <Compile Include="Serialization\AlifbaSerializer.cs" />
+    <Compile Include="Serialization\DirectionSerializer.cs" />
+    <Compile Include="Serialization\XmlDirectionReader.cs" />
     <Compile Include="Storage\XmlDirectionRepository.cs" />
     <Compile Include="Storage\XmlContext.cs" />
-    <Compile Include="Storage\XmlSymbolCollectionReader.cs" />
-    <Compile Include="Storage\XmlSymbolMappingReader.cs" />
+    <Compile Include="Serialization\XmlSymbolCollectionReader.cs" />
+    <Compile Include="Serialization\XmlSymbolMappingReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">

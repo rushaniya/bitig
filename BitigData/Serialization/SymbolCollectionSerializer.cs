@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using Bitig.Data.Model;
 
-namespace Bitig.Data.Storage
+namespace Bitig.Data.Serialization
 {
     [XmlRoot("SymbolsConfig")]
     public class SymbolCollectionConfig

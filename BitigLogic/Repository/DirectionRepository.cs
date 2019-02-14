@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
@@ -20,5 +21,7 @@ namespace Bitig.Logic.Repository
         public abstract Direction GetByAlifbaIDs(int SourceID, int TargetID);
 
         public abstract List<Alifba> GetTargets(int SourceID);
+
+        public abstract Dictionary<TextSymbol, TextSymbol> GetSymbolMapping(int ID);
     }
 }

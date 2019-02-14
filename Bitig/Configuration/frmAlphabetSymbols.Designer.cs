@@ -42,6 +42,8 @@ namespace Bitig.UI.Configuration
             this.colDisplaySymbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDisplayUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIsAlphabetic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colIsOnScreen = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.pnlBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSymbols)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndSymbol)).BeginInit();
@@ -90,7 +92,9 @@ namespace Bitig.UI.Configuration
             this.colSymbol,
             this.colDisplaySymbol,
             this.colUpper,
-            this.colDisplayUpper});
+            this.colDisplayUpper,
+            this.colIsAlphabetic,
+            this.colIsOnScreen});
             this.dgvSymbols.DataSource = this.bndSymbol;
             this.dgvSymbols.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSymbols.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
@@ -149,6 +153,18 @@ namespace Bitig.UI.Configuration
             this.colDisplayUpper.HeaderText = "Displayed upper symbol (if different)";
             this.colDisplayUpper.Name = "colDisplayUpper";
             // 
+            // colIsAlphabetic
+            // 
+            this.colIsAlphabetic.DataPropertyName = "IsAlphabetic";
+            this.colIsAlphabetic.HeaderText = "Alphabetic";
+            this.colIsAlphabetic.Name = "colIsAlphabetic";
+            // 
+            // colIsOnScreen
+            // 
+            this.colIsOnScreen.DataPropertyName = "IsOnScreen";
+            this.colIsOnScreen.HeaderText = "On screen";
+            this.colIsOnScreen.Name = "colIsOnScreen";
+            // 
             // frmAlphabetSymbols
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,5 +197,7 @@ namespace Bitig.UI.Configuration
         private System.Windows.Forms.DataGridViewTextBoxColumn colDisplaySymbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn colUpper;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDisplayUpper;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colIsAlphabetic;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colIsOnScreen;
     }
 }

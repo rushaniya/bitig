@@ -14,7 +14,7 @@ namespace Bitig.UI.Configuration
         private Alifba x_CurrentAlphabet;
         private AlifbaRepository x_AlifbaRepository;
 
-        private List<AlifbaSymbol> x_TemporaryList = new List<AlifbaSymbol>();
+        private BindingList<AlifbaSymbol> x_TemporaryList = new BindingList<AlifbaSymbol>();
 
         private List<AlifbaSymbol> x_Symbols;
 
@@ -26,7 +26,7 @@ namespace Bitig.UI.Configuration
             if (x_CurrentAlphabet.IsYanalif)
             {
                 x_Yanalif = true;
-                chkShowAllYanalifLetters.Checked = Configuration.TempConfig.ShowAllYanalifSymbols;//config:enable checkbox
+                chkShowAllYanalifLetters.Checked = TempConfig.ShowAllYanalifSymbols;//config:enable checkbox
             }
             Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
             pnlYanalifSettings.Visible = x_Yanalif;
@@ -36,7 +36,7 @@ namespace Bitig.UI.Configuration
             {
                 foreach (AlifbaSymbol _symbol in x_Symbols)
                 {
-                    AlifbaSymbol _copy = new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText);
+                    AlifbaSymbol _copy = new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen);
                     x_TemporaryList.Add(_copy);
                 }
             }
@@ -55,20 +55,20 @@ namespace Bitig.UI.Configuration
                     break;
                 if (_symbol.ActualText != null && _symbol.ActualText.Trim() != string.Empty)
                 {
-                    x_Symbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText));
+                    x_Symbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen));
                 }
                 _counter++;
             }
             if (x_Yanalif)
             {
-                Configuration.TempConfig.ShowAllYanalifSymbols = chkShowAllYanalifLetters.Checked;//config
+                TempConfig.ShowAllYanalifSymbols = chkShowAllYanalifLetters.Checked;//config
             }
 
             x_CurrentAlphabet.CustomSymbols = x_Symbols;
             x_AlifbaRepository.Update(x_CurrentAlphabet);
         }
 
-        int _maxRows = 30;//config
+        int _maxRows = 100;//config
 
         private void bndSymbol_ListChanged(object sender, ListChangedEventArgs e)
         {

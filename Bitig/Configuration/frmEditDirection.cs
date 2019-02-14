@@ -65,7 +65,7 @@ namespace Bitig.UI.Configuration
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
         private DirectionRepository x_DirectionRepository;
         private AlifbaRepository x_AlifbaRepository;
-        private Dictionary<AlifbaSymbol, AlifbaSymbol> x_SymbolMapping;
+        private Dictionary<TextSymbol, TextSymbol> x_SymbolMapping;
 
         public frmEditDirection(IDataContext DataContext)
         {
@@ -116,7 +116,16 @@ namespace Bitig.UI.Configuration
                 return;
             }
             //custom bool Direction.UseManualCommand?
-            var _manualCommand = rdbManual.Checked ? new ManualCommand(x_SymbolMapping) : null;
+            ManualCommand _manualCommand = null;
+            if (rdbManual.Checked)
+            {
+                if (x_SymbolMapping == null || x_SymbolMapping.Count == 0)
+                {
+                    MessageBox.Show("Symbol mapping is not defined.");
+                    return;
+                }
+               _manualCommand = new ManualCommand(x_SymbolMapping);
+            }
             BuiltInDirection _builtIn = null;
             if (_manualCommand == null)
             {
@@ -305,12 +314,22 @@ namespace Bitig.UI.Configuration
         private void rdbManual_CheckedChanged(object sender, EventArgs e)
         {
             pnlManual.Enabled = rdbManual.Checked;
+            if (rdbManual.Checked && x_SymbolMapping == null && x_Direction != null)
+            {
+                x_SymbolMapping = x_DirectionRepository.GetSymbolMapping(x_Direction.ID);
+            }
         }
 
         private void btnManual_Click(object sender, EventArgs e)
         {
-            //custom default symbols from alifbas
-            using (var _mappingForm = new frmSymbolMapping(x_SymbolMapping))
+            List<AlifbaSymbol> _defaultSourceSymbols = null;
+            if (x_SymbolMapping == null)
+            {
+                var _source = cmbSource.SelectedItem as Alifba;
+                if(_source!=null)
+                    _defaultSourceSymbols = x_AlifbaRepository.Get(_source.ID).CustomSymbols;
+            }
+            using (var _mappingForm = new frmSymbolMapping(x_SymbolMapping, _defaultSourceSymbols))
             {
                 if (_mappingForm.ShowDialog() == DialogResult.OK)
                 {

@@ -7,9 +7,9 @@ namespace Bitig.Logic.Model
 {
     public class ManualCommand
     {
-        public Dictionary<AlifbaSymbol, AlifbaSymbol> SymbolMapping { get; private set; }
+        public Dictionary<TextSymbol, TextSymbol> SymbolMapping { get; private set; }
 
-        public ManualCommand(Dictionary<AlifbaSymbol, AlifbaSymbol> SymbolMapping)
+        public ManualCommand(Dictionary<TextSymbol, TextSymbol> SymbolMapping)
         {
             this.SymbolMapping = SymbolMapping;
         }

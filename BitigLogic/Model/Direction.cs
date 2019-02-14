@@ -152,9 +152,9 @@ namespace Bitig.Logic.Model
                 // loc
                 if (!string.IsNullOrEmpty(AssemblyPath))
                     return System.IO.Path.GetFileName(AssemblyPath);
-                if (ManualCommand != null)
-                    return ("(Manual)");
-                return "(Built-in)";
+                if (BuiltIn != null)
+                    return ("(Built-in)");
+                return "(Manual)";
             }
         }
 

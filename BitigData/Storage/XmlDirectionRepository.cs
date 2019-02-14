@@ -26,7 +26,6 @@ namespace Bitig.Data.Storage
 
         private Direction MapWithReferences(XmlDirection StoredDirection)
         {
-            //custom: exclusions from separate file
             ManualCommand _manualCommand = null;
             if (StoredDirection.UseManualCommand)
             {
@@ -35,8 +34,12 @@ namespace Bitig.Data.Storage
                     _manualCommand = new ManualCommand(_mapping.SymbolMapping
                         .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
             }
+            var _xmlExclusionList = xmlContext.Exclusions.Get(StoredDirection.ID);
+            var _exclusions = _xmlExclusionList == null
+                ? null
+                : _xmlExclusionList.Exclusions.Select(x => x.ToModel()).ToList();
             var _shallowDirection = ShallowMap(StoredDirection);
-            return new Direction(StoredDirection.ID, _shallowDirection.Source, _shallowDirection.Target, _shallowDirection.Exclusions,
+            return new Direction(StoredDirection.ID, _shallowDirection.Source, _shallowDirection.Target, _exclusions,
                 _shallowDirection.AssemblyPath, _shallowDirection.TypeName, _shallowDirection.BuiltIn, _manualCommand);
         }
 
@@ -46,8 +49,6 @@ namespace Bitig.Data.Storage
             var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
             var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
             var _exclusions = new List<Exclusion>();
-            if (StoredDirection.Exclusions != null)
-                StoredDirection.Exclusions.ForEach(_excl => _exclusions.Add(_excl.ToModel()));
             return new Direction(StoredDirection.ID, _source.ToShallowModel(), _target.ToShallowModel(), _exclusions,
                 StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, null);
 
@@ -79,12 +80,18 @@ namespace Bitig.Data.Storage
                 var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
                 xmlContext.Mappings.InsertOrUpdate(_mapping);
             }
+            if (Item.Exclusions != null && Item.Exclusions.Count > 0)
+            {
+                var _exclusionList = new XmlExclusionCollection(Item.ID, Item.Exclusions);
+                xmlContext.Exclusions.InsertOrUpdate(_exclusionList);
+            }
         }
 
         public override void Delete(int ID)
         {
             xmlContext.Directions.Delete(ID);
             xmlContext.Mappings.Delete(ID);
+            xmlContext.Exclusions.Delete(ID);
         }
 
         public override void Update(Direction Item)
@@ -98,6 +105,11 @@ namespace Bitig.Data.Storage
             {
                 var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
                 xmlContext.Mappings.InsertOrUpdate(_mapping);
+            }
+            if (Item.Exclusions != null && Item.Exclusions.Count > 0)
+            {
+                var _exclusionList = new XmlExclusionCollection(Item.ID, Item.Exclusions);
+                xmlContext.Exclusions.InsertOrUpdate(_exclusionList);
             }
         }
 
@@ -118,6 +130,17 @@ namespace Bitig.Data.Storage
                 .Select(_dir => _dir.Target)
                 .ToList();
             return _targets;
+        }
+
+        public override Dictionary<TextSymbol, TextSymbol> GetSymbolMapping(int ID)
+        {
+            var _mapping = xmlContext.Mappings.Get(ID);
+            if (_mapping != null)
+            {
+                return _mapping.SymbolMapping
+                     .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel());
+            }
+            return null;
         }
     }
 }

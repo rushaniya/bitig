@@ -44,6 +44,7 @@
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mniExclusions = new System.Windows.Forms.ToolStripMenuItem();
             this.mniConfiguration = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniCurrentMapping = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.spltMain = new System.Windows.Forms.SplitContainer();
@@ -72,7 +73,6 @@
             this.ctlYanalif1 = new Bitig.UI.Controls.ctlYanalif();
             this.dlgColor = new System.Windows.Forms.ColorDialog();
             this.pnlTop = new System.Windows.Forms.FlowLayoutPanel();
-            this.mniCurrentMapping = new System.Windows.Forms.ToolStripMenuItem();
             this.tlsMain.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.spltMain.Panel1.SuspendLayout();
@@ -197,7 +197,7 @@
             this.mniTranslitPanel.CheckOnClick = true;
             this.mniTranslitPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniTranslitPanel.Name = "mniTranslitPanel";
-            this.mniTranslitPanel.Size = new System.Drawing.Size(152, 22);
+            this.mniTranslitPanel.Size = new System.Drawing.Size(144, 22);
             this.mniTranslitPanel.Text = "Translit Panel";
             this.mniTranslitPanel.CheckedChanged += new System.EventHandler(this.mniTranslitPanel_CheckedChanged);
             // 
@@ -207,7 +207,7 @@
             this.mniAlifba.CheckOnClick = true;
             this.mniAlifba.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mniAlifba.Name = "mniAlifba";
-            this.mniAlifba.Size = new System.Drawing.Size(152, 22);
+            this.mniAlifba.Size = new System.Drawing.Size(144, 22);
             this.mniAlifba.Text = "Alifba";
             this.mniAlifba.CheckedChanged += new System.EventHandler(this.mniAlifba_CheckedChanged);
             // 
@@ -224,16 +224,24 @@
             // mniExclusions
             // 
             this.mniExclusions.Name = "mniExclusions";
-            this.mniExclusions.Size = new System.Drawing.Size(174, 22);
+            this.mniExclusions.Size = new System.Drawing.Size(165, 22);
             this.mniExclusions.Text = "Exclusions";
             this.mniExclusions.Click += new System.EventHandler(this.mniExclusions_Click);
             // 
             // mniConfiguration
             // 
             this.mniConfiguration.Name = "mniConfiguration";
-            this.mniConfiguration.Size = new System.Drawing.Size(174, 22);
-            this.mniConfiguration.Text = "Configuration...";
+            this.mniConfiguration.Size = new System.Drawing.Size(165, 22);
+            this.mniConfiguration.Text = "Configuration";
             this.mniConfiguration.Click += new System.EventHandler(this.mniConfiguration_Click);
+            // 
+            // mniCurrentMapping
+            // 
+            this.mniCurrentMapping.Enabled = false;
+            this.mniCurrentMapping.Name = "mniCurrentMapping";
+            this.mniCurrentMapping.Size = new System.Drawing.Size(165, 22);
+            this.mniCurrentMapping.Text = "Current mapping";
+            this.mniCurrentMapping.Click += new System.EventHandler(this.mniCurrentMapping_Click);
             // 
             // mnuHelp
             // 
@@ -246,7 +254,7 @@
             // mniAbout
             // 
             this.mniAbout.Name = "mniAbout";
-            this.mniAbout.Size = new System.Drawing.Size(152, 22);
+            this.mniAbout.Size = new System.Drawing.Size(116, 22);
             this.mniAbout.Text = "About...";
             this.mniAbout.Click += new System.EventHandler(this.mniAbout_Click);
             // 
@@ -531,14 +539,6 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(853, 43);
             this.pnlTop.TabIndex = 27;
-            // 
-            // mniCurrentMapping
-            // 
-            this.mniCurrentMapping.Enabled = false;
-            this.mniCurrentMapping.Name = "mniCurrentMapping";
-            this.mniCurrentMapping.Size = new System.Drawing.Size(174, 22);
-            this.mniCurrentMapping.Text = "Current mapping...";
-            this.mniCurrentMapping.Click += new System.EventHandler(this.mniCurrentMapping_Click);
             // 
             // frmMainForm
             // 

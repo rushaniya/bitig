@@ -47,14 +47,12 @@ namespace Bitig.Data.Model
 
         public bool UseManualCommand { get; set; } 
 
-        public List<XmlExclusion> Exclusions { get; set; }
-
         [Obsolete("For XML serialization only")]
         public XmlDirection()
         {
         }
 
-        public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, List<XmlExclusion> Exclusions,
+        public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, 
             string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None,
             bool UseManualCommand = false)
         {
@@ -64,7 +62,6 @@ namespace Bitig.Data.Model
             this.SourceAlifbaID = SourceAlifbaID;
             this.TargetAlifbaID = TargetAlifbaID;
             this.TypeName = TypeName;
-            this.Exclusions = Exclusions;
             this.UseManualCommand = UseManualCommand;
         }
 
@@ -78,10 +75,6 @@ namespace Bitig.Data.Model
             var _builtInID = ModelDirection.BuiltIn == null ? BuiltInDirectionType.None :
                 ModelDirection.BuiltIn.ID;
 
-            var _exclusions = new List<XmlExclusion>();
-            if (ModelDirection.Exclusions != null)
-                ModelDirection.Exclusions.ForEach(_excl => _exclusions.Add(new XmlExclusion(_excl)));
-
 
             ID = ModelDirection.ID;
             SourceAlifbaID = ModelDirection.Source.ID;
@@ -89,7 +82,6 @@ namespace Bitig.Data.Model
             AssemblyPath = ModelDirection.AssemblyPath;
             TypeName = ModelDirection.TypeName;
             BuiltInID = _builtInID;
-            Exclusions = _exclusions;
             UseManualCommand = ModelDirection.ManualCommand != null;
         }
 
@@ -102,15 +94,7 @@ namespace Bitig.Data.Model
 
         public XmlDirection Clone()
         {
-            var _exclusions = new List<XmlExclusion>();
-            if (Exclusions != null)
-            {
-                foreach (var _item in Exclusions)
-                {
-                    _exclusions.Add(_item.Clone());
-                }
-            }
-            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, _exclusions, AssemblyPath, TypeName, BuiltInID, UseManualCommand);
+            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, AssemblyPath, TypeName, BuiltInID, UseManualCommand);
         }
     }
 }

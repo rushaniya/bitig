@@ -1,14 +1,14 @@
 ﻿using System.Xml.Serialization;
 using Bitig.Data.Model;
 
-namespace Bitig.Data.Storage
+namespace Bitig.Data.Serialization
 {
     [XmlRoot("SymbolMappingsConfig")]
     public class SymbolMappingConfig
     {
         [XmlArray("SymbolMappingDictionary")]
         [XmlArrayItem("SymbolMapping")]
-        public XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol> SymbolMapping { get; set; }
+        public XmlDictionary<XmlTextSymbol, XmlTextSymbol> SymbolMapping { get; set; }
     }
 
     internal class SymbolMappingSerializer

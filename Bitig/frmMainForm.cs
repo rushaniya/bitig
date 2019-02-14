@@ -12,6 +12,7 @@ using Bitig.Logic.Repository;
 using Bitig.UI.Configuration;
 using Bitig.Data.Storage;
 using Bitig.UI.Logic;
+using System.Linq;
 
 namespace Bitig.UI
 {
@@ -635,7 +636,7 @@ namespace Bitig.UI
                 var _config = x_AlifbaRepository.Get(AlphabetID);
                 if (_config != null && _config.CustomSymbols != null && _config.CustomSymbols.Count > 0)
                 {
-                    x_OnscreenSymbols.Add(AlphabetID, _config.CustomSymbols);
+                    x_OnscreenSymbols.Add(AlphabetID, _config.CustomSymbols.Where(x => x.IsOnScreen).ToList());
                 }
                 else x_OnscreenSymbols.Add(AlphabetID, null);
             }
@@ -896,11 +897,13 @@ namespace Bitig.UI
         {
             if (x_CurrentDirection == null || x_CurrentDirection.ManualCommand == null)
                 return;
-            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.ManualCommand.SymbolMapping))
+            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.ManualCommand.SymbolMapping, null))
             {
-                if (_mappingForm.DialogResult == DialogResult.OK)
+                if (_mappingForm.ShowDialog() == DialogResult.OK)
                 {
-                    //custom: save and apply
+                    x_CurrentDirection.ManualCommand = new ManualCommand(_mappingForm.SymbolMapping);
+                    x_DirectionRepository.Update(x_CurrentDirection);
+                    x_DataContext.SaveChanges();
                 }
             }
         }

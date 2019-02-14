@@ -106,7 +106,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_CurrentAlphabet, x_AlifbaRepo))
+                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_AlifbaRepo.Get(x_CurrentAlphabet.ID), x_AlifbaRepo))
                 {
                     if (_symbolsForm.ShowDialog() == DialogResult.OK)
                     {
@@ -180,7 +180,7 @@ namespace Bitig.UI.Configuration
             {
                 using (frmEditDirection _editDir = new frmEditDirection(x_DataContext))
                 {
-                    _editDir.X_Direction = x_CurrentDirection;
+                    _editDir.X_Direction = x_DirectionRepo.Get(x_CurrentDirection.ID);
                     if (_editDir.ShowDialog() == DialogResult.OK)
                     {
                         DisplayDirections();

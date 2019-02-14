@@ -9,16 +9,33 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmSymbolMapping : Form
     {
-        public Dictionary<AlifbaSymbol, AlifbaSymbol> SymbolMapping { get; private set; }
+        public Dictionary<TextSymbol, TextSymbol> SymbolMapping { get; private set; }
 
         private BindingList<SymbolPair> x_Symbols = new BindingList<SymbolPair>();
 
-        public frmSymbolMapping(Dictionary<AlifbaSymbol, AlifbaSymbol> SymbolMapping)
+        public frmSymbolMapping(Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlifbaSymbol> DefaultSourceSymbols)
         {
             InitializeComponent();
-            this.SymbolMapping = new Dictionary<AlifbaSymbol, AlifbaSymbol>();
+            this.SymbolMapping = new Dictionary<TextSymbol, TextSymbol>();
             bndSymbols.DataSource = x_Symbols;
-            if (SymbolMapping != null)
+            if (SymbolMapping == null)
+            {
+                //pre-fill with symbols of the source alphabet
+                if (DefaultSourceSymbols != null)
+                {
+                    foreach (var _symbol in DefaultSourceSymbols)
+                    {
+                        x_Symbols.Add(new SymbolPair
+                        {
+                            SourceLower = _symbol.ActualText,
+                            SourceUpper = _symbol.CapitalizedText,
+                            TargetLower = string.Empty,
+                            TargetUpper = string.Empty
+                        });
+                    }
+                }
+            }
+            else
             {
                 foreach (var _symbol in SymbolMapping)
                 {
@@ -38,7 +55,9 @@ namespace Bitig.UI.Configuration
             SymbolMapping.Clear();
             foreach (var _symbolPair in x_Symbols)
             {
-                var _key = new AlifbaSymbol(_symbolPair.SourceLower, _symbolPair.SourceUpper);
+                if (string.IsNullOrEmpty(_symbolPair.SourceLower))
+                    continue;
+                var _key = new TextSymbol(_symbolPair.SourceLower, _symbolPair.SourceUpper);
                 if (SymbolMapping.ContainsKey(_key))
                 {
                     //loc
@@ -46,7 +65,7 @@ namespace Bitig.UI.Configuration
                     return;
                 }
                 SymbolMapping.Add(_key,
-                    new AlifbaSymbol(_symbolPair.TargetLower, _symbolPair.TargetUpper));
+                    new TextSymbol(_symbolPair.TargetLower, _symbolPair.TargetUpper));
             }
             DialogResult = DialogResult.OK;
         }

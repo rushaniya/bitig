@@ -18,18 +18,20 @@ namespace BitigDataTests
 
         private const string sourceDataFolder = @"TestData\";
         private const string currentDataFolder = @"DirectionRepoTestData\";
-     //   private readonly string sourceAlifbaPath = sourceDataFolder + "Alphabets.xml";
         private readonly string sourcePreparedFile = sourceDataFolder + @"Prepared\Direction777.xml";
-     //   private readonly string sourceTestFilePath = sourceDataFolder + "Directions.xml";
         private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
         private readonly string currentAlifbaFilePath = currentDataFolder + "Alphabets.xml";
 
         private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
             if (preparedFilePath != null)
+            {
                 File.Copy(preparedFilePath, currentTestFilePath);
-           // else
-             //   File.Copy(sourceTestFilePath, currentTestFilePath);
+                var _preparedFolder = Path.GetDirectoryName(preparedFilePath) ?? "";
+                var _exclusionsPath = Path.Combine(_preparedFolder, "Exclusions");
+                if (Directory.Exists(_exclusionsPath))
+                    TestUtils.CopyDirectory(_exclusionsPath, currentDataFolder + "Exclusions");
+            }
             var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
@@ -341,9 +343,9 @@ namespace BitigDataTests
             var _source = _testRepo.DataContext.AlifbaRepository.GetBuiltIn(BuiltInAlifbaType.Yanalif);
             var _target = _testRepo.DataContext.AlifbaRepository.GetBuiltIn(BuiltInAlifbaType.Cyrillic);
             var _direction = new Direction(-1, _source, _target, null, 
-                ManualCommand: new ManualCommand(new Dictionary<AlifbaSymbol, AlifbaSymbol>
+                ManualCommand: new ManualCommand(new Dictionary<TextSymbol, TextSymbol>
                 {
-                    { new AlifbaSymbol("1"), new AlifbaSymbol("2") }
+                    { new TextSymbol("1"), new TextSymbol("2") }
                 }));
             _testRepo.Insert(_direction);
             _testRepo.DataContext.SaveChanges();
@@ -352,7 +354,7 @@ namespace BitigDataTests
             Assert.IsNotNull(_savedDirection);
             Assert.IsNotNull(_savedDirection.ManualCommand);
             Assert.AreEqual(1, _savedDirection.ManualCommand.SymbolMapping.Count);
-            Assert.AreEqual(new AlifbaSymbol("2"), _savedDirection.ManualCommand.SymbolMapping[new AlifbaSymbol("1")]);
+            Assert.AreEqual(new TextSymbol("2"), _savedDirection.ManualCommand.SymbolMapping[new TextSymbol("1")]);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Bitig.Data.Storage
+namespace Bitig.Data.Serialization
 {
     public class ConfigSerializer<T> where T : class
     {

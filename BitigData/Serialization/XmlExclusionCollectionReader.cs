@@ -1,34 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Bitig.Data.Model;
 using Bitig.Logic.Repository;
 
-namespace Bitig.Data.Storage
+namespace Bitig.Data.Serialization
 {
-    internal class XmlSymbolMappingReader
+    internal class XmlExclusionCollectionReader
     {
         private string directoryPath;
 
-        public XmlSymbolMappingReader(string DirectoryPath)
+        public XmlExclusionCollectionReader(string DirectoryPath)
         {
             directoryPath = DirectoryPath;
         }
 
-        public List<XmlSymbolMapping> Read()
+        public List<XmlExclusionCollection> Read()
         {
-            var _list = new List<XmlSymbolMapping>();
+            var _list = new List<XmlExclusionCollection>();
             var _directoryInfo = new DirectoryInfo(directoryPath);
             if (_directoryInfo.Exists)
             {
-                var _mappingFiles = _directoryInfo.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
-                foreach (var _mappingFile in _mappingFiles)
+                var _exclusionFiles = _directoryInfo.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
+                foreach (var _exclusionFile in _exclusionFiles)
                 {
-                    var _fileName = Path.GetFileNameWithoutExtension(_mappingFile.Name);
+                    var _fileName = Path.GetFileNameWithoutExtension(_exclusionFile.Name);
                     int _id;
                     if (int.TryParse(_fileName, out _id))
                     {
-                        var _xmlMapping = SymbolMappingSerializer.ReadFromFile(_mappingFile.FullName, _id);
+                        var _xmlMapping = ExclusionCollectionSerializer.ReadFromFile(_exclusionFile.FullName, _id);
                         if (_xmlMapping != null)
                         {
                             _list.Add(_xmlMapping);
@@ -39,17 +38,17 @@ namespace Bitig.Data.Storage
             return _list;
         }
 
-        public void Save(InMemoryList<XmlSymbolMapping> ListToSave)
+        public void Save(InMemoryList<XmlExclusionCollection> ListToSave)
         {
-            foreach (var _mapping in ListToSave)
+            foreach (var _exclusionList in ListToSave)
             {
-                var _filePath = Path.Combine(directoryPath, _mapping.Item.ID + ".xml");
-                switch (_mapping.State)
+                var _filePath = Path.Combine(directoryPath, _exclusionList.Item.ID + ".xml");
+                switch (_exclusionList.State)
                 {
                     case ItemState.Added:
                     case ItemState.Unmodified:
                     case ItemState.Updated:
-                        SymbolMappingSerializer.SaveToFile(_filePath, _mapping.Item);
+                        ExclusionCollectionSerializer.SaveToFile(_filePath, _exclusionList.Item);
                         break;
                     case ItemState.Deleted:
                         //custom: test

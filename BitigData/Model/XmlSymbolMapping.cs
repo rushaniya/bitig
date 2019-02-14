@@ -12,7 +12,7 @@ namespace Bitig.Data.Model
             get; set;
         }
 
-        public XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol> SymbolMapping { get; set; }
+        public XmlDictionary<XmlTextSymbol, XmlTextSymbol> SymbolMapping { get; set; }
 
         public XmlSymbolMapping()
         {
@@ -22,15 +22,15 @@ namespace Bitig.Data.Model
         public XmlSymbolMapping(int ID, ManualCommand ManualCommand)
         {
             this.ID = ID;
-            SymbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>(
+            SymbolMapping = new XmlDictionary<XmlTextSymbol, XmlTextSymbol>(
                 ManualCommand.SymbolMapping
-                        .ToDictionary(x => new XmlAlifbaSymbol(x.Key), x => new XmlAlifbaSymbol(x.Value)));
+                        .ToDictionary(x => new XmlTextSymbol(x.Key), x => new XmlTextSymbol(x.Value)));
         }
 
         public XmlSymbolMapping Clone()
         {
-            var _symbolMapping = new XmlDictionary<XmlAlifbaSymbol, XmlAlifbaSymbol>();
-            _symbolMapping.AddRange(this.SymbolMapping.Select(x => new XmlKeyValuePair<XmlAlifbaSymbol, XmlAlifbaSymbol>(x.Key.Clone(), x.Value.Clone())));
+            var _symbolMapping = new XmlDictionary<XmlTextSymbol, XmlTextSymbol>();
+            _symbolMapping.AddRange(this.SymbolMapping.Select(x => new XmlKeyValuePair<XmlTextSymbol, XmlTextSymbol>(x.Key.Clone(), x.Value.Clone())));
             return new XmlSymbolMapping
             {
                 ID = this.ID,
