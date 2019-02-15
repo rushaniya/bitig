@@ -115,13 +115,12 @@ namespace Bitig.UI.Configuration
                 MessageBox.Show("Source and target are the same", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            //custom bool Direction.UseManualCommand?
             ManualCommand _manualCommand = null;
             if (rdbManual.Checked)
             {
                 if (x_SymbolMapping == null || x_SymbolMapping.Count == 0)
                 {
-                    MessageBox.Show("Symbol mapping is not defined.");
+                    MessageBox.Show("Symbol mapping is not defined.", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
                _manualCommand = new ManualCommand(x_SymbolMapping);
@@ -323,13 +322,14 @@ namespace Bitig.UI.Configuration
         private void btnManual_Click(object sender, EventArgs e)
         {
             List<AlifbaSymbol> _defaultSourceSymbols = null;
+            var _source = cmbSource.SelectedItem as Alifba;
+            var _target = cmbTarget.SelectedItem as Alifba;
             if (x_SymbolMapping == null)
             {
-                var _source = cmbSource.SelectedItem as Alifba;
-                if(_source!=null)
+                if (_source != null)
                     _defaultSourceSymbols = x_AlifbaRepository.Get(_source.ID).CustomSymbols;
             }
-            using (var _mappingForm = new frmSymbolMapping(x_SymbolMapping, _defaultSourceSymbols))
+            using (var _mappingForm = new frmSymbolMapping(_source, _target, x_DirectionRepository, x_SymbolMapping, _defaultSourceSymbols))
             {
                 if (_mappingForm.ShowDialog() == DialogResult.OK)
                 {

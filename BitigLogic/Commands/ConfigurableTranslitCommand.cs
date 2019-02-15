@@ -7,7 +7,6 @@ using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Commands
 {
-    //custom:
     public class ConfigurableTranslitCommand : SubstituteTranslitCommand
     {
         private Dictionary<string, string> translitTable = new Dictionary<string, string>();
@@ -44,10 +43,17 @@ namespace Bitig.Logic.Commands
                     }
                 }
 
-                //if CapitalizedText is missing, the upper case letter is the same as lower
-                //custom: or upper case is from invariant culture?
-                var _upperSource = string.IsNullOrEmpty(_source.CapitalizedText) ? _source.ActualText : _source.CapitalizedText;
-                if (_source.ActualText.Length == 1 && _upperSource.Length == 1)
+                //if CapitalizedText is missing, the upper case is from invariant culture
+                //or, if actual text consists of more than 1 symbol, is same as actual text
+                var _upperSource = _source.CapitalizedText;
+                if (string.IsNullOrEmpty(_upperSource))
+                {
+                    if (_source.ActualText.Length == 1)
+                        _upperSource = _source.ActualText.ToUpperInvariant();
+                    else
+                        _upperSource = _source.ActualText;
+                }
+                else if (_source.ActualText.Length == 1 && _upperSource.Length == 1)
                 {
                     //if it is a single letter, we're filling CustomSourceUpLowPairs
                     var _invariantUpper = _source.ActualText.ToUpperInvariant();
@@ -57,8 +63,15 @@ namespace Bitig.Logic.Commands
                     }
                 }
 
-                var _upperTarget = string.IsNullOrEmpty(_target.CapitalizedText) ? _target.ActualText : _target.CapitalizedText;
-                if (_target.ActualText.Length == 1 && _upperTarget.Length == 1)
+                var _upperTarget = _target.CapitalizedText;
+                if (string.IsNullOrEmpty(_upperTarget))
+                {
+                    if (_target.ActualText.Length == 1)
+                        _upperTarget = _target.ActualText.ToUpperInvariant();
+                    else
+                        _upperTarget = _target.ActualText;
+                }
+                else if (_target.ActualText.Length == 1 && _upperTarget.Length == 1)
                 {
                     //if it is a single letter, we're filling CustomTargetUpLowPairs
                     var _invariantUpper = _target.ActualText.ToUpperInvariant();

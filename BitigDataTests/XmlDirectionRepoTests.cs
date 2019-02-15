@@ -328,15 +328,6 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void ObsoleteConfig()
-        {
-            var _invalidFile = sourceDataFolder + @"corrupted\ObsoleteDirections.xml";
-            var _testRepo = InitTestRepo(_invalidFile);
-            var _list = _testRepo.GetList();
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
-        }
-
-        [TestMethod]
         public void ManualCommand()
         {
             var _testRepo = InitTestRepo();
@@ -355,6 +346,19 @@ namespace BitigDataTests
             Assert.IsNotNull(_savedDirection.ManualCommand);
             Assert.AreEqual(1, _savedDirection.ManualCommand.SymbolMapping.Count);
             Assert.AreEqual(new TextSymbol("2"), _savedDirection.ManualCommand.SymbolMapping[new TextSymbol("1")]);
+        }
+
+        [TestMethod]
+        public void Delete_Exclusions()
+        {
+            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _direction777 = _testRepo.Get(777);
+            Assert.AreNotEqual(0, _direction777.Exclusions.Count);
+            var _exclusionsPath = currentDataFolder + @"Exclusions\777.xml";
+            Assert.IsTrue(File.Exists(_exclusionsPath));
+            _testRepo.Delete(777);
+            _testRepo.DataContext.SaveChanges();
+            Assert.IsFalse(File.Exists(_exclusionsPath));
         }
     }
 }

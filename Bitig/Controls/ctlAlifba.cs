@@ -41,8 +41,8 @@ namespace Bitig.UI.Controls
                     if (btnCapitalize.Visible && btnCapitalize.Checked)
                     {
                         if (string.IsNullOrEmpty(_symbol.CapitalizedText))
-                            SymbolPressed(this, new SymbolEventArgs(_symbol.ActualText));
-                        else //custom: invariant upper case (in _symbol.CapitalizedText?)
+                            SymbolPressed(this, new SymbolEventArgs(_symbol.ActualText.ToUpperInvariant()));
+                        else 
                             SymbolPressed(this, new SymbolEventArgs(_symbol.CapitalizedText));
                         if (!x_HoldCapitalizeButton) btnCapitalize.Checked = false;
                     }

@@ -146,6 +146,30 @@ namespace Bitig.Data.Storage
                 }
             }
             alifbaCache = new InMemoryList<XmlAlifba>(_xmlList);
+            alifbaCache.IDChanged += OnAlifbaIDChanged;
+        }
+
+        private void OnAlifbaIDChanged(int OldID, int NewID)
+        {
+            if (directionCache != null)
+            {
+                var _asSource = directionCache.GetList().Where(x => x.SourceAlifbaID == OldID);
+                foreach (var _direction in _asSource)
+                {
+                    _direction.SourceAlifbaID = NewID;
+                    directionCache.Update(_direction);
+                }
+                var _asTarget = directionCache.GetList().Where(x => x.TargetAlifbaID == OldID);
+                foreach (var _direction in _asTarget)
+                {
+                    _direction.TargetAlifbaID = NewID;
+                    directionCache.Update(_direction);
+                }
+            }
+            if (customSymbolsCache != null)
+            {
+                customSymbolsCache.ChangeID(OldID, NewID);
+            }
         }
         
         private void InitDirectionCache()
@@ -172,6 +196,19 @@ namespace Bitig.Data.Storage
                 xmlDirectionReader.Save(_xmlList);
             }
             directionCache = new InMemoryList<XmlDirection>(_xmlList);
+            directionCache.IDChanged += OnDirectionIDChanged;
+        }
+
+        private void OnDirectionIDChanged(int OldID, int NewID)
+        {
+            if (mappingsCache != null)
+            {
+                mappingsCache.ChangeID(OldID, NewID);
+            }
+            if (exclusionsCache != null)
+            {
+                exclusionsCache.ChangeID(OldID, NewID);
+            }
         }
 
         private void InitMappingsCache()

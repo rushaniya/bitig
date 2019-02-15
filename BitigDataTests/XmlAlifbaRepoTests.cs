@@ -311,5 +311,23 @@ namespace BitigDataTests
 
             Assert.AreEqual(DefaultConfiguration.BuiltInAlifbaList.Count, _list.Count);
         }
+
+        [TestMethod]
+        public void Delete_CustomSymbols()
+        {
+            File.Copy(preparedFile, testFilePath);
+            Directory.CreateDirectory(currentDataFolder + @"Symbols");
+            var _symbolsPath = currentDataFolder + @"Symbols\1025.xml";
+            File.Copy(preparedFileSymbols, _symbolsPath);
+
+            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _testRepo = _xmlContext.AlifbaRepository;
+            var _alifba = _testRepo.Get(1025);
+            Assert.AreNotEqual(0, _alifba.CustomSymbols.Count);
+            Assert.IsTrue(File.Exists(_symbolsPath));
+            _testRepo.Delete(1025);
+            _testRepo.DataContext.SaveChanges();
+            Assert.IsFalse(File.Exists(_symbolsPath));
+        }
     }
 }

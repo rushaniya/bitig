@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Bitig.Data.Storage;
@@ -363,6 +364,95 @@ namespace BitigDataTests
             _xmlContext.SaveChanges();
             var _checkRepo = new XmlContext(testAlifbaPath, testDirectionPath).AlifbaRepository;
             Assert.AreEqual(_count + 1, _checkRepo.GetList().Count);
+        }
+
+        [TestMethod]
+        public void SaveChanges_ChangeID_Symbols()
+        {
+            var _instance1 = new XmlContext(currentDataFolder);
+            var _name1 = "Alifba1:" + Guid.NewGuid();
+            var _symbol1 = new AlifbaSymbol("Symbol1:" + Guid.NewGuid());
+            var _newAlif1 = new Alifba(-1, _name1, new List<AlifbaSymbol> { _symbol1 });
+            _instance1.AlifbaRepository.Insert(_newAlif1);
+            var _id1 = _newAlif1.ID;
+            var _instance2 = new XmlContext(currentDataFolder);
+            var _checkAlif1 = _instance2.AlifbaRepository.Get(_id1);
+            Assert.IsNull(_checkAlif1);
+            _instance1.SaveChanges();
+            var _name2 = "Alifba2:" + Guid.NewGuid();
+            var _symbol2 = new AlifbaSymbol("Symbol2:" + Guid.NewGuid());
+            var _newAlif2 = new Alifba(-1, _name2, new List<AlifbaSymbol> { _symbol2 });
+            _instance2.AlifbaRepository.Insert(_newAlif2);
+            var _id2 = _newAlif2.ID;
+            Assert.AreEqual(_id1, _id2);
+            _instance2.SaveChanges();
+
+            var _checkInstance = new XmlContext(currentDataFolder);
+            var _savedList = _checkInstance.AlifbaRepository.GetList();
+            var _savedAlif1 = _savedList.Single(x => x.FriendlyName == _name1);
+            var _savedAlif2 = _savedList.Single(x => x.FriendlyName == _name2);
+            Assert.AreNotEqual(_savedAlif1.ID, _savedAlif2.ID);
+            var _fullAlif1 = _checkInstance.AlifbaRepository.Get(_savedAlif1.ID);
+            Assert.AreEqual(_symbol1.ActualText, _fullAlif1.CustomSymbols.Single().ActualText);
+            var _fullAlif2 = _checkInstance.AlifbaRepository.Get(_savedAlif2.ID);
+            Assert.AreEqual(_symbol2.ActualText, _fullAlif2.CustomSymbols.Single().ActualText);
+        }
+
+        [TestMethod]
+        public void SaveChanges_ChangeID_Directions()
+        {
+            var _instance1 = new XmlContext(currentDataFolder);
+            var _name1 = "Alifba1:" + Guid.NewGuid();
+            var _newAlif1 = new Alifba(-1, _name1);
+            _instance1.AlifbaRepository.Insert(_newAlif1);
+            var _assembly1 = "Assembly1:" + Guid.NewGuid();
+            var _direction1 = new Direction(-1, _newAlif1, _instance1.AlifbaRepository.Get(0), null, _assembly1);
+            _instance1.DirectionRepository.Insert(_direction1);
+            var _instance2 = new XmlContext(currentDataFolder);
+            var _name2 = "Alifba2:" + Guid.NewGuid();
+            var _newAlif2 = new Alifba(-1, _name2);
+            _instance2.AlifbaRepository.Insert(_newAlif2);
+            var _assembly2 = "Assembly2:" + Guid.NewGuid();
+            var _direction2 = new Direction(-1, _newAlif2, _instance2.AlifbaRepository.Get(0), null, _assembly2);
+            _instance2.DirectionRepository.Insert(_direction2);
+            _instance1.SaveChanges();
+            _instance2.SaveChanges();
+
+            var _checkInstance = new XmlContext(currentDataFolder);
+            var _savedList = _checkInstance.DirectionRepository.GetList();
+            var _savedDirection1 = _savedList.Single(x => x.AssemblyPath == _assembly1);
+            var _savedDirection2 = _savedList.Single(x => x.AssemblyPath == _assembly2);
+            Assert.AreNotEqual(_savedDirection1.ID, _savedDirection2.ID);
+            Assert.AreEqual(_name1, _savedDirection1.Source.FriendlyName);
+            Assert.AreEqual(_name2, _savedDirection2.Source.FriendlyName);
+        }
+
+        [TestMethod]
+        public void SaveChanges_ChangeID_Exclusions()
+        {
+            var _instance1 = new XmlContext(currentDataFolder);
+            var _assembly1 = "Assembly1:" + Guid.NewGuid();
+            var _exclusion1 = new Exclusion(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), false, false, false);
+            var _direction1 = new Direction(-1, _instance1.AlifbaRepository.Get(1), _instance1.AlifbaRepository.Get(0), new List<Exclusion> { _exclusion1 }, _assembly1);
+            _instance1.DirectionRepository.Insert(_direction1);
+
+            var _instance2 = new XmlContext(currentDataFolder);
+            var _assembly2 = "Assembly2:" + Guid.NewGuid();
+            var _exclusion2 = new Exclusion(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), false, false, false);
+            var _direction2 = new Direction(-1, _instance2.AlifbaRepository.Get(2), _instance2.AlifbaRepository.Get(0),  new List<Exclusion> { _exclusion2 }, _assembly2);
+            _instance2.DirectionRepository.Insert(_direction2);
+
+            _instance1.SaveChanges();
+            _instance2.SaveChanges();
+
+            var _checkInstance = new XmlContext(currentDataFolder);
+            var _savedList = _checkInstance.DirectionRepository.GetList();
+            var _savedDirection1 = _savedList.Single(x => x.AssemblyPath == _assembly1);
+            var _savedDirection2 = _savedList.Single(x => x.AssemblyPath == _assembly2);
+            var _fullDirection1 = _checkInstance.DirectionRepository.Get(_savedDirection1.ID);
+            var _fullDirection2 = _checkInstance.DirectionRepository.Get(_savedDirection2.ID);
+            Assert.AreEqual(_exclusion1, _fullDirection1.Exclusions.Single());
+            Assert.AreEqual(_exclusion2, _fullDirection2.Exclusions.Single());
         }
     }
 }

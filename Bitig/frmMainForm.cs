@@ -897,7 +897,7 @@ namespace Bitig.UI
         {
             if (x_CurrentDirection == null || x_CurrentDirection.ManualCommand == null)
                 return;
-            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.ManualCommand.SymbolMapping, null))
+            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.Source, x_CurrentDirection.Target, x_DirectionRepository, x_CurrentDirection.ManualCommand.SymbolMapping, null))
             {
                 if (_mappingForm.ShowDialog() == DialogResult.OK)
                 {

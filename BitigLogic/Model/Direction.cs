@@ -76,7 +76,7 @@ namespace Bitig.Logic.Model
             }
         }    
 
-        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
+        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions = null, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
         {
             this.AssemblyPath = AssemblyPath;
             this.TypeName = TypeName;

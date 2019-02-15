@@ -51,7 +51,6 @@ namespace Bitig.Data.Serialization
                         SymbolCollectionSerializer.SaveToFile(_filePath, _symbolList.Item);
                         break;
                     case ItemState.Deleted:
-                        //custom: test
                         File.Delete(_filePath);
                         break;
                 }

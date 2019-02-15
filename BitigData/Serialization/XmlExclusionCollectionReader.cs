@@ -51,7 +51,6 @@ namespace Bitig.Data.Serialization
                         ExclusionCollectionSerializer.SaveToFile(_filePath, _exclusionList.Item);
                         break;
                     case ItemState.Deleted:
-                        //custom: test
                         File.Delete(_filePath);
                         break;
                 }

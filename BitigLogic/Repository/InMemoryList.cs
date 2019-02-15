@@ -10,6 +10,8 @@ namespace Bitig.Logic.Repository
     {
         private List<InMemoryItem<T>> list;
 
+        public event Action<int, int> IDChanged;
+
         public InMemoryList(List<T> List = null)
         {
             if (List == null)
@@ -119,10 +121,12 @@ namespace Bitig.Logic.Repository
                         }
                         else
                         {
+                            var _oldID = _item.Item.ID;
                             var _clone = _item.Item.Clone();
-                            //custom: what happens to joins?
-                            _clone.ID = IDGenerator.GenerateID(_result.Select(x => x.ID));
+                            var _newID=IDGenerator.GenerateID(_result.Select(x => x.ID));
+                            _clone.ID = _newID;
                             _result.Add(_clone);
+                            IDChanged?.Invoke(_oldID, _newID);
                         }
                         break;
                     case ItemState.Updated:
@@ -152,6 +156,13 @@ namespace Bitig.Logic.Repository
         IEnumerator IEnumerable.GetEnumerator()
         {
             return list.GetEnumerator();
+        }
+
+        public void ChangeID(int OldID, int NewID)
+        {
+            var _found = list.Find(_item => _item.Item.ID.Equals(OldID));
+            if (_found != null)
+                _found.Item.ID = NewID;
         }
     }
 

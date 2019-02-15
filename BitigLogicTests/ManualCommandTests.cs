@@ -128,5 +128,57 @@ namespace BitigLogicTests
             var _translitResult = _command.Convert("2211332453");
             Assert.AreEqual("BAC2D3", _translitResult);
         }
+
+        [TestMethod]
+        public void InvariantUpperSymbols_Source()
+        {
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
+            {
+                { new TextSymbol("a"), new TextSymbol("\u0622") },
+                { new TextSymbol("b"), new TextSymbol("\u0628") },
+                { new TextSymbol("t"), new TextSymbol("\u062a") },
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("AbT");
+            Assert.AreEqual("\u0622\u0628\u062a", _translitResult);
+        }
+
+        [TestMethod]
+        public void CustomUpperSymbols_Source()
+        {
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
+            {
+                { new TextSymbol("a"), new TextSymbol("\u0622") },
+                { new TextSymbol("i", "İ"), new TextSymbol("\u064a") },
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("aAiİI");
+            Assert.AreEqual("\u0622\u0622\u064a\u064aI", _translitResult);
+        }
+
+        [TestMethod]
+        public void InvariantUpperSymbols_Both()
+        {
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
+            {
+                { new TextSymbol("f"), new TextSymbol("ф") },
+                { new TextSymbol("z"), new TextSymbol("з") },
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("FZ fz");
+            Assert.AreEqual("ФЗ фз", _translitResult);
+        }
+
+        [TestMethod]
+        public void CustomUpperSymbols_Target()
+        {
+            var _translitDictionary = new Dictionary<TextSymbol, TextSymbol>
+            {
+                { new TextSymbol("и"), new TextSymbol("i", "İ") }
+            };
+            var _command = new ConfigurableTranslitCommand(_translitDictionary);
+            var _translitResult = _command.Convert("И и");
+            Assert.AreEqual("İ i", _translitResult);
+        }
     }
 }

@@ -78,15 +78,17 @@ namespace Bitig.Logic.Model
         public AlifbaSymbol()
         {
             //needed for data grids
+            IsAlphabetic = true;
+            IsOnScreen = true;
         }
 
-        public AlifbaSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitilzedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
-            : base (ActualText, CapitalizedText, DisplayText, CapitilzedDisplayText)
+        public AlifbaSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitalizedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
+            : base (ActualText, CapitalizedText, DisplayText, CapitalizedDisplayText)
         {
             this.IsAlphabetic = IsAlphabetic;
             this.IsOnScreen = IsOnScreen;
             this.displayText = string.IsNullOrEmpty(DisplayText) ? this.ActualText : DisplayText.Trim();
-            this.capitalizedDisplayText = string.IsNullOrEmpty(CapitilzedDisplayText) ? this.capitalizedText : CapitilzedDisplayText.Trim();
+            this.capitalizedDisplayText = string.IsNullOrEmpty(CapitalizedDisplayText) ? this.capitalizedText : CapitalizedDisplayText.Trim();
         }
 
         public override bool Equals(object obj)

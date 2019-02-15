@@ -33,11 +33,12 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.dgvSymbolMapping = new System.Windows.Forms.DataGridView();
-            this.bndSymbols = new System.Windows.Forms.BindingSource(this.components);
             this.colSourceLower = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSourceUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTargetLower = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTargetUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bndSymbols = new System.Windows.Forms.BindingSource(this.components);
+            this.btnFlip = new System.Windows.Forms.Button();
             this.pnlBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSymbolMapping)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndSymbols)).BeginInit();
@@ -46,6 +47,7 @@
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnCancel);
+            this.pnlBottom.Controls.Add(this.btnFlip);
             this.pnlBottom.Controls.Add(this.btnOK);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 448);
@@ -93,10 +95,6 @@
             this.dgvSymbolMapping.Size = new System.Drawing.Size(629, 448);
             this.dgvSymbolMapping.TabIndex = 1;
             // 
-            // bndSymbols
-            // 
-            this.bndSymbols.DataSource = typeof(Bitig.UI.Configuration.Model.SymbolPair);
-            // 
             // colSourceLower
             // 
             this.colSourceLower.DataPropertyName = "SourceLower";
@@ -125,6 +123,20 @@
             this.colTargetUpper.Name = "colTargetUpper";
             this.colTargetUpper.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
+            // bndSymbols
+            // 
+            this.bndSymbols.DataSource = typeof(Bitig.UI.Configuration.Model.SymbolPair);
+            // 
+            // btnFlip
+            // 
+            this.btnFlip.Location = new System.Drawing.Point(12, 16);
+            this.btnFlip.Name = "btnFlip";
+            this.btnFlip.Size = new System.Drawing.Size(173, 46);
+            this.btnFlip.TabIndex = 2;
+            this.btnFlip.Text = "Create opposite direction";
+            this.btnFlip.UseVisualStyleBackColor = true;
+            this.btnFlip.Click += new System.EventHandler(this.btnFlip_Click);
+            // 
             // frmSymbolMapping
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -152,5 +164,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colSourceUpper;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTargetLower;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTargetUpper;
+        private System.Windows.Forms.Button btnFlip;
     }
 }
