@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Bitig.Data.Model;
-using Bitig.Data.Storage;
-using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

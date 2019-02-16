@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KupiSlona", "KupiSlona\Kupi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitigBaseTests", "BitigBaseTests\BitigBaseTests.csproj", "{1E013AE3-5768-4795-9E19-E0FD5B84DCCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardManager", "KeyboardManager\KeyboardManager.csproj", "{04EDF48B-35BF-4032-96FA-63299ED8505D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardTestApp", "KeyboardTestApp\KeyboardTestApp.csproj", "{6BA4812D-7DF4-418F-B3EC-E0388B046608}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,12 +85,21 @@ Global
 		{1E013AE3-5768-4795-9E19-E0FD5B84DCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E013AE3-5768-4795-9E19-E0FD5B84DCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E013AE3-5768-4795-9E19-E0FD5B84DCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EDF48B-35BF-4032-96FA-63299ED8505D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EDF48B-35BF-4032-96FA-63299ED8505D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EDF48B-35BF-4032-96FA-63299ED8505D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EDF48B-35BF-4032-96FA-63299ED8505D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA4812D-7DF4-418F-B3EC-E0388B046608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA4812D-7DF4-418F-B3EC-E0388B046608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA4812D-7DF4-418F-B3EC-E0388B046608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA4812D-7DF4-418F-B3EC-E0388B046608}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AECDE58A-C73C-4786-B26D-614E9446E22A} = {328398E3-C9E0-47B3-98C4-95172C57A991}
+		{6BA4812D-7DF4-418F-B3EC-E0388B046608} = {328398E3-C9E0-47B3-98C4-95172C57A991}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Bitig.vsmdi

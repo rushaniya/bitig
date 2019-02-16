@@ -63,8 +63,6 @@
     <Compile Include="BitigInstaller.Designer.cs">
       <DependentUpon>BitigInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="CKeyMap.cs" />
-    <Compile Include="CKeyMapManager.cs" />
     <Compile Include="Configuration\frmSymbolMapping.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +234,10 @@
     <ProjectReference Include="..\BitigRtbControl\BitigRtbControl.csproj">
       <Project>{E0103C36-1AEE-46D9-8FB7-9397E2AADF72}</Project>
       <Name>BitigRtbControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeyboardManager\KeyboardManager.csproj">
+      <Project>{04edf48b-35bf-4032-96fa-63299ed8505d}</Project>
+      <Name>KeyboardManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

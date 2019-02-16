@@ -14,28 +14,15 @@ namespace Bitig.Data.Serialization
             directoryPath = DirectoryPath;
         }
 
-        public List<XmlExclusionCollection> Read()
+        public XmlExclusionCollection Read(int ID)
         {
-            var _list = new List<XmlExclusionCollection>();
-            var _directoryInfo = new DirectoryInfo(directoryPath);
-            if (_directoryInfo.Exists)
+            var _filePath = Path.Combine(directoryPath, ID.ToString() + ".xml");
+            if (File.Exists(_filePath))
             {
-                var _exclusionFiles = _directoryInfo.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
-                foreach (var _exclusionFile in _exclusionFiles)
-                {
-                    var _fileName = Path.GetFileNameWithoutExtension(_exclusionFile.Name);
-                    int _id;
-                    if (int.TryParse(_fileName, out _id))
-                    {
-                        var _xmlMapping = ExclusionCollectionSerializer.ReadFromFile(_exclusionFile.FullName, _id);
-                        if (_xmlMapping != null)
-                        {
-                            _list.Add(_xmlMapping);
-                        }
-                    }
-                }
+                var _collection = ExclusionCollectionSerializer.ReadFromFile(_filePath, ID);
+                return _collection;
             }
-            return _list;
+            return null;
         }
 
         public void Save(InMemoryList<XmlExclusionCollection> ListToSave)

@@ -15,28 +15,15 @@ namespace Bitig.Data.Serialization
             directoryPath = DirectoryPath;
         }
 
-        public List<XmlSymbolCollection> Read()
+        public XmlSymbolCollection Read(int ID)
         {
-            var _list = new List<XmlSymbolCollection>();
-            var _directoryInfo = new DirectoryInfo(directoryPath);
-            if (_directoryInfo.Exists)
+            var _filePath = Path.Combine(directoryPath, ID.ToString() + ".xml");
+            if (File.Exists(_filePath))
             {
-                var _symbolFiles = _directoryInfo.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
-                foreach (var _symbolFile in _symbolFiles)
-                {
-                    var _fileName = Path.GetFileNameWithoutExtension(_symbolFile.Name);
-                    int _id;
-                    if (int.TryParse(_fileName, out _id))
-                    {
-                        var _xmlMapping = SymbolCollectionSerializer.ReadFromFile(_symbolFile.FullName, _id);
-                        if (_xmlMapping != null)
-                        {
-                            _list.Add(_xmlMapping);
-                        }
-                    }
-                }
+                var _collection = SymbolCollectionSerializer.ReadFromFile(_filePath, ID);
+                return _collection;
             }
-            return _list;
+            return null;
         }
 
         public void Save(InMemoryList<XmlSymbolCollection> ListToSave)

@@ -15,15 +15,18 @@ namespace Bitig.Data.Storage
         private InMemoryList<XmlSymbolMapping> mappingsCache;
         private InMemoryList<XmlSymbolCollection> customSymbolsCache;
         private InMemoryList<XmlExclusionCollection> exclusionsCache;
+        private InMemoryList<XmlKeyCombinationCollection> keyboardsCache;
 
         private XmlAlifbaReader xmlAlifbaReader;
         private XmlDirectionReader xmlDirectionReader;
         private XmlSymbolMappingReader xmlSymbolMappingReader;
         private XmlSymbolCollectionReader xmlSymbolCollectionReader;
         private XmlExclusionCollectionReader xmlExclusionReader;
+        private XmlKeyboardConfigReader xmlKeyboardConfigReader;
 
         private XmlAlifbaRepository alifbaRepository;
         private XmlDirectionRepository directionRepository;
+        private XmlKeyboardRepository keyboardRepository;
 
         public bool IsFlushable { get { return true; } }
 
@@ -78,6 +81,19 @@ namespace Bitig.Data.Storage
             }
         }
 
+        internal InMemoryList<XmlKeyCombinationCollection> KeyBoards
+        {
+            get
+            {
+                if (keyboardsCache == null)
+                {
+                    keyboardsCache = new InMemoryList<XmlKeyCombinationCollection>();
+                    keyboardsCache.NotFound += xmlKeyboardConfigReader.Read;
+                }
+                return keyboardsCache;
+            }
+        }
+
         public AlifbaRepository AlifbaRepository
         {
             get
@@ -94,6 +110,11 @@ namespace Bitig.Data.Storage
             }
         }
 
+        public KeyboardRepository KeyboardRepository
+        {
+            get { return keyboardRepository; }
+        }
+
         public XmlContext(string DirectoryPath) 
             :this(Path.Combine(DirectoryPath, "Alphabets.xml"), Path.Combine(DirectoryPath, "Directions.xml"))
         {
@@ -105,8 +126,10 @@ namespace Bitig.Data.Storage
             alifbaRepository = new XmlAlifbaRepository(this);
             xmlDirectionReader = new XmlDirectionReader(DirectionsPath);
             directionRepository = new XmlDirectionRepository(this);
+            keyboardRepository = new XmlKeyboardRepository(this);
             var _alphabetsDirectory = Path.GetDirectoryName(AlphabetsPath) ?? string.Empty;
             xmlSymbolCollectionReader = new XmlSymbolCollectionReader(Path.Combine(_alphabetsDirectory, "Symbols"));
+            xmlKeyboardConfigReader = new XmlKeyboardConfigReader(Path.Combine(_alphabetsDirectory, "Keyboards"));
             var _directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
             xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(_directionsDirectory, "Mappings"));
             xmlExclusionReader = new XmlExclusionCollectionReader(Path.Combine(_directionsDirectory, "Exclusions"));
@@ -213,26 +236,30 @@ namespace Bitig.Data.Storage
 
         private void InitMappingsCache()
         {
-            var _xmlList = xmlSymbolMappingReader.Read();
-            mappingsCache = new InMemoryList<XmlSymbolMapping>(_xmlList);
+            mappingsCache = new InMemoryList<XmlSymbolMapping>();
+            mappingsCache.NotFound += xmlSymbolMappingReader.Read;
         }
 
         private void InitCustomSymbolsCache()
         {
-            var _xmlList = xmlSymbolCollectionReader.Read();
-            customSymbolsCache = new InMemoryList<XmlSymbolCollection>(_xmlList);
+            customSymbolsCache = new InMemoryList<XmlSymbolCollection>();
+            customSymbolsCache.NotFound += xmlSymbolCollectionReader.Read;
         }
 
         private void InitExclusionsCache()
         {
-            var _xmlList = xmlExclusionReader.Read();
-            exclusionsCache = new InMemoryList<XmlExclusionCollection>(_xmlList);
+            exclusionsCache = new InMemoryList<XmlExclusionCollection>();
+            exclusionsCache.NotFound += xmlExclusionReader.Read;
         }
 
         public void CancelChanges()
         {
             alifbaCache = null;
             directionCache = null;
+            mappingsCache = null;
+            customSymbolsCache = null;
+            exclusionsCache = null;
+            keyboardsCache = null;
         }
 
         public void SaveChanges()

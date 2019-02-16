@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using Bitig.Data.Model;
 using Bitig.Logic.Repository;
 
@@ -15,28 +13,15 @@ namespace Bitig.Data.Serialization
             directoryPath = DirectoryPath;
         }
 
-        public List<XmlSymbolMapping> Read()
+        public XmlSymbolMapping Read(int ID)
         {
-            var _list = new List<XmlSymbolMapping>();
-            var _directoryInfo = new DirectoryInfo(directoryPath);
-            if (_directoryInfo.Exists)
+            var _filePath = Path.Combine(directoryPath, ID.ToString() + ".xml");
+            if (File.Exists(_filePath))
             {
-                var _mappingFiles = _directoryInfo.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
-                foreach (var _mappingFile in _mappingFiles)
-                {
-                    var _fileName = Path.GetFileNameWithoutExtension(_mappingFile.Name);
-                    int _id;
-                    if (int.TryParse(_fileName, out _id))
-                    {
-                        var _xmlMapping = SymbolMappingSerializer.ReadFromFile(_mappingFile.FullName, _id);
-                        if (_xmlMapping != null)
-                        {
-                            _list.Add(_xmlMapping);
-                        }
-                    }
-                }
+                var _collection = SymbolMappingSerializer.ReadFromFile(_filePath, ID);
+                return _collection;
             }
-            return _list;
+            return null;
         }
 
         public void Save(InMemoryList<XmlSymbolMapping> ListToSave)

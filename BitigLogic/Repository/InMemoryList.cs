@@ -11,6 +11,7 @@ namespace Bitig.Logic.Repository
         private List<InMemoryItem<T>> list;
 
         public event Action<int, int> IDChanged;
+        public event Func<int, T> NotFound;
 
         public InMemoryList(List<T> List = null)
         {
@@ -101,7 +102,20 @@ namespace Bitig.Logic.Repository
         public T Get(int ID)
         {
             var _found = list.Find(_item => _item.Item.ID.Equals(ID));
-            if (_found == null || _found.State == ItemState.Deleted)
+            if (_found == null)
+            {
+                if (NotFound != null)
+                {
+                    var _foundElsewhere = NotFound(ID);
+                    if (_foundElsewhere != null)
+                    {
+                        list.Add(new InMemoryItem<T>(_foundElsewhere));
+                        return _foundElsewhere;
+                    }
+                }
+                return null;
+            }
+            if (_found.State == ItemState.Deleted)
                 return null;
             return _found.Item.Clone();
         }

@@ -69,6 +69,7 @@
     <Compile Include="XmlContextTests.cs" />
     <Compile Include="XmlDirectionRepoTests.cs" />
     <Compile Include="XmlAlifbaRepoTests.cs" />
+    <Compile Include="XmlKeyboardRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">
@@ -110,6 +111,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Prepared\Exclusions\777.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Prepared\Keyboards\333.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Prepared\Symbols\1025.xml">

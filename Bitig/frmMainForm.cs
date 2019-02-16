@@ -634,7 +634,7 @@ namespace Bitig.UI
             if (!x_OnscreenSymbols.ContainsKey(AlphabetID))
             {
                 var _config = x_AlifbaRepository.Get(AlphabetID);
-                if (_config != null && _config.CustomSymbols != null && _config.CustomSymbols.Count > 0)
+                if (_config != null && _config.CustomSymbols != null && _config.CustomSymbols.Count(x => x.IsOnScreen) > 0)
                 {
                     x_OnscreenSymbols.Add(AlphabetID, _config.CustomSymbols.Where(x => x.IsOnScreen).ToList());
                 }

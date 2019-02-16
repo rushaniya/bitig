@@ -151,7 +151,7 @@
             this.btnAlphabetSymbols.Name = "btnAlphabetSymbols";
             this.btnAlphabetSymbols.Size = new System.Drawing.Size(157, 30);
             this.btnAlphabetSymbols.TabIndex = 3;
-            this.btnAlphabetSymbols.Text = "On-Screen Symbols...";
+            this.btnAlphabetSymbols.Text = "Alphabet symbols...";
             this.btnAlphabetSymbols.UseVisualStyleBackColor = true;
             this.btnAlphabetSymbols.Click += new System.EventHandler(this.btnAlphabetSymbols_Click);
             // 
