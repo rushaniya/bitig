@@ -48,7 +48,7 @@ namespace BitigDataTests
             {
                 new AlifbaSymbol(_symbolText, DisplayText:_symbolDisplayText)
             };
-            var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16));
+            var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16), KeyboardLayoutID: new Random().Next());
             _testRepo.Insert(_alifba);
             _xmlContext.SaveChanges();
 
@@ -71,6 +71,8 @@ namespace BitigDataTests
             Assert.AreEqual(1, _inserted.CustomSymbols.Count);
             Assert.AreEqual(_symbolText, _inserted.CustomSymbols[0].ActualText);
             Assert.AreEqual(_symbolDisplayText, _inserted.CustomSymbols[0].DisplayText);
+            Assert.IsNotNull(_inserted.KeyboardLayoutID);
+            Assert.AreEqual(_alifba.KeyboardLayoutID, _inserted.KeyboardLayoutID);
         }
 
         [TestMethod]
@@ -161,9 +163,11 @@ namespace BitigDataTests
             var _testRepo = _xmlContext.AlifbaRepository;
             var _alifba = _testRepo.Get(1025);
             var _name2 = "Test name " + Guid.NewGuid();
+            var _layout2 = new Random().Next();
             var _symbolText2 = Guid.NewGuid().ToString();
             var _symbolText3 = Guid.NewGuid().ToString();
             _alifba.FriendlyName = _name2;
+            _alifba.KeyboardLayoutID = _layout2;
             _alifba.RightToLeft = true;
             _alifba.DefaultFont = new AlifbaFont("Courier New", 24);
             _alifba.CustomSymbols[0].ActualText = _symbolText2;
@@ -175,7 +179,8 @@ namespace BitigDataTests
             var _checkRepo = _checkContext.AlifbaRepository;
             var _checkAlifba = _checkRepo.Get(1025);
             Assert.IsNotNull(_checkAlifba);
-            Assert.AreEqual(_checkAlifba.FriendlyName, _name2);
+            Assert.AreEqual(_name2, _checkAlifba.FriendlyName);
+            Assert.AreEqual(_layout2, _checkAlifba.KeyboardLayoutID);
             Assert.IsTrue(_checkAlifba.RightToLeft);
             using (var _font = (Font)_checkAlifba.DefaultFont)
             {

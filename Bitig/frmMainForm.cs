@@ -81,7 +81,17 @@ namespace Bitig.UI
             //config:bind setting to menuitem.checked property for it is always visible and can be changed either programmatically or by user
             mniAlifba.Checked = false;//config
 
-            ctlYanalif1.X_CustomSymbols = x_AlifbaRepository.GetYanalif().CustomSymbols;
+            var _yanalif = x_AlifbaRepository.GetYanalif();
+            ctlYanalif1.X_CustomSymbols = _yanalif.CustomSymbols;
+            if (_yanalif.KeyboardLayoutID != null)
+            {
+                var _yanalifKbl = x_DataContext.KeyboardRepository.GetKeyboardConfig(_yanalif.KeyboardLayoutID.Value);
+                if (_yanalifKbl != null)
+                {
+                    var _yanalifKblManager = new KeyboardManager.KeyboardManager(_yanalifKbl);
+                    _yanalifKblManager.AttachTo(ctlMultiRtb1.RtbMain);
+                }
+            }
         }
 
         private void InitializeRepositories()

@@ -35,7 +35,7 @@ namespace Bitig.Logic.Model
             set;
         }
 
-        public string KeyboardLayoutID
+        public int? KeyboardLayoutID
         {
             get;
             set;
@@ -58,7 +58,8 @@ namespace Bitig.Logic.Model
         }
 
         public Alifba(int ID, string FriendlyName, List<AlifbaSymbol> CustomSymbols = null, 
-            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn= BuiltInAlifbaType.None)
+            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn= BuiltInAlifbaType.None,
+            int? KeyboardLayoutID = null)
         {
             id = ID;
             this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
@@ -66,6 +67,7 @@ namespace Bitig.Logic.Model
             this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
             this.BuiltIn = BuiltIn;
+            this.KeyboardLayoutID = KeyboardLayoutID;
         }
 
         public override string ToString()

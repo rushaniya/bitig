@@ -12,5 +12,10 @@
                 return false;
             return cast.ID.Equals(this.ID);
         }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
     }
 }

@@ -122,7 +122,7 @@ namespace Bitig.Logic.Repository
 
         public List<T> ApplyChanges(List<T> PersistentList)
         {
-            var _result = new List<T>(PersistentList);
+            var _result = PersistentList == null ? new List<T>() : new List<T>(PersistentList);
             foreach (var _item in list)
             {
                 var _persistentItem = _result.FirstOrDefault(x => x.ID == _item.Item.ID);

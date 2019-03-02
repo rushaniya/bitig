@@ -53,7 +53,7 @@
     <Compile Include="Exclusion.cs" />
     <Compile Include="ExclusionCollection.cs" />
     <Compile Include="IgnoreCaseComparer.cs" />
-    <Compile Include="KeyboardConfig.cs" />
+    <Compile Include="KeyboardLayout.cs" />
     <Compile Include="SubstituteTranslitCommand.cs" />
     <Compile Include="TranslitCommand.cs" />
     <Compile Include="TextHelper.cs" />

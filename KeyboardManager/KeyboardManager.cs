@@ -14,7 +14,7 @@ namespace KeyboardManager
         private HashSet<Keys> _mainKeys;
         private Dictionary<KeyCombination, string> _keyCombinations;
 
-        public KeyboardManager(KeyboardConfig config)
+        public KeyboardManager(KeyboardLayout config)
         {
             _keyCombinations = config.KeyCombinations.ToDictionary(x => new KeyCombination
             {

@@ -3,10 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bitig.Base;
+using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
+    public class XmlKeyCombinationCollection : EquatableByID<int>, IDeepCloneable<XmlKeyCombinationCollection>
+    {
+        public override int ID
+        {
+            get; set;
+        }
+
+        public List<XmlKeyCombination> KeyCombinations { get; set; }
+
+        public XmlKeyCombinationCollection Clone()
+        {
+            return new XmlKeyCombinationCollection { ID = ID, KeyCombinations = KeyCombinations.Select(x => x.Clone()).ToList() };
+        }
+    }
 
     public class XmlKeyCombination : IDeepCloneable<XmlKeyCombination>
     {
@@ -18,7 +33,7 @@ namespace Bitig.Data.Model
 
         }
 
-        public XmlKeyCombination(KeyCombinationConfig Model)
+        public XmlKeyCombination(KeyCombination Model)
         {
             Result = Model.Result;
             var _combination = new StringBuilder();
@@ -39,40 +54,34 @@ namespace Bitig.Data.Model
             return new XmlKeyCombination { Combination = Combination, Result = Result };
         }
 
-        public KeyCombinationConfig ToModel()
+        public KeyCombination ToModel()
         {
-            var _model = new KeyCombinationConfig();
-            _model.Result = Result;
-            if (Combination == "+")
-                _model.MainKey = "+";
+            var _model = new KeyCombination();
+            _model.Result = Result; var _combinationUpper = Combination.ToUpperInvariant();
+                var _splitted = _combinationUpper.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+            if (_splitted.Length == 1)
+                _model.MainKey = _splitted[0];
             else
             {
-                var _combinationUpper = Combination.ToUpperInvariant();
-                var _splitted = _combinationUpper.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
-                if (_splitted.Length == 1)
-                    _model.MainKey = _splitted[0];
-                else
+                foreach (var _part in _splitted)
                 {
-                    foreach (var _part in _splitted)
+                    switch (_part)
                     {
-                        switch (_part)
-                        {
-                            case "ALT":
-                                _model.WithAlt = true;
-                                break;
-                            case "ALTGR":
-                                _model.WithAltGr = true;
-                                break;
-                            case "CTRL":
-                                _model.WithCtrl = true;
-                                break;
-                            case "SHIFT":
-                                _model.WithShift = true;
-                                break;
-                            default:
-                                _model.MainKey = _part;
-                                break;
-                        }
+                        case "ALT":
+                            _model.WithAlt = true;
+                            break;
+                        case "ALTGR":
+                            _model.WithAltGr = true;
+                            break;
+                        case "CTRL":
+                            _model.WithCtrl = true;
+                            break;
+                        case "SHIFT":
+                            _model.WithShift = true;
+                            break;
+                        default:
+                            _model.MainKey = _part;
+                            break;
                     }
                 }
             }
@@ -80,18 +89,23 @@ namespace Bitig.Data.Model
         }
     }
 
-    public class XmlKeyCombinationCollection : EquatableByID<int>, IDeepCloneable<XmlKeyCombinationCollection>
+    public class XmlKeyboardSummary : EquatableByID<int>, IDeepCloneable<XmlKeyboardSummary>
     {
         public override int ID
         {
             get; set;
         }
 
-        public List<XmlKeyCombination> KeyCombinations { get; set; }
+        public string FriendlyName { get; set; }
 
-        public XmlKeyCombinationCollection Clone()
+        public XmlKeyboardSummary Clone()
         {
-            return new XmlKeyCombinationCollection { ID = ID, KeyCombinations = KeyCombinations.Select(x => x.Clone()).ToList() };
+            return new XmlKeyboardSummary { ID = ID, FriendlyName = FriendlyName };
+        }
+
+        internal KeyboardLayoutSummary ToModel()
+        {
+            return new KeyboardLayoutSummary { FriendlyName = FriendlyName, ID = ID };
         }
     }
 }

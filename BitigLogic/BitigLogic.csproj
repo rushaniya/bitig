@@ -80,6 +80,7 @@
     <Compile Include="Model\Alifba.cs" />
     <Compile Include="Model\BuiltInAlifba.cs" />
     <Compile Include="Model\BuiltInDirection.cs" />
+    <Compile Include="Model\KeyboardLayoutSummary.cs" />
     <Compile Include="Model\ManualCommand.cs" />
     <Compile Include="Model\Exclusion.cs" />
     <Compile Include="Model\AlifbaFont.cs" />

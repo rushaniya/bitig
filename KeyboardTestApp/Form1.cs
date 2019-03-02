@@ -47,9 +47,9 @@ namespace KeyboardTestApp
                 keyCode >= Keys.D0 && keyCode <= Keys.D9 ||
                 keyCode >= Keys.A && keyCode <= Keys.Z ||
                 keyCode >= Keys.NumPad0 && keyCode <= Keys.Divide ||
-                keyCode >= Keys.Oemplus && keyCode <= Keys.Oemtilde ||
-                keyCode >= Keys.OemOpenBrackets && keyCode <= Keys.Oem8 ||
-                keyCode == Keys.OemBackslash;
+                keyCode >= Keys.OemSemicolon && keyCode <= Keys.Oemtilde ||
+                keyCode >= Keys.OemOpenBrackets && keyCode <= Keys.OemCloseBrackets;
+                // ? || keyCode == Keys.OemBackslash;
         }
 
         private string getCombinationName(Keys keyCode)

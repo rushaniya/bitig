@@ -171,6 +171,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\DataSources\Bitig.Logic.Model.Exclusion.datasource" />
+    <None Include="Properties\DataSources\Bitig.Logic.Model.KeyboardLayoutSummary.datasource" />
     <None Include="Properties\DataSources\Bitig.UI.Configuration.Model.SymbolPair.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

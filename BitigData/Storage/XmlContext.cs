@@ -16,6 +16,7 @@ namespace Bitig.Data.Storage
         private InMemoryList<XmlSymbolCollection> customSymbolsCache;
         private InMemoryList<XmlExclusionCollection> exclusionsCache;
         private InMemoryList<XmlKeyCombinationCollection> keyboardsCache;
+        private InMemoryList<XmlKeyboardSummary> keyboardSummariesCache;
 
         private XmlAlifbaReader xmlAlifbaReader;
         private XmlDirectionReader xmlDirectionReader;
@@ -81,7 +82,7 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlKeyCombinationCollection> KeyBoards
+        internal InMemoryList<XmlKeyCombinationCollection> Keyboards
         {
             get
             {
@@ -91,6 +92,19 @@ namespace Bitig.Data.Storage
                     keyboardsCache.NotFound += xmlKeyboardConfigReader.Read;
                 }
                 return keyboardsCache;
+            }
+        }
+
+        internal InMemoryList<XmlKeyboardSummary> KeyboardSummaries
+        {
+            get
+            {
+                if (keyboardSummariesCache == null)
+                {
+                    var _xmlList = xmlKeyboardConfigReader.ReadSummaryList();
+                    keyboardSummariesCache = new InMemoryList<XmlKeyboardSummary>(_xmlList);
+                }
+                return keyboardSummariesCache;
             }
         }
 
@@ -129,7 +143,8 @@ namespace Bitig.Data.Storage
             keyboardRepository = new XmlKeyboardRepository(this);
             var _alphabetsDirectory = Path.GetDirectoryName(AlphabetsPath) ?? string.Empty;
             xmlSymbolCollectionReader = new XmlSymbolCollectionReader(Path.Combine(_alphabetsDirectory, "Symbols"));
-            xmlKeyboardConfigReader = new XmlKeyboardConfigReader(Path.Combine(_alphabetsDirectory, "Keyboards"));
+            xmlKeyboardConfigReader = new XmlKeyboardConfigReader(Path.Combine(_alphabetsDirectory,"KeyboardSummaries.xml"),
+                Path.Combine(_alphabetsDirectory, "Keyboards"));
             var _directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
             xmlSymbolMappingReader = new XmlSymbolMappingReader(Path.Combine(_directionsDirectory, "Mappings"));
             xmlExclusionReader = new XmlExclusionCollectionReader(Path.Combine(_directionsDirectory, "Exclusions"));
@@ -260,6 +275,7 @@ namespace Bitig.Data.Storage
             customSymbolsCache = null;
             exclusionsCache = null;
             keyboardsCache = null;
+            keyboardSummariesCache = null;
         }
 
         public void SaveChanges()
@@ -274,6 +290,8 @@ namespace Bitig.Data.Storage
                 xmlSymbolCollectionReader.Save(customSymbolsCache);
             if (exclusionsCache != null)
                 xmlExclusionReader.Save(exclusionsCache);
+            if (keyboardSummariesCache != null)
+                xmlKeyboardConfigReader.SaveSummaryList(keyboardSummariesCache);
         }
     }
 }

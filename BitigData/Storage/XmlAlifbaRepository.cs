@@ -92,7 +92,7 @@ namespace Bitig.Data.Storage
                 _customSymbols = _xmlSymbols.Symbols.Select(x => x.ToModel()).ToList();
             }
             var _defaultFont =StoredAlifba.DefaultFont == null ? null : new AlifbaFont(StoredAlifba.DefaultFont.Description);
-            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn);
+            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, StoredAlifba.KeyboardLayoutID);
         }
     }
 }

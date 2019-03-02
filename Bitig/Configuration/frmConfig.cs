@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using Bitig.Logic.Repository;
 using Bitig.Logic.Model;
-using Bitig.Data.Storage;
 
 namespace Bitig.UI.Configuration
 {
@@ -10,6 +9,7 @@ namespace Bitig.UI.Configuration
     {
         private AlifbaRepository x_AlifbaRepo;
         private DirectionRepository x_DirectionRepo;
+        private KeyboardRepository x_KeyboardRepo;
         private IDataContext x_DataContext;
 
         public frmConfig(IDataContext DataContext)
@@ -18,8 +18,10 @@ namespace Bitig.UI.Configuration
             x_DataContext = DataContext;
             x_AlifbaRepo = DataContext.AlifbaRepository;
             x_DirectionRepo = DataContext.DirectionRepository;
+            x_KeyboardRepo = DataContext.KeyboardRepository;
             DisplayAlphabets();
             DisplayDirections();
+            DisplayKeyboardLayouts();
         }
 
         private void frmConfig_Load(object sender, EventArgs e)
@@ -61,7 +63,7 @@ namespace Bitig.UI.Configuration
 
         private void btnAddAlphabet_Click(object sender, EventArgs e)
         {
-            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo))
+            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo, x_KeyboardRepo))
             {
                 if (_editForm.ShowDialog() == DialogResult.OK)
                 {
@@ -75,7 +77,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo))
+                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo, x_KeyboardRepo))
                 {
                     _editForm.X_AlphabetConfig = x_CurrentAlphabet;
                     if (_editForm.ShowDialog() == DialogResult.OK)
@@ -146,6 +148,19 @@ namespace Bitig.UI.Configuration
                 btnAlphabetSymbols.Enabled = true;
                 btnDeleteAlphabet.Enabled = true;
                 btnEditAlphabet.Enabled = true;
+            }
+        }
+
+        private bool x_ExclusionsModified;
+
+        private void btnExclusions_Click(object sender, EventArgs e)
+        {
+            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_DataContext);
+            if (_exclusionsForm.ShowDialog() == DialogResult.OK)
+            {
+                x_DirectionsModified = true;
+                x_ExclusionsModified = true;
+                DisplayDirections();
             }
         }
 
@@ -238,17 +253,13 @@ namespace Bitig.UI.Configuration
 
         #endregion
 
-        private bool x_ExclusionsModified;
+        #region Keyboard Layouts
 
-        private void btnExclusions_Click(object sender, EventArgs e)
+        private void DisplayKeyboardLayouts()
         {
-            var _exclusionsForm = new frmExclusions(x_CurrentDirection, x_DataContext);
-            if (_exclusionsForm.ShowDialog() == DialogResult.OK)
-            {
-                x_DirectionsModified = true;
-                x_ExclusionsModified = true;
-                DisplayDirections();
-            }
+            bndKblSummary.DataSource = x_KeyboardRepo.GetSummaryList();
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,6 @@
-﻿using Bitig.Base;
+﻿using System.Collections.Generic;
+using Bitig.Base;
+using Bitig.Logic.Model;
 
 namespace Bitig.Logic.Repository
 {
@@ -6,6 +8,10 @@ namespace Bitig.Logic.Repository
     {
         public abstract IDataContext DataContext { get; }
 
-        public abstract KeyboardConfig GetKeyboardConfig(int AlifbaID);
+        public abstract KeyboardLayout GetKeyboardConfig(int KeyboardID);
+
+        public abstract KeyboardLayoutSummary GetSummary(int KeyboardID);
+
+        public abstract List<KeyboardLayoutSummary> GetSummaryList();
     }
 }

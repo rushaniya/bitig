@@ -2,12 +2,14 @@
 
 namespace Bitig.Base
 {
-    public class KeyboardConfig
+    public class KeyboardLayout
     {
-        public List<KeyCombinationConfig> KeyCombinations { get; set; }
+        public int ID { get; set; }
+        public string FriendlyName { get; set; }
+        public List<KeyCombination> KeyCombinations { get; set; }
     }
 
-    public class KeyCombinationConfig
+    public class KeyCombination
     {
         public string MainKey { get; set; }
         public bool WithShift { get; set; }

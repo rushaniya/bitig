@@ -14,6 +14,7 @@ namespace BitigDataTests
         private const string preparedDataFolder = @"TestData\Prepared\";
         private const string currentDataFolder = @"KeyboardsTestData\";
         private readonly string preparedFile = @"Keyboards\333.xml";
+        private readonly string preparedSummaryFile = @"KeyboardSummaries.xml";
 
         [TestInitialize]
         [TestCleanup]
@@ -24,6 +25,7 @@ namespace BitigDataTests
             Directory.CreateDirectory(currentDataFolder);
             Directory.CreateDirectory(currentDataFolder + "Keyboards");
             File.Copy(preparedDataFolder + preparedFile, currentDataFolder + preparedFile);
+            File.Copy(preparedDataFolder + preparedSummaryFile, currentDataFolder + preparedSummaryFile);
         }
 
         [TestMethod]
@@ -33,6 +35,8 @@ namespace BitigDataTests
             var _repository = new XmlKeyboardRepository(_context);
             var _keyboard = _repository.GetKeyboardConfig(333);
             Assert.IsNotNull(_keyboard);
+            Assert.AreEqual("TestConfig333", _keyboard.FriendlyName);
+            Assert.AreEqual(333, _keyboard.ID);
             Assert.AreEqual(3, _keyboard.KeyCombinations.Count);
 
             var _combination1 = _keyboard.KeyCombinations[0];
@@ -58,6 +62,27 @@ namespace BitigDataTests
             Assert.IsFalse(_combination3.WithAltGr);
             Assert.IsFalse(_combination3.WithCtrl);
             Assert.IsFalse(_combination3.WithShift);
+        }
+
+        [TestMethod]
+        public void GetSummary()
+        {
+            var _context = new XmlContext(currentDataFolder);
+            var _repository = new XmlKeyboardRepository(_context);
+            var _summary = _repository.GetSummary(444);
+            Assert.IsNotNull(_summary);
+            Assert.AreEqual("TestConfig444", _summary.FriendlyName);
+        }
+
+        [TestMethod]
+        public void GetSummaryList()
+        {
+            var _context = new XmlContext(currentDataFolder);
+            var _repository = new XmlKeyboardRepository(_context);
+            var _summaries = _repository.GetSummaryList();
+            Assert.AreEqual(2, _summaries.Count);
+            Assert.AreEqual(333, _summaries[0].ID);
+            Assert.AreEqual(444, _summaries[1].ID);
         }
     }
 }

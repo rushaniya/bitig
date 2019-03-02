@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbpAlphabets = new System.Windows.Forms.TabPage();
             this.dgvAlphabets = new System.Windows.Forms.DataGridView();
@@ -52,6 +53,10 @@
             this.btnRemoveDirection = new System.Windows.Forms.Button();
             this.btnEditDirection = new System.Windows.Forms.Button();
             this.btnAddDirection = new System.Windows.Forms.Button();
+            this.tbpKeyboardLayouts = new System.Windows.Forms.TabPage();
+            this.dgvKeyboardLayouts = new System.Windows.Forms.DataGridView();
+            this.colKblFriendlyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bndKblSummary = new System.Windows.Forms.BindingSource(this.components);
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
@@ -68,6 +73,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).BeginInit();
             this.panel1.SuspendLayout();
+            this.tbpKeyboardLayouts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,6 +83,7 @@
             // 
             this.tbcMain.Controls.Add(this.tbpAlphabets);
             this.tbcMain.Controls.Add(this.tbpDirections);
+            this.tbcMain.Controls.Add(this.tbpKeyboardLayouts);
             this.tbcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbcMain.Location = new System.Drawing.Point(0, 0);
             this.tbcMain.Name = "tbcMain";
@@ -324,6 +333,55 @@
             this.btnAddDirection.UseVisualStyleBackColor = true;
             this.btnAddDirection.Click += new System.EventHandler(this.btnAddDirection_Click);
             // 
+            // tbpKeyboardLayouts
+            // 
+            this.tbpKeyboardLayouts.Controls.Add(this.dgvKeyboardLayouts);
+            this.tbpKeyboardLayouts.Location = new System.Drawing.Point(4, 22);
+            this.tbpKeyboardLayouts.Name = "tbpKeyboardLayouts";
+            this.tbpKeyboardLayouts.Size = new System.Drawing.Size(671, 420);
+            this.tbpKeyboardLayouts.TabIndex = 2;
+            this.tbpKeyboardLayouts.Text = "Keyboard Layouts";
+            this.tbpKeyboardLayouts.UseVisualStyleBackColor = true;
+            // 
+            // dgvKeyboardLayouts
+            // 
+            this.dgvKeyboardLayouts.AllowUserToAddRows = false;
+            this.dgvKeyboardLayouts.AllowUserToDeleteRows = false;
+            this.dgvKeyboardLayouts.AutoGenerateColumns = false;
+            this.dgvKeyboardLayouts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvKeyboardLayouts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvKeyboardLayouts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvKeyboardLayouts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colKblFriendlyName});
+            this.dgvKeyboardLayouts.DataSource = this.bndKblSummary;
+            this.dgvKeyboardLayouts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvKeyboardLayouts.Location = new System.Drawing.Point(0, 0);
+            this.dgvKeyboardLayouts.MultiSelect = false;
+            this.dgvKeyboardLayouts.Name = "dgvKeyboardLayouts";
+            this.dgvKeyboardLayouts.ReadOnly = true;
+            this.dgvKeyboardLayouts.RowHeadersVisible = false;
+            this.dgvKeyboardLayouts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvKeyboardLayouts.Size = new System.Drawing.Size(671, 420);
+            this.dgvKeyboardLayouts.TabIndex = 3;
+            // 
+            // colKblFriendlyName
+            // 
+            this.colKblFriendlyName.DataPropertyName = "FriendlyName";
+            this.colKblFriendlyName.HeaderText = "Friendly Name";
+            this.colKblFriendlyName.Name = "colKblFriendlyName";
+            this.colKblFriendlyName.ReadOnly = true;
+            // 
+            // bndKblSummary
+            // 
+            this.bndKblSummary.DataSource = typeof(Bitig.Logic.Model.KeyboardLayoutSummary);
+            // 
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnCancel);
@@ -410,6 +468,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndDirection)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.tbpKeyboardLayouts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).EndInit();
             this.pnlBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -441,6 +502,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colAssembly;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTypeName;
         private System.Windows.Forms.Button btnExclusions;
+        private System.Windows.Forms.TabPage tbpKeyboardLayouts;
+        private System.Windows.Forms.DataGridView dgvKeyboardLayouts;
+        private System.Windows.Forms.BindingSource bndKblSummary;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colKblFriendlyName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAlphName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAlphLayout;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAlphFont;
