@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace KeyboardManager
+namespace Bitig.KeyboardManagement
 {
     public class KeyCombination
     {

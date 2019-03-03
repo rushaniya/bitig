@@ -33,7 +33,7 @@ namespace Bitig.Data.Storage
             return new KeyboardLayout
             {
                 FriendlyName = _summary.FriendlyName,
-                ID = KeyboardID,
+                ID = _keyboard.ID,
                 KeyCombinations = _keyboard.KeyCombinations.Select(x => x.ToModel()).ToList()
             };
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Bitig.Base;
 
-namespace KeyboardManager
+namespace Bitig.KeyboardManagement
 {
     public class KeyboardManager
     {
@@ -13,8 +13,14 @@ namespace KeyboardManager
 
         private HashSet<Keys> _mainKeys;
         private Dictionary<KeyCombination, string> _keyCombinations;
+        private bool _isAttached;
 
-        public KeyboardManager(KeyboardLayout config)
+        public bool IsAttached
+        {
+            get { return _isAttached; }
+        }
+
+        public void SetKeyboardLayout(KeyboardLayout config)
         {
             _keyCombinations = config.KeyCombinations.ToDictionary(x => new KeyCombination
             {
@@ -30,6 +36,13 @@ namespace KeyboardManager
         public void AttachTo(TextBoxBase textBox)
         {
             textBox.KeyDown += keyDown;
+            _isAttached = true;
+        }
+
+        public void DetachFrom(TextBoxBase textBox)
+        {
+            textBox.KeyDown -= keyDown;
+            _isAttached = false;
         }
 
         private void keyDown(object sender, KeyEventArgs e)
@@ -69,14 +82,6 @@ namespace KeyboardManager
 
         private bool isMeaningfulKey(Keys keyCode)
         {
-            /*  return keyCode == Keys.Return ||
-                  keyCode == Keys.Space ||
-                  keyCode >= Keys.D0 && keyCode <= Keys.D9 ||
-                  keyCode >= Keys.A && keyCode <= Keys.Z ||
-                  keyCode >= Keys.NumPad0 && keyCode <= Keys.Divide ||
-                  keyCode >= Keys.Oemplus && keyCode <= Keys.Oemtilde ||
-                  keyCode >= Keys.OemOpenBrackets && keyCode <= Keys.Oem8 ||
-                  keyCode == Keys.OemBackslash;*/
             return _mainKeys.Contains(keyCode);
         }
     }

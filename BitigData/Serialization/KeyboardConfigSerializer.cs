@@ -35,6 +35,7 @@ namespace Bitig.Data.Serialization
             var _config = ConfigSerializer<XmlKeyboardConfig>.ReadFromFile(Path);
             var _collection = _config == null ? null : new XmlKeyCombinationCollection
             {
+                ID = ID,
                 KeyCombinations = _config.KeyCombinations.Where(x => !string.IsNullOrEmpty(x.Combination)).ToList()
             };
             return _collection;

@@ -7,7 +7,7 @@
     <ProjectGuid>{04EDF48B-35BF-4032-96FA-63299ED8505D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeyboardManager</RootNamespace>
+    <RootNamespace>Bitig.KeyboardManagement</RootNamespace>
     <AssemblyName>KeyboardManager</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

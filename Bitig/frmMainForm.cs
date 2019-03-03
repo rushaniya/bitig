@@ -3,28 +3,21 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Runtime.InteropServices;
 using Bitig.RtbControl;
 using Bitig.UI.Controls;
+using Bitig.KeyboardManagement;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 using Bitig.UI.Configuration;
 using Bitig.Data.Storage;
 using Bitig.UI.Logic;
 using System.Linq;
+using Bitig.Base;
 
 namespace Bitig.UI
 {
     public partial class frmMainForm : Form
     {
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern IntPtr LoadKeyboardLayoutW(string pwszKLID, uint Flags);
-
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern bool UnloadKeyboardLayout(IntPtr Hkl);
-
         #region Fields & Properties
 
         //private EKeyboardLayout x_CurrentLayout;
@@ -32,7 +25,7 @@ namespace Bitig.UI
         private bool x_SplitterShown1stTime = true;
 
         private EActiveTextControl x_ActiveTextControl = EActiveTextControl.RTB;
-       
+
 
         private int x_TlsAlifbaLength;
         private int x_TlsMainLength;
@@ -52,6 +45,10 @@ namespace Bitig.UI
         private IDataContext x_DataContext;
         private AlifbaRepository x_AlifbaRepository;
         private DirectionRepository x_DirectionRepository;
+
+        private KeyboardManager x_YanalifKeyManager = new KeyboardManager();
+        private KeyboardManager x_Txt1KeyManager = new KeyboardManager();
+        private KeyboardManager x_Txt2KeyManager = new KeyboardManager();
 
         #endregion
 
@@ -80,18 +77,10 @@ namespace Bitig.UI
             mniTranslitPanel.Checked = false;
             //config:bind setting to menuitem.checked property for it is always visible and can be changed either programmatically or by user
             mniAlifba.Checked = false;//config
-
+            //uni:re-read when configuration changes
             var _yanalif = x_AlifbaRepository.GetYanalif();
             ctlYanalif1.X_CustomSymbols = _yanalif.CustomSymbols;
-            if (_yanalif.KeyboardLayoutID != null)
-            {
-                var _yanalifKbl = x_DataContext.KeyboardRepository.GetKeyboardConfig(_yanalif.KeyboardLayoutID.Value);
-                if (_yanalifKbl != null)
-                {
-                    var _yanalifKblManager = new KeyboardManager.KeyboardManager(_yanalifKbl);
-                    _yanalifKblManager.AttachTo(ctlMultiRtb1.RtbMain);
-                }
-            }
+            LoadYanalifKeyboardLayout();
         }
 
         private void InitializeRepositories()
@@ -135,7 +124,6 @@ namespace Bitig.UI
             ToolStripManager.Merge(ctlMultiRtb1.mnuMultiRTB, mnuMain);
             if (!string.IsNullOrEmpty(x_FilePath))
                 ctlMultiRtb1.OpenFile(x_FilePath);
-
         }
 
         private void frmMainForm_Shown(object sender, EventArgs e)
@@ -163,9 +151,6 @@ namespace Bitig.UI
             //Properties.Settings.Default.k_TlsMainLocation = tlsMain.Location;
             //ctlMultiRtb1.SaveSettings();
             //Properties.Settings.Default.Save();
-            //kbl:why was the russian layout unloaded too?
-            //UnloadKeyboardLayout(x_HklCyrillic);
-           // UnloadKeyboardLayout(x_HklYanalif);
         }
 
         #endregion
@@ -184,7 +169,7 @@ namespace Bitig.UI
         #region File IO
 
 
-        
+
 
         #endregion
 
@@ -454,6 +439,17 @@ namespace Bitig.UI
                 btnT1Keyboard.Enabled = false;
                 btnT1Keyboard.Checked = false;
             }
+            if (KeyboardLayoutAvailable(x_CurrentTranslitSource)) //kbl:and button checked
+            {
+                if (!x_Txt1KeyManager.IsAttached)
+                    x_Txt1KeyManager.AttachTo(txtTranslit1);
+                x_Txt1KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitSource.KeyboardLayoutID.Value]);
+            }
+            else
+            {
+                if (x_Txt1KeyManager.IsAttached)
+                    x_Txt1KeyManager.DetachFrom(txtTranslit1);
+            }
         }
 
         private void GetCurrentTarget()
@@ -470,6 +466,17 @@ namespace Bitig.UI
                 btnT2Keyboard.Enabled = false;
                 btnT2Keyboard.Checked = false;
             }
+            if (KeyboardLayoutAvailable(x_CurrentTranslitTarget)) //kbl:and button checked
+            {
+                if (!x_Txt2KeyManager.IsAttached)
+                    x_Txt2KeyManager.AttachTo(txtTranslit2);
+                x_Txt2KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitTarget.KeyboardLayoutID.Value]);
+            }
+            else
+            {
+                if (x_Txt2KeyManager.IsAttached)
+                    x_Txt2KeyManager.DetachFrom(txtTranslit2);
+            }
         }
 
         private Font GetDefaultFont(Alifba Alphabet)
@@ -477,9 +484,6 @@ namespace Bitig.UI
             Font _result = SystemFonts.DefaultFont;//config
             if (Alphabet != null)
             {
-                //AlifbaConfig _config = BitigDataManager.GetAlifbaConfig(Alphabet.ID);
-                //if (_config != null && _config.DefaultFont != null) 
-                //    _result = (Font)_config.DefaultFont;
                 _result = (Font)Alphabet.DefaultFont;
                 if (_result == null) return SystemFonts.DefaultFont;
             }
@@ -488,12 +492,6 @@ namespace Bitig.UI
 
         private void AssignAlphabetProperties(Alifba Alphabet, RichTextBox TargetTextBox)
         {
-            //AlifbaConfig _config = null;
-            //if (Alphabet != null)
-            //{
-            //    if (Alphabet.IsYanalif) return;
-            //    _config = BitigDataManager.GetAlifbaConfig(Alphabet.ID);
-            //}
             if (Alphabet == null)
             {
                 TargetTextBox.Font = SystemFonts.DefaultFont;//config
@@ -501,7 +499,7 @@ namespace Bitig.UI
             }
             else if (!Alphabet.IsYanalif)
             {
-                TargetTextBox.Font = Alphabet.DefaultFont == null ? SystemFonts.DefaultFont : (Font) Alphabet.DefaultFont;//config
+                TargetTextBox.Font = Alphabet.DefaultFont == null ? SystemFonts.DefaultFont : (Font)Alphabet.DefaultFont;//config
                 TargetTextBox.RightToLeft = Alphabet.RightToLeft ? RightToLeft.Yes : RightToLeft.No;
             }
         }
@@ -554,7 +552,7 @@ namespace Bitig.UI
 
         private Dictionary<int, ctlAlifba> x_OnscreenKeyboards = new Dictionary<int, ctlAlifba>();
         private Dictionary<int, List<AlifbaSymbol>> x_OnscreenSymbols = new Dictionary<int, List<AlifbaSymbol>>();
-
+        private Dictionary<int, KeyboardLayout> x_KeyboardLayouts = new Dictionary<int, KeyboardLayout>();
 
 
         private void ctlYanalif1_SymbolPressed(object sender, SymbolEventArgs e)
@@ -563,62 +561,62 @@ namespace Bitig.UI
             ctlMultiRtb1.RtbMain.Select();
         }
 
-      /*  private void SetAlifbaLetters()
-        {
-            btnAlifA.Tag = "\u0259";
-            btnAlifAzur.Tag = "\u018f";
-            btnAlifC.Tag = "\u00e7";
-            btnAlifCzur.Tag = "\u00c7";
-            btnAlifG.Tag = "\u011f";
-            btnAlifGzur.Tag = "\u011e";
-            btnAlifI.Tag = "\u0131";
-            btnAlifIzur.Tag = "\u0130";
-            btnAlifN.Tag = "\ua791";
-            btnAlifNzur.Tag = "\ua790";
-            btnAlifO.Tag = "\u0275";
-            btnAlifOzur.Tag = "\u019f";
-            btnAlifS.Tag = "\u015f";
-            btnAlifSzur.Tag = "\u015e";
-            btnAlifU.Tag = "\u00fc";
-            btnAlifUzur.Tag = "\u00dc";
-            btnAlifQuotClose.Tag = "\u00bb";
-            btnAlifQuotOpen.Tag = "\u00ab";
-            btnAlifDash.Tag = "\u2014";
-            SetCustomAlifbaLetters();
-        }
+        /*  private void SetAlifbaLetters()
+          {
+              btnAlifA.Tag = "\u0259";
+              btnAlifAzur.Tag = "\u018f";
+              btnAlifC.Tag = "\u00e7";
+              btnAlifCzur.Tag = "\u00c7";
+              btnAlifG.Tag = "\u011f";
+              btnAlifGzur.Tag = "\u011e";
+              btnAlifI.Tag = "\u0131";
+              btnAlifIzur.Tag = "\u0130";
+              btnAlifN.Tag = "\ua791";
+              btnAlifNzur.Tag = "\ua790";
+              btnAlifO.Tag = "\u0275";
+              btnAlifOzur.Tag = "\u019f";
+              btnAlifS.Tag = "\u015f";
+              btnAlifSzur.Tag = "\u015e";
+              btnAlifU.Tag = "\u00fc";
+              btnAlifUzur.Tag = "\u00dc";
+              btnAlifQuotClose.Tag = "\u00bb";
+              btnAlifQuotOpen.Tag = "\u00ab";
+              btnAlifDash.Tag = "\u2014";
+              SetCustomAlifbaLetters();
+          }
 
-        private void SetCustomAlifbaLetters()
-        {
-            btnAlifUser1.Visible = false;
-            btnAlifUser2.Visible = false;
-            btnAlifUser3.Visible = false;
-            if (BitigDataManager.Yanalif != null)
-            {
-                //config:remove 'user button visible' settings
-                AlifbaConfig _yanalifConfig = BitigDataManager.GetAlifbaConfig(BitigDataManager.Yanalif.ID);
-                if (_yanalifConfig != null && _yanalifConfig.CustomSymbols != null)
-                {
-                    if (_yanalifConfig.CustomSymbols.Count > 0)
-                    {
-                        btnAlifUser1.Visible = true;
-                        btnAlifUser1.Text = _yanalifConfig.CustomSymbols[0].DisplayText;
-                        btnAlifUser1.Tag = _yanalifConfig.CustomSymbols[0].ActualText;
-                        if (_yanalifConfig.CustomSymbols.Count > 1)
-                        {
-                            btnAlifUser2.Visible = true;
-                            btnAlifUser2.Text = _yanalifConfig.CustomSymbols[1].DisplayText;
-                            btnAlifUser2.Tag = _yanalifConfig.CustomSymbols[1].ActualText;
-                            if (_yanalifConfig.CustomSymbols.Count > 2)
-                            {
-                                btnAlifUser3.Visible = true;
-                                btnAlifUser3.Text = _yanalifConfig.CustomSymbols[2].DisplayText;
-                                btnAlifUser3.Tag = _yanalifConfig.CustomSymbols[2].ActualText;
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
+          private void SetCustomAlifbaLetters()
+          {
+              btnAlifUser1.Visible = false;
+              btnAlifUser2.Visible = false;
+              btnAlifUser3.Visible = false;
+              if (BitigDataManager.Yanalif != null)
+              {
+                  //config:remove 'user button visible' settings
+                  AlifbaConfig _yanalifConfig = BitigDataManager.GetAlifbaConfig(BitigDataManager.Yanalif.ID);
+                  if (_yanalifConfig != null && _yanalifConfig.CustomSymbols != null)
+                  {
+                      if (_yanalifConfig.CustomSymbols.Count > 0)
+                      {
+                          btnAlifUser1.Visible = true;
+                          btnAlifUser1.Text = _yanalifConfig.CustomSymbols[0].DisplayText;
+                          btnAlifUser1.Tag = _yanalifConfig.CustomSymbols[0].ActualText;
+                          if (_yanalifConfig.CustomSymbols.Count > 1)
+                          {
+                              btnAlifUser2.Visible = true;
+                              btnAlifUser2.Text = _yanalifConfig.CustomSymbols[1].DisplayText;
+                              btnAlifUser2.Tag = _yanalifConfig.CustomSymbols[1].ActualText;
+                              if (_yanalifConfig.CustomSymbols.Count > 2)
+                              {
+                                  btnAlifUser3.Visible = true;
+                                  btnAlifUser3.Text = _yanalifConfig.CustomSymbols[2].DisplayText;
+                                  btnAlifUser3.Tag = _yanalifConfig.CustomSymbols[2].ActualText;
+                              }
+                          }
+                      }
+                  }
+              }
+          }*/
 
 
         private void btnT1Keyboard_CheckedChanged(object sender, EventArgs e)
@@ -736,6 +734,7 @@ namespace Bitig.UI
             bool _osk1 = btnT1Keyboard.Checked;
             bool _osk2 = btnT2Keyboard.Checked;
             ResetOnscreenKeyboards();
+            ResetKeyboardLayouts();
             ctlYanalif1.ResetLetters();
             AdjustAlifbaPanel();
             ReloadDirections();
@@ -786,28 +785,45 @@ namespace Bitig.UI
 
         #endregion
 
-        #region Keyboard Layouts   
+        #region Keyboard Layouts 
 
-        public const int KLF_ACTIVATE = 01;
-        public const int KLF_NOTELLSHELL = 80;
-        public const int KLF_REORDER = 08;
-        public const int KLF_REPLACELANG = 10;
-        public const int KLF_SUBSTITUTE_OK = 02;
-        public const int KLF_UNLOADPREVIOUS = 04;
-        public const string LAYOUT_CYRILLIC = "00000444";
-        public const string LAYOUT_YANALIF = "00010444";//kbl:can be another value
-
-        private IntPtr x_HklCyrillic;
-        private IntPtr x_HklYanalif;
-
-
-        private void LoadCyrillicLayout()
+        private void LoadYanalifKeyboardLayout()
         {
-            ////check if 00000444 exists
-            //x_HklCyrillic = LoadKeyboardLayoutW(LAYOUT_CYRILLIC, KLF_ACTIVATE);
-            ////if it is already loaded
-            //InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new CultureInfo("tt-RU"));
+            var _yanalif = x_AlifbaRepository.GetYanalif();
+            if (_yanalif.KeyboardLayoutID != null)
+            {
+                var _yanalifKbl = x_DataContext.KeyboardRepository.GetKeyboardConfig(_yanalif.KeyboardLayoutID.Value);
+                if (_yanalifKbl == null)
+                {
+                    if (x_YanalifKeyManager.IsAttached)
+                        x_YanalifKeyManager.DetachFrom(ctlMultiRtb1.RtbMain);
+                }
+                else
+                {
+                    x_YanalifKeyManager.SetKeyboardLayout(_yanalifKbl);
+                    if (!x_YanalifKeyManager.IsAttached)
+                        x_YanalifKeyManager.AttachTo(ctlMultiRtb1.RtbMain);
+                }
+            }
+        }
 
+        private bool KeyboardLayoutAvailable(Alifba Alifba)
+        {
+            if (Alifba.KeyboardLayoutID == null || Alifba.IsYanalif)
+                return false;
+            if (x_KeyboardLayouts.ContainsKey(Alifba.KeyboardLayoutID.Value))
+                return true;
+            var _keyboard = x_DataContext.KeyboardRepository.GetKeyboardConfig(Alifba.KeyboardLayoutID.Value);
+            if (_keyboard == null || _keyboard.KeyCombinations == null)
+                return false;
+            x_KeyboardLayouts[Alifba.KeyboardLayoutID.Value] = _keyboard;
+            return true;
+        }
+
+        private void ResetKeyboardLayouts()
+        {
+            x_KeyboardLayouts.Clear();
+            LoadYanalifKeyboardLayout();
         }
 
         #endregion
@@ -821,39 +837,11 @@ namespace Bitig.UI
                 _configForm.ShowDialog();
             }
         }
+
         private void txtTranslit1_Enter(object sender, EventArgs e)
-        {           
-            //Alifba _source = cmbSource.SelectedItem as Alifba;
-            //if (_source != null)
-            //{
-            //    switch (_source.Code)
-            //    {
-                    //case "Cyrillic":
-                    //    LoadCyrillicLayout();
-                    //    break;
-            //    }
-            //}
+        { 
             x_ActiveTextControl = EActiveTextControl.Translit1;
         }
-
-      /*  private void btnTranslit1Load_Click(object sender, EventArgs e)
-        {
-            if (dlgOpenFile.ShowDialog() == DialogResult.OK && dlgOpenFile.FileName != string.Empty)
-            {
-                using (FileStream fs = File.OpenRead(dlgOpenFile.FileName))
-                {
-                    ICharsetDetector _cdet = new CharsetDetector();
-                    _cdet.Feed(fs);
-                    _cdet.DataEnd();
-                    if (_cdet.Charset != null)
-                    {
-                        Encoding _encoding = Encoding.GetEncoding(_cdet.Charset);
-                        string _text = File.ReadAllText(dlgOpenFile.FileName, _encoding);
-                        txtTranslit1.Text = _text;
-                    }
-                }
-            }
-        }*/
 
 
         private enum EActiveTextControl
@@ -893,6 +881,7 @@ namespace Bitig.UI
                 {
                     if (_configForm.X_AlphabetsModified)
                     {
+                        //kbl: set this flag if kbl is modified
                         ReloadAlphabets();//this calls ReloadDirections()
                     }
                     else if (_configForm.X_DirectionsModified)
