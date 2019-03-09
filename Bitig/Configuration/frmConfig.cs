@@ -15,6 +15,8 @@ namespace Bitig.UI.Configuration
         public frmConfig(IDataContext DataContext)
         {
             InitializeComponent();
+            dgvAlphabets.AutoGenerateColumns = false;
+            dgvAlphabets.DataSource = bndAlphabet;
             x_DataContext = DataContext;
             x_AlifbaRepo = DataContext.AlifbaRepository;
             x_DirectionRepo = DataContext.DirectionRepository;

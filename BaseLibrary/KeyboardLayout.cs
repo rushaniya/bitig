@@ -17,5 +17,6 @@ namespace Bitig.Base
         public bool WithAlt { get; set; }
         public bool WithAltGr { get; set; }
         public string Result { get; set; }
+        public string Capital { get; set; }
     }
 }

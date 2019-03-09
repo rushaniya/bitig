@@ -793,18 +793,16 @@ namespace Bitig.UI
             if (_yanalif.KeyboardLayoutID != null)
             {
                 var _yanalifKbl = x_DataContext.KeyboardRepository.GetKeyboardConfig(_yanalif.KeyboardLayoutID.Value);
-                if (_yanalifKbl == null)
-                {
-                    if (x_YanalifKeyManager.IsAttached)
-                        x_YanalifKeyManager.DetachFrom(ctlMultiRtb1.RtbMain);
-                }
-                else
+                if (_yanalifKbl != null)
                 {
                     x_YanalifKeyManager.SetKeyboardLayout(_yanalifKbl);
                     if (!x_YanalifKeyManager.IsAttached)
                         x_YanalifKeyManager.AttachTo(ctlMultiRtb1.RtbMain);
+                    return;
                 }
             }
+            if (x_YanalifKeyManager.IsAttached)
+                x_YanalifKeyManager.DetachFrom(ctlMultiRtb1.RtbMain);
         }
 
         private bool KeyboardLayoutAvailable(Alifba Alifba)

@@ -11,6 +11,7 @@ namespace Bitig.KeyboardManagement
         public bool WithCtrl { get; set; }
         public bool WithAlt { get; set; }
         public bool WithAltGr { get; set; }
+        public bool WithCapsLock { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -21,7 +22,8 @@ namespace Bitig.KeyboardManagement
                 target.WithAlt == WithAlt &&
                 target.WithAltGr == WithAltGr &&
                 target.WithCtrl == WithCtrl &&
-                target.WithShift == WithShift;
+                target.WithShift == WithShift &&
+                target.WithCapsLock == WithCapsLock;
         }
 
         public override int GetHashCode()
@@ -32,6 +34,7 @@ namespace Bitig.KeyboardManagement
             hash += 11 * WithAltGr.GetHashCode();
             hash += 13 * WithCtrl.GetHashCode();
             hash += 17 * WithShift.GetHashCode();
+            hash += 19 * WithCapsLock.GetHashCode();
             return hash;
         }
 

@@ -35,7 +35,7 @@
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbpAlphabets = new System.Windows.Forms.TabPage();
             this.dgvAlphabets = new System.Windows.Forms.DataGridView();
-            this.bndAlphabet = new System.Windows.Forms.BindingSource(this.components);
+            this.colAlphName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlAlphabetCommands = new System.Windows.Forms.Panel();
             this.btnAlphabetSymbols = new System.Windows.Forms.Button();
             this.btnDeleteAlphabet = new System.Windows.Forms.Button();
@@ -57,17 +57,13 @@
             this.dgvKeyboardLayouts = new System.Windows.Forms.DataGridView();
             this.colKblFriendlyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bndKblSummary = new System.Windows.Forms.BindingSource(this.components);
+            this.bndAlphabet = new System.Windows.Forms.BindingSource(this.components);
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.colAlphName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlphLayout = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAlphFont = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightToLeft = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tbcMain.SuspendLayout();
             this.tbpAlphabets.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabets)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).BeginInit();
             this.pnlAlphabetCommands.SuspendLayout();
             this.tbpDirections.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).BeginInit();
@@ -76,6 +72,7 @@
             this.tbpKeyboardLayouts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,7 +104,6 @@
             // 
             this.dgvAlphabets.AllowUserToAddRows = false;
             this.dgvAlphabets.AllowUserToDeleteRows = false;
-            this.dgvAlphabets.AutoGenerateColumns = false;
             this.dgvAlphabets.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -118,12 +114,9 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvAlphabets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAlphabets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAlphabets.ColumnHeadersVisible = false;
             this.dgvAlphabets.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colAlphName,
-            this.colAlphLayout,
-            this.colAlphFont,
-            this.colRightToLeft});
-            this.dgvAlphabets.DataSource = this.bndAlphabet;
+            this.colAlphName});
             this.dgvAlphabets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlphabets.Location = new System.Drawing.Point(3, 3);
             this.dgvAlphabets.MultiSelect = false;
@@ -136,9 +129,14 @@
             this.dgvAlphabets.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlphabets_RowEnter);
             this.dgvAlphabets.DoubleClick += new System.EventHandler(this.btnEditAlphabet_Click);
             // 
-            // bndAlphabet
+            // colAlphName
             // 
-            this.bndAlphabet.DataSource = typeof(Bitig.Logic.Model.Alifba);
+            this.colAlphName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colAlphName.DataPropertyName = "FriendlyName";
+            this.colAlphName.HeaderText = "Displayed Name";
+            this.colAlphName.MinimumWidth = 50;
+            this.colAlphName.Name = "colAlphName";
+            this.colAlphName.ReadOnly = true;
             // 
             // pnlAlphabetCommands
             // 
@@ -158,9 +156,9 @@
             this.btnAlphabetSymbols.Enabled = false;
             this.btnAlphabetSymbols.Location = new System.Drawing.Point(365, 16);
             this.btnAlphabetSymbols.Name = "btnAlphabetSymbols";
-            this.btnAlphabetSymbols.Size = new System.Drawing.Size(157, 30);
+            this.btnAlphabetSymbols.Size = new System.Drawing.Size(105, 30);
             this.btnAlphabetSymbols.TabIndex = 3;
-            this.btnAlphabetSymbols.Text = "Alphabet symbols...";
+            this.btnAlphabetSymbols.Text = "Symbols...";
             this.btnAlphabetSymbols.UseVisualStyleBackColor = true;
             this.btnAlphabetSymbols.Click += new System.EventHandler(this.btnAlphabetSymbols_Click);
             // 
@@ -382,6 +380,11 @@
             // 
             this.bndKblSummary.DataSource = typeof(Bitig.Logic.Model.KeyboardLayoutSummary);
             // 
+            // bndAlphabet
+            // 
+            this.bndAlphabet.AllowNew = false;
+            this.bndAlphabet.DataSource = typeof(Bitig.Logic.Model.Alifba);
+            // 
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnCancel);
@@ -414,41 +417,6 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // colAlphName
-            // 
-            this.colAlphName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.colAlphName.DataPropertyName = "FriendlyName";
-            this.colAlphName.HeaderText = "Displayed Name";
-            this.colAlphName.MinimumWidth = 50;
-            this.colAlphName.Name = "colAlphName";
-            this.colAlphName.ReadOnly = true;
-            this.colAlphName.Width = 200;
-            // 
-            // colAlphLayout
-            // 
-            this.colAlphLayout.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.colAlphLayout.DataPropertyName = "KeyboardLayoutName";
-            this.colAlphLayout.HeaderText = "Keyboard Layout";
-            this.colAlphLayout.MinimumWidth = 50;
-            this.colAlphLayout.Name = "colAlphLayout";
-            this.colAlphLayout.ReadOnly = true;
-            this.colAlphLayout.Width = 200;
-            // 
-            // colAlphFont
-            // 
-            this.colAlphFont.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colAlphFont.DataPropertyName = "DefaultFont";
-            this.colAlphFont.HeaderText = "Default Font";
-            this.colAlphFont.Name = "colAlphFont";
-            this.colAlphFont.ReadOnly = true;
-            // 
-            // colRightToLeft
-            // 
-            this.colRightToLeft.DataPropertyName = "RightToLeft";
-            this.colRightToLeft.HeaderText = "Right to Left";
-            this.colRightToLeft.Name = "colRightToLeft";
-            this.colRightToLeft.ReadOnly = true;
-            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -462,7 +430,6 @@
             this.tbcMain.ResumeLayout(false);
             this.tbpAlphabets.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlphabets)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).EndInit();
             this.pnlAlphabetCommands.ResumeLayout(false);
             this.tbpDirections.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDirections)).EndInit();
@@ -471,6 +438,7 @@
             this.tbpKeyboardLayouts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).EndInit();
             this.pnlBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -507,8 +475,5 @@
         private System.Windows.Forms.BindingSource bndKblSummary;
         private System.Windows.Forms.DataGridViewTextBoxColumn colKblFriendlyName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAlphName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphLayout;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlphFont;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colRightToLeft;
     }
 }

@@ -50,6 +50,7 @@ namespace BitigDataTests
             var _combination2 = _keyboard.KeyCombinations[1];
             Assert.AreEqual("C", _combination2.MainKey);
             Assert.AreEqual("ç", _combination2.Result);
+            Assert.AreEqual("Ç", _combination2.Capital);
             Assert.IsFalse(_combination2.WithAlt);
             Assert.IsTrue(_combination2.WithAltGr);
             Assert.IsFalse(_combination2.WithCtrl);

@@ -27,6 +27,7 @@ namespace Bitig.Data.Model
     {
         public string Combination { get; set; }
         public string Result { get; set; }
+        public string Capital { get; set; }
 
         public XmlKeyCombination()
         {
@@ -36,6 +37,7 @@ namespace Bitig.Data.Model
         public XmlKeyCombination(KeyCombination Model)
         {
             Result = Model.Result;
+            Capital = Model.Capital;
             var _combination = new StringBuilder();
             if (Model.WithCtrl)
                 _combination.Append("Ctrl+");
@@ -51,13 +53,15 @@ namespace Bitig.Data.Model
 
         public XmlKeyCombination Clone()
         {
-            return new XmlKeyCombination { Combination = Combination, Result = Result };
+            return new XmlKeyCombination { Combination = Combination, Result = Result, Capital = Capital };
         }
 
         public KeyCombination ToModel()
         {
             var _model = new KeyCombination();
-            _model.Result = Result; var _combinationUpper = Combination.ToUpperInvariant();
+            _model.Result = Result;
+            _model.Capital = Capital;
+            var _combinationUpper = Combination.ToUpperInvariant();
                 var _splitted = _combinationUpper.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
             if (_splitted.Length == 1)
                 _model.MainKey = _splitted[0];

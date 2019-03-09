@@ -22,15 +22,55 @@ namespace Bitig.KeyboardManagement
 
         public void SetKeyboardLayout(KeyboardLayout config)
         {
-            _keyCombinations = config.KeyCombinations.ToDictionary(x => new KeyCombination
-            {
-                MainKey = KeyCombination.ConvertToKeysEnum(x.MainKey),
-                WithAlt = x.WithAlt,
-                WithAltGr = x.WithAltGr,
-                WithCtrl = x.WithCtrl,
-                WithShift = x.WithShift
-            }, x => x.Result);
+            _keyCombinations = convertToKeyDictionary(config.KeyCombinations);
             _mainKeys = new HashSet<Keys>(_keyCombinations.Keys.Select(x => x.MainKey).Distinct());
+        }
+
+        private Dictionary<KeyCombination, string> convertToKeyDictionary(List<Base.KeyCombination> keyCombinations)
+        {
+            var dictionary = new Dictionary<KeyCombination, string>();
+            foreach (var keyCombination in keyCombinations)
+            {
+                var mainKey = KeyCombination.ConvertToKeysEnum(keyCombination.MainKey);
+                dictionary.Add(new KeyCombination
+                {
+                    MainKey = mainKey,
+                    WithAlt = keyCombination.WithAlt,
+                    WithAltGr = keyCombination.WithAltGr,
+                    WithCtrl = keyCombination.WithCtrl,
+                    WithShift = keyCombination.WithShift
+                }, keyCombination.Result);
+                if (!string.IsNullOrEmpty(keyCombination.Capital))
+                {
+                    //kbl: check duplicates?
+                    dictionary.Add(new KeyCombination
+                    {
+                        MainKey = mainKey,
+                        WithAlt = keyCombination.WithAlt,
+                        WithAltGr = keyCombination.WithAltGr,
+                        WithCtrl = keyCombination.WithCtrl,
+                        WithShift = true
+                    }, keyCombination.Capital);
+                    dictionary.Add(new KeyCombination
+                    {
+                        MainKey = mainKey,
+                        WithAlt = keyCombination.WithAlt,
+                        WithAltGr = keyCombination.WithAltGr,
+                        WithCtrl = keyCombination.WithCtrl,
+                        WithCapsLock = true
+                    }, keyCombination.Capital);
+                    dictionary.Add(new KeyCombination
+                    {
+                        MainKey = mainKey,
+                        WithAlt = keyCombination.WithAlt,
+                        WithAltGr = keyCombination.WithAltGr,
+                        WithCtrl = keyCombination.WithCtrl,
+                        WithShift = true,
+                        WithCapsLock = true
+                    }, keyCombination.Result);
+                }
+            }
+            return dictionary;
         }
 
         public void AttachTo(TextBoxBase textBox)
@@ -77,6 +117,8 @@ namespace Bitig.KeyboardManagement
                 combination.WithAlt = true;
             if (Convert.ToBoolean(GetAsyncKeyState(Keys.RMenu)))
                 combination.WithAltGr = true;
+            if (Control.IsKeyLocked(Keys.CapsLock))
+                combination.WithCapsLock = true;
             return combination;
         }
 
