@@ -2,11 +2,17 @@
 
 namespace Bitig.Base
 {
-    public class KeyboardLayout
+    public class KeyboardLayout : KeyboardLayoutBase
     {
-        public int ID { get; set; }
-        public string FriendlyName { get; set; }
         public List<KeyCombination> KeyCombinations { get; set; }
+
+        public override KeyboardLayoutType Type
+        {
+            get
+            {
+                return KeyboardLayoutType.Full;
+            }
+        }
     }
 
     public class KeyCombination
@@ -18,5 +24,5 @@ namespace Bitig.Base
         public bool WithAltGr { get; set; }
         public string Result { get; set; }
         public string Capital { get; set; }
-    }
+    }    
 }

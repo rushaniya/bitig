@@ -40,6 +40,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -54,6 +55,8 @@
     <Compile Include="ExclusionCollection.cs" />
     <Compile Include="IgnoreCaseComparer.cs" />
     <Compile Include="KeyboardLayout.cs" />
+    <Compile Include="KeyboardLayoutBase.cs" />
+    <Compile Include="MagicKeyboardLayout.cs" />
     <Compile Include="SubstituteTranslitCommand.cs" />
     <Compile Include="TranslitCommand.cs" />
     <Compile Include="TextHelper.cs" />

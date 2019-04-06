@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Bitig.Base;
 using Bitig.Data.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +34,7 @@ namespace BitigDataTests
         {
             var _context = new XmlContext(currentDataFolder);
             var _repository = new XmlKeyboardRepository(_context);
-            var _keyboard = _repository.GetKeyboardConfig(333);
+            var _keyboard = _repository.GetKeyboardConfig(333) as KeyboardLayout;
             Assert.IsNotNull(_keyboard);
             Assert.AreEqual("TestConfig333", _keyboard.FriendlyName);
             Assert.AreEqual(333, _keyboard.ID);

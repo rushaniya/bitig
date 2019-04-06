@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Bitig.Base;
+using Bitig.KeyboardManagement;
 
 namespace KeyboardTestApp
 {
@@ -13,9 +15,20 @@ namespace KeyboardTestApp
         public Form1()
         {
             InitializeComponent();
-            textBox.KeyUp += keyUp;
-            textBox.KeyPress += keyPress;
-            textBox.KeyDown += keyDown;
+            //  textBox.KeyUp += keyUp;
+            //  textBox.KeyPress += keyPress;
+            //  textBox.KeyDown += keyDown;
+            var keyManager = new KeyboardManager();
+            keyManager.SetKeyboardLayout(new MagicKeyboardLayout
+            {
+                MagicKey = Keys.Enter,
+                KeyCombinations = new List<MagicKeyCombination>
+                {
+                    new MagicKeyCombination { Symbol='f', WithMagic = "ф"},
+                    new MagicKeyCombination { Symbol='F', WithMagic = "Ф"},
+                }
+            });
+            keyManager.AttachTo(textBox);
         }
 
         private void keyDown(object sender, KeyEventArgs e)

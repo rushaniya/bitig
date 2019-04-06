@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bitig.Base;
-using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlKeyCombinationCollection : EquatableByID<int>, IDeepCloneable<XmlKeyCombinationCollection>
+    public class XmlKeyboard : EquatableByID<int>, IDeepCloneable<XmlKeyboard>
     {
         public override int ID
         {
@@ -17,9 +16,9 @@ namespace Bitig.Data.Model
 
         public List<XmlKeyCombination> KeyCombinations { get; set; }
 
-        public XmlKeyCombinationCollection Clone()
+        public XmlKeyboard Clone()
         {
-            return new XmlKeyCombinationCollection { ID = ID, KeyCombinations = KeyCombinations.Select(x => x.Clone()).ToList() };
+            return new XmlKeyboard { ID = ID, KeyCombinations = KeyCombinations.Select(x => x.Clone()).ToList() };
         }
     }
 
@@ -91,25 +90,6 @@ namespace Bitig.Data.Model
             }
             return _model;
         }
-    }
-
-    public class XmlKeyboardSummary : EquatableByID<int>, IDeepCloneable<XmlKeyboardSummary>
-    {
-        public override int ID
-        {
-            get; set;
-        }
-
-        public string FriendlyName { get; set; }
-
-        public XmlKeyboardSummary Clone()
-        {
-            return new XmlKeyboardSummary { ID = ID, FriendlyName = FriendlyName };
-        }
-
-        internal KeyboardLayoutSummary ToModel()
-        {
-            return new KeyboardLayoutSummary { FriendlyName = FriendlyName, ID = ID };
-        }
-    }
+    }    
+   
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
@@ -83,13 +80,6 @@ namespace Bitig.Data.Model
             TypeName = ModelDirection.TypeName;
             BuiltInID = _builtInID;
             UseManualCommand = ModelDirection.ManualCommand != null;
-        }
-
-        public override bool Equals(object obj)
-        {
-            XmlDirection _cast = obj as XmlDirection;
-            if (_cast == null) return false;
-            return _cast.ID == ID;
         }
 
         public XmlDirection Clone()

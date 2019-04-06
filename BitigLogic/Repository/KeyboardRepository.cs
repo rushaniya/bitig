@@ -8,7 +8,7 @@ namespace Bitig.Logic.Repository
     {
         public abstract IDataContext DataContext { get; }
 
-        public abstract KeyboardLayout GetKeyboardConfig(int KeyboardID);
+        public abstract KeyboardLayoutBase GetKeyboardConfig(int KeyboardID);
 
         public abstract KeyboardLayoutSummary GetSummary(int KeyboardID);
 

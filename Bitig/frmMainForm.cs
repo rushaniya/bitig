@@ -552,7 +552,7 @@ namespace Bitig.UI
 
         private Dictionary<int, ctlAlifba> x_OnscreenKeyboards = new Dictionary<int, ctlAlifba>();
         private Dictionary<int, List<AlifbaSymbol>> x_OnscreenSymbols = new Dictionary<int, List<AlifbaSymbol>>();
-        private Dictionary<int, KeyboardLayout> x_KeyboardLayouts = new Dictionary<int, KeyboardLayout>();
+        private Dictionary<int, KeyboardLayoutBase> x_KeyboardLayouts = new Dictionary<int, KeyboardLayoutBase>();
 
 
         private void ctlYanalif1_SymbolPressed(object sender, SymbolEventArgs e)
@@ -812,7 +812,7 @@ namespace Bitig.UI
             if (x_KeyboardLayouts.ContainsKey(Alifba.KeyboardLayoutID.Value))
                 return true;
             var _keyboard = x_DataContext.KeyboardRepository.GetKeyboardConfig(Alifba.KeyboardLayoutID.Value);
-            if (_keyboard == null || _keyboard.KeyCombinations == null)
+            if (_keyboard == null)
                 return false;
             x_KeyboardLayouts[Alifba.KeyboardLayoutID.Value] = _keyboard;
             return true;

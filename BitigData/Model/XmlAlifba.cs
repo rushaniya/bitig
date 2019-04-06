@@ -80,18 +80,6 @@ namespace Bitig.Data.Model
             return FriendlyName;
         }
 
-        public override bool Equals(object obj)
-        {
-            XmlAlifba _cast = obj as XmlAlifba;
-            if (_cast == null) return false;
-            return _cast.ID == ID;
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
-
         public XmlAlifba Clone()
         {
          
