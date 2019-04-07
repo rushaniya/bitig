@@ -1,4 +1,5 @@
 ﻿using Bitig.Base;
+using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model

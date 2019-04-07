@@ -871,7 +871,7 @@ namespace Bitig.RtbControl
                     if (x_CurrentFileFormat == RichTextBoxStreamType.RichText)
                         rtbMain.SaveFile(x_CurrentFilePath, RichTextBoxStreamType.RichText);
                     else
-                        File.WriteAllLines(x_CurrentFilePath, rtbMain.Lines, Encoding.Unicode);
+                        File.WriteAllLines(x_CurrentFilePath, rtbMain.Lines, Encoding.UTF8);
                     rtbMain.Modified = false;
                     mniReopen.Enabled = false;
                     return true;

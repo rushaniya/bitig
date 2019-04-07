@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ExclusionsConfig>
-  <ExclusionList>
-    <Exclusion>
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <Collection>
+    <Item>
       <SourceWord>бер</SourceWord>
       <TargetWord>ike</TargetWord>
       <MatchCase>false</MatchCase>
       <MatchBeginning>true</MatchBeginning>
       <AnyPosition>false</AnyPosition>
-    </Exclusion>
-  </ExclusionList>
-</ExclusionsConfig>
+    </Item>
+  </Collection>
+</Config>

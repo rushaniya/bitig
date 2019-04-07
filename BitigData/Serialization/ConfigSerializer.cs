@@ -15,7 +15,7 @@ namespace Bitig.Data.Serialization
             var _directoryPath = System.IO.Path.GetDirectoryName(Path);
             if (!Directory.Exists(_directoryPath))
                 Directory.CreateDirectory(_directoryPath);
-            using (StreamWriter _writer = new StreamWriter(Path, false, Encoding.Unicode))
+            using (StreamWriter _writer = new StreamWriter(Path, false, Encoding.UTF8))
             {
                 serializer.Serialize(_writer, Instance);
             }
@@ -27,7 +27,7 @@ namespace Bitig.Data.Serialization
             {
                 if (File.Exists(Path))
                 {
-                    using (StreamReader _reader = new StreamReader(Path, Encoding.Unicode))
+                    using (StreamReader _reader = new StreamReader(Path, Encoding.UTF8))
                     {
                         return (T)serializer.Deserialize(_reader);
                     }

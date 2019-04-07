@@ -1,27 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Bitig.Base;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlKeyboard : EquatableByID<int>, IDeepCloneable<XmlKeyboard>
-    {
-        public override int ID
-        {
-            get; set;
-        }
-
-        public List<XmlKeyCombination> KeyCombinations { get; set; }
-
-        public XmlKeyboard Clone()
-        {
-            return new XmlKeyboard { ID = ID, KeyCombinations = KeyCombinations.Select(x => x.Clone()).ToList() };
-        }
-    }
-
     public class XmlKeyCombination : IDeepCloneable<XmlKeyCombination>
     {
         public string Combination { get; set; }

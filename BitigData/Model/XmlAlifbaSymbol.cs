@@ -1,8 +1,9 @@
 ﻿using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlAlifbaSymbol : XmlTextSymbol
+    public class XmlAlifbaSymbol : XmlTextSymbol, IDeepCloneable<XmlAlifbaSymbol>
     {
 
         public string DisplayText
@@ -40,7 +41,7 @@ namespace Bitig.Data.Model
                 DisplayText, CapitalizedDisplayText, IsAlphabetic, IsOnScreen);
         }
 
-        internal new XmlAlifbaSymbol Clone()
+        public new XmlAlifbaSymbol Clone()
         {
             return new XmlAlifbaSymbol
             {

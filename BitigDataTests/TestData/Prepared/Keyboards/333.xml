@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<KeyboardConfig>
-  <KeyCombinations>
-    <KeyCombination>
+<Config>
+  <Collection>
+    <Item>
       <Combination>Alt+Shift+1</Combination>
       <Result>!</Result>
-    </KeyCombination>
-    <KeyCombination>
+    </Item>
+    <Item>
       <Combination>Altgr+c</Combination>
       <Result>ç</Result>
       <Capital>Ç</Capital>
-    </KeyCombination>
-    <KeyCombination>
+    </Item>
+    <Item>
       <Combination>R</Combination>
       <Result>Enter</Result>
-    </KeyCombination>
-  </KeyCombinations>
-</KeyboardConfig>
+    </Item>
+  </Collection>
+</Config>

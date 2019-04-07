@@ -4,6 +4,7 @@ using Bitig.Logic.Repository;
 using Bitig.Logic.Model;
 using System.Linq;
 using Bitig.Data.Model;
+using Bitig.Data.Serialization;
 
 namespace Bitig.Data.Storage
 {
@@ -49,7 +50,7 @@ namespace Bitig.Data.Storage
             Item.ID = _xmlItem.ID;
             if (Item.CustomSymbols != null)
             {
-                var _symbolList = new XmlSymbolCollection(Item.ID, Item.CustomSymbols);
+                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = _xmlItem.ID, Collection = Item.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
                 xmlContext.CustomSymbols.InsertOrUpdate(_symbolList);
             }
         }
@@ -72,7 +73,7 @@ namespace Bitig.Data.Storage
             xmlContext.Alphabets.Update(new XmlAlifba(Item));
             if (Item.CustomSymbols != null)
             {
-                var _symbolList = new XmlSymbolCollection(Item.ID, Item.CustomSymbols);
+                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = Item.ID, Collection = Item.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
                 xmlContext.CustomSymbols.InsertOrUpdate(_symbolList);
             }
         }
@@ -87,9 +88,9 @@ namespace Bitig.Data.Storage
         {
             List<AlifbaSymbol> _customSymbols = null;
             var _xmlSymbols = xmlContext.CustomSymbols.Get(StoredAlifba.ID);
-            if (_xmlSymbols != null)
+            if (_xmlSymbols != null && _xmlSymbols.Collection != null)
             {
-                _customSymbols = _xmlSymbols.Symbols.Select(x => x.ToModel()).ToList();
+                _customSymbols = _xmlSymbols.Collection.Select(x => x.ToModel()).ToList();
             }
             var _defaultFont =StoredAlifba.DefaultFont == null ? null : new AlifbaFont(StoredAlifba.DefaultFont.Description);
             return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, StoredAlifba.KeyboardLayoutID);

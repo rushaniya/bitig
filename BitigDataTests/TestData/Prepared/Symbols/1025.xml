@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<SymbolsConfig>
-  <SymbolList>
-    <Symbol>
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <Collection>
+    <Item>
       <ActualText>test actual text</ActualText>
       <DisplayText>test display text</DisplayText>
       <CapitalizedText />
       <CapitalizedDisplayText />
-    </Symbol>
-  </SymbolList>
-</SymbolsConfig>
+    </Item>
+  </Collection>
+</Config>

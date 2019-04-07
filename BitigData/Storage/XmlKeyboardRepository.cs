@@ -27,10 +27,12 @@ namespace Bitig.Data.Storage
 
         public override KeyboardLayoutBase GetKeyboardConfig(int KeyboardID)
         {
-            var _keyboard = xmlContext.Keyboards.Get(KeyboardID);
-            var _magicKeyboard = xmlContext.MagicKeyboards.Get(KeyboardID);
             var _summary = xmlContext.KeyboardSummaries.Get(KeyboardID);
-            if (_keyboard == null && _magicKeyboard == null || _summary == null)
+            if (_summary == null)
+                return null;
+            var _keyboard = _summary.Type == KeyboardLayoutType.Full ? xmlContext.Keyboards.Get(KeyboardID) : null;
+            var _magicKeyboard = _summary.Type == KeyboardLayoutType.Magic ? xmlContext.MagicKeyboards.Get(KeyboardID) : null;
+            if (_keyboard == null && _magicKeyboard == null)
                 return null;
             if (_summary.Type == KeyboardLayoutType.Full)
             {
@@ -38,7 +40,7 @@ namespace Bitig.Data.Storage
                 {
                     FriendlyName = _summary.FriendlyName,
                     ID = _keyboard.ID,
-                    KeyCombinations = _keyboard.KeyCombinations.Select(x => x.ToModel()).ToList()
+                    KeyCombinations = _keyboard.Collection.Select(x => x.ToModel()).ToList()
                 };
             }
             if (_summary.Type == KeyboardLayoutType.Magic)

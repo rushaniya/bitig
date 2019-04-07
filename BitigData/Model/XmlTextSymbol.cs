@@ -1,8 +1,9 @@
 ﻿using Bitig.Logic.Model;
+using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlTextSymbol
+    public class XmlTextSymbol : IDeepCloneable<XmlTextSymbol>
     {
 
         public string ActualText
@@ -31,7 +32,7 @@ namespace Bitig.Data.Model
             return new TextSymbol(ActualText, CapitalizedText);
         }
 
-        internal XmlTextSymbol Clone()
+        public XmlTextSymbol Clone()
         {
             return new XmlTextSymbol
             {

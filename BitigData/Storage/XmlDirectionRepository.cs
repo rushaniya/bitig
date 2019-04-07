@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bitig.Data.Model;
+using Bitig.Data.Serialization;
 using Bitig.Logic.Model;
 using Bitig.Logic.Repository;
 
@@ -31,13 +32,13 @@ namespace Bitig.Data.Storage
             {
                 var _mapping = xmlContext.Mappings.Get(StoredDirection.ID);
                 if (_mapping != null)
-                    _manualCommand = new ManualCommand(_mapping.SymbolMapping
+                    _manualCommand = new ManualCommand(_mapping.Dictionary
                         .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel()));
             }
             var _xmlExclusionList = xmlContext.Exclusions.Get(StoredDirection.ID);
             var _exclusions = _xmlExclusionList == null
                 ? null
-                : _xmlExclusionList.Exclusions.Select(x => x.ToModel()).ToList();
+                : _xmlExclusionList.Collection.Select(x => x.ToModel()).ToList();
             var _shallowDirection = ShallowMap(StoredDirection);
             return new Direction(StoredDirection.ID, _shallowDirection.Source, _shallowDirection.Target, _exclusions,
                 _shallowDirection.AssemblyPath, _shallowDirection.TypeName, _shallowDirection.BuiltIn, _manualCommand);
@@ -75,14 +76,16 @@ namespace Bitig.Data.Storage
             var _xmlItem = new XmlDirection(Item);
             xmlContext.Directions.Insert(_xmlItem);
             Item.ID = _xmlItem.ID;
-            if (Item.ManualCommand != null)
+            if (Item.ManualCommand != null && Item.ManualCommand.SymbolMapping != null)
             {
-                var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
-                xmlContext.Mappings.InsertOrUpdate(_mapping);
+                var _mapping = new XmlDictionary<XmlTextSymbol, XmlTextSymbol>(
+                Item.ManualCommand.SymbolMapping
+                        .ToDictionary(x => new XmlTextSymbol(x.Key), x => new XmlTextSymbol(x.Value)));
+                xmlContext.Mappings.InsertOrUpdate(new XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol> { ID = _xmlItem.ID, Dictionary = _mapping });
             }
             if (Item.Exclusions != null && Item.Exclusions.Count > 0)
             {
-                var _exclusionList = new XmlExclusionCollection(Item.ID, Item.Exclusions);
+                var _exclusionList = new XmlCollectionConfig<XmlExclusion> { ID = Item.ID, Collection = Item.Exclusions.Select(x=>new XmlExclusion(x)).ToList() };
                 xmlContext.Exclusions.InsertOrUpdate(_exclusionList);
             }
         }
@@ -101,14 +104,16 @@ namespace Bitig.Data.Storage
             if (_sameAlphabets != null)
                 throw new Exception("Direction with same source and target exists.");
             xmlContext.Directions.Update(new XmlDirection(Item));
-            if (Item.ManualCommand != null)
+            if (Item.ManualCommand != null && Item.ManualCommand.SymbolMapping != null)
             {
-                var _mapping = new XmlSymbolMapping(Item.ID, Item.ManualCommand);
-                xmlContext.Mappings.InsertOrUpdate(_mapping);
+                var _mapping = new XmlDictionary<XmlTextSymbol, XmlTextSymbol>(
+                Item.ManualCommand.SymbolMapping
+                        .ToDictionary(x => new XmlTextSymbol(x.Key), x => new XmlTextSymbol(x.Value)));
+                xmlContext.Mappings.InsertOrUpdate(new XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol> { Dictionary = _mapping });
             }
             if (Item.Exclusions != null && Item.Exclusions.Count > 0)
             {
-                var _exclusionList = new XmlExclusionCollection(Item.ID, Item.Exclusions);
+                var _exclusionList = new XmlCollectionConfig<XmlExclusion> { ID = Item.ID, Collection = Item.Exclusions.Select(x => new XmlExclusion(x)).ToList() };
                 xmlContext.Exclusions.InsertOrUpdate(_exclusionList);
             }
         }
@@ -137,7 +142,7 @@ namespace Bitig.Data.Storage
             var _mapping = xmlContext.Mappings.Get(ID);
             if (_mapping != null)
             {
-                return _mapping.SymbolMapping
+                return _mapping.Dictionary
                      .ToDictionary(x => x.Key.ToModel(), x => x.Value.ToModel());
             }
             return null;

@@ -12,21 +12,21 @@ namespace Bitig.Data.Storage
     {
         private InMemoryList<XmlAlifba> alifbaCache;
         private InMemoryList<XmlDirection> directionCache;
-        private InMemoryList<XmlSymbolMapping> mappingsCache;
-        private InMemoryList<XmlSymbolCollection> customSymbolsCache;
-        private InMemoryList<XmlExclusionCollection> exclusionsCache;
-        private InMemoryList<XmlKeyboard> keyboardsCache;
+        private InMemoryList<XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol>> mappingsCache;
+        private InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>> customSymbolsCache;
+        private InMemoryList<XmlCollectionConfig<XmlExclusion>> exclusionsCache;
+        private InMemoryList<XmlCollectionConfig<XmlKeyCombination>> keyboardsCache;
         private InMemoryList<XmlMagicKeyboard> magicKeyboardsCache;
         private InMemoryList<XmlKeyboardSummary> keyboardSummariesCache;
 
         private XmlModelReader<XmlAlifba> xmlAlifbaReader;
         private XmlModelReader<XmlDirection> xmlDirectionReader;
-        private XmlModelCollectionReader<XmlSymbolMapping> xmlSymbolMappingReader;
-        private XmlModelCollectionReader<XmlSymbolCollection> xmlSymbolCollectionReader;
-        private XmlModelCollectionReader<XmlExclusionCollection> xmlExclusionReader;
+        private XmlModelDictionaryReader<XmlTextSymbol, XmlTextSymbol> xmlSymbolMappingReader;
+        private XmlModelCollectionReader<XmlAlifbaSymbol> xmlSymbolCollectionReader;
+        private XmlModelCollectionReader<XmlExclusion> xmlExclusionReader;
         private XmlModelReader<XmlKeyboardSummary> xmlKeyboardSummaryReader;
-        private XmlModelCollectionReader<XmlKeyboard> xmlKeyboardReader;
-        private XmlModelCollectionReader<XmlMagicKeyboard> xmlMagicKeyboardReader;
+        private XmlModelCollectionReader<XmlKeyCombination> xmlKeyboardReader;
+        private XmlCustomCollectionReader<XmlMagicKeyboard> xmlMagicKeyboardReader;
 
         private XmlAlifbaRepository alifbaRepository;
         private XmlDirectionRepository directionRepository;
@@ -55,7 +55,7 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlSymbolMapping> Mappings
+        internal InMemoryList<XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol>> Mappings
         {
             get
             {
@@ -65,7 +65,7 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlSymbolCollection> CustomSymbols
+        internal InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>> CustomSymbols
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlExclusionCollection> Exclusions
+        internal InMemoryList<XmlCollectionConfig<XmlExclusion>> Exclusions
         {
             get
             {
@@ -85,13 +85,13 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlKeyboard> Keyboards
+        internal InMemoryList<XmlCollectionConfig<XmlKeyCombination>> Keyboards
         {
             get
             {
                 if (keyboardsCache == null)
                 {
-                    keyboardsCache = new InMemoryList<XmlKeyboard>();
+                    keyboardsCache = new InMemoryList<XmlCollectionConfig<XmlKeyCombination>>();
                     keyboardsCache.NotFound += xmlKeyboardReader.Read;
                 }
                 return keyboardsCache;
@@ -158,14 +158,14 @@ namespace Bitig.Data.Storage
             directionRepository = new XmlDirectionRepository(this);
             keyboardRepository = new XmlKeyboardRepository(this);
             var _alphabetsDirectory = Path.GetDirectoryName(AlphabetsPath) ?? string.Empty;
-            xmlSymbolCollectionReader = new XmlModelCollectionReader<XmlSymbolCollection>(Path.Combine(_alphabetsDirectory, "Symbols"));
+            xmlSymbolCollectionReader = new XmlModelCollectionReader<XmlAlifbaSymbol>(Path.Combine(_alphabetsDirectory, "Symbols"));
             xmlKeyboardSummaryReader = new XmlModelReader<XmlKeyboardSummary>(Path.Combine(_alphabetsDirectory, "KeyboardSummaries.xml"));
             var _keyboardsPath = Path.Combine(_alphabetsDirectory, "Keyboards");
-            xmlKeyboardReader = new XmlModelCollectionReader<XmlKeyboard>(_keyboardsPath);
-            xmlMagicKeyboardReader = new XmlModelCollectionReader<XmlMagicKeyboard>(_keyboardsPath);
+            xmlKeyboardReader = new XmlModelCollectionReader<XmlKeyCombination>(_keyboardsPath);
+            xmlMagicKeyboardReader = new XmlCustomCollectionReader<XmlMagicKeyboard>(_keyboardsPath);
             var _directionsDirectory = Path.GetDirectoryName(DirectionsPath) ?? string.Empty;
-            xmlSymbolMappingReader = new XmlModelCollectionReader<XmlSymbolMapping>(Path.Combine(_directionsDirectory, "Mappings"));
-            xmlExclusionReader = new XmlModelCollectionReader<XmlExclusionCollection>(Path.Combine(_directionsDirectory, "Exclusions"));
+            xmlSymbolMappingReader = new XmlModelDictionaryReader<XmlTextSymbol, XmlTextSymbol>(Path.Combine(_directionsDirectory, "Mappings"));
+            xmlExclusionReader = new XmlModelCollectionReader<XmlExclusion>(Path.Combine(_directionsDirectory, "Exclusions"));
         }
 
         private void InitAlifbaCache()
@@ -174,7 +174,7 @@ namespace Bitig.Data.Storage
             if (_xmlList == null)
             {
                 _xmlList = new List<XmlAlifba>();
-                var _symbolLists = new List<XmlSymbolCollection>();
+                var _symbolLists = new List<XmlCollectionConfig<XmlAlifbaSymbol>>();
                 var _IDs = new List<int>();
                 foreach (var _builtIn in DefaultConfiguration.BuiltInAlifbaList)
                 {
@@ -184,7 +184,7 @@ namespace Bitig.Data.Storage
                         _builtIn.RightToLeft, _builtIn.DefaultFont, _builtIn.ID);
                     _xmlList.Add(new XmlAlifba(_alifba));
                     if (_builtIn.CustomSymbols != null)
-                        _symbolLists.Add(new XmlSymbolCollection(_id, _builtIn.CustomSymbols));
+                        _symbolLists.Add(new XmlCollectionConfig<XmlAlifbaSymbol> { ID = _id, Collection = _builtIn.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() });
                 }
                 xmlAlifbaReader.Save(_xmlList);
                 xmlSymbolCollectionReader.Save(_symbolLists);
@@ -198,7 +198,14 @@ namespace Bitig.Data.Storage
                     DefaultConfiguration.Yanalif.RightToLeft, DefaultConfiguration.Yanalif.DefaultFont, DefaultConfiguration.Yanalif.ID);
                     _xmlList.Add(new XmlAlifba(_yanalif));
                     xmlAlifbaReader.Save(_xmlList);
-                    xmlSymbolCollectionReader.Save(new List<XmlSymbolCollection> { new XmlSymbolCollection(_id, DefaultConfiguration.Yanalif.CustomSymbols) });
+                    xmlSymbolCollectionReader.Save(new List<XmlCollectionConfig<XmlAlifbaSymbol>>
+                    {
+                        new XmlCollectionConfig<XmlAlifbaSymbol>
+                        {
+                            ID = _id,
+                            Collection = DefaultConfiguration.Yanalif.CustomSymbols.Select(x=>new XmlAlifbaSymbol(x)).ToList()
+                        }
+                    });
                 }
             }
             alifbaCache = new InMemoryList<XmlAlifba>(_xmlList);
@@ -269,19 +276,19 @@ namespace Bitig.Data.Storage
 
         private void InitMappingsCache()
         {
-            mappingsCache = new InMemoryList<XmlSymbolMapping>();
+            mappingsCache = new InMemoryList<XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol>>();
             mappingsCache.NotFound += xmlSymbolMappingReader.Read;
         }
 
         private void InitCustomSymbolsCache()
         {
-            customSymbolsCache = new InMemoryList<XmlSymbolCollection>();
+            customSymbolsCache = new InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>>();
             customSymbolsCache.NotFound += xmlSymbolCollectionReader.Read;
         }
 
         private void InitExclusionsCache()
         {
-            exclusionsCache = new InMemoryList<XmlExclusionCollection>();
+            exclusionsCache = new InMemoryList<XmlCollectionConfig<XmlExclusion>>();
             exclusionsCache.NotFound += xmlExclusionReader.Read;
         }
 
@@ -309,7 +316,11 @@ namespace Bitig.Data.Storage
             if (exclusionsCache != null)
                 xmlExclusionReader.Save(exclusionsCache);
             if (keyboardSummariesCache != null)
-                xmlKeyboardConfigReader.SaveSummaryList(keyboardSummariesCache);
+                xmlKeyboardSummaryReader.Save(keyboardSummariesCache);
+            if (keyboardsCache != null)
+                xmlKeyboardReader.Save(keyboardsCache);
+            if (magicKeyboardsCache != null)
+                xmlMagicKeyboardReader.Save(magicKeyboardsCache);
         }
     }
 }

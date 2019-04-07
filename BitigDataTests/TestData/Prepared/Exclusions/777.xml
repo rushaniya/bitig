@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ExclusionsConfig>
-  <ExclusionList>
-    <Exclusion>
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <Collection>
+    <Item>
       <SourceWord>1</SourceWord>
       <TargetWord>2</TargetWord>
       <MatchCase>false</MatchCase>
       <MatchBeginning>false</MatchBeginning>
       <AnyPosition>true</AnyPosition>
-    </Exclusion>
-  </ExclusionList>
-</ExclusionsConfig>
+    </Item>
+  </Collection>
+</Config>
