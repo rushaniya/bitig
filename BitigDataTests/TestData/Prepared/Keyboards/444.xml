@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <MagicKey>Enter</MagicKey>
+  <Collection>
+    <Item>
+      <Symbol>s</Symbol>
+      <WithMagic>ş</WithMagic>
+    </Item>
+    <Item>
+      <Symbol>u</Symbol>
+      <WithMagic>ü</WithMagic>
+    </Item>
+  </Collection>
+</Config>

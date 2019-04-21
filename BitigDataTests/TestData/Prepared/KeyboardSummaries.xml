@@ -8,6 +8,7 @@
     <Item>
       <ID>444</ID>
       <FriendlyName>TestConfig444</FriendlyName>
+      <Type>Magic</Type>
     </Item>
   </Collection>
 </Config>

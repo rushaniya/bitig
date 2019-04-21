@@ -1,13 +1,15 @@
 ﻿using System.Linq;
+using System.Xml.Serialization;
+using Bitig.Base;
 using Bitig.Data.Serialization;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
 
+    [XmlRoot("Config")]
     public class XmlMagicKeyboard : XmlCollectionConfig<XmlMagicKeyCombination>, IDeepCloneable<XmlMagicKeyboard>
     {
-
         public string MagicKey { get; set; }
 
         public new XmlMagicKeyboard Clone()
@@ -23,7 +25,7 @@ namespace Bitig.Data.Model
 
     public class XmlMagicKeyCombination : IDeepCloneable<XmlMagicKeyCombination>
     {
-        public char Symbol { get; set; }
+        public string Symbol { get; set; }
         public string WithMagic { get; set; }
 
         public XmlMagicKeyCombination Clone()
@@ -31,6 +33,15 @@ namespace Bitig.Data.Model
             return new XmlMagicKeyCombination
             {
                 Symbol = Symbol,
+                WithMagic = WithMagic
+            };
+        }
+
+        public MagicKeyCombination ToModel()
+        {
+            return new MagicKeyCombination
+            {
+                Symbol = Symbol.Single(),
                 WithMagic = WithMagic
             };
         }

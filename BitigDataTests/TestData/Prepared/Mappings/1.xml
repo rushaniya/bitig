@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ID>1</ID>
+  <Dictionary>
+    <Item>
+      <Key>
+        <ActualText>1</ActualText>
+        <DisplayText>A</DisplayText>
+      </Key>
+      <Value>
+        <ActualText>2</ActualText>
+        <DisplayText>B</DisplayText>
+      </Value>
+    </Item>
+    <Item>
+      <Key>
+        <ActualText>c</ActualText>
+        <CapitalizedText>C</CapitalizedText>
+      </Key>
+      <Value>
+        <ActualText>d</ActualText>
+        <CapitalizedText>D</CapitalizedText>
+      </Value>
+    </Item>
+  </Dictionary>
+</Config>

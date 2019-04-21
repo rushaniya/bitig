@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
+using System.Windows.Forms;
 using Bitig.Base;
 using Bitig.Data.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +11,8 @@ namespace BitigDataTests
     {
         private const string preparedDataFolder = @"TestData\Prepared\";
         private const string currentDataFolder = @"KeyboardsTestData\";
-        private readonly string preparedFile = @"Keyboards\333.xml";
+        private readonly string preparedFile1 = @"Keyboards\333.xml";
+        private readonly string preparedFile2 = @"Keyboards\444.xml";
         private readonly string preparedSummaryFile = @"KeyboardSummaries.xml";
 
         [TestInitialize]
@@ -25,7 +23,8 @@ namespace BitigDataTests
                 Directory.Delete(currentDataFolder, true);
             Directory.CreateDirectory(currentDataFolder);
             Directory.CreateDirectory(currentDataFolder + "Keyboards");
-            File.Copy(preparedDataFolder + preparedFile, currentDataFolder + preparedFile);
+            File.Copy(preparedDataFolder + preparedFile1, currentDataFolder + preparedFile1);
+            File.Copy(preparedDataFolder + preparedFile2, currentDataFolder + preparedFile2);
             File.Copy(preparedDataFolder + preparedSummaryFile, currentDataFolder + preparedSummaryFile);
         }
 
@@ -84,7 +83,24 @@ namespace BitigDataTests
             var _summaries = _repository.GetSummaryList();
             Assert.AreEqual(2, _summaries.Count);
             Assert.AreEqual(333, _summaries[0].ID);
+            Assert.AreEqual(KeyboardLayoutType.Full, _summaries[0].Type);
             Assert.AreEqual(444, _summaries[1].ID);
+            Assert.AreEqual(KeyboardLayoutType.Magic, _summaries[1].Type);
+        }
+
+        [TestMethod]
+        public void GetMagicKeyboardConfig()
+        {
+            var _context = new XmlContext(currentDataFolder);
+            var _repository = new XmlKeyboardRepository(_context);
+            var _keyboard = _repository.GetKeyboardConfig(444) as MagicKeyboardLayout;
+            Assert.IsNotNull(_keyboard);
+            Assert.AreEqual(Keys.Enter, _keyboard.MagicKey);
+            Assert.AreEqual(2, _keyboard.KeyCombinations.Count);
+            Assert.AreEqual('s', _keyboard.KeyCombinations[0].Symbol);
+            Assert.AreEqual("ş", _keyboard.KeyCombinations[0].WithMagic);
+            Assert.AreEqual('u', _keyboard.KeyCombinations[1].Symbol);
+            Assert.AreEqual("ü", _keyboard.KeyCombinations[1].WithMagic);
         }
     }
 }

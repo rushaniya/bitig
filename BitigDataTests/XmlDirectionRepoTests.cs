@@ -31,6 +31,9 @@ namespace BitigDataTests
                 var _exclusionsPath = Path.Combine(_preparedFolder, "Exclusions");
                 if (Directory.Exists(_exclusionsPath))
                     TestUtils.CopyDirectory(_exclusionsPath, currentDataFolder + "Exclusions");
+                var _mappingsPath = Path.Combine(_preparedFolder, "Mappings");
+                if (Directory.Exists(_mappingsPath))
+                    TestUtils.CopyDirectory(_mappingsPath, currentDataFolder + "Mappings");
             }
             var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
@@ -346,6 +349,21 @@ namespace BitigDataTests
             Assert.IsNotNull(_savedDirection.ManualCommand);
             Assert.AreEqual(1, _savedDirection.ManualCommand.SymbolMapping.Count);
             Assert.AreEqual(new TextSymbol("2"), _savedDirection.ManualCommand.SymbolMapping[new TextSymbol("1")]);
+        }
+
+        [TestMethod]
+        public void DeserializeSymbolMapping()
+        {
+            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _mapping = _testRepo.GetSymbolMapping(1);
+            Assert.IsNotNull(_mapping);
+            Assert.AreEqual(2, _mapping.Count);
+            var _key1 = new TextSymbol("1", DisplayText: "A");
+            var _value1 = new TextSymbol("2", DisplayText: "B");
+            Assert.AreEqual(_value1, _mapping[_key1]);
+            var _key2 = new TextSymbol("c", "C");
+            var _value2 = new TextSymbol("d", "D");
+            Assert.AreEqual(_value2, _mapping[_key2]);
         }
 
         [TestMethod]

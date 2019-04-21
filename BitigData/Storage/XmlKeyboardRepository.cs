@@ -49,7 +49,8 @@ namespace Bitig.Data.Storage
                 {
                     FriendlyName = _summary.FriendlyName,
                     ID = _magicKeyboard.ID,
-                    MagicKey = (Keys)Enum.Parse(typeof(Keys), _magicKeyboard.MagicKey)
+                    MagicKey = (Keys)Enum.Parse(typeof(Keys), _magicKeyboard.MagicKey),
+                    KeyCombinations = _magicKeyboard.Collection.Select(x => x.ToModel()).ToList()
                 };
             }
             throw new NotSupportedException("Keyboard layout type is not supported");

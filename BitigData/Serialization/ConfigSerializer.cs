@@ -6,11 +6,11 @@ using System.Xml.Serialization;
 
 namespace Bitig.Data.Serialization
 {
-    public class ConfigSerializer<T> where T : class
+    internal class ConfigSerializer<T> where T : class
     {
         private static XmlSerializer serializer = new XmlSerializer(typeof(T));
 
-        internal static void SaveToFile(string Path, T Instance)
+        public static void SaveToFile(string Path, T Instance)
         {
             var _directoryPath = System.IO.Path.GetDirectoryName(Path);
             if (!Directory.Exists(_directoryPath))
@@ -21,7 +21,7 @@ namespace Bitig.Data.Serialization
             }
         }
 
-        internal static T ReadFromFile(string Path)
+        public static T ReadFromFile(string Path)
         {
             try
             {
