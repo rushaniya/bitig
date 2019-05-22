@@ -100,6 +100,10 @@
       <Project>{5052751A-CE01-4CEF-88DD-4BC4FA3C49CB}</Project>
       <Name>BitigLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeyboardManager\KeyboardManager.csproj">
+      <Project>{04edf48b-35bf-4032-96fa-63299ed8505d}</Project>
+      <Name>KeyboardManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

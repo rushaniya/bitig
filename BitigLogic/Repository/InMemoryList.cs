@@ -42,6 +42,7 @@ namespace Bitig.Logic.Repository
 
         public void Update(T Item)
         {
+            Get(Item.ID);
             var _existingItem = list.Find(_item => _item.Item.Equals(Item));
             if (_existingItem == null)
             {
@@ -64,6 +65,7 @@ namespace Bitig.Logic.Repository
         /// <param name="Item"></param>
         public void InsertOrUpdate(T Item)
         {
+            Get(Item.ID);
             var _existingItem = list.Find(_item => _item.Item.Equals(Item));
             if (_existingItem == null)
             {
@@ -84,6 +86,7 @@ namespace Bitig.Logic.Repository
 
         public void Delete(int ID)
         {
+            Get(ID);
             var _existingItem = list.Find(_item => _item.Item.ID.Equals(ID));
             if(_existingItem != null)
             {

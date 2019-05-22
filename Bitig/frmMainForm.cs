@@ -792,7 +792,7 @@ namespace Bitig.UI
             var _yanalif = x_AlifbaRepository.GetYanalif();
             if (_yanalif.KeyboardLayoutID != null)
             {
-                var _yanalifKbl = x_DataContext.KeyboardRepository.GetKeyboardConfig(_yanalif.KeyboardLayoutID.Value);
+                var _yanalifKbl = x_DataContext.KeyboardRepository.Get(_yanalif.KeyboardLayoutID.Value);
                 if (_yanalifKbl != null)
                 {
                     x_YanalifKeyManager.SetKeyboardLayout(_yanalifKbl);
@@ -811,7 +811,7 @@ namespace Bitig.UI
                 return false;
             if (x_KeyboardLayouts.ContainsKey(Alifba.KeyboardLayoutID.Value))
                 return true;
-            var _keyboard = x_DataContext.KeyboardRepository.GetKeyboardConfig(Alifba.KeyboardLayoutID.Value);
+            var _keyboard = x_DataContext.KeyboardRepository.Get(Alifba.KeyboardLayoutID.Value);
             if (_keyboard == null)
                 return false;
             x_KeyboardLayouts[Alifba.KeyboardLayoutID.Value] = _keyboard;

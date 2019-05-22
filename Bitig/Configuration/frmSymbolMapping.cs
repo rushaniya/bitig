@@ -20,7 +20,8 @@ namespace Bitig.UI.Configuration
 
         private DirectionRepository x_DirectionRepository;
 
-        public frmSymbolMapping(Alifba Source, Alifba Target, DirectionRepository DirectionRepository, Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlifbaSymbol> DefaultSourceSymbols)
+        public frmSymbolMapping(Alifba Source, Alifba Target, DirectionRepository DirectionRepository, 
+            Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlifbaSymbol> DefaultSourceSymbols)
         {
             InitializeComponent();
             if (Source == null || Target == null)

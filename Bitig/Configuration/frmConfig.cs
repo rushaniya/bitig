@@ -257,9 +257,77 @@ namespace Bitig.UI.Configuration
 
         #region Keyboard Layouts
 
+        private KeyboardLayoutSummary x_CurrentKeyboardSummary;
+
         private void DisplayKeyboardLayouts()
         {
             bndKblSummary.DataSource = x_KeyboardRepo.GetSummaryList();
+        }
+
+        private void dgvKeyboardLayouts_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow _row = dgvDirections.Rows[e.RowIndex];
+            if (_row == null) x_CurrentKeyboardSummary = null;
+            else
+            {
+                x_CurrentKeyboardSummary = dgvKeyboardLayouts.Rows[e.RowIndex].DataBoundItem as KeyboardLayoutSummary;
+            }
+            GetCurrentKeyboardSummary();
+        }
+
+        private void GetCurrentKeyboardSummary()
+        {
+            if (x_CurrentKeyboardSummary == null)
+            {
+                btnEditKeyboard.Enabled = false;
+                btnRemoveKeyboard.Enabled = false;
+            }
+            else
+            {
+                btnEditKeyboard.Enabled = true;
+                btnRemoveKeyboard.Enabled = true;
+            }
+        }
+
+        private void btnNewKeboard_Click(object sender, EventArgs e)
+        {
+            using (var _editKeyboard = new frmKeyboardLayout(x_DataContext))
+            {
+                if (_editKeyboard.ShowDialog() == DialogResult.OK)
+                {
+                    DisplayKeyboardLayouts();
+                }
+            }
+        }
+
+        private void btnEditKeyboard_Click(object sender, EventArgs e)
+        {
+            if (x_CurrentKeyboardSummary != null)
+            {
+                using (var _editKeyboard = new frmKeyboardLayout(x_DataContext))
+                {
+                    _editKeyboard.X_KeyboardLayout = x_KeyboardRepo.Get(x_CurrentKeyboardSummary.ID);
+                    if (_editKeyboard.ShowDialog() == DialogResult.OK)
+                    {
+                        DisplayKeyboardLayouts();
+                    }
+                }
+            }
+        }
+
+        private void btnRemoveKeyboard_Click(object sender, EventArgs e)
+        {
+            if (x_CurrentKeyboardSummary != null)
+            {
+                //loc
+                if (MessageBox.Show(string.Format("Remove keyboard layout {0}?",
+                    x_CurrentKeyboardSummary.FriendlyName),
+                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    x_KeyboardRepo.Delete(x_CurrentKeyboardSummary.ID);
+                    DisplayKeyboardLayouts();
+                }
+            }
         }
 
         #endregion

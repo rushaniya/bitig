@@ -28,6 +28,17 @@ namespace Bitig.Data.Model
         public string Symbol { get; set; }
         public string WithMagic { get; set; }
 
+        public XmlMagicKeyCombination()
+        {
+
+        }
+
+        public XmlMagicKeyCombination(MagicKeyCombination Model)
+        {
+            Symbol = Model.Symbol.ToString();
+            WithMagic = Model.WithMagic;
+        }
+
         public XmlMagicKeyCombination Clone()
         {
             return new XmlMagicKeyCombination

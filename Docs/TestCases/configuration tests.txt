@@ -107,3 +107,39 @@ Expected result: opposite direction is created with symbol mapping.
 5.4. Symbol formats.
 5.4a. Upper symbols, if left empty, should work as invariant culture upper symbols.
 ??5.4b. Unicode symbol codes may be entered, e.g. u+062c.
+
+
+6. Keyboard layouts.
+6a. Edit name. Press OK on Configuration form.
+Expected result: keyboard layout name changes accordingly.
+6b. Add keyboard layout.
+Expected result: keyboard layout is added.
+6c. Delete keyboard layout.
+Expected result: keyboard layout deleted.
+6c.1. Cannot delete keyboard layout which is in use.
+
+6.1. Keyboard layout type.
+Keyboard layout type is editable only when new keyboard layout is being created.
+
+6.2. Full keyboard layout symbols.
+
+6.3. Magic keyboard layout symbols.
+
+6.4. Validation.
+6.4a. Name cannot be empty.
+6.4b. Key combination list cannot be empty.
+6.4.1. Full keyboard layout.
+6.4.1a. Key combination must not be empty.
+6.4.1b. Key combination must be valid key strokes.
+6.4.1c. Result symbol must not be empty.
+6.4.1d. Key combinations must be unique.
+6.4.2. Magic keyboard layout.
+6.4.2a. Magic key cannot be empty.
+6.4.2b. Magic key must be a valid key name.
+6.4.2c. Source symbol must contain one letter.
+6.4.2d. Result with magic must not be empty.
+6.4.2e. Source symbols must be unique.
+
+6.5. Effect.
+Create at least 1 keyboard layout and 1 alphabet. Set alphabet's layout to keyboard layout 1. Press OK on configuration form.
+Expected result: keyboard layout is applied when the alphabet is selected on main form.

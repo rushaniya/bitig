@@ -14,7 +14,7 @@
       <DefaultFont Description="DejaVu Sans; 12pt" />
       <RightToLeft>true</RightToLeft>
       <BuiltIn>None</BuiltIn>
-      <KeyboardLayoutID>222</KeyboardLayoutID>
+      <KeyboardLayoutID>333</KeyboardLayoutID>
     </Item>
   </Collection>
 </Config>

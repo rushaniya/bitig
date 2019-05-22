@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Bitig.Base;
+using Bitig.KeyboardManagement;
 using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
@@ -29,7 +30,7 @@ namespace Bitig.Data.Model
                 _combination.Append("Alt+");
             if (Model.WithAltGr)
                 _combination.Append("AltGr+");
-            _combination.Append(Model.MainKey);
+            _combination.Append(KeysParser.ConvertKeysToString(Model.MainKey));
             Combination = _combination.ToString();
         }
 
@@ -43,34 +44,12 @@ namespace Bitig.Data.Model
             var _model = new KeyCombination();
             _model.Result = Result;
             _model.Capital = Capital;
-            var _combinationUpper = Combination.ToUpperInvariant();
-                var _splitted = _combinationUpper.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
-            if (_splitted.Length == 1)
-                _model.MainKey = _splitted[0];
-            else
-            {
-                foreach (var _part in _splitted)
-                {
-                    switch (_part)
-                    {
-                        case "ALT":
-                            _model.WithAlt = true;
-                            break;
-                        case "ALTGR":
-                            _model.WithAltGr = true;
-                            break;
-                        case "CTRL":
-                            _model.WithCtrl = true;
-                            break;
-                        case "SHIFT":
-                            _model.WithShift = true;
-                            break;
-                        default:
-                            _model.MainKey = _part;
-                            break;
-                    }
-                }
-            }
+            var _keyStroke = KeysParser.ParseKeyStroke(Combination);
+            _model.MainKey = _keyStroke.MainKey;
+            _model.WithAlt = _keyStroke.WithAlt;
+            _model.WithAltGr = _keyStroke.WithAltGr;
+            _model.WithCtrl = _keyStroke.WithCtrl;
+            _model.WithShift = _keyStroke.WithShift;
             return _model;
         }
     }    

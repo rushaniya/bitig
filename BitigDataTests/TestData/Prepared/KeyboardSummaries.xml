@@ -4,6 +4,7 @@
     <Item>
       <ID>333</ID>
       <FriendlyName>TestConfig333</FriendlyName>
+      <Type>Full</Type>
     </Item>
     <Item>
       <ID>444</ID>

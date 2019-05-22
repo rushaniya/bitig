@@ -39,7 +39,8 @@
   <ItemGroup>
     <Compile Include="IKeyDownHandler.cs" />
     <Compile Include="KeyboardHandler.cs" />
-    <Compile Include="KeyCombination.cs" />
+    <Compile Include="KeysParser.cs" />
+    <Compile Include="KeyStroke.cs" />
     <Compile Include="KeyboardManager.cs" />
     <Compile Include="MagicKeyboardHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

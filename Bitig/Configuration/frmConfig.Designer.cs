@@ -57,6 +57,10 @@
             this.dgvKeyboardLayouts = new System.Windows.Forms.DataGridView();
             this.colKblFriendlyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bndKblSummary = new System.Windows.Forms.BindingSource(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnRemoveKeyboard = new System.Windows.Forms.Button();
+            this.btnEditKeyboard = new System.Windows.Forms.Button();
+            this.btnNewKeboard = new System.Windows.Forms.Button();
             this.bndAlphabet = new System.Windows.Forms.BindingSource(this.components);
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -72,6 +76,7 @@
             this.tbpKeyboardLayouts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
@@ -334,6 +339,7 @@
             // tbpKeyboardLayouts
             // 
             this.tbpKeyboardLayouts.Controls.Add(this.dgvKeyboardLayouts);
+            this.tbpKeyboardLayouts.Controls.Add(this.panel2);
             this.tbpKeyboardLayouts.Location = new System.Drawing.Point(4, 22);
             this.tbpKeyboardLayouts.Name = "tbpKeyboardLayouts";
             this.tbpKeyboardLayouts.Size = new System.Drawing.Size(671, 420);
@@ -356,6 +362,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvKeyboardLayouts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvKeyboardLayouts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvKeyboardLayouts.ColumnHeadersVisible = false;
             this.dgvKeyboardLayouts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colKblFriendlyName});
             this.dgvKeyboardLayouts.DataSource = this.bndKblSummary;
@@ -366,8 +373,9 @@
             this.dgvKeyboardLayouts.ReadOnly = true;
             this.dgvKeyboardLayouts.RowHeadersVisible = false;
             this.dgvKeyboardLayouts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvKeyboardLayouts.Size = new System.Drawing.Size(671, 420);
+            this.dgvKeyboardLayouts.Size = new System.Drawing.Size(671, 360);
             this.dgvKeyboardLayouts.TabIndex = 3;
+            this.dgvKeyboardLayouts.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKeyboardLayouts_RowEnter);
             // 
             // colKblFriendlyName
             // 
@@ -379,6 +387,52 @@
             // bndKblSummary
             // 
             this.bndKblSummary.DataSource = typeof(Bitig.Logic.Model.KeyboardLayoutSummary);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btnRemoveKeyboard);
+            this.panel2.Controls.Add(this.btnEditKeyboard);
+            this.panel2.Controls.Add(this.btnNewKeboard);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 360);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(671, 60);
+            this.panel2.TabIndex = 4;
+            // 
+            // btnRemoveKeyboard
+            // 
+            this.btnRemoveKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRemoveKeyboard.Enabled = false;
+            this.btnRemoveKeyboard.Location = new System.Drawing.Point(245, 16);
+            this.btnRemoveKeyboard.Name = "btnRemoveKeyboard";
+            this.btnRemoveKeyboard.Size = new System.Drawing.Size(105, 30);
+            this.btnRemoveKeyboard.TabIndex = 2;
+            this.btnRemoveKeyboard.Text = "Remove";
+            this.btnRemoveKeyboard.UseVisualStyleBackColor = true;
+            this.btnRemoveKeyboard.Click += new System.EventHandler(this.btnRemoveKeyboard_Click);
+            // 
+            // btnEditKeyboard
+            // 
+            this.btnEditKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEditKeyboard.Enabled = false;
+            this.btnEditKeyboard.Location = new System.Drawing.Point(125, 16);
+            this.btnEditKeyboard.Name = "btnEditKeyboard";
+            this.btnEditKeyboard.Size = new System.Drawing.Size(105, 30);
+            this.btnEditKeyboard.TabIndex = 1;
+            this.btnEditKeyboard.Text = "Edit...";
+            this.btnEditKeyboard.UseVisualStyleBackColor = true;
+            this.btnEditKeyboard.Click += new System.EventHandler(this.btnEditKeyboard_Click);
+            // 
+            // btnNewKeboard
+            // 
+            this.btnNewKeboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnNewKeboard.Location = new System.Drawing.Point(5, 16);
+            this.btnNewKeboard.Name = "btnNewKeboard";
+            this.btnNewKeboard.Size = new System.Drawing.Size(105, 30);
+            this.btnNewKeboard.TabIndex = 0;
+            this.btnNewKeboard.Text = "New...";
+            this.btnNewKeboard.UseVisualStyleBackColor = true;
+            this.btnNewKeboard.Click += new System.EventHandler(this.btnNewKeboard_Click);
             // 
             // bndAlphabet
             // 
@@ -438,6 +492,7 @@
             this.tbpKeyboardLayouts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyboardLayouts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndKblSummary)).EndInit();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bndAlphabet)).EndInit();
             this.pnlBottom.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -475,5 +530,9 @@
         private System.Windows.Forms.BindingSource bndKblSummary;
         private System.Windows.Forms.DataGridViewTextBoxColumn colKblFriendlyName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAlphName;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnRemoveKeyboard;
+        private System.Windows.Forms.Button btnEditKeyboard;
+        private System.Windows.Forms.Button btnNewKeboard;
     }
 }

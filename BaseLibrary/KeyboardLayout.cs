@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Bitig.Base
 {
@@ -17,7 +18,7 @@ namespace Bitig.Base
 
     public class KeyCombination
     {
-        public string MainKey { get; set; }
+        public Keys MainKey { get; set; }
         public bool WithShift { get; set; }
         public bool WithCtrl { get; set; }
         public bool WithAlt { get; set; }

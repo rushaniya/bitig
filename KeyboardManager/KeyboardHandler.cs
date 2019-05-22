@@ -12,7 +12,7 @@ namespace Bitig.KeyboardManagement
         private static extern short GetAsyncKeyState(Keys vKey);
 
         private HashSet<Keys> _mainKeys;
-        private Dictionary<KeyCombination, string> _keyCombinations = new Dictionary<KeyCombination, string>();
+        private Dictionary<KeyStroke, string> _keyCombinations = new Dictionary<KeyStroke, string>();
         private HashSet<Keys> _considerCapsLock = new HashSet<Keys>();
 
         public KeyboardHandler(KeyboardLayout config)
@@ -35,16 +35,15 @@ namespace Bitig.KeyboardManagement
             }
         }
 
-        private void fillKeyDictionary(List<Base.KeyCombination> keyCombinations)
+        private void fillKeyDictionary(List<KeyCombination> keyCombinations)
         {
             _keyCombinations.Clear();
             _considerCapsLock.Clear();
             foreach (var keyCombination in keyCombinations)
             {
-                var mainKey = KeyCombination.ConvertToKeysEnum(keyCombination.MainKey);
-                _keyCombinations.Add(new KeyCombination
+                _keyCombinations.Add(new KeyStroke
                 {
-                    MainKey = mainKey,
+                    MainKey = keyCombination.MainKey,
                     WithAlt = keyCombination.WithAlt,
                     WithAltGr = keyCombination.WithAltGr,
                     WithCtrl = keyCombination.WithCtrl,
@@ -52,11 +51,11 @@ namespace Bitig.KeyboardManagement
                 }, keyCombination.Result);
                 if (!string.IsNullOrEmpty(keyCombination.Capital))
                 {
-                    _considerCapsLock.Add(mainKey);
+                    _considerCapsLock.Add(keyCombination.MainKey);
                     //kbl: check duplicates?
-                    _keyCombinations.Add(new KeyCombination
+                    _keyCombinations.Add(new KeyStroke
                     {
-                        MainKey = mainKey,
+                        MainKey = keyCombination.MainKey,
                         WithAlt = keyCombination.WithAlt,
                         WithAltGr = keyCombination.WithAltGr,
                         WithCtrl = keyCombination.WithCtrl,
@@ -66,9 +65,9 @@ namespace Bitig.KeyboardManagement
             }
         }
 
-        private KeyCombination getCurrentCombination(Keys mainKey)
+        private KeyStroke getCurrentCombination(Keys mainKey)
         {
-            var combination = new KeyCombination { MainKey = mainKey };
+            var combination = new KeyStroke { MainKey = mainKey };
             if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)) || Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
                 combination.WithShift = true;
             if (Convert.ToBoolean(GetAsyncKeyState(Keys.LControlKey)) || Convert.ToBoolean(GetAsyncKeyState(Keys.RControlKey)))
