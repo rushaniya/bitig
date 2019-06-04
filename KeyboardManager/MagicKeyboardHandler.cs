@@ -16,7 +16,6 @@ namespace Bitig.KeyboardManagement
             _magicCombinations.Clear();
             foreach (var magicCombination in config.KeyCombinations)
             {
-                //kbl: check duplicates?
                 _magicCombinations.Add(magicCombination.Symbol, magicCombination.WithMagic);
             }
         }

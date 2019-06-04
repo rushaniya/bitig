@@ -52,7 +52,6 @@ namespace Bitig.KeyboardManagement
                 if (!string.IsNullOrEmpty(keyCombination.Capital))
                 {
                     _considerCapsLock.Add(keyCombination.MainKey);
-                    //kbl: check duplicates?
                     _keyCombinations.Add(new KeyStroke
                     {
                         MainKey = keyCombination.MainKey,
