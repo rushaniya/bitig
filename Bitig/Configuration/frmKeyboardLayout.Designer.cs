@@ -34,8 +34,6 @@
             this.dgvKeyCombinations = new System.Windows.Forms.DataGridView();
             this.colFull_Combination = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFull_Symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFull_Capital = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bndKeyCombinations = new System.Windows.Forms.BindingSource(this.components);
             this.dgvMagicKeyCombinations = new System.Windows.Forms.DataGridView();
             this.colMagic_Symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMagic_WithMagic = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,10 +47,11 @@
             this.pnlMagicKeyboard = new System.Windows.Forms.Panel();
             this.pnlMagicKey = new System.Windows.Forms.Panel();
             this.pnlTop = new System.Windows.Forms.Panel();
-            this.lblFriendlyName = new System.Windows.Forms.Label();
             this.txtFriendlyName = new System.Windows.Forms.TextBox();
+            this.lblFriendlyName = new System.Windows.Forms.Label();
+            this.colFull_Capital = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bndKeyCombinations = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyCombinations)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndKeyCombinations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMagicKeyCombinations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndMagicKeyCombinations)).BeginInit();
             this.pnlBottom.SuspendLayout();
@@ -60,6 +59,7 @@
             this.pnlMagicKeyboard.SuspendLayout();
             this.pnlMagicKey.SuspendLayout();
             this.pnlTop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bndKeyCombinations)).BeginInit();
             this.SuspendLayout();
             // 
             // lblKeyboardType
@@ -93,10 +93,12 @@
             this.colFull_Capital});
             this.dgvKeyCombinations.DataSource = this.bndKeyCombinations;
             this.dgvKeyCombinations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvKeyCombinations.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvKeyCombinations.Location = new System.Drawing.Point(0, 0);
             this.dgvKeyCombinations.Name = "dgvKeyCombinations";
-            this.dgvKeyCombinations.Size = new System.Drawing.Size(727, 496);
+            this.dgvKeyCombinations.Size = new System.Drawing.Size(727, 384);
             this.dgvKeyCombinations.TabIndex = 2;
+            this.dgvKeyCombinations.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvKeyCombinations_EditingControlShowing);
             // 
             // colFull_Combination
             // 
@@ -110,16 +112,6 @@
             this.colFull_Symbol.HeaderText = "Symbol";
             this.colFull_Symbol.Name = "colFull_Symbol";
             // 
-            // colFull_Capital
-            // 
-            this.colFull_Capital.DataPropertyName = "Capital";
-            this.colFull_Capital.HeaderText = "Capital";
-            this.colFull_Capital.Name = "colFull_Capital";
-            // 
-            // bndKeyCombinations
-            // 
-            this.bndKeyCombinations.DataSource = typeof(Bitig.UI.Configuration.Model.KeyCombinationConfig);
-            // 
             // dgvMagicKeyCombinations
             // 
             this.dgvMagicKeyCombinations.AllowUserToResizeRows = false;
@@ -131,10 +123,12 @@
             this.colMagic_WithMagic});
             this.dgvMagicKeyCombinations.DataSource = this.bndMagicKeyCombinations;
             this.dgvMagicKeyCombinations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMagicKeyCombinations.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvMagicKeyCombinations.Location = new System.Drawing.Point(0, 36);
             this.dgvMagicKeyCombinations.Name = "dgvMagicKeyCombinations";
             this.dgvMagicKeyCombinations.Size = new System.Drawing.Size(727, 348);
             this.dgvMagicKeyCombinations.TabIndex = 3;
+            this.dgvMagicKeyCombinations.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvMagicKeyCombinations_EditingControlShowing);
             // 
             // colMagic_Symbol
             // 
@@ -199,14 +193,15 @@
             this.txtMagicKey.Name = "txtMagicKey";
             this.txtMagicKey.Size = new System.Drawing.Size(123, 20);
             this.txtMagicKey.TabIndex = 7;
+            this.txtMagicKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMagicKey_KeyDown);
             // 
             // pnlFullKeyboard
             // 
             this.pnlFullKeyboard.Controls.Add(this.dgvKeyCombinations);
             this.pnlFullKeyboard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFullKeyboard.Location = new System.Drawing.Point(0, 0);
+            this.pnlFullKeyboard.Location = new System.Drawing.Point(0, 39);
             this.pnlFullKeyboard.Name = "pnlFullKeyboard";
-            this.pnlFullKeyboard.Size = new System.Drawing.Size(727, 496);
+            this.pnlFullKeyboard.Size = new System.Drawing.Size(727, 384);
             this.pnlFullKeyboard.TabIndex = 8;
             // 
             // pnlMagicKeyboard
@@ -241,15 +236,6 @@
             this.pnlTop.Size = new System.Drawing.Size(727, 39);
             this.pnlTop.TabIndex = 10;
             // 
-            // lblFriendlyName
-            // 
-            this.lblFriendlyName.AutoSize = true;
-            this.lblFriendlyName.Location = new System.Drawing.Point(364, 12);
-            this.lblFriendlyName.Name = "lblFriendlyName";
-            this.lblFriendlyName.Size = new System.Drawing.Size(35, 13);
-            this.lblFriendlyName.TabIndex = 0;
-            this.lblFriendlyName.Text = "Name";
-            // 
             // txtFriendlyName
             // 
             this.txtFriendlyName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -259,19 +245,37 @@
             this.txtFriendlyName.Size = new System.Drawing.Size(310, 20);
             this.txtFriendlyName.TabIndex = 2;
             // 
+            // lblFriendlyName
+            // 
+            this.lblFriendlyName.AutoSize = true;
+            this.lblFriendlyName.Location = new System.Drawing.Point(364, 12);
+            this.lblFriendlyName.Name = "lblFriendlyName";
+            this.lblFriendlyName.Size = new System.Drawing.Size(35, 13);
+            this.lblFriendlyName.TabIndex = 0;
+            this.lblFriendlyName.Text = "Name";
+            // 
+            // colFull_Capital
+            // 
+            this.colFull_Capital.DataPropertyName = "Capital";
+            this.colFull_Capital.HeaderText = "Capital";
+            this.colFull_Capital.Name = "colFull_Capital";
+            // 
+            // bndKeyCombinations
+            // 
+            this.bndKeyCombinations.DataSource = typeof(Bitig.UI.Configuration.Model.KeyCombinationConfig);
+            // 
             // frmKeyboardLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(727, 496);
+            this.Controls.Add(this.pnlFullKeyboard);
             this.Controls.Add(this.pnlMagicKeyboard);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.pnlBottom);
-            this.Controls.Add(this.pnlFullKeyboard);
             this.Name = "frmKeyboardLayout";
             this.Text = "Keyboard layout";
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyCombinations)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bndKeyCombinations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMagicKeyCombinations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndMagicKeyCombinations)).EndInit();
             this.pnlBottom.ResumeLayout(false);
@@ -281,6 +285,7 @@
             this.pnlMagicKey.PerformLayout();
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bndKeyCombinations)).EndInit();
             this.ResumeLayout(false);
 
         }

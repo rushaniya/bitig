@@ -129,16 +129,17 @@ Keyboard layout type is editable only when new keyboard layout is being created.
 6.4a. Name cannot be empty.
 6.4b. Key combination list cannot be empty.
 6.4.1. Full keyboard layout.
-6.4.1a. Key combination must not be empty.
+6.4.1a. Rows with empty key combinations are not saved.
 6.4.1b. Key combination must be valid key strokes.
 6.4.1c. Result symbol must not be empty.
 6.4.1d. Key combinations must be unique.
 6.4.2. Magic keyboard layout.
 6.4.2a. Magic key cannot be empty.
 6.4.2b. Magic key must be a valid key name.
-6.4.2c. Source symbol must contain one letter.
+6.4.2c. Source symbol must contain one character.
 6.4.2d. Result with magic must not be empty.
 6.4.2e. Source symbols must be unique.
+6.4.2f. Rows with empty source symbols are not saved.
 
 6.5. Effect.
 Create at least 1 keyboard layout and 1 alphabet. Set alphabet's layout to keyboard layout 1. Press OK on configuration form.

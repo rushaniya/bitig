@@ -11,7 +11,7 @@ namespace Bitig.KeyboardManagement
 
         static KeysParser()
         {
-            _keyNameDictionary = new Dictionary<string, Keys>();
+            _keyNameDictionary = new Dictionary<string, Keys>(StringComparer.OrdinalIgnoreCase);
             _keyEnumDictionary = new Dictionary<Keys, string>();
             //A U+0041
             //Z U+005A
@@ -26,7 +26,7 @@ namespace Bitig.KeyboardManagement
                 var keyName = i.ToString();
                 var keyEnum = (Keys)Enum.Parse(typeof(Keys), "D" + keyName);
                 _keyNameDictionary.Add(keyName, keyEnum);
-                var numKeyName = "NUM" + i;
+                var numKeyName = "Num" + i;
                 var numKeyEnum = (Keys)Enum.Parse(typeof(Keys), "NumPad" + keyName);
                 _keyNameDictionary.Add(numKeyName, numKeyEnum);
             }
@@ -41,13 +41,7 @@ namespace Bitig.KeyboardManagement
             _keyNameDictionary.Add(",", Keys.Oemcomma);
             _keyNameDictionary.Add(".", Keys.OemPeriod);
             _keyNameDictionary.Add("/", Keys.OemQuestion);
-            _keyNameDictionary.Add("ENTER", Keys.Return);
-            _keyNameDictionary.Add("SPACE", Keys.Space);
-            _keyNameDictionary.Add("DIVIDE", Keys.Divide);
-            _keyNameDictionary.Add("MULTIPLY", Keys.Multiply);
-            _keyNameDictionary.Add("SUBTRACT", Keys.Subtract);
-            _keyNameDictionary.Add("ADD", Keys.Add);
-            _keyNameDictionary.Add("DECIMAL", Keys.Decimal);
+            _keyNameDictionary.Add("Enter", Keys.Return);
             foreach (var keyName in _keyNameDictionary)
             {
                 _keyEnumDictionary.Add(keyName.Value, keyName.Key);
@@ -56,10 +50,8 @@ namespace Bitig.KeyboardManagement
 
         public static Keys ConvertToKeysEnum(string keyName)
         {
-            var keyNameUpper = keyName.ToUpperInvariant();
-            if (_keyNameDictionary.ContainsKey(keyNameUpper))
-                return _keyNameDictionary[keyNameUpper];
-            //throw new ArgumentException("Invalid key name.");
+            if (_keyNameDictionary.ContainsKey(keyName))
+                return _keyNameDictionary[keyName];
             return (Keys)Enum.Parse(typeof(Keys), keyName);
         }
 
@@ -122,6 +114,17 @@ namespace Bitig.KeyboardManagement
                 }
             }
             return result;
+        }
+
+        public static bool IsSymbolKey(Keys keyCode)
+        {
+            return keyCode == Keys.Return ||
+                keyCode == Keys.Space ||
+                keyCode >= Keys.D0 && keyCode <= Keys.D9 ||
+                keyCode >= Keys.A && keyCode <= Keys.Z ||
+                keyCode >= Keys.NumPad0 && keyCode <= Keys.Divide ||
+                keyCode >= Keys.OemSemicolon && keyCode <= Keys.Oemtilde ||
+                keyCode >= Keys.OemOpenBrackets && keyCode <= Keys.OemCloseBrackets;
         }
     }
 }

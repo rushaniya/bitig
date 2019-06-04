@@ -34,7 +34,7 @@ namespace Bitig.UI.Configuration
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (x_AlphabetsModified || x_DirectionsModified || x_ExclusionsModified)
+            if (x_AlphabetsModified || x_DirectionsModified || x_ExclusionsModified || x_KeyboardModified)
             {
                 x_DataContext.SaveChanges();
             }
@@ -257,6 +257,8 @@ namespace Bitig.UI.Configuration
 
         #region Keyboard Layouts
 
+        private bool x_KeyboardModified;
+
         private KeyboardLayoutSummary x_CurrentKeyboardSummary;
 
         private void DisplayKeyboardLayouts()
@@ -295,6 +297,7 @@ namespace Bitig.UI.Configuration
             {
                 if (_editKeyboard.ShowDialog() == DialogResult.OK)
                 {
+                    x_KeyboardModified = true;
                     DisplayKeyboardLayouts();
                 }
             }
@@ -309,6 +312,7 @@ namespace Bitig.UI.Configuration
                     _editKeyboard.X_KeyboardLayout = x_KeyboardRepo.Get(x_CurrentKeyboardSummary.ID);
                     if (_editKeyboard.ShowDialog() == DialogResult.OK)
                     {
+                        x_KeyboardModified = true;
                         DisplayKeyboardLayouts();
                     }
                 }
@@ -325,6 +329,7 @@ namespace Bitig.UI.Configuration
                     "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     x_KeyboardRepo.Delete(x_CurrentKeyboardSummary.ID);
+                    x_KeyboardModified = true;
                     DisplayKeyboardLayouts();
                 }
             }
