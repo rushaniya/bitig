@@ -19,17 +19,13 @@ namespace Bitig.UI.Configuration
                 if (value != null)
                 {
                     txtDisplayName.Text = x_AlphabetConfig.FriendlyName;
-                    if (value.KeyboardLayoutID != null)
-                        cmbLayout.SelectedItem = x_KeyboardRepository.GetSummary(value.KeyboardLayoutID.Value);
                     x_SelectedFont = x_AlphabetConfig.DefaultFont;
                     chkRightToLeft.Checked = x_AlphabetConfig.RightToLeft;
                 }
-                if (cmbLayout.SelectedItem == null)
-                    cmbLayout.SelectedIndex = 0;
             }
         }
 
-        private AlifbaFont x_SelectedFont;// = new Font("DejaVu Sans", 10F);
+        private AlifbaFont x_SelectedFont;
 
         private AlifbaRepository x_AlifbaRepository;
         private KeyboardRepository x_KeyboardRepository;
@@ -39,8 +35,6 @@ namespace Bitig.UI.Configuration
             InitializeComponent();
             x_AlifbaRepository = AlifbaRepo;
             x_KeyboardRepository = KeyboardRepo;
-            cmbLayout.Items.Add("None"); //loc
-            cmbLayout.Items.AddRange(KeyboardRepo.GetSummaryList().ToArray());
         }
 
         private void frmEditAlphabet_Load(object sender, EventArgs e)
@@ -49,7 +43,25 @@ namespace Bitig.UI.Configuration
                 lblFont.Text = "Font: (not set)";//loc
             else
                 lblFont.Text = "Font: " + x_SelectedFont.ToString();
+            FillLayoutsCombo();
+        }
 
+        private void FillLayoutsCombo()
+        {
+            cmbLayout.Items.Add("None"); //loc
+            int _index = 0;
+            var _summaryList = x_KeyboardRepository.GetSummaryList();
+            for (int i = 0; i < _summaryList.Count; i++)
+            {
+                var _item = _summaryList[i];
+                cmbLayout.Items.Add(_item);
+                if (x_AlphabetConfig != null && x_AlphabetConfig.KeyboardLayout != null &&
+                    x_AlphabetConfig.KeyboardLayout.ID == _item.ID)
+                {
+                    _index = i + 1;
+                }
+            }
+            cmbLayout.SelectedIndex = _index;
         }
 
         private void btnFont_Click(object sender, EventArgs e)
@@ -71,19 +83,20 @@ namespace Bitig.UI.Configuration
                 return;
             }
             var _layoutID = cmbLayout.SelectedItem is KeyboardLayoutSummary ? (int?) ((KeyboardLayoutSummary)cmbLayout.SelectedItem).ID : null;
+            var _layout = _layoutID == null ? null : x_KeyboardRepository.Get(_layoutID.Value); 
             if (x_AlphabetConfig == null)
             {
                 x_AlphabetConfig = new Alifba(-1, txtDisplayName.Text.Trim(), 
-                    RightToLeft: chkRightToLeft.Checked, DefaultFont: (AlifbaFont)x_SelectedFont, KeyboardLayoutID: _layoutID);
+                    RightToLeft: chkRightToLeft.Checked, DefaultFont: x_SelectedFont, KeyboardLayout: _layout);
                     
                 x_AlifbaRepository.Insert(x_AlphabetConfig);
             }
             else
             {
-                x_AlphabetConfig.DefaultFont = (AlifbaFont)x_SelectedFont;
+                x_AlphabetConfig.DefaultFont = x_SelectedFont;
                 x_AlphabetConfig.FriendlyName = txtDisplayName.Text.Trim();
                 x_AlphabetConfig.RightToLeft = chkRightToLeft.Checked;
-                x_AlphabetConfig.KeyboardLayoutID = _layoutID;
+                x_AlphabetConfig.KeyboardLayout = _layout;
                 x_AlifbaRepository.Update(x_AlphabetConfig);
             }
             this.DialogResult = DialogResult.OK;

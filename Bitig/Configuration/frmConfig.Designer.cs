@@ -376,6 +376,7 @@
             this.dgvKeyboardLayouts.Size = new System.Drawing.Size(671, 360);
             this.dgvKeyboardLayouts.TabIndex = 3;
             this.dgvKeyboardLayouts.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKeyboardLayouts_RowEnter);
+            this.dgvKeyboardLayouts.DoubleClick += new System.EventHandler(this.btnEditKeyboard_Click);
             // 
             // colKblFriendlyName
             // 

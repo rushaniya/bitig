@@ -121,26 +121,39 @@ Expected result: keyboard layout deleted.
 6.1. Keyboard layout type.
 Keyboard layout type is editable only when new keyboard layout is being created.
 
-6.2. Full keyboard layout symbols.
+6.2. Validation.
+6.2a. Name cannot be empty.
+6.2b. Key combination list cannot be empty.
+6.2.1. Magic keyboard layout.
+6.2.1a. Magic key cannot be empty.
+6.2.1b. Magic key must be a valid key name.
 
-6.3. Magic keyboard layout symbols.
+6.3. Full keyboard layout symbols.
+6.3a. Rows with empty key combinations are not saved.
+6.3b. Key combination must be valid key strokes.
+6.3c. Result symbol must not be empty.
+6.3d. Key combinations must be unique.
 
-6.4. Validation.
-6.4a. Name cannot be empty.
-6.4b. Key combination list cannot be empty.
-6.4.1. Full keyboard layout.
-6.4.1a. Rows with empty key combinations are not saved.
-6.4.1b. Key combination must be valid key strokes.
-6.4.1c. Result symbol must not be empty.
-6.4.1d. Key combinations must be unique.
-6.4.2. Magic keyboard layout.
-6.4.2a. Magic key cannot be empty.
-6.4.2b. Magic key must be a valid key name.
-6.4.2c. Source symbol must contain one character.
-6.4.2d. Result with magic must not be empty.
-6.4.2e. Source symbols must be unique.
-6.4.2f. Rows with empty source symbols are not saved.
+6.4. Magic keyboard layout symbols.
+6.4a. Source symbol must contain one character.
+6.4b. Result with magic must not be empty.
+6.4c. Source symbols must be unique.
+6.4d. Rows with empty source symbols are not saved.
 
 6.5. Effect.
 Create at least 1 keyboard layout and 1 alphabet. Set alphabet's layout to keyboard layout 1. Press OK on configuration form.
 Expected result: keyboard layout is applied when the alphabet is selected on main form.
+
+6.5.1. Full keyboard layout.
+6.5.1a. Press key combination.
+Expected result: result symbol appears.
+6.5.1b. Hold Shift key and press key combination with capital symbol defined.
+Expected result: capital symbol appears.
+6.5.1c. Set CapsLock on. Press key combination with capital symbol defined.
+Expected result: capital symbol appears.
+6.5.1d. Set CapsLock on. Hold Shift key and press key combination with capital symbol defined.
+Expected result: result symbol appears.
+
+6.5.2. Magic keyboard layout.
+In text, place cursor after source symbol. Press magic key.
+Expected result: source symbol is replaced with result symbol.

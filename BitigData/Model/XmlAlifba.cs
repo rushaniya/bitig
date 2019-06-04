@@ -64,14 +64,14 @@ namespace Bitig.Data.Model
             if (ModelAlifba.DefaultFont != null)
                 DefaultFont = new XmlFont { Description = ModelAlifba.DefaultFont.Description };
             BuiltIn = ModelAlifba.BuiltIn;
-            KeyboardLayoutID = ModelAlifba.KeyboardLayoutID;
+            KeyboardLayoutID = ModelAlifba.KeyboardLayout == null ? null : (int?)ModelAlifba.KeyboardLayout.ID;
         }
 
         public Alifba ToShallowModel()
         {
             var _defaultFont = DefaultFont == null ? null : new AlifbaFont(DefaultFont.Description);
             var _alifba = new Alifba(ID, FriendlyName,
-                null, RightToLeft, _defaultFont, BuiltIn, KeyboardLayoutID);
+                null, RightToLeft, _defaultFont, BuiltIn, null);
             return _alifba;
         }
 

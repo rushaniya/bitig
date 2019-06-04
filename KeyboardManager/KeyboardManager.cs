@@ -5,13 +5,13 @@ namespace Bitig.KeyboardManagement
 {
     public class KeyboardManager
     {
-        private bool _isAttached;
+        private TextBoxBase _textBox;
 
         IKeyDownHandler _currentKeyDownHandler;
 
         public bool IsAttached
         {
-            get { return _isAttached; }
+            get { return _textBox != null; }
         }
 
         public void SetKeyboardLayout(KeyboardLayoutBase config)
@@ -24,14 +24,16 @@ namespace Bitig.KeyboardManagement
 
         public void AttachTo(TextBoxBase textBox)
         {
+            _textBox = textBox;
             textBox.KeyDown += keyDown;
-            _isAttached = true;
         }
 
-        public void DetachFrom(TextBoxBase textBox)
+        public void Detach()
         {
-            textBox.KeyDown -= keyDown;
-            _isAttached = false;
+            if (_textBox == null)
+                return;
+            _textBox.KeyDown -= keyDown;
+            _textBox = null;
         }
 
         private void keyDown(object sender, KeyEventArgs e)

@@ -439,16 +439,16 @@ namespace Bitig.UI
                 btnT1Keyboard.Enabled = false;
                 btnT1Keyboard.Checked = false;
             }
-            if (KeyboardLayoutAvailable(x_CurrentTranslitSource)) //kbl:and button checked
+            if (KeyboardLayoutAvailable(x_CurrentTranslitSource.ID)) 
             {
                 if (!x_Txt1KeyManager.IsAttached)
                     x_Txt1KeyManager.AttachTo(txtTranslit1);
-                x_Txt1KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitSource.KeyboardLayoutID.Value]);
+                x_Txt1KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitSource.ID]);
             }
             else
             {
                 if (x_Txt1KeyManager.IsAttached)
-                    x_Txt1KeyManager.DetachFrom(txtTranslit1);
+                    x_Txt1KeyManager.Detach();
             }
         }
 
@@ -466,16 +466,16 @@ namespace Bitig.UI
                 btnT2Keyboard.Enabled = false;
                 btnT2Keyboard.Checked = false;
             }
-            if (KeyboardLayoutAvailable(x_CurrentTranslitTarget)) //kbl:and button checked
+            if (KeyboardLayoutAvailable(x_CurrentTranslitTarget.ID))
             {
                 if (!x_Txt2KeyManager.IsAttached)
                     x_Txt2KeyManager.AttachTo(txtTranslit2);
-                x_Txt2KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitTarget.KeyboardLayoutID.Value]);
+                x_Txt2KeyManager.SetKeyboardLayout(x_KeyboardLayouts[x_CurrentTranslitTarget.ID]);
             }
             else
             {
                 if (x_Txt2KeyManager.IsAttached)
-                    x_Txt2KeyManager.DetachFrom(txtTranslit2);
+                    x_Txt2KeyManager.Detach();
             }
         }
 
@@ -560,64 +560,6 @@ namespace Bitig.UI
             ctlMultiRtb1.RtbMain.SelectedText = e.Text;
             ctlMultiRtb1.RtbMain.Select();
         }
-
-        /*  private void SetAlifbaLetters()
-          {
-              btnAlifA.Tag = "\u0259";
-              btnAlifAzur.Tag = "\u018f";
-              btnAlifC.Tag = "\u00e7";
-              btnAlifCzur.Tag = "\u00c7";
-              btnAlifG.Tag = "\u011f";
-              btnAlifGzur.Tag = "\u011e";
-              btnAlifI.Tag = "\u0131";
-              btnAlifIzur.Tag = "\u0130";
-              btnAlifN.Tag = "\ua791";
-              btnAlifNzur.Tag = "\ua790";
-              btnAlifO.Tag = "\u0275";
-              btnAlifOzur.Tag = "\u019f";
-              btnAlifS.Tag = "\u015f";
-              btnAlifSzur.Tag = "\u015e";
-              btnAlifU.Tag = "\u00fc";
-              btnAlifUzur.Tag = "\u00dc";
-              btnAlifQuotClose.Tag = "\u00bb";
-              btnAlifQuotOpen.Tag = "\u00ab";
-              btnAlifDash.Tag = "\u2014";
-              SetCustomAlifbaLetters();
-          }
-
-          private void SetCustomAlifbaLetters()
-          {
-              btnAlifUser1.Visible = false;
-              btnAlifUser2.Visible = false;
-              btnAlifUser3.Visible = false;
-              if (BitigDataManager.Yanalif != null)
-              {
-                  //config:remove 'user button visible' settings
-                  AlifbaConfig _yanalifConfig = BitigDataManager.GetAlifbaConfig(BitigDataManager.Yanalif.ID);
-                  if (_yanalifConfig != null && _yanalifConfig.CustomSymbols != null)
-                  {
-                      if (_yanalifConfig.CustomSymbols.Count > 0)
-                      {
-                          btnAlifUser1.Visible = true;
-                          btnAlifUser1.Text = _yanalifConfig.CustomSymbols[0].DisplayText;
-                          btnAlifUser1.Tag = _yanalifConfig.CustomSymbols[0].ActualText;
-                          if (_yanalifConfig.CustomSymbols.Count > 1)
-                          {
-                              btnAlifUser2.Visible = true;
-                              btnAlifUser2.Text = _yanalifConfig.CustomSymbols[1].DisplayText;
-                              btnAlifUser2.Tag = _yanalifConfig.CustomSymbols[1].ActualText;
-                              if (_yanalifConfig.CustomSymbols.Count > 2)
-                              {
-                                  btnAlifUser3.Visible = true;
-                                  btnAlifUser3.Text = _yanalifConfig.CustomSymbols[2].DisplayText;
-                                  btnAlifUser3.Tag = _yanalifConfig.CustomSymbols[2].ActualText;
-                              }
-                          }
-                      }
-                  }
-              }
-          }*/
-
 
         private void btnT1Keyboard_CheckedChanged(object sender, EventArgs e)
         {
@@ -790,32 +732,29 @@ namespace Bitig.UI
         private void LoadYanalifKeyboardLayout()
         {
             var _yanalif = x_AlifbaRepository.GetYanalif();
-            if (_yanalif.KeyboardLayoutID != null)
+            if (_yanalif.KeyboardLayout != null)
             {
-                var _yanalifKbl = x_DataContext.KeyboardRepository.Get(_yanalif.KeyboardLayoutID.Value);
-                if (_yanalifKbl != null)
-                {
-                    x_YanalifKeyManager.SetKeyboardLayout(_yanalifKbl);
-                    if (!x_YanalifKeyManager.IsAttached)
-                        x_YanalifKeyManager.AttachTo(ctlMultiRtb1.RtbMain);
-                    return;
-                }
+                x_YanalifKeyManager.SetKeyboardLayout(_yanalif.KeyboardLayout);
+                if (!x_YanalifKeyManager.IsAttached)
+                    x_YanalifKeyManager.AttachTo(ctlMultiRtb1.RtbMain);
+                return;
             }
             if (x_YanalifKeyManager.IsAttached)
-                x_YanalifKeyManager.DetachFrom(ctlMultiRtb1.RtbMain);
+                x_YanalifKeyManager.Detach();
         }
 
-        private bool KeyboardLayoutAvailable(Alifba Alifba)
+        private bool KeyboardLayoutAvailable(int AlphabetID)
         {
-            if (Alifba.KeyboardLayoutID == null || Alifba.IsYanalif)
-                return false;
-            if (x_KeyboardLayouts.ContainsKey(Alifba.KeyboardLayoutID.Value))
-                return true;
-            var _keyboard = x_DataContext.KeyboardRepository.Get(Alifba.KeyboardLayoutID.Value);
-            if (_keyboard == null)
-                return false;
-            x_KeyboardLayouts[Alifba.KeyboardLayoutID.Value] = _keyboard;
-            return true;
+            if (!x_KeyboardLayouts.ContainsKey(AlphabetID))
+            {
+                var _config = x_AlifbaRepository.Get(AlphabetID);
+                if (!_config.IsYanalif && _config.KeyboardLayout != null)
+                {
+                    x_KeyboardLayouts.Add(AlphabetID, _config.KeyboardLayout);
+                }
+                else x_KeyboardLayouts.Add(AlphabetID, null);
+            }
+            return x_KeyboardLayouts[AlphabetID] != null;
         }
 
         private void ResetKeyboardLayouts()
@@ -879,7 +818,6 @@ namespace Bitig.UI
                 {
                     if (_configForm.X_AlphabetsModified)
                     {
-                        //kbl: set this flag if kbl is modified
                         ReloadAlphabets();//this calls ReloadDirections()
                     }
                     else if (_configForm.X_DirectionsModified)

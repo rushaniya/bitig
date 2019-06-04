@@ -5,6 +5,7 @@ using Bitig.Logic.Model;
 using System.Linq;
 using Bitig.Data.Model;
 using Bitig.Data.Serialization;
+using Bitig.Base;
 
 namespace Bitig.Data.Storage
 {
@@ -93,7 +94,12 @@ namespace Bitig.Data.Storage
                 _customSymbols = _xmlSymbols.Collection.Select(x => x.ToModel()).ToList();
             }
             var _defaultFont =StoredAlifba.DefaultFont == null ? null : new AlifbaFont(StoredAlifba.DefaultFont.Description);
-            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, StoredAlifba.KeyboardLayoutID);
+            KeyboardLayoutBase _keyboardLayout = null;
+            if (StoredAlifba.KeyboardLayoutID != null)
+            {
+                _keyboardLayout = xmlContext.KeyboardRepository.Get(StoredAlifba.KeyboardLayoutID.Value);                
+            }
+            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, _keyboardLayout);
         }
     }
 }

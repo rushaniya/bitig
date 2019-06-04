@@ -7,6 +7,7 @@ using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using System.Drawing;
 using Bitig.Logic.Repository;
+using Bitig.Base;
 
 namespace BitigDataTests
 {
@@ -24,8 +25,6 @@ namespace BitigDataTests
         private readonly string corruptedFile = currentDataFolder + @"Corrupted\NoYanalif.xml";
         private readonly string directionsPath = currentDataFolder + "Directions.xml";
 
-        
-
         [TestInitialize]
         [TestCleanup]
         public void DeleteTestFile()
@@ -36,9 +35,16 @@ namespace BitigDataTests
             TestUtils.CopyDirectory("TestData", currentDataFolder);
         }
 
+        private void PrepareKeyboards()
+        {
+            File.Copy(currentDataFolder + @"Prepared\KeyboardSummaries.xml", currentDataFolder + @"KeyboardSummaries.xml");
+            TestUtils.CopyDirectory(currentDataFolder + @"Prepared\Keyboards", currentDataFolder + "Keyboards");
+        }
+
         [TestMethod]
         public void Insert()
         {
+            PrepareKeyboards();
             var _xmlContext = new XmlContext(testFilePath, null);
             var _testRepo = _xmlContext.AlifbaRepository;
             var _name = "Test alifba " + Guid.NewGuid();
@@ -48,7 +54,8 @@ namespace BitigDataTests
             {
                 new AlifbaSymbol(_symbolText, DisplayText:_symbolDisplayText)
             };
-            var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16), KeyboardLayoutID: new Random().Next());
+            var _keyboardLayout = new KeyboardLayout { ID = 444 };
+            var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16), KeyboardLayout: _keyboardLayout);
             _testRepo.Insert(_alifba);
             _xmlContext.SaveChanges();
 
@@ -71,8 +78,8 @@ namespace BitigDataTests
             Assert.AreEqual(1, _inserted.CustomSymbols.Count);
             Assert.AreEqual(_symbolText, _inserted.CustomSymbols[0].ActualText);
             Assert.AreEqual(_symbolDisplayText, _inserted.CustomSymbols[0].DisplayText);
-            Assert.IsNotNull(_inserted.KeyboardLayoutID);
-            Assert.AreEqual(_alifba.KeyboardLayoutID, _inserted.KeyboardLayoutID);
+            Assert.IsNotNull(_inserted.KeyboardLayout);
+            Assert.AreEqual(_alifba.KeyboardLayout.ID, _inserted.KeyboardLayout.ID);
         }
 
         [TestMethod]
@@ -136,12 +143,15 @@ namespace BitigDataTests
         [TestMethod]
         public void Get()
         {
+            PrepareKeyboards();
             File.Copy(preparedFile, testFilePath);
 
             var _xmlContext = new XmlContext(testFilePath, directionsPath);
             var _testRepo = _xmlContext.AlifbaRepository;
             var _alifba = _testRepo.Get(1025);
             Assert.IsNotNull(_alifba);
+            Assert.IsNotNull(_alifba.KeyboardLayout);
+            Assert.AreEqual(333, _alifba.KeyboardLayout.ID);
         }
 
         [TestMethod]
@@ -156,6 +166,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
+            PrepareKeyboards();
             File.Copy(preparedFile, testFilePath);
             Directory.CreateDirectory(currentDataFolder + @"Symbols");
             File.Copy(preparedFileSymbols, currentDataFolder + @"Symbols\1025.xml");
@@ -163,11 +174,11 @@ namespace BitigDataTests
             var _testRepo = _xmlContext.AlifbaRepository;
             var _alifba = _testRepo.Get(1025);
             var _name2 = "Test name " + Guid.NewGuid();
-            var _layout2 = new Random().Next();
+            var _layout2 = new MagicKeyboardLayout { ID = 444 };
             var _symbolText2 = Guid.NewGuid().ToString();
             var _symbolText3 = Guid.NewGuid().ToString();
             _alifba.FriendlyName = _name2;
-            _alifba.KeyboardLayoutID = _layout2;
+            _alifba.KeyboardLayout = _layout2;
             _alifba.RightToLeft = true;
             _alifba.DefaultFont = new AlifbaFont("Courier New", 24);
             _alifba.CustomSymbols[0].ActualText = _symbolText2;
@@ -180,7 +191,7 @@ namespace BitigDataTests
             var _checkAlifba = _checkRepo.Get(1025);
             Assert.IsNotNull(_checkAlifba);
             Assert.AreEqual(_name2, _checkAlifba.FriendlyName);
-            Assert.AreEqual(_layout2, _checkAlifba.KeyboardLayoutID);
+            Assert.AreEqual(_layout2.ID, _checkAlifba.KeyboardLayout.ID);
             Assert.IsTrue(_checkAlifba.RightToLeft);
             using (var _font = (Font)_checkAlifba.DefaultFont)
             {
