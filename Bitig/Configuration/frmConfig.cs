@@ -49,7 +49,7 @@ namespace Bitig.UI.Configuration
 
         #region Alphabets
 
-        private Alifba x_CurrentAlphabet;
+        private AlifbaSummary x_CurrentAlphabet;
 
         private bool x_AlphabetsModified;
 
@@ -127,7 +127,7 @@ namespace Bitig.UI.Configuration
             if (_row == null) x_CurrentAlphabet = null;
             else
             {
-                x_CurrentAlphabet = dgvAlphabets.Rows[e.RowIndex].DataBoundItem as Alifba;
+                x_CurrentAlphabet = dgvAlphabets.Rows[e.RowIndex].DataBoundItem as AlifbaSummary;
             }
             GetCurrentAlphabet();
         }

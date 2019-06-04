@@ -14,13 +14,13 @@ namespace Bitig.UI.Configuration
 
         private BindingList<SymbolPair> x_Symbols = new BindingList<SymbolPair>();
 
-        private Alifba x_Source;
+        private AlifbaSummary x_Source;
 
-        private Alifba x_Target;
+        private AlifbaSummary x_Target;
 
         private DirectionRepository x_DirectionRepository;
 
-        public frmSymbolMapping(Alifba Source, Alifba Target, DirectionRepository DirectionRepository, 
+        public frmSymbolMapping(AlifbaSummary Source, AlifbaSummary Target, DirectionRepository DirectionRepository, 
             Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlifbaSymbol> DefaultSourceSymbols)
         {
             InitializeComponent();

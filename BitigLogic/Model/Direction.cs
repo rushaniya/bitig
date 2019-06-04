@@ -32,9 +32,9 @@ namespace Bitig.Logic.Model
             }
         }
 
-        public Alifba Source { get; set; }
+        public AlifbaSummary Source { get; set; }
 
-        public Alifba Target { get; set; }
+        public AlifbaSummary Target { get; set; }
 
         public BuiltInDirection BuiltIn { get; set; }
 
@@ -76,7 +76,7 @@ namespace Bitig.Logic.Model
             }
         }    
 
-        public Direction(int ID, Alifba Source, Alifba Target, List<Exclusion> Exclusions = null, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
+        public Direction(int ID, AlifbaSummary Source, AlifbaSummary Target, List<Exclusion> Exclusions = null, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
         {
             this.AssemblyPath = AssemblyPath;
             this.TypeName = TypeName;

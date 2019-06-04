@@ -50,7 +50,7 @@ namespace Bitig.Data.Storage
             var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
             var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
             var _exclusions = new List<Exclusion>();
-            return new Direction(StoredDirection.ID, _source.ToShallowModel(), _target.ToShallowModel(), _exclusions,
+            return new Direction(StoredDirection.ID, _source.ToSummary(), _target.ToSummary(), _exclusions,
                 StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, null);
 
         }
@@ -109,7 +109,7 @@ namespace Bitig.Data.Storage
                 var _mapping = new XmlDictionary<XmlTextSymbol, XmlTextSymbol>(
                 Item.ManualCommand.SymbolMapping
                         .ToDictionary(x => new XmlTextSymbol(x.Key), x => new XmlTextSymbol(x.Value)));
-                xmlContext.Mappings.InsertOrUpdate(new XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol> { Dictionary = _mapping });
+                xmlContext.Mappings.InsertOrUpdate(new XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol> { Dictionary = _mapping, ID = Item.ID });
             }
             if (Item.Exclusions != null && Item.Exclusions.Count > 0)
             {
@@ -127,7 +127,7 @@ namespace Bitig.Data.Storage
             return MapWithReferences(_direction);
         }
 
-        public override List<Alifba> GetTargets(int SourceID)
+        public override List<AlifbaSummary> GetTargets(int SourceID)
         {
             var _targets = xmlContext.Directions.GetList()
                 .Where(_item => _item.SourceAlifbaID == SourceID)

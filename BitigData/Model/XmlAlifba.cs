@@ -56,7 +56,7 @@ namespace Bitig.Data.Model
             this.KeyboardLayoutID = KeyboardLayoutID;
         }
 
-        public XmlAlifba(Alifba ModelAlifba)
+        public XmlAlifba(AlifbaSummary ModelAlifba)
         {
             ID = ModelAlifba.ID;
             FriendlyName = ModelAlifba.FriendlyName;
@@ -64,14 +64,13 @@ namespace Bitig.Data.Model
             if (ModelAlifba.DefaultFont != null)
                 DefaultFont = new XmlFont { Description = ModelAlifba.DefaultFont.Description };
             BuiltIn = ModelAlifba.BuiltIn;
-            KeyboardLayoutID = ModelAlifba.KeyboardLayout == null ? null : (int?)ModelAlifba.KeyboardLayout.ID;
+            KeyboardLayoutID = ModelAlifba.KeyboardLayoutID;
         }
 
-        public Alifba ToShallowModel()
+        public AlifbaSummary ToSummary()
         {
             var _defaultFont = DefaultFont == null ? null : new AlifbaFont(DefaultFont.Description);
-            var _alifba = new Alifba(ID, FriendlyName,
-                null, RightToLeft, _defaultFont, BuiltIn, null);
+            var _alifba = new AlifbaSummary(ID, FriendlyName, RightToLeft, _defaultFont, BuiltIn, KeyboardLayoutID);
             return _alifba;
         }
 

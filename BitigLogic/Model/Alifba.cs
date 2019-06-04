@@ -4,7 +4,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {
-    public class Alifba : EquatableByID<int>
+    public class AlifbaSummary : EquatableByID<int>
     {
         private int id = -1;
 
@@ -30,19 +30,13 @@ namespace Bitig.Logic.Model
             get { return BuiltIn == BuiltInAlifbaType.Yanalif; }
         }
 
-        public List<AlifbaSymbol> CustomSymbols
-        {
-            get;
-            set;
-        }
-
-        public KeyboardLayoutBase KeyboardLayout { get; set; }
-
         public AlifbaFont DefaultFont
         {
             get;
             set;
         }
+
+        public int? KeyboardLayoutID { get; protected set; }
 
         public bool RightToLeft
         {
@@ -50,26 +44,57 @@ namespace Bitig.Logic.Model
             set;
         }
 
-        public Alifba()
+        public AlifbaSummary()
         {
         }
 
-        public Alifba(int ID, string FriendlyName, List<AlifbaSymbol> CustomSymbols = null, 
+        public AlifbaSummary(int ID, string FriendlyName, 
             bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn = BuiltInAlifbaType.None,
-            KeyboardLayoutBase KeyboardLayout = null)
+            int? KeyboardLayoutID = null)
         {
             id = ID;
-            this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
             this.FriendlyName = FriendlyName;
             this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
             this.BuiltIn = BuiltIn;
-            this.KeyboardLayout = KeyboardLayout;
+            this.KeyboardLayoutID = KeyboardLayoutID;
         }
 
         public override string ToString()
         {
             return FriendlyName;
         }
+    }
+
+    public class Alifba : AlifbaSummary
+    {
+        public List<AlifbaSymbol> CustomSymbols
+        {
+            get;
+            set;
+        }
+
+        protected KeyboardLayoutBase _keyboardLayout;
+
+        public KeyboardLayoutBase KeyboardLayout
+        {
+            get { return _keyboardLayout; }
+            set
+            {
+                _keyboardLayout = value;
+                KeyboardLayoutID = value == null ? null : (int?)value.ID;
+            }
+        }
+
+        public Alifba(int ID, string FriendlyName,
+            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn = BuiltInAlifbaType.None,
+            KeyboardLayoutBase KeyboardLayout = null, List<AlifbaSymbol> CustomSymbols = null)
+            : base(ID, FriendlyName, RightToLeft, DefaultFont, BuiltIn,
+                KeyboardLayout == null ? null : (int?)KeyboardLayout.ID)
+        {
+            this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
+            this.KeyboardLayout = KeyboardLayout;
+        }
+
     }
 }

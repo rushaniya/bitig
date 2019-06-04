@@ -372,7 +372,7 @@ namespace BitigDataTests
             var _instance1 = new XmlContext(currentDataFolder);
             var _name1 = "Alifba1:" + Guid.NewGuid();
             var _symbol1 = new AlifbaSymbol("Symbol1:" + Guid.NewGuid());
-            var _newAlif1 = new Alifba(-1, _name1, new List<AlifbaSymbol> { _symbol1 });
+            var _newAlif1 = new Alifba(-1, _name1, CustomSymbols: new List<AlifbaSymbol> { _symbol1 });
             _instance1.AlifbaRepository.Insert(_newAlif1);
             var _id1 = _newAlif1.ID;
             var _instance2 = new XmlContext(currentDataFolder);
@@ -381,7 +381,7 @@ namespace BitigDataTests
             _instance1.SaveChanges();
             var _name2 = "Alifba2:" + Guid.NewGuid();
             var _symbol2 = new AlifbaSymbol("Symbol2:" + Guid.NewGuid());
-            var _newAlif2 = new Alifba(-1, _name2, new List<AlifbaSymbol> { _symbol2 });
+            var _newAlif2 = new Alifba(-1, _name2, CustomSymbols: new List<AlifbaSymbol> { _symbol2 });
             _instance2.AlifbaRepository.Insert(_newAlif2);
             var _id2 = _newAlif2.ID;
             Assert.AreEqual(_id1, _id2);

@@ -98,13 +98,13 @@ namespace Bitig.UI.Configuration
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            var _source = cmbSource.SelectedItem as Alifba;
+            var _source = cmbSource.SelectedItem as AlifbaSummary;
             if (_source == null)
             {
                 MessageBox.Show("Source is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            var _target = cmbTarget.SelectedItem as Alifba;
+            var _target = cmbTarget.SelectedItem as AlifbaSummary;
             if (_target == null)
             {
                 MessageBox.Show("Target is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
@@ -322,8 +322,8 @@ namespace Bitig.UI.Configuration
         private void btnManual_Click(object sender, EventArgs e)
         {
             List<AlifbaSymbol> _defaultSourceSymbols = null;
-            var _source = cmbSource.SelectedItem as Alifba;
-            var _target = cmbTarget.SelectedItem as Alifba;
+            var _source = cmbSource.SelectedItem as AlifbaSummary;
+            var _target = cmbTarget.SelectedItem as AlifbaSummary;
             if (x_SymbolMapping == null)
             {
                 if (_source != null)

@@ -306,9 +306,9 @@ namespace Bitig.UI
 
         private Direction x_CurrentDirection;
 
-        private Alifba x_CurrentTranslitSource;
+        private AlifbaSummary x_CurrentTranslitSource;
 
-        private Alifba x_CurrentTranslitTarget;
+        private AlifbaSummary x_CurrentTranslitTarget;
 
         private bool x_FillingCombos;
 
@@ -316,7 +316,7 @@ namespace Bitig.UI
         {
             x_FillingCombos = true;
             cmbSource.Items.Clear();
-            foreach (Alifba _alifba in x_AlifbaRepository.GetList())
+            foreach (var _alifba in x_AlifbaRepository.GetList())
             {
                 cmbSource.Items.Add(_alifba);
             }
@@ -406,13 +406,13 @@ namespace Bitig.UI
 
         private void GetCurrentSource()
         {
-            x_CurrentTranslitSource = cmbSource.SelectedItem as Alifba;
+            x_CurrentTranslitSource = cmbSource.SelectedItem as AlifbaSummary;
             AssignAlphabetProperties(x_CurrentTranslitSource, txtTranslit1);
-            Alifba _previousTarget = cmbTarget.SelectedItem as Alifba;
+            var _previousTarget = cmbTarget.SelectedItem as AlifbaSummary;
             cmbTarget.Items.Clear();
             if (x_CurrentTranslitSource != null)
             {
-                foreach (Alifba _target in x_DirectionRepository.GetTargets(x_CurrentTranslitSource.ID))
+                foreach (var _target in x_DirectionRepository.GetTargets(x_CurrentTranslitSource.ID))
                 {
                     cmbTarget.Items.Add(_target);
                 }
@@ -454,7 +454,7 @@ namespace Bitig.UI
 
         private void GetCurrentTarget()
         {
-            x_CurrentTranslitTarget = cmbTarget.SelectedItem as Alifba;
+            x_CurrentTranslitTarget = cmbTarget.SelectedItem as AlifbaSummary;
             AssignAlphabetProperties(x_CurrentTranslitTarget, txtTranslit2);
             if (OnscreenKeyboardAvailable(x_CurrentTranslitTarget))
             {
@@ -479,7 +479,7 @@ namespace Bitig.UI
             }
         }
 
-        private Font GetDefaultFont(Alifba Alphabet)
+        private Font GetDefaultFont(AlifbaSummary Alphabet)
         {
             Font _result = SystemFonts.DefaultFont;//config
             if (Alphabet != null)
@@ -490,7 +490,7 @@ namespace Bitig.UI
             return _result;
         }
 
-        private void AssignAlphabetProperties(Alifba Alphabet, RichTextBox TargetTextBox)
+        private void AssignAlphabetProperties(AlifbaSummary Alphabet, RichTextBox TargetTextBox)
         {
             if (Alphabet == null)
             {
@@ -573,7 +573,7 @@ namespace Bitig.UI
             else HideOnscreenKeyboard(false);
         }
 
-        private bool OnscreenKeyboardAvailable(Alifba Alphabet)
+        private bool OnscreenKeyboardAvailable(AlifbaSummary Alphabet)
         {
             if (Alphabet == null || Alphabet.IsYanalif) return false;
             return OnscreenKeyboardAvailable(Alphabet.ID);
@@ -593,7 +593,7 @@ namespace Bitig.UI
             return x_OnscreenSymbols[AlphabetID] != null;
         }
 
-        private void LoadOnscreenKeyboard(Alifba Alphabet, bool TranslitBox1)
+        private void LoadOnscreenKeyboard(AlifbaSummary Alphabet, bool TranslitBox1)
         {
             if (!x_OnscreenKeyboards.ContainsKey(Alphabet.ID))
             {
@@ -602,7 +602,7 @@ namespace Bitig.UI
             DisplayOnscreenKeyboard(x_OnscreenKeyboards[Alphabet.ID], TranslitBox1);
         }
 
-        private void InitOnscreenKeyboard(Alifba Alphabet)
+        private void InitOnscreenKeyboard(AlifbaSummary Alphabet)
         {
             if (OnscreenKeyboardAvailable(Alphabet))
             {
@@ -686,8 +686,8 @@ namespace Bitig.UI
 
         private void ReloadDirections()
         {
-            Alifba _prevSource = cmbSource.SelectedItem as Alifba;
-            Alifba _prevTarget = cmbTarget.SelectedItem as Alifba;
+            var _prevSource = cmbSource.SelectedItem as AlifbaSummary;
+            var _prevTarget = cmbTarget.SelectedItem as AlifbaSummary;
             FillSourceCmb();
             if (_prevSource != null && cmbSource.Items.Contains(_prevSource))
             {

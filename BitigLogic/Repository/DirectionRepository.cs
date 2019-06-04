@@ -20,7 +20,7 @@ namespace Bitig.Logic.Repository
 
         public abstract Direction GetByAlifbaIDs(int SourceID, int TargetID);
 
-        public abstract List<Alifba> GetTargets(int SourceID);
+        public abstract List<AlifbaSummary> GetTargets(int SourceID);
 
         public abstract Dictionary<TextSymbol, TextSymbol> GetSymbolMapping(int ID);
     }

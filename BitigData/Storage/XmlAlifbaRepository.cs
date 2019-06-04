@@ -26,10 +26,10 @@ namespace Bitig.Data.Storage
             xmlContext = XmlContext;
         }
 
-        public override List<Alifba> GetList()
+        public override List<AlifbaSummary> GetList()
         {
             var _xmlList = xmlContext.Alphabets.GetList();
-            return _xmlList.Select(_item => _item.ToShallowModel()).ToList();
+            return _xmlList.Select(_item => _item.ToSummary()).ToList();
         }
 
         public override Alifba Get(int ID)
@@ -38,20 +38,15 @@ namespace Bitig.Data.Storage
             return _xmlItem == null ? null : MapWithReferences(_xmlItem);
         }
 
-        public override Alifba GetBuiltIn(BuiltInAlifbaType BuiltIn)
-        {
-            var _xmlItem = xmlContext.Alphabets.GetList().Find(x => x.BuiltIn == BuiltIn);
-            return _xmlItem.ToShallowModel();
-        }
-
-        public override void Insert(Alifba Item)
+        public override void Insert(AlifbaSummary Item)
         {
             var _xmlItem = new XmlAlifba(Item);
             xmlContext.Alphabets.Insert(_xmlItem);
             Item.ID = _xmlItem.ID;
-            if (Item.CustomSymbols != null)
+            var _fullModel = Item as Alifba;
+            if (_fullModel != null && _fullModel.CustomSymbols != null)
             {
-                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = _xmlItem.ID, Collection = Item.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
+                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = _xmlItem.ID, Collection = _fullModel.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
                 xmlContext.CustomSymbols.InsertOrUpdate(_symbolList);
             }
         }
@@ -69,12 +64,13 @@ namespace Bitig.Data.Storage
             xmlContext.CustomSymbols.Delete(ID);
         }
 
-        public override void Update(Alifba Item)
+        public override void Update(AlifbaSummary Item)
         {
             xmlContext.Alphabets.Update(new XmlAlifba(Item));
-            if (Item.CustomSymbols != null)
+            var _fullModel = Item as Alifba;
+            if (_fullModel != null && _fullModel.CustomSymbols != null)
             {
-                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = Item.ID, Collection = Item.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
+                var _symbolList = new XmlCollectionConfig<XmlAlifbaSymbol> { ID = Item.ID, Collection = _fullModel.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() };
                 xmlContext.CustomSymbols.InsertOrUpdate(_symbolList);
             }
         }
@@ -99,7 +95,7 @@ namespace Bitig.Data.Storage
             {
                 _keyboardLayout = xmlContext.KeyboardRepository.Get(StoredAlifba.KeyboardLayoutID.Value);                
             }
-            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, _customSymbols, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, _keyboardLayout);
+            return new Alifba(StoredAlifba.ID, StoredAlifba.FriendlyName, StoredAlifba.RightToLeft, _defaultFont, StoredAlifba.BuiltIn, _keyboardLayout, _customSymbols);
         }
     }
 }

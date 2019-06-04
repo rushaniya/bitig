@@ -76,28 +76,24 @@ namespace Bitig.UI.Configuration
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            //kbl: LayoutID, LayoutName
             if (txtDisplayName.Text.Trim() == string.Empty)
             {
                 MessageBox.Show("Display name is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
             var _layoutID = cmbLayout.SelectedItem is KeyboardLayoutSummary ? (int?) ((KeyboardLayoutSummary)cmbLayout.SelectedItem).ID : null;
-            var _layout = _layoutID == null ? null : x_KeyboardRepository.Get(_layoutID.Value); 
+            var _builtIn = x_AlphabetConfig == null ? BuiltInAlifbaType.None : x_AlphabetConfig.BuiltIn;
+            var _id = x_AlphabetConfig == null ? -1 : x_AlphabetConfig.ID;
+            var _summary = new AlifbaSummary(_id, txtDisplayName.Text.Trim(),
+                 chkRightToLeft.Checked, x_SelectedFont, _builtIn, _layoutID);
             if (x_AlphabetConfig == null)
             {
-                x_AlphabetConfig = new Alifba(-1, txtDisplayName.Text.Trim(), 
-                    RightToLeft: chkRightToLeft.Checked, DefaultFont: x_SelectedFont, KeyboardLayout: _layout);
                     
-                x_AlifbaRepository.Insert(x_AlphabetConfig);
+                x_AlifbaRepository.Insert(_summary);
             }
             else
             {
-                x_AlphabetConfig.DefaultFont = x_SelectedFont;
-                x_AlphabetConfig.FriendlyName = txtDisplayName.Text.Trim();
-                x_AlphabetConfig.RightToLeft = chkRightToLeft.Checked;
-                x_AlphabetConfig.KeyboardLayout = _layout;
-                x_AlifbaRepository.Update(x_AlphabetConfig);
+                x_AlifbaRepository.Update(_summary);
             }
             this.DialogResult = DialogResult.OK;
         }

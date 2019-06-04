@@ -180,7 +180,7 @@ namespace Bitig.Data.Storage
                 {
                     var _id = IDGenerator.GenerateID(_IDs);
                     _IDs.Add(_id);
-                    var _alifba = new Alifba(_id, _builtIn.DefaultName,null,
+                    var _alifba = new Alifba(_id, _builtIn.DefaultName,
                         _builtIn.RightToLeft, _builtIn.DefaultFont, _builtIn.ID);
                     _xmlList.Add(new XmlAlifba(_alifba));
                     if (_builtIn.CustomSymbols != null)
@@ -194,7 +194,7 @@ namespace Bitig.Data.Storage
                 if (!_xmlList.Any(_alif => _alif.BuiltIn == BuiltInAlifbaType.Yanalif))
                 {
                     var _id = IDGenerator.GenerateID(_xmlList.Select(_item => _item.ID));
-                    var _yanalif = new Alifba(_id, DefaultConfiguration.Yanalif.DefaultName, null,
+                    var _yanalif = new Alifba(_id, DefaultConfiguration.Yanalif.DefaultName, 
                     DefaultConfiguration.Yanalif.RightToLeft, DefaultConfiguration.Yanalif.DefaultFont, DefaultConfiguration.Yanalif.ID);
                     _xmlList.Add(new XmlAlifba(_yanalif));
                     xmlAlifbaReader.Save(_xmlList);

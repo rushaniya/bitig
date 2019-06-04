@@ -5,11 +5,15 @@
         public abstract IDType ID { get; set; }
         public override bool Equals(object obj)
         {
-            var cast=obj as EquatableByID<IDType>;
+            var cast = obj as EquatableByID<IDType>;
             if (cast == null)
                 return false;
-            if(cast.GetType() != this.GetType())
+
+            var thisType = this.GetType();
+            var castType = cast.GetType();
+            if (!thisType.IsAssignableFrom(castType) && !castType.IsAssignableFrom(thisType))
                 return false;
+
             return cast.ID.Equals(this.ID);
         }
 

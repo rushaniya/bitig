@@ -55,7 +55,7 @@ namespace BitigDataTests
                 new AlifbaSymbol(_symbolText, DisplayText:_symbolDisplayText)
             };
             var _keyboardLayout = new KeyboardLayout { ID = 444 };
-            var _alifba = new Alifba(-1, _name, _symbols, true, new AlifbaFont("Arial", 16), KeyboardLayout: _keyboardLayout);
+            var _alifba = new Alifba(-1, _name, true, new AlifbaFont("Arial", 16), KeyboardLayout: _keyboardLayout, CustomSymbols: _symbols);
             _testRepo.Insert(_alifba);
             _xmlContext.SaveChanges();
 
@@ -63,8 +63,8 @@ namespace BitigDataTests
             var _checkRepo = _checkContext.AlifbaRepository;
             var _list = _checkRepo.GetList();
             Assert.IsTrue(_list.Count > 0);
-            var _inserted = _list.Find(_item => _item.FriendlyName == _name);
-            _inserted = _testRepo.Get(_inserted.ID);
+            var _insertedSummary = _list.Find(_item => _item.FriendlyName == _name);
+            var _inserted = _testRepo.Get(_insertedSummary.ID);
             Assert.IsNotNull(_inserted);
             Assert.AreNotEqual(-1, _inserted.ID);
             Assert.IsTrue(_inserted.RightToLeft);
