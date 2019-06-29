@@ -10,33 +10,27 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmAlphabetSymbols : Form
     {
-        private bool x_Yanalif;
-        private Alifba x_CurrentAlphabet;
-        private AlifbaRepository x_AlifbaRepository;
+        private Alphabet x_CurrentAlphabet;
+        private AlphabetRepository x_AlphabetRepository;
 
-        private BindingList<AlifbaSymbol> x_TemporaryList = new BindingList<AlifbaSymbol>();
+        private BindingList<AlphabetSymbol> x_TemporaryList = new BindingList<AlphabetSymbol>();
 
-        private List<AlifbaSymbol> x_Symbols;
+        private List<AlphabetSymbol> x_Symbols;
 
-        public frmAlphabetSymbols(Alifba CurrentAlphabet, AlifbaRepository AlifbaRepo)
+        public frmAlphabetSymbols(Alphabet CurrentAlphabet, AlphabetRepository AlphabetRepo)
         {
             InitializeComponent();
             x_CurrentAlphabet = CurrentAlphabet;
-            x_AlifbaRepository = AlifbaRepo;
-            if (x_CurrentAlphabet.IsYanalif)
-            {
-                x_Yanalif = true;
-                chkShowAllYanalifLetters.Checked = TempConfig.ShowAllYanalifSymbols;//config:enable checkbox
-            }
+            x_AlphabetRepository = AlphabetRepo;
             Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
-            pnlYanalifSettings.Visible = x_Yanalif;
+            //noyan del chkShowAllYanalifLetters, pnlYanalifSettings
             x_Symbols = x_CurrentAlphabet.CustomSymbols;
             x_TemporaryList.Clear();
             if (x_Symbols != null)
             {
-                foreach (AlifbaSymbol _symbol in x_Symbols)
+                foreach (AlphabetSymbol _symbol in x_Symbols)
                 {
-                    AlifbaSymbol _copy = new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen);
+                    AlphabetSymbol _copy = new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen);
                     x_TemporaryList.Add(_copy);
                 }
             }
@@ -47,35 +41,19 @@ namespace Bitig.UI.Configuration
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            x_Symbols = new List<AlifbaSymbol>();
+            x_Symbols = new List<AlphabetSymbol>();
             int _counter = 0;
-            foreach (AlifbaSymbol _symbol in x_TemporaryList)
+            foreach (AlphabetSymbol _symbol in x_TemporaryList)
             {
-                if (x_Yanalif && _counter >= _maxRows)
-                    break;
                 if (_symbol.ActualText != null && _symbol.ActualText.Trim() != string.Empty)
                 {
-                    x_Symbols.Add(new AlifbaSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen));
+                    x_Symbols.Add(new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen));
                 }
                 _counter++;
             }
-            if (x_Yanalif)
-            {
-                TempConfig.ShowAllYanalifSymbols = chkShowAllYanalifLetters.Checked;//config
-            }
 
             x_CurrentAlphabet.CustomSymbols = x_Symbols;
-            x_AlifbaRepository.Update(x_CurrentAlphabet);
-        }
-
-        int _maxRows = 100;//config
-
-        private void bndSymbol_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            if (x_Yanalif)
-            {
-                bndSymbol.AllowNew = bndSymbol.Count < _maxRows;
-            }
+            x_AlphabetRepository.Update(x_CurrentAlphabet);
         }
     }
 }

@@ -291,7 +291,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_InUse()
         {
-            File.Copy(preparedDataFolder + @"Alifba1025.xml", currentDataFolder + "Alphabets.xml");
+            File.Copy(preparedDataFolder + @"Alphabet1025.xml", currentDataFolder + "Alphabets.xml");
             var _context = new XmlContext(currentDataFolder);
             var _repository = new XmlKeyboardRepository(_context);
             try

@@ -14,14 +14,14 @@ namespace Bitig.UI.Configuration
 
         private BindingList<SymbolPair> x_Symbols = new BindingList<SymbolPair>();
 
-        private AlifbaSummary x_Source;
+        private AlphabetSummary x_Source;
 
-        private AlifbaSummary x_Target;
+        private AlphabetSummary x_Target;
 
         private DirectionRepository x_DirectionRepository;
 
-        public frmSymbolMapping(AlifbaSummary Source, AlifbaSummary Target, DirectionRepository DirectionRepository, 
-            Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlifbaSymbol> DefaultSourceSymbols)
+        public frmSymbolMapping(AlphabetSummary Source, AlphabetSummary Target, DirectionRepository DirectionRepository, 
+            Dictionary<TextSymbol, TextSymbol> SymbolMapping, List<AlphabetSymbol> DefaultSourceSymbols)
         {
             InitializeComponent();
             if (Source == null || Target == null)
@@ -95,7 +95,7 @@ namespace Bitig.UI.Configuration
                 MessageBox.Show("Symbol map is empty.", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            var _existingDirection = x_DirectionRepository.GetByAlifbaIDs(x_Target.ID, x_Source.ID);
+            var _existingDirection = x_DirectionRepository.GetByAlphabetIDs(x_Target.ID, x_Source.ID);
             if (_existingDirection != null)
             {
                 //loc

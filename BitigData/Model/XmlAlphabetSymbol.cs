@@ -3,7 +3,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Data.Model
 {
-    public class XmlAlifbaSymbol : XmlTextSymbol, IDeepCloneable<XmlAlifbaSymbol>
+    public class XmlAlphabetSymbol : XmlTextSymbol, IDeepCloneable<XmlAlphabetSymbol>
     {
 
         public string DisplayText
@@ -20,12 +20,12 @@ namespace Bitig.Data.Model
 
         public bool IsOnScreen { get; set; }
 
-        public XmlAlifbaSymbol()
+        public XmlAlphabetSymbol()
         {
 
         }
 
-        public XmlAlifbaSymbol(AlifbaSymbol ModelSymbol)
+        public XmlAlphabetSymbol(AlphabetSymbol ModelSymbol)
         {
             ActualText = ModelSymbol.ActualText;
             DisplayText = ModelSymbol.DisplayText;
@@ -35,15 +35,15 @@ namespace Bitig.Data.Model
             IsOnScreen = ModelSymbol.IsOnScreen;
         }
 
-        internal new AlifbaSymbol ToModel()
+        internal new AlphabetSymbol ToModel()
         {
-            return new AlifbaSymbol(ActualText, CapitalizedText,
+            return new AlphabetSymbol(ActualText, CapitalizedText,
                 DisplayText, CapitalizedDisplayText, IsAlphabetic, IsOnScreen);
         }
 
-        public new XmlAlifbaSymbol Clone()
+        public new XmlAlphabetSymbol Clone()
         {
-            return new XmlAlifbaSymbol
+            return new XmlAlphabetSymbol
             {
                 ActualText = ActualText,
                 DisplayText = DisplayText,

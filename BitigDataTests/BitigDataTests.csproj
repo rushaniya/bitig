@@ -68,7 +68,7 @@
     <Compile Include="TestUtils.cs" />
     <Compile Include="XmlContextTests.cs" />
     <Compile Include="XmlDirectionRepoTests.cs" />
-    <Compile Include="XmlAlifbaRepoTests.cs" />
+    <Compile Include="XmlAlphabetRepoTests.cs" />
     <Compile Include="XmlKeyboardRepoTests.cs" />
   </ItemGroup>
   <ItemGroup>

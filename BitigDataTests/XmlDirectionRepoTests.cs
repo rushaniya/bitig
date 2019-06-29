@@ -20,7 +20,7 @@ namespace BitigDataTests
         private const string currentDataFolder = @"DirectionRepoTestData\";
         private readonly string sourcePreparedFile = sourceDataFolder + @"Prepared\Direction777.xml";
         private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
-        private readonly string currentAlifbaFilePath = currentDataFolder + "Alphabets.xml";
+        private readonly string currentAlphabetFilePath = currentDataFolder + "Alphabets.xml";
 
         private DirectionRepository InitTestRepo(string preparedFilePath = null)
         {
@@ -35,7 +35,7 @@ namespace BitigDataTests
                 if (Directory.Exists(_mappingsPath))
                     TestUtils.CopyDirectory(_mappingsPath, currentDataFolder + "Mappings");
             }
-            var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
+            var _xmlContext = new XmlContext(currentAlphabetFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
@@ -44,7 +44,7 @@ namespace BitigDataTests
         {
             if (!File.Exists(currentTestFilePath))
                 throw new Exception("File not created.");
-            var _xmlContext = new XmlContext(currentAlifbaFilePath, currentTestFilePath);
+            var _xmlContext = new XmlContext(currentAlphabetFilePath, currentTestFilePath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
@@ -67,21 +67,6 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void GetList_CreateDefault()
-        {
-            var _testRepo = InitTestRepo();
-            var _builtInList = DefaultConfiguration.BuiltInDirections;
-            Assert.AreNotEqual(0, _builtInList.Count);
-            var _defaultList = _testRepo.GetList();
-            foreach (var _item in _builtInList)
-            {
-                Assert.IsNotNull(_defaultList.Single(_dir =>
-                    _dir.BuiltIn.ID == _item.ID &&
-                    _dir.Source.BuiltIn == _item.Source && _dir.Target.BuiltIn == _item.Target));
-            }
-        }
-
-        [TestMethod]
         public void Get()
         {
             var _testRepo = InitTestRepo(sourcePreparedFile);
@@ -94,7 +79,7 @@ namespace BitigDataTests
             Assert.IsNotNull(_direction778);
             Assert.IsNotNull(_direction778.Source);
             Assert.IsNotNull(_direction778.Target);
-            Assert.IsNotNull(_direction778.BuiltIn);
+            Assert.IsNotNull(_direction778.BuiltInType);
         }
 
         [TestMethod]
@@ -112,8 +97,8 @@ namespace BitigDataTests
         public void Insert()
         {
             var _testRepo = InitTestRepo();
-            var _source = new AlifbaSummary(1, "alifba1");
-            var _target = new AlifbaSummary(0, "alifba2");
+            var _source = new AlphabetSummary(1, "alphabet1");
+            var _target = new AlphabetSummary(0, "alphabet2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
             var _typeName = "TestType" + Guid.NewGuid();
             var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
@@ -135,9 +120,9 @@ namespace BitigDataTests
         public void Insert_AssignID()
         {
             var _testRepo = InitTestRepo();
-            var _source1 = new AlifbaSummary(1, "alifba1");
-            var _target = new AlifbaSummary(0, "alifba2");
-            var _source2 = new AlifbaSummary(2, "alifba3");
+            var _source1 = new AlphabetSummary(1, "alphabet1");
+            var _target = new AlphabetSummary(0, "alphabet2");
+            var _source2 = new AlphabetSummary(2, "alphabet3");
             const int _id = -1;
             var _dir1 = new Direction(_id, _source1, _target, null);
             _testRepo.Insert(_dir1);
@@ -155,28 +140,11 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void Insert_CreateDefault()
+        public void Insert_SameAlphabetIDs()
         {
             var _testRepo = InitTestRepo();
-            var _source = new AlifbaSummary(1, "alifba1");
-            var _target = new AlifbaSummary(0, "alifba2");
-            var _assemblyName = "TestAssembly" + Guid.NewGuid();
-            var _typeName = "TestType" + Guid.NewGuid();
-            var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
-            _testRepo.Insert(_direction);
-            _testRepo.DataContext.SaveChanges();
-
-            var _checkRepo = InitCheckRepo();
-            var _count = _checkRepo.GetList().Count;
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count + 1, _count);
-        }
-
-        [TestMethod]
-        public void Insert_SameAlifbaIDs()
-        {
-            var _testRepo = InitTestRepo();
-            var _source = new AlifbaSummary(0, "alifba1");
-            var _target = new AlifbaSummary(1, "alifba2");
+            var _source = new AlphabetSummary(0, "alphabet1");
+            var _target = new AlphabetSummary(1, "alphabet2");
             var _assemblyName = "TestAssembly" + Guid.NewGuid();
             var _typeName = "TestType" + Guid.NewGuid();
             var _direction = new Direction(-1, _source, _target, null, _assemblyName, _typeName);
@@ -195,20 +163,19 @@ namespace BitigDataTests
         public void Update()
         {
             var _testRepo = InitTestRepo(sourcePreparedFile);
-            var _alifbaRepo = _testRepo.DataContext.AlifbaRepository;
+            var _alphabetRepo = _testRepo.DataContext.AlphabetRepository;
             var _direction = _testRepo.Get(777);
-            Assert.AreEqual(null, _direction.BuiltIn);
+            Assert.AreEqual(null, _direction.BuiltInType);
             Assert.AreEqual(0, _direction.Source.ID);
             Assert.AreEqual(1, _direction.Target.ID);
 
             var _assembly = "NewAssembly" + Guid.NewGuid();
             var _type = "NewType" + Guid.NewGuid();
-            var _builtIn = DefaultConfiguration.BuiltInDirections[0];
-            var _newSource = _alifbaRepo.Get(2);
-            var _newTarget = _alifbaRepo.Get(3);
+            var _newSource = _alphabetRepo.Get(2);
+            var _newTarget = _alphabetRepo.Get(3);
             _direction.Source = _newSource;
             _direction.Target = _newTarget;
-            _direction.BuiltIn = _builtIn;
+            _direction.BuiltInType = BuiltInDirectionType.CyrillicYanalif;
             _direction.AssemblyPath = _assembly;
             _direction.TypeName = _type;
             _testRepo.Update(_direction);
@@ -221,24 +188,7 @@ namespace BitigDataTests
             Assert.AreEqual(_type, _updated.TypeName);
             Assert.AreEqual(_updated.Source, _newSource);
             Assert.AreEqual(_updated.Target, _newTarget);
-            Assert.AreEqual(_updated.BuiltIn, _builtIn);
-        }
-
-        [TestMethod]
-        public void Update_CreateDefault()
-        {
-            var _testRepo = InitTestRepo();
-            var _alifbaRepo = _testRepo.DataContext.AlifbaRepository;
-            var _assembly = "TestAssembly " + Guid.NewGuid();
-            var _source = _alifbaRepo.Get(2);
-            var _target = _alifbaRepo.Get(3);
-            var _direction = new Direction(0, _source, _target, null, _assembly);
-            _testRepo.Update(_direction);
-            _testRepo.DataContext.SaveChanges();
-
-            var _checkRepo = InitCheckRepo();
-            var _list = _checkRepo.GetList();
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
+            Assert.AreEqual(_updated.BuiltInType, BuiltInDirectionType.CyrillicYanalif);
         }
 
         [TestMethod]
@@ -256,23 +206,10 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void Delete_CreateDefault()
+        public void GetByAlphabetIDs()
         {
             var _testRepo = InitTestRepo();
-            var _direction = new Direction(0, null, null, null);
-            _testRepo.Delete(_direction.ID);
-            _testRepo.DataContext.SaveChanges();
-
-            var _checkRepo = InitCheckRepo();
-            var _list = _checkRepo.GetList();
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count - 1, _list.Count);
-        }
-
-        [TestMethod]
-        public void GetByAlifbaIDs()
-        {
-            var _testRepo = InitTestRepo();
-            var _cyrZam = _testRepo.GetByAlifbaIDs(0, 2);
+            var _cyrZam = _testRepo.GetByAlphabetIDs(0, 2);
             Assert.IsNotNull(_cyrZam);
             Assert.AreEqual(0, _cyrZam.Source.ID);
             Assert.AreEqual(2, _cyrZam.Target.ID);
@@ -334,8 +271,8 @@ namespace BitigDataTests
         public void Insert_ManualCommand()
         {
             var _testRepo = InitTestRepo();
-            var _source = _testRepo.DataContext.AlifbaRepository.GetList().Single(x => x.BuiltIn == BuiltInAlifbaType.Yanalif);
-            var _target = _testRepo.DataContext.AlifbaRepository.GetList().Single(x => x.BuiltIn == BuiltInAlifbaType.Cyrillic);
+            var _source = _testRepo.DataContext.AlphabetRepository.Get(0);
+            var _target = _testRepo.DataContext.AlphabetRepository.Get(1);//noyan pre-fill alphabet cnfig
             var _direction = new Direction(-1, _source, _target, null, 
                 ManualCommand: new ManualCommand(new Dictionary<TextSymbol, TextSymbol>
                 {
@@ -344,7 +281,7 @@ namespace BitigDataTests
             _testRepo.Insert(_direction);
             _testRepo.DataContext.SaveChanges();
             var _checkRepo = InitCheckRepo();
-            var _savedDirection = _testRepo.GetByAlifbaIDs(_source.ID, _target.ID);
+            var _savedDirection = _testRepo.GetByAlphabetIDs(_source.ID, _target.ID);
             Assert.IsNotNull(_savedDirection);
             Assert.IsNotNull(_savedDirection.ManualCommand);
             Assert.AreEqual(1, _savedDirection.ManualCommand.SymbolMapping.Count);

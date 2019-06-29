@@ -3,58 +3,58 @@
   <Collection>
     <Item>
       <ID>1</ID>
-      <SourceAlifbaID>0</SourceAlifbaID>
-      <TargetAlifbaID>2</TargetAlifbaID>
+      <SourceAlphabetID>0</SourceAlphabetID>
+      <TargetAlphabetID>2</TargetAlphabetID>
       <BuiltInID>CyrillicZamanalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>2</ID>
-      <SourceAlifbaID>0</SourceAlifbaID>
-      <TargetAlifbaID>3</TargetAlifbaID>
+      <SourceAlphabetID>0</SourceAlphabetID>
+      <TargetAlphabetID>3</TargetAlphabetID>
       <BuiltInID>CyrillicRasmalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>3</ID>
-      <SourceAlifbaID>1</SourceAlifbaID>
-      <TargetAlifbaID>2</TargetAlifbaID>
+      <SourceAlphabetID>1</SourceAlphabetID>
+      <TargetAlphabetID>2</TargetAlphabetID>
       <BuiltInID>YanalifZamanalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>4</ID>
-      <SourceAlifbaID>1</SourceAlifbaID>
-      <TargetAlifbaID>3</TargetAlifbaID>
+      <SourceAlphabetID>1</SourceAlphabetID>
+      <TargetAlphabetID>3</TargetAlphabetID>
       <BuiltInID>YanalifRasmalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>5</ID>
-      <SourceAlifbaID>2</SourceAlifbaID>
-      <TargetAlifbaID>1</TargetAlifbaID>
+      <SourceAlphabetID>2</SourceAlphabetID>
+      <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInID>ZamanalifYanalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>6</ID>
-      <SourceAlifbaID>3</SourceAlifbaID>
-      <TargetAlifbaID>1</TargetAlifbaID>
+      <SourceAlphabetID>3</SourceAlphabetID>
+      <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInID>RasmalifYanalif</BuiltInID>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>777</ID>
-      <SourceAlifbaID>0</SourceAlifbaID>
-      <TargetAlifbaID>1</TargetAlifbaID>
+      <SourceAlphabetID>0</SourceAlphabetID>
+      <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInID>None</BuiltInID>
       <AssemblyPath>TestAssembly32062ed5-dbb3-4274-a5f8-933189152bbc</AssemblyPath>
       <TypeName>TestType</TypeName>
     </Item>
     <Item>
       <ID>778</ID>
-      <SourceAlifbaID>1</SourceAlifbaID>
-      <TargetAlifbaID>0</TargetAlifbaID>
+      <SourceAlphabetID>1</SourceAlphabetID>
+      <TargetAlphabetID>0</TargetAlphabetID>
       <BuiltInID>YanalifZamanalif</BuiltInID>
     </Item>
   </Collection>

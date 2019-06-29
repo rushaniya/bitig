@@ -52,9 +52,9 @@ namespace Bitig.Logic.Model
         }
 
     }
-    public class AlifbaSymbol : TextSymbol
+    public class AlphabetSymbol : TextSymbol
     {
-
+        //noyan: needed?
         public bool IsAlphabetic { get; set; }
 
         public bool IsOnScreen { get; set; }
@@ -75,14 +75,14 @@ namespace Bitig.Logic.Model
             set { capitalizedDisplayText = value; }
         }
 
-        public AlifbaSymbol()
+        //ctor needed for data grids
+        public AlphabetSymbol()
         {
-            //needed for data grids
             IsAlphabetic = true;
             IsOnScreen = true;
         }
 
-        public AlifbaSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitalizedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
+        public AlphabetSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitalizedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
             : base (ActualText, CapitalizedText, DisplayText, CapitalizedDisplayText)
         {
             this.IsAlphabetic = IsAlphabetic;
@@ -93,7 +93,7 @@ namespace Bitig.Logic.Model
 
         public override bool Equals(object obj)
         {
-            var _cast = obj as AlifbaSymbol;
+            var _cast = obj as AlphabetSymbol;
             if (_cast == null)
                 return false;
             return _cast.actualText == actualText &&

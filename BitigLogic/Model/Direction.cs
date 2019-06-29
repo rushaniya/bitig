@@ -32,11 +32,11 @@ namespace Bitig.Logic.Model
             }
         }
 
-        public AlifbaSummary Source { get; set; }
+        public AlphabetSummary Source { get; set; }
 
-        public AlifbaSummary Target { get; set; }
+        public AlphabetSummary Target { get; set; }
 
-        public BuiltInDirection BuiltIn { get; set; }
+        public BuiltInDirectionType BuiltInType { get; set; }
 
         public ManualCommand ManualCommand { get; set; }
 
@@ -76,24 +76,22 @@ namespace Bitig.Logic.Model
             }
         }    
 
-        public Direction(int ID, AlifbaSummary Source, AlifbaSummary Target, List<Exclusion> Exclusions = null, string AssemblyPath = null, string TypeName = null, BuiltInDirection BuiltIn = null, ManualCommand ManualCommand = null)
+        public Direction(int ID, AlphabetSummary Source, AlphabetSummary Target, List<Exclusion> Exclusions = null, 
+            string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInType = BuiltInDirectionType.None, ManualCommand ManualCommand = null)
         {
             this.AssemblyPath = AssemblyPath;
             this.TypeName = TypeName;
             this.id = ID;
             this.Source = Source;
             this.Target = Target;
-            this.BuiltIn = BuiltIn;
+            this.BuiltInType = BuiltInType;
             this.Exclusions = Exclusions ?? new List<Exclusion>();
             this.ManualCommand = ManualCommand;
         }
 
         public bool IsBuiltIn()
         {
-            if (Source == null || Target == null)
-                throw new InvalidOperationException("Source or target alphabet is not defined.");
-            return string.IsNullOrEmpty(AssemblyPath) && BuiltIn != null &&
-                BuiltIn.ID == DefaultConfiguration.GetBuiltInID(Source.BuiltIn, Target.BuiltIn);
+            return BuiltInType != BuiltInDirectionType.None;
         }
 
         private void InitializeTranslitCommand()
@@ -102,7 +100,7 @@ namespace Bitig.Logic.Model
             {
                 if (IsBuiltIn() || string.IsNullOrEmpty(AssemblyPath))
                 {
-                    translitCommand = DefaultConfiguration.GetTranslitCommand(BuiltIn.ID);
+                    translitCommand = DefaultConfiguration.GetTranslitCommand(BuiltInType);
                 }
                 else
                 {
@@ -152,7 +150,7 @@ namespace Bitig.Logic.Model
                 // loc
                 if (!string.IsNullOrEmpty(AssemblyPath))
                     return System.IO.Path.GetFileName(AssemblyPath);
-                if (BuiltIn != null)
+                if (IsBuiltIn())
                     return ("(Built-in)");
                 return "(Manual)";
             }

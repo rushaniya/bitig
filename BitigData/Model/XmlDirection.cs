@@ -12,19 +12,19 @@ namespace Bitig.Data.Model
             set;
         }
 
-        public int SourceAlifbaID
+        public int SourceAlphabetID
         {
             get;
             set;
         }
 
-        public int TargetAlifbaID
+        public int TargetAlphabetID
         {
             get;
             set;
         }
 
-        public BuiltInDirectionType BuiltInID
+        public BuiltInDirectionType BuiltInType
         {
             get;
             set;
@@ -49,15 +49,15 @@ namespace Bitig.Data.Model
         {
         }
 
-        public XmlDirection(int ID, int SourceAlifbaID, int TargetAlifbaID, 
+        public XmlDirection(int ID, int SourceAlphabetID, int TargetAlphabetID, 
             string AssemblyPath = null, string TypeName = null, BuiltInDirectionType BuiltInID = BuiltInDirectionType.None,
             bool UseManualCommand = false)
         {
             this.AssemblyPath = AssemblyPath;
-            this.BuiltInID = BuiltInID;
+            this.BuiltInType = BuiltInID;
             this.ID = ID;
-            this.SourceAlifbaID = SourceAlifbaID;
-            this.TargetAlifbaID = TargetAlifbaID;
+            this.SourceAlphabetID = SourceAlphabetID;
+            this.TargetAlphabetID = TargetAlphabetID;
             this.TypeName = TypeName;
             this.UseManualCommand = UseManualCommand;
         }
@@ -69,22 +69,18 @@ namespace Bitig.Data.Model
             if (ModelDirection.Target == null)
                 throw new InvalidOperationException("Target alphabet is required.");//loc
 
-            var _builtInID = ModelDirection.BuiltIn == null ? BuiltInDirectionType.None :
-                ModelDirection.BuiltIn.ID;
-
-
             ID = ModelDirection.ID;
-            SourceAlifbaID = ModelDirection.Source.ID;
-            TargetAlifbaID = ModelDirection.Target.ID;
+            SourceAlphabetID = ModelDirection.Source.ID;
+            TargetAlphabetID = ModelDirection.Target.ID;
             AssemblyPath = ModelDirection.AssemblyPath;
             TypeName = ModelDirection.TypeName;
-            BuiltInID = _builtInID;
+            BuiltInType = ModelDirection.BuiltInType;
             UseManualCommand = ModelDirection.ManualCommand != null;
         }
 
         public XmlDirection Clone()
         {
-            return new XmlDirection(ID, SourceAlifbaID, TargetAlifbaID, AssemblyPath, TypeName, BuiltInID, UseManualCommand);
+            return new XmlDirection(ID, SourceAlphabetID, TargetAlphabetID, AssemblyPath, TypeName, BuiltInType, UseManualCommand);
         }
     }
 }

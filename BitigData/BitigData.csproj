@@ -67,11 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\XmlAlifbaSymbol.cs" />
+    <Compile Include="Model\XmlAlphabetSymbol.cs" />
     <Compile Include="Model\XmlDictionary.cs" />
     <Compile Include="Model\XmlDirection.cs" />
     <Compile Include="Model\XmlExclusion.cs" />
-    <Compile Include="Model\XmlAlifba.cs" />
+    <Compile Include="Model\XmlAlphabet.cs" />
     <Compile Include="Model\XmlFont.cs" />
     <Compile Include="Model\XmlKeyCombination.cs" />
     <Compile Include="Model\XmlKeyboardSummary.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Serialization\XmlCustomCollectionReader.cs" />
     <Compile Include="Serialization\XmlModelCollectionReader.cs" />
     <Compile Include="Serialization\XmlModelDictionaryReader.cs" />
-    <Compile Include="Storage\XmlAlifbaRepository.cs" />
+    <Compile Include="Storage\XmlAlphabetRepository.cs" />
     <Compile Include="Serialization\XmlConfig.cs" />
     <Compile Include="Serialization\XmlModelReader.cs" />
     <Compile Include="Storage\XmlDirectionRepository.cs" />

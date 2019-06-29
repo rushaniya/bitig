@@ -7,7 +7,7 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmConfig : Form
     {
-        private AlifbaRepository x_AlifbaRepo;
+        private AlphabetRepository x_AlphabetRepo;
         private DirectionRepository x_DirectionRepo;
         private KeyboardRepository x_KeyboardRepo;
         private IDataContext x_DataContext;
@@ -18,7 +18,7 @@ namespace Bitig.UI.Configuration
             dgvAlphabets.AutoGenerateColumns = false;
             dgvAlphabets.DataSource = bndAlphabet;
             x_DataContext = DataContext;
-            x_AlifbaRepo = DataContext.AlifbaRepository;
+            x_AlphabetRepo = DataContext.AlphabetRepository;
             x_DirectionRepo = DataContext.DirectionRepository;
             x_KeyboardRepo = DataContext.KeyboardRepository;
             DisplayAlphabets();
@@ -49,7 +49,7 @@ namespace Bitig.UI.Configuration
 
         #region Alphabets
 
-        private AlifbaSummary x_CurrentAlphabet;
+        private AlphabetSummary x_CurrentAlphabet;
 
         private bool x_AlphabetsModified;
 
@@ -60,12 +60,12 @@ namespace Bitig.UI.Configuration
 
         private void DisplayAlphabets()
         {
-            bndAlphabet.DataSource = x_AlifbaRepo.GetList();
+            bndAlphabet.DataSource = x_AlphabetRepo.GetList();
         }
 
         private void btnAddAlphabet_Click(object sender, EventArgs e)
         {
-            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo, x_KeyboardRepo))
+            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlphabetRepo, x_KeyboardRepo))
             {
                 if (_editForm.ShowDialog() == DialogResult.OK)
                 {
@@ -79,9 +79,9 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlifbaRepo, x_KeyboardRepo))
+                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlphabetRepo, x_KeyboardRepo))
                 {
-                    var _fullAlphabet = x_AlifbaRepo.Get(x_CurrentAlphabet.ID);
+                    var _fullAlphabet = x_AlphabetRepo.Get(x_CurrentAlphabet.ID);
                     _editForm.X_AlphabetConfig = _fullAlphabet;
                     if (_editForm.ShowDialog() == DialogResult.OK)
                     {
@@ -96,11 +96,11 @@ namespace Bitig.UI.Configuration
 
         private void btnDeleteAlphabet_Click(object sender, EventArgs e)
         {
-            if (x_CurrentAlphabet != null && !x_CurrentAlphabet.IsYanalif)
+            if (x_CurrentAlphabet != null)
             {//loc
                 if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
-                    x_AlifbaRepo.Delete(x_CurrentAlphabet.ID);
+                    x_AlphabetRepo.Delete(x_CurrentAlphabet.ID);
                     DisplayAlphabets();
                     x_AlphabetsModified = true;
                 }
@@ -111,7 +111,7 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_AlifbaRepo.Get(x_CurrentAlphabet.ID), x_AlifbaRepo))
+                using (frmAlphabetSymbols _symbolsForm = new frmAlphabetSymbols(x_AlphabetRepo.Get(x_CurrentAlphabet.ID), x_AlphabetRepo))
                 {
                     if (_symbolsForm.ShowDialog() == DialogResult.OK)
                     {
@@ -127,7 +127,7 @@ namespace Bitig.UI.Configuration
             if (_row == null) x_CurrentAlphabet = null;
             else
             {
-                x_CurrentAlphabet = dgvAlphabets.Rows[e.RowIndex].DataBoundItem as AlifbaSummary;
+                x_CurrentAlphabet = dgvAlphabets.Rows[e.RowIndex].DataBoundItem as AlphabetSummary;
             }
             GetCurrentAlphabet();
         }
@@ -139,12 +139,6 @@ namespace Bitig.UI.Configuration
                 btnAlphabetSymbols.Enabled = false;
                 btnDeleteAlphabet.Enabled = false;
                 btnEditAlphabet.Enabled = false;
-            }
-            else if (x_CurrentAlphabet.IsYanalif)
-            {
-                btnAlphabetSymbols.Enabled = true;
-                btnDeleteAlphabet.Enabled = false;
-                btnEditAlphabet.Enabled = true;
             }
             else
             {

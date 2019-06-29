@@ -41,17 +41,16 @@ namespace Bitig.Data.Storage
                 : _xmlExclusionList.Collection.Select(x => x.ToModel()).ToList();
             var _shallowDirection = ShallowMap(StoredDirection);
             return new Direction(StoredDirection.ID, _shallowDirection.Source, _shallowDirection.Target, _exclusions,
-                _shallowDirection.AssemblyPath, _shallowDirection.TypeName, _shallowDirection.BuiltIn, _manualCommand);
+                _shallowDirection.AssemblyPath, _shallowDirection.TypeName, _shallowDirection.BuiltInType, _manualCommand);
         }
 
         private Direction ShallowMap(XmlDirection StoredDirection)
         {
-            var _source = xmlContext.Alphabets.Get(StoredDirection.SourceAlifbaID);
-            var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlifbaID);
-            var _builtIn = DefaultConfiguration.GetBuiltInDirection(StoredDirection.BuiltInID);
+            var _source = xmlContext.Alphabets.Get(StoredDirection.SourceAlphabetID);
+            var _target = xmlContext.Alphabets.Get(StoredDirection.TargetAlphabetID);
             var _exclusions = new List<Exclusion>();
             return new Direction(StoredDirection.ID, _source.ToSummary(), _target.ToSummary(), _exclusions,
-                StoredDirection.AssemblyPath, StoredDirection.TypeName, _builtIn, null);
+                StoredDirection.AssemblyPath, StoredDirection.TypeName, StoredDirection.BuiltInType, null);
 
         }
 
@@ -70,7 +69,7 @@ namespace Bitig.Data.Storage
         public override void Insert(Direction Item)
         {
             var _sameAlphabets = xmlContext.Directions.GetList().Find(x =>
-              x.SourceAlifbaID == Item.Source.ID && x.TargetAlifbaID == Item.Target.ID);
+              x.SourceAlphabetID == Item.Source.ID && x.TargetAlphabetID == Item.Target.ID);
             if (_sameAlphabets != null)
                 throw new Exception("Direction with same source and target exists.");
             var _xmlItem = new XmlDirection(Item);
@@ -100,7 +99,7 @@ namespace Bitig.Data.Storage
         public override void Update(Direction Item)
         {
             var _sameAlphabets = xmlContext.Directions.GetList().Find(x =>
-              x.ID != Item.ID && x.SourceAlifbaID == Item.Source.ID && x.TargetAlifbaID == Item.Target.ID);
+              x.ID != Item.ID && x.SourceAlphabetID == Item.Source.ID && x.TargetAlphabetID == Item.Target.ID);
             if (_sameAlphabets != null)
                 throw new Exception("Direction with same source and target exists.");
             xmlContext.Directions.Update(new XmlDirection(Item));
@@ -118,19 +117,19 @@ namespace Bitig.Data.Storage
             }
         }
 
-        public override Direction GetByAlifbaIDs(int SourceID, int TargetID)
+        public override Direction GetByAlphabetIDs(int SourceID, int TargetID)
         {
             var _direction = xmlContext.Directions.GetList().Find(_item =>
-                 _item.SourceAlifbaID == SourceID && _item.TargetAlifbaID == TargetID);
+                 _item.SourceAlphabetID == SourceID && _item.TargetAlphabetID == TargetID);
             if (_direction == null)
                 return null;
             return MapWithReferences(_direction);
         }
 
-        public override List<AlifbaSummary> GetTargets(int SourceID)
+        public override List<AlphabetSummary> GetTargets(int SourceID)
         {
             var _targets = xmlContext.Directions.GetList()
-                .Where(_item => _item.SourceAlifbaID == SourceID)
+                .Where(_item => _item.SourceAlphabetID == SourceID)
                 .Select(MapWithReferences)
                 .Select(_dir => _dir.Target)
                 .ToList();

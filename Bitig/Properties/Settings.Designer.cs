@@ -38,12 +38,12 @@ namespace Bitig.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool k_AlifbaVisible {
+        public bool k_AlphabetVisible {
             get {
-                return ((bool)(this["k_AlifbaVisible"]));
+                return ((bool)(this["k_AlphabetVisible"]));
             }
             set {
-                this["k_AlifbaVisible"] = value;
+                this["k_AlphabetVisible"] = value;
             }
         }
         
@@ -134,12 +134,12 @@ namespace Bitig.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("229, 39")]
-        public global::System.Drawing.Point k_AlifbaLocation {
+        public global::System.Drawing.Point k_AlphabetLocation {
             get {
-                return ((global::System.Drawing.Point)(this["k_AlifbaLocation"]));
+                return ((global::System.Drawing.Point)(this["k_AlphabetLocation"]));
             }
             set {
-                this["k_AlifbaLocation"] = value;
+                this["k_AlphabetLocation"] = value;
             }
         }
         

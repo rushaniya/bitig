@@ -52,7 +52,7 @@ namespace Bitig.Logic.Commands
         public PhoneticRasmalif()
         {
             FillTranslitTable();
-            AlphabetPattern = @"А-яЁёӘәӨөҮүҖҗҢңҺһ";//excl:set this in Alifba class?
+            AlphabetPattern = @"А-яЁёӘәӨөҮүҖҗҢңҺһ";//noyan:set this in Alphabet class?
             CustomTargetUpLowPairs = TextHelper.ZamanalifUpperLowerPairs;
         }
 

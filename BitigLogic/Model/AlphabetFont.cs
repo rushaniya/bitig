@@ -3,13 +3,13 @@ using System.Drawing;
 
 namespace Bitig.Logic.Model
 {
-    public class AlifbaFont
+    public class AlphabetFont
     {
         /* public string FamilyName { get; set; }
          public float Size { get; set; }
          public FontStyle Style { get; set; }
 
-         public AlifbaFont(string FamilyName, float Size, FontStyle Style = FontStyle.Regular)
+         public AlphabetFont(string FamilyName, float Size, FontStyle Style = FontStyle.Regular)
          {
              this.FamilyName = FamilyName;
              this.Size = Size;
@@ -30,12 +30,12 @@ namespace Bitig.Logic.Model
             get { return description; }
         }
 
-        public AlifbaFont(string Description)
+        public AlphabetFont(string Description)
         {
             description = Description;
         }
 
-        public AlifbaFont(string FamilyName, float Size, FontStyle Style = FontStyle.Regular)
+        public AlphabetFont(string FamilyName, float Size, FontStyle Style = FontStyle.Regular)
         {
             using (var _font = new Font(FamilyName, Size, Style))
             {
@@ -43,21 +43,21 @@ namespace Bitig.Logic.Model
             }
         }
 
-        public AlifbaFont(Font Font)
+        public AlphabetFont(Font Font)
         {
             description= TypeDescriptor.GetConverter(typeof(Font)).ConvertToString(Font);
         }
 
-        public static explicit operator Font(AlifbaFont AlifbaFont)
+        public static explicit operator Font(AlphabetFont AlphabetFont)
         {
-            if (AlifbaFont == null || AlifbaFont.description == null)
+            if (AlphabetFont == null || AlphabetFont.description == null)
                 return null;
-            return (Font)(TypeDescriptor.GetConverter(typeof(Font)).ConvertFromString(AlifbaFont.description));
+            return (Font)(TypeDescriptor.GetConverter(typeof(Font)).ConvertFromString(AlphabetFont.description));
         }
 
-        public static explicit operator AlifbaFont(Font Font)
+        public static explicit operator AlphabetFont(Font Font)
         {
-            return new AlifbaFont(Font);
+            return new AlphabetFont(Font);
         }
 
         public override string ToString()//loc

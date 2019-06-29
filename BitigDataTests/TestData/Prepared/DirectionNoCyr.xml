@@ -3,29 +3,29 @@
   <Collection>
     <Item>
       <ID>3</ID>
-      <SourceAlifbaID>1</SourceAlifbaID>
-      <TargetAlifbaID>2</TargetAlifbaID>
+      <SourceAlphabetID>1</SourceAlphabetID>
+      <TargetAlphabetID>2</TargetAlphabetID>
       <BuiltInID>YanalifZamanalif</BuiltInID>
       <Exclusions />
     </Item>
     <Item>
       <ID>4</ID>
-      <SourceAlifbaID>1</SourceAlifbaID>
-      <TargetAlifbaID>3</TargetAlifbaID>
+      <SourceAlphabetID>1</SourceAlphabetID>
+      <TargetAlphabetID>3</TargetAlphabetID>
       <BuiltInID>YanalifRasmalif</BuiltInID>
       <Exclusions />
     </Item>
     <Item>
       <ID>5</ID>
-      <SourceAlifbaID>2</SourceAlifbaID>
-      <TargetAlifbaID>1</TargetAlifbaID>
+      <SourceAlphabetID>2</SourceAlphabetID>
+      <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInID>ZamanalifYanalif</BuiltInID>
       <Exclusions />
     </Item>
     <Item>
       <ID>6</ID>
-      <SourceAlifbaID>3</SourceAlifbaID>
-      <TargetAlifbaID>1</TargetAlifbaID>
+      <SourceAlphabetID>3</SourceAlphabetID>
+      <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInID>RasmalifYanalif</BuiltInID>
       <Exclusions />
     </Item>

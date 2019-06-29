@@ -438,7 +438,7 @@
             // bndAlphabet
             // 
             this.bndAlphabet.AllowNew = false;
-            this.bndAlphabet.DataSource = typeof(Bitig.Logic.Model.AlifbaSummary);
+            this.bndAlphabet.DataSource = typeof(Bitig.Logic.Model.AlphabetSummary);
             // 
             // pnlBottom
             // 

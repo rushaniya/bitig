@@ -28,7 +28,7 @@ namespace Bitig.UI.Configuration
                             cmbSource.Enabled = false;
                             cmbTarget.Enabled = false;
                             x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
+                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltInType);
                         }
                         else
                         {
@@ -36,7 +36,7 @@ namespace Bitig.UI.Configuration
                             if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
                             {
                                 x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                                x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltIn.ID);
+                                x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltInType);
                             }
                             else
                             {
@@ -64,14 +64,14 @@ namespace Bitig.UI.Configuration
         private object x_TypeComboSelectedItem;
         private string x_BuiltInAssemblyItem = "Built-in directions";//loc
         private DirectionRepository x_DirectionRepository;
-        private AlifbaRepository x_AlifbaRepository;
+        private AlphabetRepository x_AlphabetRepository;
         private Dictionary<TextSymbol, TextSymbol> x_SymbolMapping;
 
         public frmEditDirection(IDataContext DataContext)
         {
             InitializeComponent();
             x_DirectionRepository = DataContext.DirectionRepository;
-            x_AlifbaRepository = DataContext.AlifbaRepository;
+            x_AlphabetRepository = DataContext.AlphabetRepository;
             try
             {
                 string _exePath = Application.StartupPath;
@@ -85,7 +85,7 @@ namespace Bitig.UI.Configuration
 
         private void frmEditDirection_Load(object sender, EventArgs e)
         {
-            FillAlifbaCombos();
+            FillAlphabetCombos();
             PrepareBuiltInItems();
             FillAssemblyCombo();
             if (x_TypeComboSelectedItem != null)
@@ -98,13 +98,13 @@ namespace Bitig.UI.Configuration
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            var _source = cmbSource.SelectedItem as AlifbaSummary;
+            var _source = cmbSource.SelectedItem as AlphabetSummary;
             if (_source == null)
             {
                 MessageBox.Show("Source is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                 return;
             }
-            var _target = cmbTarget.SelectedItem as AlifbaSummary;
+            var _target = cmbTarget.SelectedItem as AlphabetSummary;
             if (_target == null)
             {
                 MessageBox.Show("Target is empty", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
@@ -130,18 +130,6 @@ namespace Bitig.UI.Configuration
             {
                 if (cmbType.SelectedItem is BuiltInDirection)
                 {
-                    if (_source.BuiltIn != BuiltInAlifbaType.None &&
-                        _source.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Source)
-                    {
-                        MessageBox.Show("Transliteration source mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                    if (_target.BuiltIn != BuiltInAlifbaType.None &&
-                        _target.BuiltIn != (cmbType.SelectedItem as BuiltInDirection).Target)
-                    {
-                        MessageBox.Show("Transliteration target mismatch", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
                     _builtIn = (cmbType.SelectedItem as BuiltInDirection);
                 }
                 else
@@ -188,7 +176,7 @@ namespace Bitig.UI.Configuration
             }
             if (x_Direction == null)
             {
-                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn, _manualCommand);
+                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn.Type, _manualCommand);
                 x_DirectionRepository.Insert(x_Direction);
             }
             else
@@ -197,7 +185,7 @@ namespace Bitig.UI.Configuration
                 x_Direction.TypeName = _type;
                 x_Direction.Source = _source;
                 x_Direction.Target = _target;
-                x_Direction.BuiltIn = _builtIn;
+                x_Direction.BuiltInType = _builtIn.Type;
                 x_Direction.ManualCommand = _manualCommand;
                 x_DirectionRepository.Update(x_Direction);
             }
@@ -254,17 +242,7 @@ namespace Bitig.UI.Configuration
         private void PrepareBuiltInItems()
         {
             x_BuiltInTypes = new List<BuiltInDirection>();
-            BuiltInDirection _builtIn = null;
-            if (x_Direction != null)
-                _builtIn = DefaultConfiguration.GetBuiltInDirection(x_Direction.Source.BuiltIn, x_Direction.Target.BuiltIn); //repo: null reference?
-            if (_builtIn == null)
-            {
-                DefaultConfiguration.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
-            }
-            else
-            {
-                x_BuiltInTypes.Add(_builtIn);
-            }
+            DefaultConfiguration.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
         }
 
         private void FillAssemblyCombo()
@@ -284,20 +262,20 @@ namespace Bitig.UI.Configuration
             x_FillingAssemblyCombo = false;
         }
 
-        private void FillAlifbaCombos()
+        private void FillAlphabetCombos()
         {
             int _sourceIndex = -1, _targetIndex = -1;
-            var _alifbaList = x_AlifbaRepository.GetList();
-            for (int i = 0; i < _alifbaList.Count; i++)
+            var _alphabetList = x_AlphabetRepository.GetList();
+            for (int i = 0; i < _alphabetList.Count; i++)
             {
-                var _alifba = _alifbaList[i];
-                cmbSource.Items.Add(_alifba);
-                cmbTarget.Items.Add(_alifba);
+                var _alphabet = _alphabetList[i];
+                cmbSource.Items.Add(_alphabet);
+                cmbTarget.Items.Add(_alphabet);
                 if (x_Direction != null)
                 {
-                    if (x_Direction.Source.Equals(_alifba))
+                    if (x_Direction.Source.Equals(_alphabet))
                         _sourceIndex = i;
-                    if (x_Direction.Target.Equals(_alifba))
+                    if (x_Direction.Target.Equals(_alphabet))
                         _targetIndex = i;
                 }
             }
@@ -321,13 +299,13 @@ namespace Bitig.UI.Configuration
 
         private void btnManual_Click(object sender, EventArgs e)
         {
-            List<AlifbaSymbol> _defaultSourceSymbols = null;
-            var _source = cmbSource.SelectedItem as AlifbaSummary;
-            var _target = cmbTarget.SelectedItem as AlifbaSummary;
+            List<AlphabetSymbol> _defaultSourceSymbols = null;
+            var _source = cmbSource.SelectedItem as AlphabetSummary;
+            var _target = cmbTarget.SelectedItem as AlphabetSummary;
             if (x_SymbolMapping == null)
             {
                 if (_source != null)
-                    _defaultSourceSymbols = x_AlifbaRepository.Get(_source.ID).CustomSymbols;
+                    _defaultSourceSymbols = x_AlphabetRepository.Get(_source.ID).CustomSymbols;
             }
             using (var _mappingForm = new frmSymbolMapping(_source, _target, x_DirectionRepository, x_SymbolMapping, _defaultSourceSymbols))
             {

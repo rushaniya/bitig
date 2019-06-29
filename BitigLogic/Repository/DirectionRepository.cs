@@ -18,9 +18,9 @@ namespace Bitig.Logic.Repository
 
         public abstract void Update(Direction Item);
 
-        public abstract Direction GetByAlifbaIDs(int SourceID, int TargetID);
+        public abstract Direction GetByAlphabetIDs(int SourceID, int TargetID);
 
-        public abstract List<AlifbaSummary> GetTargets(int SourceID);
+        public abstract List<AlphabetSummary> GetTargets(int SourceID);
 
         public abstract Dictionary<TextSymbol, TextSymbol> GetSymbolMapping(int ID);
     }

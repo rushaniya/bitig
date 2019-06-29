@@ -12,7 +12,7 @@ namespace BitigDataTests
     {
         private const string dataFolder = @"TestData\";
         private const string currentDataFolder = @"ExclusionsTestData\";
-        private readonly string currentAlifbaPath = currentDataFolder + "Alphabets.xml";
+        private readonly string currentAlphabetPath = currentDataFolder + "Alphabets.xml";
         private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
         private readonly string sourcePreparedFile = dataFolder + @"Prepared\DirectionCyrYan.xml";
 
@@ -30,7 +30,7 @@ namespace BitigDataTests
         [TestMethod]
         public void AddExclusion()
         {
-            var _dirRepo = new XmlContext(currentAlifbaPath, currentTestFilePath).DirectionRepository;
+            var _dirRepo = new XmlContext(currentAlphabetPath, currentTestFilePath).DirectionRepository;
             var _direction = _dirRepo.Get(0);
             var _source = GenerateCyrillicWord();
             var _target = Guid.NewGuid().ToString();
@@ -45,7 +45,7 @@ namespace BitigDataTests
         [TestMethod]
         public void EditExclusion()
         {
-            var _dirRepo = new XmlContext(currentAlifbaPath, currentTestFilePath).DirectionRepository;
+            var _dirRepo = new XmlContext(currentAlphabetPath, currentTestFilePath).DirectionRepository;
             var _direction = _dirRepo.Get(0);
             Assert.AreEqual("ike", _direction.Transliterate("бер"));
             var _target = Guid.NewGuid().ToString();

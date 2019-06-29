@@ -31,16 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainForm));
             this.tlsMain = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnShowAlifba = new System.Windows.Forms.ToolStripButton();
+            this.btnShowAlphabet = new System.Windows.Forms.ToolStripButton();
             this.btnShowTranslit = new System.Windows.Forms.ToolStripButton();
-            this.cmbSource = new System.Windows.Forms.ToolStripComboBox();
-            this.lblTo = new System.Windows.Forms.ToolStripLabel();
-            this.cmbTarget = new System.Windows.Forms.ToolStripComboBox();
+            this.cmbMainAlphabet = new System.Windows.Forms.ToolStripComboBox();
+            this.btnMainConfig = new System.Windows.Forms.ToolStripButton();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mniTranslitPanel = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniAlifba = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniAlphabet = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mniExclusions = new System.Windows.Forms.ToolStripMenuItem();
             this.mniConfiguration = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,44 +47,29 @@
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.spltMain = new System.Windows.Forms.SplitContainer();
-            this.spltTranslitArea = new System.Windows.Forms.SplitContainer();
-            this.pnlTranslit1 = new System.Windows.Forms.Panel();
-            this.txtTranslit1 = new System.Windows.Forms.RichTextBox();
-            this.pnlTranslit1Bottom = new System.Windows.Forms.Panel();
-            this.tlsTarnslit1 = new System.Windows.Forms.ToolStrip();
-            this.lblSource = new System.Windows.Forms.ToolStripLabel();
+            this.pnlTranslit = new System.Windows.Forms.Panel();
+            this.txtTranslit = new System.Windows.Forms.RichTextBox();
+            this.pnlTranslitKeyboard = new System.Windows.Forms.Panel();
+            this.tlsTranslit = new System.Windows.Forms.ToolStrip();
+            this.cmbTranslit = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnTranslit1Config = new System.Windows.Forms.ToolStripButton();
-            this.btnT1Keyboard = new System.Windows.Forms.ToolStripButton();
-            this.btnToYanalif = new System.Windows.Forms.ToolStripButton();
-            this.btnTranslitAux = new System.Windows.Forms.ToolStripButton();
-            this.pnlTranslit2 = new System.Windows.Forms.Panel();
-            this.txtTranslit2 = new System.Windows.Forms.RichTextBox();
-            this.pnlTranslit2Bottom = new System.Windows.Forms.Panel();
-            this.tlsTranslit2 = new System.Windows.Forms.ToolStrip();
-            this.lblTarget = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnTranslit2Config = new System.Windows.Forms.ToolStripButton();
-            this.btnT2Keyboard = new System.Windows.Forms.ToolStripButton();
-            this.btnFromYanalif = new System.Windows.Forms.ToolStripButton();
-            this.pnlYanalif = new System.Windows.Forms.Panel();
+            this.btnTranslitConfig = new System.Windows.Forms.ToolStripButton();
+            this.btnTranslitKeyboard = new System.Windows.Forms.ToolStripButton();
+            this.btnToMain = new System.Windows.Forms.ToolStripButton();
+            this.btnFromMain = new System.Windows.Forms.ToolStripButton();
+            this.pnlMain = new System.Windows.Forms.Panel();
             this.ctlMultiRtb1 = new Bitig.RtbControl.ctlMultiRtb();
-            this.ctlYanalif1 = new Bitig.UI.Controls.ctlYanalif();
             this.dlgColor = new System.Windows.Forms.ColorDialog();
             this.pnlTop = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlMainKeyboard = new System.Windows.Forms.Panel();
             this.tlsMain.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.spltMain.Panel1.SuspendLayout();
             this.spltMain.Panel2.SuspendLayout();
             this.spltMain.SuspendLayout();
-            this.spltTranslitArea.Panel1.SuspendLayout();
-            this.spltTranslitArea.Panel2.SuspendLayout();
-            this.spltTranslitArea.SuspendLayout();
-            this.pnlTranslit1.SuspendLayout();
-            this.tlsTarnslit1.SuspendLayout();
-            this.pnlTranslit2.SuspendLayout();
-            this.tlsTranslit2.SuspendLayout();
-            this.pnlYanalif.SuspendLayout();
+            this.pnlTranslit.SuspendLayout();
+            this.tlsTranslit.SuspendLayout();
+            this.pnlMain.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,15 +80,14 @@
             this.tlsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tlsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSeparator2,
-            this.btnShowAlifba,
+            this.btnShowAlphabet,
             this.btnShowTranslit,
-            this.cmbSource,
-            this.lblTo,
-            this.cmbTarget});
+            this.cmbMainAlphabet,
+            this.btnMainConfig});
             this.tlsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.tlsMain.Location = new System.Drawing.Point(0, 0);
             this.tlsMain.Name = "tlsMain";
-            this.tlsMain.Size = new System.Drawing.Size(403, 39);
+            this.tlsMain.Size = new System.Drawing.Size(240, 39);
             this.tlsMain.TabIndex = 0;
             this.tlsMain.Text = "Main Panel";
             // 
@@ -113,17 +96,17 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
-            // btnShowAlifba
+            // btnShowAlphabet
             // 
-            this.btnShowAlifba.CheckOnClick = true;
-            this.btnShowAlifba.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnShowAlifba.Image = global::Bitig.UI.Properties.Resources.keyboard;
-            this.btnShowAlifba.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnShowAlifba.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnShowAlifba.Name = "btnShowAlifba";
-            this.btnShowAlifba.Size = new System.Drawing.Size(36, 36);
-            this.btnShowAlifba.Text = "Alifba";
-            this.btnShowAlifba.CheckedChanged += new System.EventHandler(this.btnShowAlifba_CheckedChanged);
+            this.btnShowAlphabet.CheckOnClick = true;
+            this.btnShowAlphabet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnShowAlphabet.Image = global::Bitig.UI.Properties.Resources.keyboard;
+            this.btnShowAlphabet.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnShowAlphabet.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowAlphabet.Name = "btnShowAlphabet";
+            this.btnShowAlphabet.Size = new System.Drawing.Size(36, 36);
+            this.btnShowAlphabet.Text = "Alphabet";
+            this.btnShowAlphabet.CheckedChanged += new System.EventHandler(this.btnShowAlphabet_CheckedChanged);
             // 
             // btnShowTranslit
             // 
@@ -139,28 +122,25 @@
             this.btnShowTranslit.Text = "Transliteration Window";
             this.btnShowTranslit.CheckedChanged += new System.EventHandler(this.btnShowTranslit_CheckedChanged);
             // 
-            // cmbSource
+            // cmbMainAlphabet
             // 
-            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSource.DropDownWidth = 121;
-            this.cmbSource.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(150, 39);
-            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
+            this.cmbMainAlphabet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMainAlphabet.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.cmbMainAlphabet.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbMainAlphabet.Name = "cmbMainAlphabet";
+            this.cmbMainAlphabet.Size = new System.Drawing.Size(121, 39);
+            this.cmbMainAlphabet.SelectedIndexChanged += new System.EventHandler(this.cmbMainAlphabet_SelectedIndexChanged);
             // 
-            // lblTo
+            // btnMainConfig
             // 
-            this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(18, 36);
-            this.lblTo.Text = "to";
-            // 
-            // cmbTarget
-            // 
-            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarget.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.cmbTarget.Name = "cmbTarget";
-            this.cmbTarget.Size = new System.Drawing.Size(150, 39);
-            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
+            this.btnMainConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMainConfig.Image = global::Bitig.UI.Properties.Resources.settings;
+            this.btnMainConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnMainConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnMainConfig.Name = "btnMainConfig";
+            this.btnMainConfig.Size = new System.Drawing.Size(36, 36);
+            this.btnMainConfig.Text = "toolStripButton1";
+            this.btnMainConfig.Click += new System.EventHandler(this.btnMainConfig_Click);
             // 
             // mnuMain
             // 
@@ -186,7 +166,7 @@
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mniTranslitPanel,
-            this.mniAlifba});
+            this.mniAlphabet});
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "View";
@@ -201,15 +181,15 @@
             this.mniTranslitPanel.Text = "Translit Panel";
             this.mniTranslitPanel.CheckedChanged += new System.EventHandler(this.mniTranslitPanel_CheckedChanged);
             // 
-            // mniAlifba
+            // mniAlphabet
             // 
-            this.mniAlifba.Checked = true;
-            this.mniAlifba.CheckOnClick = true;
-            this.mniAlifba.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mniAlifba.Name = "mniAlifba";
-            this.mniAlifba.Size = new System.Drawing.Size(144, 22);
-            this.mniAlifba.Text = "Alifba";
-            this.mniAlifba.CheckedChanged += new System.EventHandler(this.mniAlifba_CheckedChanged);
+            this.mniAlphabet.Checked = true;
+            this.mniAlphabet.CheckOnClick = true;
+            this.mniAlphabet.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mniAlphabet.Name = "mniAlphabet";
+            this.mniAlphabet.Size = new System.Drawing.Size(144, 22);
+            this.mniAlphabet.Text = "Alphabet";
+            this.mniAlphabet.CheckedChanged += new System.EventHandler(this.mniAlphabet_CheckedChanged);
             // 
             // mnuSettings
             // 
@@ -267,269 +247,142 @@
             // 
             // spltMain.Panel1
             // 
-            this.spltMain.Panel1.Controls.Add(this.spltTranslitArea);
+            this.spltMain.Panel1.Controls.Add(this.pnlTranslit);
             // 
             // spltMain.Panel2
             // 
-            this.spltMain.Panel2.Controls.Add(this.pnlYanalif);
+            this.spltMain.Panel2.Controls.Add(this.pnlMain);
             this.spltMain.Size = new System.Drawing.Size(853, 506);
             this.spltMain.SplitterDistance = 189;
             this.spltMain.SplitterWidth = 6;
             this.spltMain.TabIndex = 0;
             // 
-            // spltTranslitArea
+            // pnlTranslit
             // 
-            this.spltTranslitArea.BackColor = System.Drawing.SystemColors.Window;
-            this.spltTranslitArea.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.spltTranslitArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spltTranslitArea.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.spltTranslitArea.Location = new System.Drawing.Point(0, 0);
-            this.spltTranslitArea.Name = "spltTranslitArea";
+            this.pnlTranslit.Controls.Add(this.txtTranslit);
+            this.pnlTranslit.Controls.Add(this.pnlTranslitKeyboard);
+            this.pnlTranslit.Controls.Add(this.tlsTranslit);
+            this.pnlTranslit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTranslit.Location = new System.Drawing.Point(0, 0);
+            this.pnlTranslit.Name = "pnlTranslit";
+            this.pnlTranslit.Size = new System.Drawing.Size(853, 189);
+            this.pnlTranslit.TabIndex = 4;
+            this.pnlTranslit.SizeChanged += new System.EventHandler(this.pnlTranslit_SizeChanged);
             // 
-            // spltTranslitArea.Panel1
+            // txtTranslit
             // 
-            this.spltTranslitArea.Panel1.Controls.Add(this.pnlTranslit1);
+            this.txtTranslit.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtTranslit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTranslit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTranslit.HideSelection = false;
+            this.txtTranslit.Location = new System.Drawing.Point(0, 0);
+            this.txtTranslit.Name = "txtTranslit";
+            this.txtTranslit.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTranslit.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.txtTranslit.Size = new System.Drawing.Size(853, 103);
+            this.txtTranslit.TabIndex = 1;
+            this.txtTranslit.Text = "";
             // 
-            // spltTranslitArea.Panel2
+            // pnlTranslitKeyboard
             // 
-            this.spltTranslitArea.Panel2.BackColor = System.Drawing.SystemColors.Window;
-            this.spltTranslitArea.Panel2.Controls.Add(this.pnlTranslit2);
-            this.spltTranslitArea.Size = new System.Drawing.Size(853, 189);
-            this.spltTranslitArea.SplitterDistance = 460;
-            this.spltTranslitArea.TabIndex = 0;
+            this.pnlTranslitKeyboard.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlTranslitKeyboard.Location = new System.Drawing.Point(0, 103);
+            this.pnlTranslitKeyboard.Name = "pnlTranslitKeyboard";
+            this.pnlTranslitKeyboard.Size = new System.Drawing.Size(853, 55);
+            this.pnlTranslitKeyboard.TabIndex = 3;
+            this.pnlTranslitKeyboard.Visible = false;
             // 
-            // pnlTranslit1
+            // tlsTranslit
             // 
-            this.pnlTranslit1.Controls.Add(this.txtTranslit1);
-            this.pnlTranslit1.Controls.Add(this.pnlTranslit1Bottom);
-            this.pnlTranslit1.Controls.Add(this.tlsTarnslit1);
-            this.pnlTranslit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTranslit1.Location = new System.Drawing.Point(0, 0);
-            this.pnlTranslit1.Name = "pnlTranslit1";
-            this.pnlTranslit1.Size = new System.Drawing.Size(456, 185);
-            this.pnlTranslit1.TabIndex = 4;
-            this.pnlTranslit1.SizeChanged += new System.EventHandler(this.pnlTranslit1_SizeChanged);
-            // 
-            // txtTranslit1
-            // 
-            this.txtTranslit1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtTranslit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTranslit1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTranslit1.HideSelection = false;
-            this.txtTranslit1.Location = new System.Drawing.Point(0, 0);
-            this.txtTranslit1.Name = "txtTranslit1";
-            this.txtTranslit1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTranslit1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.txtTranslit1.Size = new System.Drawing.Size(456, 99);
-            this.txtTranslit1.TabIndex = 1;
-            this.txtTranslit1.Text = "";
-            this.txtTranslit1.Enter += new System.EventHandler(this.txtTranslit1_Enter);
-            // 
-            // pnlTranslit1Bottom
-            // 
-            this.pnlTranslit1Bottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlTranslit1Bottom.Location = new System.Drawing.Point(0, 99);
-            this.pnlTranslit1Bottom.Name = "pnlTranslit1Bottom";
-            this.pnlTranslit1Bottom.Size = new System.Drawing.Size(456, 55);
-            this.pnlTranslit1Bottom.TabIndex = 3;
-            this.pnlTranslit1Bottom.Visible = false;
-            // 
-            // tlsTarnslit1
-            // 
-            this.tlsTarnslit1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tlsTarnslit1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.tlsTarnslit1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblSource,
+            this.tlsTranslit.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tlsTranslit.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tlsTranslit.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmbTranslit,
             this.toolStripSeparator1,
-            this.btnTranslit1Config,
-            this.btnT1Keyboard,
-            this.btnToYanalif,
-            this.btnTranslitAux});
-            this.tlsTarnslit1.Location = new System.Drawing.Point(0, 154);
-            this.tlsTarnslit1.Name = "tlsTarnslit1";
-            this.tlsTarnslit1.Size = new System.Drawing.Size(456, 31);
-            this.tlsTarnslit1.TabIndex = 2;
-            this.tlsTarnslit1.Text = "Translit1";
+            this.btnTranslitConfig,
+            this.btnTranslitKeyboard,
+            this.btnToMain,
+            this.btnFromMain});
+            this.tlsTranslit.Location = new System.Drawing.Point(0, 158);
+            this.tlsTranslit.Name = "tlsTranslit";
+            this.tlsTranslit.Size = new System.Drawing.Size(853, 31);
+            this.tlsTranslit.TabIndex = 2;
+            this.tlsTranslit.Text = "Translit1";
             // 
-            // lblSource
+            // cmbTranslit
             // 
-            this.lblSource.Name = "lblSource";
-            this.lblSource.Size = new System.Drawing.Size(43, 28);
-            this.lblSource.Text = "Source";
+            this.cmbTranslit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTranslit.Name = "cmbTranslit";
+            this.cmbTranslit.Size = new System.Drawing.Size(200, 31);
+            this.cmbTranslit.SelectedIndexChanged += new System.EventHandler(this.cmbTranslit_SelectedIndexChanged);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
-            // btnTranslit1Config
+            // btnTranslitConfig
             // 
-            this.btnTranslit1Config.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnTranslit1Config.Enabled = false;
-            this.btnTranslit1Config.Image = global::Bitig.UI.Properties.Resources.advanced;
-            this.btnTranslit1Config.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnTranslit1Config.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnTranslit1Config.Name = "btnTranslit1Config";
-            this.btnTranslit1Config.Size = new System.Drawing.Size(28, 28);
-            this.btnTranslit1Config.Text = "Settings";
+            this.btnTranslitConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnTranslitConfig.Enabled = false;
+            this.btnTranslitConfig.Image = global::Bitig.UI.Properties.Resources.advanced;
+            this.btnTranslitConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnTranslitConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnTranslitConfig.Name = "btnTranslitConfig";
+            this.btnTranslitConfig.Size = new System.Drawing.Size(28, 28);
+            this.btnTranslitConfig.Text = "Settings";
+            this.btnTranslitConfig.Click += new System.EventHandler(this.btnTranslitConfig_Click);
             // 
-            // btnT1Keyboard
+            // btnTranslitKeyboard
             // 
-            this.btnT1Keyboard.CheckOnClick = true;
-            this.btnT1Keyboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnT1Keyboard.Enabled = false;
-            this.btnT1Keyboard.Image = global::Bitig.UI.Properties.Resources.keyboard16;
-            this.btnT1Keyboard.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnT1Keyboard.Name = "btnT1Keyboard";
-            this.btnT1Keyboard.Size = new System.Drawing.Size(23, 28);
-            this.btnT1Keyboard.Text = "Virtual Keyboard";
-            this.btnT1Keyboard.CheckedChanged += new System.EventHandler(this.btnT1Keyboard_CheckedChanged);
+            this.btnTranslitKeyboard.CheckOnClick = true;
+            this.btnTranslitKeyboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnTranslitKeyboard.Enabled = false;
+            this.btnTranslitKeyboard.Image = global::Bitig.UI.Properties.Resources.keyboard16;
+            this.btnTranslitKeyboard.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnTranslitKeyboard.Name = "btnTranslitKeyboard";
+            this.btnTranslitKeyboard.Size = new System.Drawing.Size(23, 28);
+            this.btnTranslitKeyboard.Text = "Virtual Keyboard";
+            this.btnTranslitKeyboard.CheckedChanged += new System.EventHandler(this.btnTranslitKeyboard_CheckedChanged);
             // 
-            // btnToYanalif
+            // btnToMain
             // 
-            this.btnToYanalif.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnToYanalif.Image = global::Bitig.UI.Properties.Resources.down;
-            this.btnToYanalif.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnToYanalif.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnToYanalif.Name = "btnToYanalif";
-            this.btnToYanalif.Size = new System.Drawing.Size(28, 28);
-            this.btnToYanalif.Click += new System.EventHandler(this.btnToYanalif_Click);
+            this.btnToMain.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToMain.Image = global::Bitig.UI.Properties.Resources.down;
+            this.btnToMain.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnToMain.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToMain.Name = "btnToMain";
+            this.btnToMain.Size = new System.Drawing.Size(28, 28);
+            this.btnToMain.Click += new System.EventHandler(this.btnToMain_Click);
             // 
-            // btnTranslitAux
+            // btnFromMain
             // 
-            this.btnTranslitAux.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnTranslitAux.Image = global::Bitig.UI.Properties.Resources.right;
-            this.btnTranslitAux.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnTranslitAux.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnTranslitAux.Name = "btnTranslitAux";
-            this.btnTranslitAux.Size = new System.Drawing.Size(28, 28);
-            this.btnTranslitAux.Click += new System.EventHandler(this.btnTranslitAux_Click);
+            this.btnFromMain.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFromMain.Image = global::Bitig.UI.Properties.Resources.up;
+            this.btnFromMain.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnFromMain.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFromMain.Name = "btnFromMain";
+            this.btnFromMain.Size = new System.Drawing.Size(28, 28);
+            this.btnFromMain.Click += new System.EventHandler(this.btnFromMain_Click);
             // 
-            // pnlTranslit2
+            // pnlMain
             // 
-            this.pnlTranslit2.BackColor = System.Drawing.SystemColors.Window;
-            this.pnlTranslit2.Controls.Add(this.txtTranslit2);
-            this.pnlTranslit2.Controls.Add(this.pnlTranslit2Bottom);
-            this.pnlTranslit2.Controls.Add(this.tlsTranslit2);
-            this.pnlTranslit2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTranslit2.Location = new System.Drawing.Point(0, 0);
-            this.pnlTranslit2.Name = "pnlTranslit2";
-            this.pnlTranslit2.Size = new System.Drawing.Size(385, 185);
-            this.pnlTranslit2.TabIndex = 3;
-            this.pnlTranslit2.SizeChanged += new System.EventHandler(this.pnlTranslit2_SizeChanged);
-            // 
-            // txtTranslit2
-            // 
-            this.txtTranslit2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtTranslit2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTranslit2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTranslit2.HideSelection = false;
-            this.txtTranslit2.Location = new System.Drawing.Point(0, 0);
-            this.txtTranslit2.Name = "txtTranslit2";
-            this.txtTranslit2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.txtTranslit2.Size = new System.Drawing.Size(385, 99);
-            this.txtTranslit2.TabIndex = 0;
-            this.txtTranslit2.Text = "";
-            this.txtTranslit2.Enter += new System.EventHandler(this.txtTranslit2_Enter);
-            // 
-            // pnlTranslit2Bottom
-            // 
-            this.pnlTranslit2Bottom.BackColor = System.Drawing.SystemColors.Window;
-            this.pnlTranslit2Bottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlTranslit2Bottom.Location = new System.Drawing.Point(0, 99);
-            this.pnlTranslit2Bottom.Name = "pnlTranslit2Bottom";
-            this.pnlTranslit2Bottom.Size = new System.Drawing.Size(385, 55);
-            this.pnlTranslit2Bottom.TabIndex = 2;
-            this.pnlTranslit2Bottom.Visible = false;
-            // 
-            // tlsTranslit2
-            // 
-            this.tlsTranslit2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tlsTranslit2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.tlsTranslit2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblTarget,
-            this.toolStripSeparator4,
-            this.btnTranslit2Config,
-            this.btnT2Keyboard,
-            this.btnFromYanalif});
-            this.tlsTranslit2.Location = new System.Drawing.Point(0, 154);
-            this.tlsTranslit2.Name = "tlsTranslit2";
-            this.tlsTranslit2.Size = new System.Drawing.Size(385, 31);
-            this.tlsTranslit2.TabIndex = 1;
-            this.tlsTranslit2.Text = "Translit2";
-            // 
-            // lblTarget
-            // 
-            this.lblTarget.Name = "lblTarget";
-            this.lblTarget.Size = new System.Drawing.Size(40, 28);
-            this.lblTarget.Text = "Target";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 31);
-            // 
-            // btnTranslit2Config
-            // 
-            this.btnTranslit2Config.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnTranslit2Config.Enabled = false;
-            this.btnTranslit2Config.Image = global::Bitig.UI.Properties.Resources.advanced;
-            this.btnTranslit2Config.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnTranslit2Config.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnTranslit2Config.Name = "btnTranslit2Config";
-            this.btnTranslit2Config.Size = new System.Drawing.Size(28, 28);
-            this.btnTranslit2Config.Text = "Settings";
-            // 
-            // btnT2Keyboard
-            // 
-            this.btnT2Keyboard.CheckOnClick = true;
-            this.btnT2Keyboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnT2Keyboard.Enabled = false;
-            this.btnT2Keyboard.Image = global::Bitig.UI.Properties.Resources.keyboard16;
-            this.btnT2Keyboard.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnT2Keyboard.Name = "btnT2Keyboard";
-            this.btnT2Keyboard.Size = new System.Drawing.Size(23, 28);
-            this.btnT2Keyboard.Text = "Virtual Keyboard";
-            this.btnT2Keyboard.CheckedChanged += new System.EventHandler(this.btnT2Keyboard_CheckedChanged);
-            // 
-            // btnFromYanalif
-            // 
-            this.btnFromYanalif.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnFromYanalif.Image = global::Bitig.UI.Properties.Resources.up;
-            this.btnFromYanalif.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnFromYanalif.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFromYanalif.Name = "btnFromYanalif";
-            this.btnFromYanalif.Size = new System.Drawing.Size(28, 28);
-            this.btnFromYanalif.Click += new System.EventHandler(this.btnFromYanalif_Click);
-            // 
-            // pnlYanalif
-            // 
-            this.pnlYanalif.Controls.Add(this.ctlMultiRtb1);
-            this.pnlYanalif.Controls.Add(this.ctlYanalif1);
-            this.pnlYanalif.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlYanalif.Location = new System.Drawing.Point(0, 0);
-            this.pnlYanalif.Name = "pnlYanalif";
-            this.pnlYanalif.Size = new System.Drawing.Size(853, 311);
-            this.pnlYanalif.TabIndex = 2;
-            this.pnlYanalif.SizeChanged += new System.EventHandler(this.pnlYanalif_SizeChanged);
+            this.pnlMain.Controls.Add(this.ctlMultiRtb1);
+            this.pnlMain.Controls.Add(this.pnlMainKeyboard);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(0, 0);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new System.Drawing.Size(853, 311);
+            this.pnlMain.TabIndex = 2;
+            this.pnlMain.SizeChanged += new System.EventHandler(this.pnlMain_SizeChanged);
             // 
             // ctlMultiRtb1
             // 
             this.ctlMultiRtb1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ctlMultiRtb1.Location = new System.Drawing.Point(0, 40);
+            this.ctlMultiRtb1.Location = new System.Drawing.Point(0, 44);
             this.ctlMultiRtb1.Name = "ctlMultiRtb1";
-            this.ctlMultiRtb1.Size = new System.Drawing.Size(853, 271);
+            this.ctlMultiRtb1.Size = new System.Drawing.Size(853, 267);
             this.ctlMultiRtb1.TabIndex = 0;
-            // 
-            // ctlYanalif1
-            // 
-            this.ctlYanalif1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ctlYanalif1.Location = new System.Drawing.Point(0, 0);
-            this.ctlYanalif1.Name = "ctlYanalif1";
-            this.ctlYanalif1.Size = new System.Drawing.Size(853, 40);
-            this.ctlYanalif1.TabIndex = 1;
-            this.ctlYanalif1.X_CustomSymbols = null;
-            this.ctlYanalif1.VisibleChanged += new System.EventHandler(this.ctlYanalif1_VisibleChanged);
             // 
             // pnlTop
             // 
@@ -539,6 +392,14 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(853, 43);
             this.pnlTop.TabIndex = 27;
+            // 
+            // pnlMainKeyboard
+            // 
+            this.pnlMainKeyboard.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlMainKeyboard.Location = new System.Drawing.Point(0, 0);
+            this.pnlMainKeyboard.Name = "pnlMainKeyboard";
+            this.pnlMainKeyboard.Size = new System.Drawing.Size(853, 44);
+            this.pnlMainKeyboard.TabIndex = 1;
             // 
             // frmMainForm
             // 
@@ -558,8 +419,6 @@
             this.WindowState = global::Bitig.UI.Properties.Settings.Default.k_WindowState;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainForm_FormClosing);
             this.Load += new System.EventHandler(this.frmMainForm_Load);
-            this.Shown += new System.EventHandler(this.frmMainForm_Shown);
-            this.SizeChanged += new System.EventHandler(this.frmMainForm_SizeChanged);
             this.tlsMain.ResumeLayout(false);
             this.tlsMain.PerformLayout();
             this.mnuMain.ResumeLayout(false);
@@ -567,18 +426,11 @@
             this.spltMain.Panel1.ResumeLayout(false);
             this.spltMain.Panel2.ResumeLayout(false);
             this.spltMain.ResumeLayout(false);
-            this.spltTranslitArea.Panel1.ResumeLayout(false);
-            this.spltTranslitArea.Panel2.ResumeLayout(false);
-            this.spltTranslitArea.ResumeLayout(false);
-            this.pnlTranslit1.ResumeLayout(false);
-            this.pnlTranslit1.PerformLayout();
-            this.tlsTarnslit1.ResumeLayout(false);
-            this.tlsTarnslit1.PerformLayout();
-            this.pnlTranslit2.ResumeLayout(false);
-            this.pnlTranslit2.PerformLayout();
-            this.tlsTranslit2.ResumeLayout(false);
-            this.tlsTranslit2.PerformLayout();
-            this.pnlYanalif.ResumeLayout(false);
+            this.pnlTranslit.ResumeLayout(false);
+            this.pnlTranslit.PerformLayout();
+            this.tlsTranslit.ResumeLayout(false);
+            this.tlsTranslit.PerformLayout();
+            this.pnlMain.ResumeLayout(false);
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();
             this.ResumeLayout(false);
@@ -589,7 +441,7 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip tlsMain;
-        private System.Windows.Forms.ToolStripButton btnShowAlifba;
+        private System.Windows.Forms.ToolStripButton btnShowAlphabet;
         private System.Windows.Forms.ToolStripButton btnShowTranslit;
         private System.Windows.Forms.MenuStrip mnuMain;
         private System.Windows.Forms.ToolStripMenuItem mnuFile;
@@ -598,41 +450,30 @@
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         //private System.Windows.Forms.ToolStripContainer tscMain;
         private System.Windows.Forms.SplitContainer spltMain;
-        private System.Windows.Forms.SplitContainer spltTranslitArea;
-        private System.Windows.Forms.RichTextBox txtTranslit1;
-        private System.Windows.Forms.RichTextBox txtTranslit2;
+        private System.Windows.Forms.RichTextBox txtTranslit;
         private System.Windows.Forms.ToolStripMenuItem mniExclusions;
         private System.Windows.Forms.ColorDialog dlgColor;
         private Bitig.RtbControl.ctlMultiRtb ctlMultiRtb1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.FlowLayoutPanel pnlTop;
-        private System.Windows.Forms.ToolStrip tlsTarnslit1;
-        private System.Windows.Forms.ToolStripButton btnTranslitAux;
-        private System.Windows.Forms.ToolStripButton btnToYanalif;
-        private System.Windows.Forms.ToolStrip tlsTranslit2;
-        private System.Windows.Forms.ToolStripButton btnFromYanalif;
-        private System.Windows.Forms.ToolStripButton btnTranslit1Config;
-        private System.Windows.Forms.ToolStripButton btnTranslit2Config;
-        private System.Windows.Forms.ToolStripButton btnT1Keyboard;
+        private System.Windows.Forms.ToolStrip tlsTranslit;
+        private System.Windows.Forms.ToolStripButton btnFromMain;
+        private System.Windows.Forms.ToolStripButton btnToMain;
+        private System.Windows.Forms.ToolStripButton btnTranslitConfig;
+        private System.Windows.Forms.ToolStripButton btnTranslitKeyboard;
         private System.Windows.Forms.ToolStripMenuItem mniTranslitPanel;
-        private System.Windows.Forms.ToolStripButton btnT2Keyboard;
-        private System.Windows.Forms.Panel pnlYanalif;
-        private System.Windows.Forms.ToolStripComboBox cmbTarget;
-        private System.Windows.Forms.ToolStripLabel lblTo;
-        private System.Windows.Forms.ToolStripComboBox cmbSource;
-        private System.Windows.Forms.ToolStripLabel lblSource;
+        private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripLabel lblTarget;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem mniAbout;
         private System.Windows.Forms.ToolStripMenuItem mniConfiguration;
-        private System.Windows.Forms.Panel pnlTranslit1Bottom;
-        private System.Windows.Forms.Panel pnlTranslit2Bottom;
-        private System.Windows.Forms.Panel pnlTranslit2;
-        private System.Windows.Forms.Panel pnlTranslit1;
-        private System.Windows.Forms.ToolStripMenuItem mniAlifba;
-        private Bitig.UI.Controls.ctlYanalif ctlYanalif1;
+        private System.Windows.Forms.Panel pnlTranslitKeyboard;
+        private System.Windows.Forms.Panel pnlTranslit;
+        private System.Windows.Forms.ToolStripMenuItem mniAlphabet;
         private System.Windows.Forms.ToolStripMenuItem mniCurrentMapping;
+        private System.Windows.Forms.ToolStripComboBox cmbTranslit;
+        private System.Windows.Forms.ToolStripComboBox cmbMainAlphabet;
+        private System.Windows.Forms.ToolStripButton btnMainConfig;
+        private System.Windows.Forms.Panel pnlMainKeyboard;
     }
 }
 

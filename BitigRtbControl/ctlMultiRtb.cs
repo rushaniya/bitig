@@ -55,7 +55,7 @@ namespace Bitig.RtbControl
             x_Loaded = true;
             ArrangeToolStrips();
             //rtbMain.Select(); //rtbMain.Focus();
-            this.MessageSent(this, new MessageArgs(string.Format("{0} - Bitig", x_DummyFileName), MessageArgs.EMessageTypes.FileNameChanged));
+            this.MessageSent(this, new MessageArgs(x_DummyFileName, MessageArgs.EMessageTypes.FileNameChanged));
             rtbMain.Modified = false;
         }
 

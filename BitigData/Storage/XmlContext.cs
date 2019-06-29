@@ -10,37 +10,37 @@ namespace Bitig.Data.Storage
 {
     public class XmlContext : IDataContext
     {
-        private InMemoryList<XmlAlifba> alifbaCache;
+        private InMemoryList<XmlAlphabet> alphabetCache;
         private InMemoryList<XmlDirection> directionCache;
         private InMemoryList<XmlDictionaryConfig<XmlTextSymbol, XmlTextSymbol>> mappingsCache;
-        private InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>> customSymbolsCache;
+        private InMemoryList<XmlCollectionConfig<XmlAlphabetSymbol>> customSymbolsCache;
         private InMemoryList<XmlCollectionConfig<XmlExclusion>> exclusionsCache;
         private InMemoryList<XmlCollectionConfig<XmlKeyCombination>> keyboardsCache;
         private InMemoryList<XmlMagicKeyboard> magicKeyboardsCache;
         private InMemoryList<XmlKeyboardSummary> keyboardSummariesCache;
 
-        private XmlModelReader<XmlAlifba> xmlAlifbaReader;
+        private XmlModelReader<XmlAlphabet> xmlAlphabetReader;
         private XmlModelReader<XmlDirection> xmlDirectionReader;
         private XmlModelDictionaryReader<XmlTextSymbol, XmlTextSymbol> xmlSymbolMappingReader;
-        private XmlModelCollectionReader<XmlAlifbaSymbol> xmlSymbolCollectionReader;
+        private XmlModelCollectionReader<XmlAlphabetSymbol> xmlSymbolCollectionReader;
         private XmlModelCollectionReader<XmlExclusion> xmlExclusionReader;
         private XmlModelReader<XmlKeyboardSummary> xmlKeyboardSummaryReader;
         private XmlModelCollectionReader<XmlKeyCombination> xmlKeyboardReader;
         private XmlCustomCollectionReader<XmlMagicKeyboard> xmlMagicKeyboardReader;
 
-        private XmlAlifbaRepository alifbaRepository;
+        private XmlAlphabetRepository alphabetRepository;
         private XmlDirectionRepository directionRepository;
         private XmlKeyboardRepository keyboardRepository;
 
         public bool IsFlushable { get { return true; } }
 
-        internal InMemoryList<XmlAlifba> Alphabets
+        internal InMemoryList<XmlAlphabet> Alphabets
         {
             get
             {
-                if (alifbaCache == null)
-                    InitAlifbaCache();
-                return alifbaCache;
+                if (alphabetCache == null)
+                    InitAlphabetCache();
+                return alphabetCache;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Bitig.Data.Storage
             }
         }
 
-        internal InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>> CustomSymbols
+        internal InMemoryList<XmlCollectionConfig<XmlAlphabetSymbol>> CustomSymbols
         {
             get
             {
@@ -124,11 +124,11 @@ namespace Bitig.Data.Storage
             }
         }
 
-        public AlifbaRepository AlifbaRepository
+        public AlphabetRepository AlphabetRepository
         {
             get
             {
-                return alifbaRepository;
+                return alphabetRepository;
             }
         }
 
@@ -152,13 +152,13 @@ namespace Bitig.Data.Storage
 
         public XmlContext(string AlphabetsPath, string DirectionsPath)
         {
-            xmlAlifbaReader = new XmlModelReader<XmlAlifba>(AlphabetsPath);
-            alifbaRepository = new XmlAlifbaRepository(this);
+            xmlAlphabetReader = new XmlModelReader<XmlAlphabet>(AlphabetsPath);
+            alphabetRepository = new XmlAlphabetRepository(this);
             xmlDirectionReader = new XmlModelReader<XmlDirection>(DirectionsPath);
             directionRepository = new XmlDirectionRepository(this);
             keyboardRepository = new XmlKeyboardRepository(this);
             var _alphabetsDirectory = Path.GetDirectoryName(AlphabetsPath) ?? string.Empty;
-            xmlSymbolCollectionReader = new XmlModelCollectionReader<XmlAlifbaSymbol>(Path.Combine(_alphabetsDirectory, "Symbols"));
+            xmlSymbolCollectionReader = new XmlModelCollectionReader<XmlAlphabetSymbol>(Path.Combine(_alphabetsDirectory, "Symbols"));
             xmlKeyboardSummaryReader = new XmlModelReader<XmlKeyboardSummary>(Path.Combine(_alphabetsDirectory, "KeyboardSummaries.xml"));
             var _keyboardsPath = Path.Combine(_alphabetsDirectory, "Keyboards");
             xmlKeyboardReader = new XmlModelCollectionReader<XmlKeyCombination>(_keyboardsPath);
@@ -168,64 +168,31 @@ namespace Bitig.Data.Storage
             xmlExclusionReader = new XmlModelCollectionReader<XmlExclusion>(Path.Combine(_directionsDirectory, "Exclusions"));
         }
 
-        private void InitAlifbaCache()
+        private void InitAlphabetCache()
         {
-            var _xmlList = xmlAlifbaReader.Read();
+            var _xmlList = xmlAlphabetReader.Read();
             if (_xmlList == null)
             {
-                _xmlList = new List<XmlAlifba>();
-                var _symbolLists = new List<XmlCollectionConfig<XmlAlifbaSymbol>>();
-                var _IDs = new List<int>();
-                foreach (var _builtIn in DefaultConfiguration.BuiltInAlifbaList)
-                {
-                    var _id = IDGenerator.GenerateID(_IDs);
-                    _IDs.Add(_id);
-                    var _alifba = new Alifba(_id, _builtIn.DefaultName,
-                        _builtIn.RightToLeft, _builtIn.DefaultFont, _builtIn.ID);
-                    _xmlList.Add(new XmlAlifba(_alifba));
-                    if (_builtIn.CustomSymbols != null)
-                        _symbolLists.Add(new XmlCollectionConfig<XmlAlifbaSymbol> { ID = _id, Collection = _builtIn.CustomSymbols.Select(x => new XmlAlifbaSymbol(x)).ToList() });
-                }
-                xmlAlifbaReader.Save(_xmlList);
-                xmlSymbolCollectionReader.Save(_symbolLists);
+                _xmlList = new List<XmlAlphabet>();
             }
-            else
-            {
-                if (!_xmlList.Any(_alif => _alif.BuiltIn == BuiltInAlifbaType.Yanalif))
-                {
-                    var _id = IDGenerator.GenerateID(_xmlList.Select(_item => _item.ID));
-                    var _yanalif = new Alifba(_id, DefaultConfiguration.Yanalif.DefaultName, 
-                    DefaultConfiguration.Yanalif.RightToLeft, DefaultConfiguration.Yanalif.DefaultFont, DefaultConfiguration.Yanalif.ID);
-                    _xmlList.Add(new XmlAlifba(_yanalif));
-                    xmlAlifbaReader.Save(_xmlList);
-                    xmlSymbolCollectionReader.Save(new List<XmlCollectionConfig<XmlAlifbaSymbol>>
-                    {
-                        new XmlCollectionConfig<XmlAlifbaSymbol>
-                        {
-                            ID = _id,
-                            Collection = DefaultConfiguration.Yanalif.CustomSymbols.Select(x=>new XmlAlifbaSymbol(x)).ToList()
-                        }
-                    });
-                }
-            }
-            alifbaCache = new InMemoryList<XmlAlifba>(_xmlList);
-            alifbaCache.IDChanged += OnAlifbaIDChanged;
+            alphabetCache = new InMemoryList<XmlAlphabet>(_xmlList);
+            alphabetCache.IDChanged += OnAlphabetIDChanged;
         }
 
-        private void OnAlifbaIDChanged(int OldID, int NewID)
+        private void OnAlphabetIDChanged(int OldID, int NewID)
         {
             if (directionCache != null)
             {
-                var _asSource = directionCache.GetList().Where(x => x.SourceAlifbaID == OldID);
+                var _asSource = directionCache.GetList().Where(x => x.SourceAlphabetID == OldID);
                 foreach (var _direction in _asSource)
                 {
-                    _direction.SourceAlifbaID = NewID;
+                    _direction.SourceAlphabetID = NewID;
                     directionCache.Update(_direction);
                 }
-                var _asTarget = directionCache.GetList().Where(x => x.TargetAlifbaID == OldID);
+                var _asTarget = directionCache.GetList().Where(x => x.TargetAlphabetID == OldID);
                 foreach (var _direction in _asTarget)
                 {
-                    _direction.TargetAlifbaID = NewID;
+                    _direction.TargetAlphabetID = NewID;
                     directionCache.Update(_direction);
                 }
             }
@@ -237,26 +204,12 @@ namespace Bitig.Data.Storage
         
         private void InitDirectionCache()
         {
-            if (alifbaCache == null)
-                InitAlifbaCache();
+            if (alphabetCache == null)
+                InitAlphabetCache();
             var _xmlList = xmlDirectionReader.Read();
             if (_xmlList == null)
             {
                 _xmlList = new List<XmlDirection>();
-                int _count = DefaultConfiguration.BuiltInDirections.Count;
-                for (int i = 0; i < _count; i++)
-                {
-                    var _builtIn = DefaultConfiguration.BuiltInDirections[i];
-                    var _alifbaList = alifbaCache.GetList();
-                    var _source = _alifbaList.Find(x => x.BuiltIn == _builtIn.Source);
-                    var _target = _alifbaList.Find(x => x.BuiltIn == _builtIn.Target);
-                    if (_source != null && _target != null)
-                    {
-                        var _direction = new XmlDirection(i, _source.ID, _target.ID, null, BuiltInID: _builtIn.ID);
-                        _xmlList.Add(_direction);
-                    }
-                }
-                xmlDirectionReader.Save(_xmlList);
             }
             directionCache = new InMemoryList<XmlDirection>(_xmlList);
             directionCache.IDChanged += OnDirectionIDChanged;
@@ -282,7 +235,7 @@ namespace Bitig.Data.Storage
 
         private void InitCustomSymbolsCache()
         {
-            customSymbolsCache = new InMemoryList<XmlCollectionConfig<XmlAlifbaSymbol>>();
+            customSymbolsCache = new InMemoryList<XmlCollectionConfig<XmlAlphabetSymbol>>();
             customSymbolsCache.NotFound += xmlSymbolCollectionReader.Read;
         }
 
@@ -294,7 +247,7 @@ namespace Bitig.Data.Storage
 
         public void CancelChanges()
         {
-            alifbaCache = null;
+            alphabetCache = null;
             directionCache = null;
             mappingsCache = null;
             customSymbolsCache = null;
@@ -305,8 +258,8 @@ namespace Bitig.Data.Storage
 
         public void SaveChanges()
         {
-            if (alifbaCache != null)
-                xmlAlifbaReader.Save(alifbaCache);
+            if (alphabetCache != null)
+                xmlAlphabetReader.Save(alphabetCache);
             if (directionCache != null)
                 xmlDirectionReader.Save(directionCache);
             if (mappingsCache != null)

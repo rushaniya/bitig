@@ -5,7 +5,7 @@
         void SaveChanges();
         void CancelChanges();
         bool IsFlushable { get; }
-        AlifbaRepository AlifbaRepository { get; }
+        AlphabetRepository AlphabetRepository { get; }
         DirectionRepository DirectionRepository { get; }
         KeyboardRepository KeyboardRepository { get; }
     }

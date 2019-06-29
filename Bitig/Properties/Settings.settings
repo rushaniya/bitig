@@ -5,7 +5,7 @@
     <Setting Name="k_SplitterDistance" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">469</Value>
     </Setting>
-    <Setting Name="k_AlifbaVisible" Type="System.Boolean" Scope="User">
+    <Setting Name="k_AlphabetVisible" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="k_Location" Type="System.Drawing.Point" Scope="User">
@@ -29,7 +29,7 @@
     <Setting Name="k_TlsMainLocation" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">2, 24</Value>
     </Setting>
-    <Setting Name="k_AlifbaLocation" Type="System.Drawing.Point" Scope="User">
+    <Setting Name="k_AlphabetLocation" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">229, 39</Value>
     </Setting>
     <Setting Name="k_TlsTextLocation" Type="System.Drawing.Point" Scope="User">

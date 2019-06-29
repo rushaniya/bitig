@@ -4,7 +4,7 @@ using Bitig.Logic.Repository;
 
 namespace Bitig.Logic.Model
 {
-    public class AlifbaSummary : EquatableByID<int>
+    public class AlphabetSummary : EquatableByID<int>
     {
         private int id = -1;
 
@@ -17,20 +17,13 @@ namespace Bitig.Logic.Model
             }
         }
 
-        public BuiltInAlifbaType BuiltIn { get; set; }
-
         public string FriendlyName
         {
             get;
             set;
         }
 
-        public bool IsYanalif
-        {
-            get { return BuiltIn == BuiltInAlifbaType.Yanalif; }
-        }
-
-        public AlifbaFont DefaultFont
+        public AlphabetFont DefaultFont
         {
             get;
             set;
@@ -44,19 +37,16 @@ namespace Bitig.Logic.Model
             set;
         }
 
-        public AlifbaSummary()
+        public AlphabetSummary()
         {
         }
 
-        public AlifbaSummary(int ID, string FriendlyName, 
-            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn = BuiltInAlifbaType.None,
-            int? KeyboardLayoutID = null)
+        public AlphabetSummary(int ID, string FriendlyName, bool RightToLeft = false, AlphabetFont DefaultFont = null, int? KeyboardLayoutID = null)
         {
             id = ID;
             this.FriendlyName = FriendlyName;
             this.RightToLeft = RightToLeft;
             this.DefaultFont = DefaultFont;
-            this.BuiltIn = BuiltIn;
             this.KeyboardLayoutID = KeyboardLayoutID;
         }
 
@@ -66,9 +56,9 @@ namespace Bitig.Logic.Model
         }
     }
 
-    public class Alifba : AlifbaSummary
+    public class Alphabet : AlphabetSummary
     {
-        public List<AlifbaSymbol> CustomSymbols
+        public List<AlphabetSymbol> CustomSymbols
         {
             get;
             set;
@@ -86,13 +76,12 @@ namespace Bitig.Logic.Model
             }
         }
 
-        public Alifba(int ID, string FriendlyName,
-            bool RightToLeft = false, AlifbaFont DefaultFont = null, BuiltInAlifbaType BuiltIn = BuiltInAlifbaType.None,
-            KeyboardLayoutBase KeyboardLayout = null, List<AlifbaSymbol> CustomSymbols = null)
-            : base(ID, FriendlyName, RightToLeft, DefaultFont, BuiltIn,
+        public Alphabet(int ID, string FriendlyName, bool RightToLeft = false, AlphabetFont DefaultFont = null, 
+            KeyboardLayoutBase KeyboardLayout = null, List<AlphabetSymbol> CustomSymbols = null)
+            : base(ID, FriendlyName, RightToLeft, DefaultFont, 
                 KeyboardLayout == null ? null : (int?)KeyboardLayout.ID)
         {
-            this.CustomSymbols = CustomSymbols ?? new List<AlifbaSymbol>();
+            this.CustomSymbols = CustomSymbols ?? new List<AlphabetSymbol>();
             this.KeyboardLayout = KeyboardLayout;
         }
 

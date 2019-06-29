@@ -2,24 +2,23 @@
 {
     public class BuiltInDirection
     {
-        public BuiltInDirectionType ID
+        public BuiltInDirectionType Type
         {
             get; private set;
         }
 
-        public BuiltInAlifbaType Source { get; private set; }
+        public BuiltInAlphabetType Source { get; private set; }
 
-        public BuiltInAlifbaType Target { get; private set; }
+        public BuiltInAlphabetType Target { get; private set; }
 
         public string FriendlyName { get; private set; }
 
-        internal BuiltInDirection(BuiltInDirectionType ID, BuiltInAlifba Source, BuiltInAlifba Target)
+        internal BuiltInDirection(BuiltInDirectionType ID, BuiltInAlphabetType Source, BuiltInAlphabetType Target)
         {
-            this.ID = ID;
-            this.Source = Source.ID;
-            this.Target = Target.ID;
-            FriendlyName = string.Format("Built-in {0} - {1}", Source.DefaultName, Target.DefaultName);
-            //repo: what if user has changed default alifba names?
+            this.Type = ID;
+            this.Source = Source;
+            this.Target = Target;
+           //noyan FriendlyName = string.Format("Built-in {0} - {1}", Source.DefaultName, Target.DefaultName);
         }
 
         public override string ToString()

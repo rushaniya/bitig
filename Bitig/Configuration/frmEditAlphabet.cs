@@ -8,9 +8,9 @@ namespace Bitig.UI.Configuration
 {
     public partial class frmEditAlphabet : Form
     {
-        private Alifba x_AlphabetConfig;
+        private Alphabet x_AlphabetConfig;
 
-        public Alifba X_AlphabetConfig
+        public Alphabet X_AlphabetConfig
         {
             get { return x_AlphabetConfig; }
             set
@@ -25,15 +25,15 @@ namespace Bitig.UI.Configuration
             }
         }
 
-        private AlifbaFont x_SelectedFont;
+        private AlphabetFont x_SelectedFont;
 
-        private AlifbaRepository x_AlifbaRepository;
+        private AlphabetRepository x_AlphabetRepository;
         private KeyboardRepository x_KeyboardRepository;
 
-        public frmEditAlphabet(AlifbaRepository AlifbaRepo, KeyboardRepository KeyboardRepo)
+        public frmEditAlphabet(AlphabetRepository AlphabetRepo, KeyboardRepository KeyboardRepo)
         {
             InitializeComponent();
-            x_AlifbaRepository = AlifbaRepo;
+            x_AlphabetRepository = AlphabetRepo;
             x_KeyboardRepository = KeyboardRepo;
         }
 
@@ -69,7 +69,7 @@ namespace Bitig.UI.Configuration
             dlgFont.Font = (Font)x_SelectedFont;
             if (dlgFont.ShowDialog() == DialogResult.OK)
             {
-                x_SelectedFont = (AlifbaFont) dlgFont.Font;
+                x_SelectedFont = (AlphabetFont) dlgFont.Font;
                 lblFont.Text = "Font: " + x_SelectedFont.ToString();
             }
         }
@@ -82,18 +82,17 @@ namespace Bitig.UI.Configuration
                 return;
             }
             var _layoutID = cmbLayout.SelectedItem is KeyboardLayoutSummary ? (int?) ((KeyboardLayoutSummary)cmbLayout.SelectedItem).ID : null;
-            var _builtIn = x_AlphabetConfig == null ? BuiltInAlifbaType.None : x_AlphabetConfig.BuiltIn;
             var _id = x_AlphabetConfig == null ? -1 : x_AlphabetConfig.ID;
-            var _summary = new AlifbaSummary(_id, txtDisplayName.Text.Trim(),
-                 chkRightToLeft.Checked, x_SelectedFont, _builtIn, _layoutID);
+            var _summary = new AlphabetSummary(_id, txtDisplayName.Text.Trim(),
+                 chkRightToLeft.Checked, x_SelectedFont, _layoutID);
             if (x_AlphabetConfig == null)
             {
                     
-                x_AlifbaRepository.Insert(_summary);
+                x_AlphabetRepository.Insert(_summary);
             }
             else
             {
-                x_AlifbaRepository.Update(_summary);
+                x_AlphabetRepository.Update(_summary);
             }
             this.DialogResult = DialogResult.OK;
         }

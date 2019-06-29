@@ -105,8 +105,7 @@ namespace Bitig.UI.Configuration
             // 
             // bndSymbol
             // 
-            this.bndSymbol.DataSource = typeof(Bitig.Logic.Model.AlifbaSymbol);
-            this.bndSymbol.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.bndSymbol_ListChanged);
+            this.bndSymbol.DataSource = typeof(Bitig.Logic.Model.AlphabetSymbol);
             // 
             // pnlYanalifSettings
             // 

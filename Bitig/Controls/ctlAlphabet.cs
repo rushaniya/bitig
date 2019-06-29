@@ -7,26 +7,26 @@ using Bitig.Logic.Model;
 
 namespace Bitig.UI.Controls
 {
-    partial class ctlAlifba : UserControl
+    partial class ctlAlphabet : UserControl
     {
         internal event EventHandler<SymbolEventArgs> SymbolPressed;
 
-        private List<AlifbaSymbol> x_Symbols;
+        private List<AlphabetSymbol> x_Symbols;
         private ToolStripButton[] x_Buttons;
 
         private Size x_ButtonSize = new Size(30, 30);//config
 
         private bool x_HoldCapitalizeButton;
 
-        internal ctlAlifba(List<AlifbaSymbol> Symbols)
+        internal ctlAlphabet(List<AlphabetSymbol> Symbols)
         {
             InitializeComponent();
-            SymbolPressed += new EventHandler<SymbolEventArgs>(ctlAlifba_SymbolPressed);
+            SymbolPressed += new EventHandler<SymbolEventArgs>(ctlAlphabet_SymbolPressed);
             x_Symbols = Symbols;
             SetSymbols();
         }
 
-        private void ctlAlifba_SymbolPressed(object sender, SymbolEventArgs e)
+        private void ctlAlphabet_SymbolPressed(object sender, SymbolEventArgs e)
         {
             
         }
@@ -35,7 +35,7 @@ namespace Bitig.UI.Controls
         {
             if (sender is ToolStripButton)
             {
-                AlifbaSymbol _symbol = (sender as ToolStripButton).Tag as AlifbaSymbol;
+                AlphabetSymbol _symbol = (sender as ToolStripButton).Tag as AlphabetSymbol;
                 if (_symbol != null)
                 {
                     if (btnCapitalize.Visible && btnCapitalize.Checked)
@@ -60,7 +60,7 @@ namespace Bitig.UI.Controls
             {
                 foreach (ToolStripButton _btn in x_Buttons)
                 {
-                    AlifbaSymbol _symbol = _btn.Tag as AlifbaSymbol;
+                    AlphabetSymbol _symbol = _btn.Tag as AlphabetSymbol;
                     if (_symbol != null && !string.IsNullOrEmpty(_symbol.CapitalizedDisplayText))
                         _btn.Text = _symbol.CapitalizedDisplayText;
                 }
@@ -69,7 +69,7 @@ namespace Bitig.UI.Controls
             {
                 foreach (ToolStripButton _btn in x_Buttons)
                 {
-                    AlifbaSymbol _symbol = _btn.Tag as AlifbaSymbol;
+                    AlphabetSymbol _symbol = _btn.Tag as AlphabetSymbol;
                     if (_symbol != null)
                         _btn.Text = _symbol.DisplayText;
                 }
@@ -84,8 +84,8 @@ namespace Bitig.UI.Controls
 
         private void SetSymbols()
         {
-            tlsAlifba.Items.Clear();
-            tlsAlifba.Items.Add(btnCapitalize);
+            tlsAlphabet.Items.Clear();
+            tlsAlphabet.Items.Add(btnCapitalize);
             if (x_Symbols != null && x_Symbols.Count > 0)
             {
                 List<ToolStripButton> _buttons = new List<ToolStripButton>();
@@ -94,7 +94,7 @@ namespace Bitig.UI.Controls
                     btnCapitalize.Visible = true;
                 }
                 else btnCapitalize.Visible = false;
-                foreach (AlifbaSymbol _symbol in x_Symbols)
+                foreach (AlphabetSymbol _symbol in x_Symbols)
                 {
                     ToolStripButton _btn = new System.Windows.Forms.ToolStripButton();
                     _btn.ForeColor = System.Drawing.Color.Gray;
@@ -110,18 +110,18 @@ namespace Bitig.UI.Controls
                     _buttons.Add(_btn);
                 }
                 x_Buttons = _buttons.ToArray();
-                tlsAlifba.Items.AddRange(x_Buttons);
+                tlsAlphabet.Items.AddRange(x_Buttons);
             }
         }
 
         public int CalculateHeight()
         {
-            return tlsAlifba.GetPreferredSize(this.Size).Height;
+            return tlsAlphabet.GetPreferredSize(this.Size).Height;
             /*if (x_Buttons != null && x_Buttons.Length > 0)
             {
                 int _totalButtons = x_Buttons.Length;
                 if (btnCapitalize.Visible) _totalButtons++;
-                int _buttonsPerLine = tlsAlifba.Width / (btnCapitalize.Width + btnCapitalize.Margin.Horizontal);
+                int _buttonsPerLine = tlsAlphabet.Width / (btnCapitalize.Width + btnCapitalize.Margin.Horizontal);
                 if (_buttonsPerLine > 0)
                 {
                     int _lines = _totalButtons / _buttonsPerLine;

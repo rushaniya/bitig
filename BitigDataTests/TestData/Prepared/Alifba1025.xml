@@ -10,7 +10,7 @@
     </Item>
     <Item>
       <ID>1025</ID>
-      <FriendlyName>Test Alifba</FriendlyName>
+      <FriendlyName>Test Alphabet</FriendlyName>
       <DefaultFont Description="DejaVu Sans; 12pt" />
       <RightToLeft>true</RightToLeft>
       <BuiltIn>None</BuiltIn>
