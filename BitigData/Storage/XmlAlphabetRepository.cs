@@ -89,5 +89,10 @@ namespace Bitig.Data.Storage
             }
             return new Alphabet(StoredAlphabet.ID, StoredAlphabet.FriendlyName, StoredAlphabet.RightToLeft, _defaultFont, _keyboardLayout, _customSymbols);
         }
+
+        public override bool IsInUse(int ID)
+        {
+            return xmlContext.Directions.GetList().Any(x => x.SourceAlphabetID == ID || x.TargetAlphabetID == ID);
+        }
     }
 }

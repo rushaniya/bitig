@@ -160,7 +160,7 @@ namespace Bitig.UI.Configuration
             if (_duplicate != null)
             {
                 if (MessageBox.Show("Transliteration direction already exists. Replace?", "?",  //loc
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     return;
             }
             if (_duplicate != null)

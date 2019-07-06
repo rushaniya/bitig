@@ -5,43 +5,43 @@
       <ID>0</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>CyrillicYanalif</BuiltInID>
+      <BuiltInType>CyrillicYanalif</BuiltInType>
     </Item>
     <Item>
       <ID>1</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
-      <BuiltInID>CyrillicZamanalif</BuiltInID>
+      <BuiltInType>CyrillicZamanalif</BuiltInType>
     </Item>
     <Item>
       <ID>2</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
-      <BuiltInID>CyrillicRasmalif</BuiltInID>
+      <BuiltInType>CyrillicRasmalif</BuiltInType>
     </Item>
     <Item>
       <ID>3</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
-      <BuiltInID>YanalifZamanalif</BuiltInID>
+      <BuiltInType>YanalifZamanalif</BuiltInType>
     </Item>
     <Item>
       <ID>4</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
-      <BuiltInID>YanalifRasmalif</BuiltInID>
+      <BuiltInType>YanalifRasmalif</BuiltInType>
     </Item>
     <Item>
       <ID>5</ID>
       <SourceAlphabetID>2</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>ZamanalifYanalif</BuiltInID>
+      <BuiltInType>ZamanalifYanalif</BuiltInType>
     </Item>
     <Item>
       <ID>6</ID>
       <SourceAlphabetID>3</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>RasmalifYanalif</BuiltInID>
+      <BuiltInType>RasmalifYanalif</BuiltInType>
     </Item>
   </Collection>
 </Config>

@@ -16,5 +16,7 @@ namespace Bitig.Logic.Repository
         public abstract void Delete(int ID);
 
         public abstract void Update(AlphabetSummary Item);
+
+        public abstract bool IsInUse(int ID);
     }
 }

@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Bitig.Logic.Model;
-using Bitig.Logic.Repository;
 
 namespace Bitig.UI.Configuration
 {
     public partial class frmEditAlphabet : Form
     {
-        private Alphabet x_AlphabetConfig;
+        private AlphabetSummary x_AlphabetConfig;
 
-        public Alphabet X_AlphabetConfig
+        public AlphabetSummary X_AlphabetConfig
         {
             get { return x_AlphabetConfig; }
             set
@@ -26,15 +26,14 @@ namespace Bitig.UI.Configuration
         }
 
         private AlphabetFont x_SelectedFont;
+        private readonly List<KeyboardLayoutSummary> x_KeyboardSummaries;
 
-        private AlphabetRepository x_AlphabetRepository;
-        private KeyboardRepository x_KeyboardRepository;
-
-        public frmEditAlphabet(AlphabetRepository AlphabetRepo, KeyboardRepository KeyboardRepo)
+        public frmEditAlphabet(List<KeyboardLayoutSummary> KeyboardSummaries)
         {
+            if (KeyboardSummaries == null)
+                throw new ArgumentNullException("KeyboardSummaries");
             InitializeComponent();
-            x_AlphabetRepository = AlphabetRepo;
-            x_KeyboardRepository = KeyboardRepo;
+            x_KeyboardSummaries = KeyboardSummaries;
         }
 
         private void frmEditAlphabet_Load(object sender, EventArgs e)
@@ -50,13 +49,12 @@ namespace Bitig.UI.Configuration
         {
             cmbLayout.Items.Add("None"); //loc
             int _index = 0;
-            var _summaryList = x_KeyboardRepository.GetSummaryList();
-            for (int i = 0; i < _summaryList.Count; i++)
+            for (int i = 0; i < x_KeyboardSummaries.Count; i++)
             {
-                var _item = _summaryList[i];
+                var _item = x_KeyboardSummaries[i];
                 cmbLayout.Items.Add(_item);
-                if (x_AlphabetConfig != null && x_AlphabetConfig.KeyboardLayout != null &&
-                    x_AlphabetConfig.KeyboardLayout.ID == _item.ID)
+                if (x_AlphabetConfig != null && 
+                    x_AlphabetConfig.KeyboardLayoutID == _item.ID)
                 {
                     _index = i + 1;
                 }
@@ -85,15 +83,7 @@ namespace Bitig.UI.Configuration
             var _id = x_AlphabetConfig == null ? -1 : x_AlphabetConfig.ID;
             var _summary = new AlphabetSummary(_id, txtDisplayName.Text.Trim(),
                  chkRightToLeft.Checked, x_SelectedFont, _layoutID);
-            if (x_AlphabetConfig == null)
-            {
-                    
-                x_AlphabetRepository.Insert(_summary);
-            }
-            else
-            {
-                x_AlphabetRepository.Update(_summary);
-            }
+            x_AlphabetConfig = _summary;
             this.DialogResult = DialogResult.OK;
         }
     }

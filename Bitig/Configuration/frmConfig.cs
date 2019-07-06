@@ -65,10 +65,11 @@ namespace Bitig.UI.Configuration
 
         private void btnAddAlphabet_Click(object sender, EventArgs e)
         {
-            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlphabetRepo, x_KeyboardRepo))
+            using (frmEditAlphabet _editForm = new frmEditAlphabet(x_KeyboardRepo.GetSummaryList()))
             {
                 if (_editForm.ShowDialog() == DialogResult.OK)
                 {
+                    x_AlphabetRepo.Insert(_editForm.X_AlphabetConfig);
                     DisplayAlphabets();
                     x_AlphabetsModified = true;
                 }
@@ -79,12 +80,12 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {
-                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_AlphabetRepo, x_KeyboardRepo))
+                using (frmEditAlphabet _editForm = new frmEditAlphabet(x_KeyboardRepo.GetSummaryList()))
                 {
-                    var _fullAlphabet = x_AlphabetRepo.Get(x_CurrentAlphabet.ID);
-                    _editForm.X_AlphabetConfig = _fullAlphabet;
+                    _editForm.X_AlphabetConfig = x_CurrentAlphabet;
                     if (_editForm.ShowDialog() == DialogResult.OK)
                     {
+                        x_AlphabetRepo.Update(_editForm.X_AlphabetConfig);
                         DisplayAlphabets();
                         DisplayDirections();
                         bndDirection.ResetBindings(false);
@@ -98,7 +99,12 @@ namespace Bitig.UI.Configuration
         {
             if (x_CurrentAlphabet != null)
             {//loc
-                if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                if (x_AlphabetRepo.IsInUse(x_CurrentAlphabet.ID))
+                {
+                    MessageBox.Show("This alphabet is in use.", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     x_AlphabetRepo.Delete(x_CurrentAlphabet.ID);
                     DisplayAlphabets();
@@ -206,7 +212,7 @@ namespace Bitig.UI.Configuration
                 //loc
                 if (MessageBox.Show(string.Format("Remove transliteration direction {0}?",
                     x_CurrentDirection.FriendlyName),
-                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     x_DirectionRepo.Delete(x_CurrentDirection.ID);
                     DisplayDirections();
@@ -258,7 +264,7 @@ namespace Bitig.UI.Configuration
 
         private void dgvKeyboardLayouts_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow _row = dgvDirections.Rows[e.RowIndex];
+            DataGridViewRow _row = dgvKeyboardLayouts.Rows[e.RowIndex];
             if (_row == null) x_CurrentKeyboardSummary = null;
             else
             {
@@ -316,7 +322,7 @@ namespace Bitig.UI.Configuration
                 //loc
                 if (MessageBox.Show(string.Format("Remove keyboard layout {0}?",
                     x_CurrentKeyboardSummary.FriendlyName),
-                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     x_KeyboardRepo.Delete(x_CurrentKeyboardSummary.ID);
                     x_AlphabetsModified = true;

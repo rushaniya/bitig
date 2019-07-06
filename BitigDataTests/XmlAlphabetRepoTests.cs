@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
 using System.Drawing;
-using Bitig.Logic.Repository;
 using Bitig.Base;
 
 namespace BitigDataTests
@@ -22,7 +20,6 @@ namespace BitigDataTests
         private readonly string testFilePath = currentDataFolder + "Alphabets.xml";
         private readonly string preparedFile = currentDataFolder + @"Prepared\Alphabet1025.xml";
         private readonly string preparedFileSymbols = currentDataFolder + @"Prepared\Symbols\1025.xml";
-        private readonly string corruptedFile = currentDataFolder + @"Corrupted\NoYanalif.xml";
         private readonly string directionsPath = currentDataFolder + "Directions.xml";
 
         [TestInitialize]
@@ -126,15 +123,6 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void Get_CreateDefault()
-        {
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
-            var _testRepo = _xmlContext.AlphabetRepository;
-            var _alphabet = _testRepo.Get(0); //Cyrillic
-            Assert.IsNotNull(_alphabet);
-        }
-
-        [TestMethod]
         public void Update()
         {
             PrepareKeyboards();
@@ -195,9 +183,11 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_InUse()
         {
+            File.Copy(preparedFile, testFilePath);
+            File.Copy(currentDataFolder + "Prepared\\DirectionCyrYan.xml", directionsPath);
             var _xmlContext = new XmlContext(testFilePath, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
-            var _testAlphabet = _testRepo.Get(0); //Cyrillic
+            var _testAlphabet = _testRepo.Get(0); 
             try
             {
                 _testRepo.Delete(_testAlphabet.ID);
@@ -208,22 +198,6 @@ namespace BitigDataTests
                 Assert.AreEqual("Cannot delete alphabet in use.", ex.Message);
             }            
         }
-
-        //no longer relevant
-       /* [TestMethod]
-        public void GenerateAlphabetID()
-        {
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
-            var _testRepo = _xmlContext.AlphabetRepository;
-            var _name1 = "Test alphabet " + Guid.NewGuid();
-            var _name2 = "Test alphabet " + Guid.NewGuid();
-            var _alphabet1 = new Alphabet(-1, _name1);
-            _testRepo.Insert(_alphabet1);
-            var _alphabet2 = new Alphabet(-1, _name2);
-            _testRepo.Insert(_alphabet2);
-            Assert.AreEqual(DefaultConfiguration.BuiltInAlphabetList.Count, _alphabet1.ID);
-            Assert.AreEqual(DefaultConfiguration.BuiltInAlphabetList.Count + 1, _alphabet2.ID);
-        }*/
 
         [TestMethod]
         public void InvalidConfig()

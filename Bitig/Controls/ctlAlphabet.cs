@@ -15,6 +15,7 @@ namespace Bitig.UI.Controls
         private ToolStripButton[] x_Buttons;
 
         private Size x_ButtonSize = new Size(30, 30);//config
+        private float x_FontSize = 12;
 
         private bool x_HoldCapitalizeButton;
 
@@ -107,6 +108,7 @@ namespace Bitig.UI.Controls
                     _btn.Tag = _symbol;
                     _btn.Text = _symbol.DisplayText;
                     _btn.Click += new EventHandler(Btn_Click);
+                    _btn.Font = new Font(_btn.Font.FontFamily, x_FontSize);
                     _buttons.Add(_btn);
                 }
                 x_Buttons = _buttons.ToArray();

@@ -50,13 +50,7 @@ namespace Bitig.UI
 
             InitializeRepositories();
 
-            FillAlphabets();
-            if (cmbTranslit.Items.Count > 0)
-                cmbTranslit.SelectedIndex = 0;
-            //config
-            if (cmbMainAlphabet.Items.Count > 0)
-                cmbMainAlphabet.SelectedIndex = 0;
-            //noyan selected index changed triggered?
+            FillAlphabets(false);
 
             ctlMultiRtb1.MessageSent += new ctlMultiRtb.CtlMessage(ctlMultiRtb1_MessageSent);
             ctlMultiRtb1.ResetFormatDisplay();
@@ -64,10 +58,8 @@ namespace Bitig.UI
             mniTranslitPanel.Checked = false;
             btnShowTranslit.Checked = false;
             spltMain.Panel1Collapsed = true;
-            btnShowAlphabet.Checked = false;
-            mniAlphabet.Checked = false;
-            //noyan: load main alphabet. for now, it is yanalif
-            //config: main alphabet
+            btnMainKeyboard.Checked = false;
+            mniMainKeyboard.Checked = false;
         }
 
         private void InitializeRepositories()
@@ -132,15 +124,15 @@ namespace Bitig.UI
 
         #region Form Layout
 
-        private void btnShowAlphabet_CheckedChanged(object sender, EventArgs e)
+        private void btnMainKeyboard_CheckedChanged(object sender, EventArgs e)
         {
-            mniAlphabet.Checked = btnShowAlphabet.Checked;
+            mniMainKeyboard.Checked = btnMainKeyboard.Checked;
         }
 
 
         private void mniAlphabet_CheckedChanged(object sender, EventArgs e)
         {
-            if (mniAlphabet.Checked)
+            if (mniMainKeyboard.Checked)
                 LoadOnscreenKeyboard(x_MainAlphabet, pnlMainKeyboard, ctlMultiRtb1.RtbMain);
             else pnlMainKeyboard.Visible = false;
         }
@@ -216,19 +208,60 @@ namespace Bitig.UI
 
         private AlphabetSummary x_MainAlphabet;
 
+        private List<AlphabetSummary> x_AlphabetList;
+
         private bool x_FillingAlphabets;
 
-        private void FillAlphabets()
+        private void FillAlphabets(bool RestoreSelectedItems)
         {
             x_FillingAlphabets = true;
+
+            var _prevTranslit = cmbTranslit.SelectedItem as AlphabetSummary;
+            var _prevMain = cmbMainAlphabet.SelectedItem as AlphabetSummary;
+            x_AlphabetList = x_AlphabetRepository.GetList();
+            if (!RestoreSelectedItems)
+            {
+                var _mainID = 1; //config
+                var _translitID = 0; //config
+                _prevMain = x_AlphabetList.Find(x => x.ID == _mainID);
+                _prevTranslit = x_AlphabetList.Find(x => x.ID == _translitID);
+            }
             cmbTranslit.Items.Clear();
             cmbMainAlphabet.Items.Clear();
-            foreach (var _alphabet in x_AlphabetRepository.GetList())
+            foreach (var _alphabet in x_AlphabetList)
             {
                 cmbTranslit.Items.Add(_alphabet);
                 cmbMainAlphabet.Items.Add(_alphabet);
             }
+            if (x_AlphabetList.Count < 2)
+            {
+                btnShowTranslit.Checked = false;
+                btnShowTranslit.Enabled = false;
+                mniTranslitPanel.Enabled = false;
+            }
+            else
+            {
+                btnShowTranslit.Enabled = true;
+                mniTranslitPanel.Enabled = false;
+            }
             x_FillingAlphabets = false;
+            if (_prevTranslit != null && cmbTranslit.Items.Contains(_prevTranslit))
+            {
+                cmbTranslit.SelectedItem = _prevTranslit;
+            }
+            else if (cmbTranslit.Items.Count > 0)
+                cmbTranslit.SelectedIndex = 0;
+            if (_prevMain != null && cmbMainAlphabet.Items.Contains(_prevMain))
+            {
+                cmbMainAlphabet.SelectedItem = _prevMain;
+            }
+            else if (cmbMainAlphabet.Items.Count > 0)
+                cmbMainAlphabet.SelectedIndex = 0;
+
+            if (cmbMainAlphabet.SelectedItem == null) //SelectedIndex_Changed was not triggered
+                GetMainAlphabet();
+            if (cmbTranslit.SelectedItem == null) 
+                GetTranslitAlphabet();
         }
 
         private void cmbMainAlphabet_SelectedIndexChanged(object sender, EventArgs e)
@@ -243,6 +276,7 @@ namespace Bitig.UI
 
         private void GetTranslitAlphabet()
         {
+            var _prevTranslit = x_TranslitAlphabet;
             x_TranslitAlphabet = cmbTranslit.SelectedItem as AlphabetSummary;
             AssignAlphabetProperties(x_TranslitAlphabet, txtTranslit);
             if (x_TranslitAlphabet != null && OnscreenSymbolsAvailable(x_TranslitAlphabet.ID))
@@ -256,6 +290,7 @@ namespace Bitig.UI
             else
             {
                 btnTranslitKeyboard.Enabled = false;
+                btnTranslitKeyboard.Checked = false;
                 pnlTranslitKeyboard.Visible = false;
             }
             if (x_TranslitAlphabet != null && KeyboardLayoutAvailable(x_TranslitAlphabet.ID))
@@ -269,24 +304,44 @@ namespace Bitig.UI
                 if (x_TranslitKeyManager.IsAttached)
                     x_TranslitKeyManager.Detach();
             }
+            if (x_TranslitAlphabet == null)
+            {
+                btnTranslitConfig.Enabled = false;
+            }
+            else
+            {
+                btnTranslitConfig.Enabled = true;
+                if (x_TranslitAlphabet.Equals(x_MainAlphabet))
+                {
+                    if (_prevTranslit != null && !_prevTranslit.Equals(x_MainAlphabet))
+                        cmbMainAlphabet.SelectedItem = _prevTranslit;
+                    else
+                    {
+                        var _anyOtherAlphabet = x_AlphabetList.Find(x => !x.Equals(x_TranslitAlphabet));
+                        cmbMainAlphabet.SelectedItem = _anyOtherAlphabet;
+                    }
+                }
+            }
             GetCurrentDirection();
         }
 
         private void GetMainAlphabet()
         {
+            var _prevMain = x_MainAlphabet;
             x_MainAlphabet = cmbMainAlphabet.SelectedItem as AlphabetSummary;
             AssignAlphabetProperties(x_MainAlphabet, ctlMultiRtb1.RtbMain);
-            if (x_TranslitAlphabet != null && OnscreenSymbolsAvailable(x_TranslitAlphabet.ID))
+            if (x_MainAlphabet != null && OnscreenSymbolsAvailable(x_MainAlphabet.ID))
             {
-                btnShowAlphabet.Enabled = true;
-                if (btnShowAlphabet.Checked)
+                btnMainKeyboard.Enabled = true;
+                if (btnMainKeyboard.Checked)
                 {
                     LoadOnscreenKeyboard(x_MainAlphabet, pnlMainKeyboard, ctlMultiRtb1.RtbMain);
                 }
             }
             else
             {
-                btnShowAlphabet.Enabled = false;
+                btnMainKeyboard.Enabled = false;
+                btnMainKeyboard.Checked = false;
                 pnlMainKeyboard.Visible = false;
             }
             if (x_MainAlphabet != null && KeyboardLayoutAvailable(x_MainAlphabet.ID))
@@ -300,6 +355,24 @@ namespace Bitig.UI
                 if (x_MainKeyManager.IsAttached)
                     x_MainKeyManager.Detach();
             }
+            if (x_MainAlphabet == null)
+            {
+                btnMainConfig.Enabled = false;
+            }
+            else
+            {
+                btnMainConfig.Enabled = true;
+                if (x_MainAlphabet.Equals(x_TranslitAlphabet))
+                {
+                    if (_prevMain != null && !_prevMain.Equals(x_TranslitAlphabet))
+                        cmbTranslit.SelectedItem = _prevMain;
+                    else
+                    {
+                        var _anyOtherAlphabet = x_AlphabetList.Find(x => !x.Equals(x_MainAlphabet));
+                        cmbTranslit.SelectedItem = _anyOtherAlphabet;
+                    }
+                }
+            }
             GetCurrentDirection();
         }
 
@@ -307,12 +380,12 @@ namespace Bitig.UI
         {
             if (Alphabet == null)
             {
-                TargetTextBox.Font = SystemFonts.DefaultFont;//config
+                TargetTextBox.SelectionFont = SystemFonts.DefaultFont;//config
                 TargetTextBox.RightToLeft = RightToLeft.No;
             }
             else
             {
-                TargetTextBox.Font = GetDefaultFont(Alphabet);
+                TargetTextBox.SelectionFont = GetDefaultFont(Alphabet);
                 TargetTextBox.RightToLeft = Alphabet.RightToLeft ? RightToLeft.Yes : RightToLeft.No;
             }
         }
@@ -332,51 +405,59 @@ namespace Bitig.UI
 
         #region Transliteration
 
-        private Direction x_CurrentDirection;
+        private Direction x_DirectionToMain;
+        private Direction x_DirectionFromMain;
 
         private void GetCurrentDirection()
         {
             if (x_TranslitAlphabet != null && x_MainAlphabet != null)
             {
-                x_CurrentDirection = x_DirectionRepository.GetByAlphabetIDs(x_TranslitAlphabet.ID, x_MainAlphabet.ID);
+                x_DirectionToMain = x_DirectionRepository.GetByAlphabetIDs(x_TranslitAlphabet.ID, x_MainAlphabet.ID);
+                x_DirectionFromMain = x_DirectionRepository.GetByAlphabetIDs(x_MainAlphabet.ID, x_TranslitAlphabet.ID);
             }
             else
             {
-                x_CurrentDirection = null;
+                x_DirectionToMain = null;
+                x_DirectionFromMain = null;
             }
-            if (x_CurrentDirection == null)
+            if (x_DirectionToMain == null)
             {
                 btnToMain.Enabled = false;
-                btnFromMain.Enabled = false;
                 mniCurrentMapping.Enabled = false;
             }
             else
             {
                 var _toMainToolTip = string.Format("Convert from {0} to {1}", x_TranslitAlphabet.FriendlyName, x_MainAlphabet.FriendlyName);
-                var _fromMainToolTip = string.Format("Convert from {0} to {1}", x_MainAlphabet.FriendlyName, x_TranslitAlphabet.FriendlyName);
-
                 btnToMain.Enabled = true;
                 btnToMain.ToolTipText = _toMainToolTip;
+                mniCurrentMapping.Enabled = x_DirectionToMain.ManualCommand != null;
+            }
+            if (x_DirectionFromMain == null)
+            {
+                btnFromMain.Enabled = false;
+            }
+            else
+            {
                 btnFromMain.Enabled = true;
+                var _fromMainToolTip = string.Format("Convert from {0} to {1}", x_MainAlphabet.FriendlyName, x_TranslitAlphabet.FriendlyName);
                 btnFromMain.ToolTipText = _fromMainToolTip;
-                mniCurrentMapping.Enabled = x_CurrentDirection.ManualCommand != null;
             }
         }
 
         private void btnToMain_Click(object sender, EventArgs e)
         {
-            if (x_CurrentDirection == null)
+            if (x_DirectionToMain == null)
                 return;
-            ctlMultiRtb1.RtbMain.SelectedText = x_CurrentDirection.Transliterate(txtTranslit.Text);
+            ctlMultiRtb1.RtbMain.SelectedText = x_DirectionToMain.Transliterate(txtTranslit.Text);
             ctlMultiRtb1.RtbMain.Select(ctlMultiRtb1.RtbMain.TextLength, 0);
             ctlMultiRtb1.RtbMain.ScrollToCaret();
         }
 
         private void btnFromMain_Click(object sender, EventArgs e)
         {
-            if (x_CurrentDirection == null)
+            if (x_DirectionFromMain == null)
                 return;
-            string _translitted = x_CurrentDirection.Transliterate(ctlMultiRtb1.RtbMain.Text);
+            string _translitted = x_DirectionFromMain.Transliterate(ctlMultiRtb1.RtbMain.Text);
             txtTranslit.SelectedText = InsertTextboxLineBreaks(_translitted);
         }
 
@@ -456,35 +537,15 @@ namespace Bitig.UI
 
         private void ReloadAlphabets()
         {
-            bool _osk1 = btnTranslitKeyboard.Checked;
-            bool _osk2 = btnTranslitKeyboard.Checked;
             ResetOnscreenKeyboards();
             ResetKeyboardLayouts();
-            ReloadDirections();
-            btnTranslitKeyboard.Checked = btnTranslitKeyboard.Enabled && _osk1;
-            btnTranslitKeyboard.Checked = btnTranslitKeyboard.Enabled && _osk2;
-        }
-
-        private void ReloadDirections()
-        {
-            var _prevSource = cmbTranslit.SelectedItem as AlphabetSummary;
-            FillAlphabets();
-            if (_prevSource != null && cmbTranslit.Items.Contains(_prevSource))
-            {
-                cmbTranslit.SelectedItem = _prevSource;
-            }
+            FillAlphabets(true);
         }
 
         private void ResetOnscreenKeyboards()
         {
             pnlTranslitKeyboard.Controls.Clear();
             pnlMainKeyboard.Controls.Clear();
-            //noyan needed?
-            //if (pnlTranslitKeyboard.Visible)
-            //{
-            //    pnlTranslitKeyboard.Visible = false;
-            //    btnTranslitKeyboard.Checked = false;
-            //}
             foreach (int _key in x_OnscreenKeyboards.Keys)
             {
                 if (x_OnscreenKeyboards[_key] != null)
@@ -528,7 +589,7 @@ namespace Bitig.UI
 
         private void mniExclusions_Click(object sender, EventArgs e)
         {
-            using (var _configForm = new frmExclusions(x_CurrentDirection, x_DataContext, true))
+            using (var _configForm = new frmExclusions(x_DirectionToMain, x_DataContext, true))
             {
                 _configForm.ShowDialog();
             }
@@ -545,13 +606,9 @@ namespace Bitig.UI
             {
                 if (_configForm.ShowDialog() == DialogResult.OK)
                 {
-                    if (_configForm.X_AlphabetsModified)
+                    if (_configForm.X_AlphabetsModified || _configForm.X_DirectionsModified)
                     {
-                        ReloadAlphabets();//this calls ReloadDirections()
-                    }
-                    else if (_configForm.X_DirectionsModified)
-                    {
-                        ReloadDirections();
+                        ReloadAlphabets();
                     }
                 }
             }
@@ -559,14 +616,14 @@ namespace Bitig.UI
 
         private void mniCurrentMapping_Click(object sender, EventArgs e)
         {
-            if (x_CurrentDirection == null || x_CurrentDirection.ManualCommand == null)
+            if (x_DirectionToMain == null || x_DirectionToMain.ManualCommand == null)
                 return;
-            using (var _mappingForm = new frmSymbolMapping(x_CurrentDirection.Source, x_CurrentDirection.Target, x_DirectionRepository, x_CurrentDirection.ManualCommand.SymbolMapping, null))
+            using (var _mappingForm = new frmSymbolMapping(x_DirectionToMain.Source, x_DirectionToMain.Target, x_DirectionRepository, x_DirectionToMain.ManualCommand.SymbolMapping, null))
             {
                 if (_mappingForm.ShowDialog() == DialogResult.OK)
                 {
-                    x_CurrentDirection.ManualCommand = new ManualCommand(_mappingForm.SymbolMapping);
-                    x_DirectionRepository.Update(x_CurrentDirection);
+                    x_DirectionToMain.ManualCommand = new ManualCommand(_mappingForm.SymbolMapping);
+                    x_DirectionRepository.Update(x_DirectionToMain);
                     x_DataContext.SaveChanges();
                 }
             }
@@ -574,12 +631,29 @@ namespace Bitig.UI
 
         private void btnTranslitConfig_Click(object sender, EventArgs e)
         {
-            //noyan config translit alphabet
+            EditAlphabetConfig(x_TranslitAlphabet);
         }
 
         private void btnMainConfig_Click(object sender, EventArgs e)
         {
-            //noyan config main alphabet
+            EditAlphabetConfig(x_MainAlphabet);
+        }
+
+        private void EditAlphabetConfig(AlphabetSummary AlphabetConfig)
+        {
+            if (AlphabetConfig == null)
+                return;
+            using (var _alphabetForm = new frmEditAlphabet(x_DataContext.KeyboardRepository.GetSummaryList()))
+            {
+                var _alphabet = x_AlphabetRepository.Get(AlphabetConfig.ID);
+                _alphabetForm.X_AlphabetConfig = _alphabet;
+                if (_alphabetForm.ShowDialog() == DialogResult.OK)
+                {
+                    x_AlphabetRepository.Update(_alphabetForm.X_AlphabetConfig);
+                    x_DataContext.SaveChanges();
+                    ReloadAlphabets();
+                }
+            }
         }
 
         #endregion

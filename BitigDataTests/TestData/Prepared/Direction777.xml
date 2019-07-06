@@ -5,49 +5,49 @@
       <ID>1</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
-      <BuiltInID>CyrillicZamanalif</BuiltInID>
+      <BuiltInType>CyrillicZamanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>2</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
-      <BuiltInID>CyrillicRasmalif</BuiltInID>
+      <BuiltInType>CyrillicRasmalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>3</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
-      <BuiltInID>YanalifZamanalif</BuiltInID>
+      <BuiltInType>YanalifZamanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>4</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
-      <BuiltInID>YanalifRasmalif</BuiltInID>
+      <BuiltInType>YanalifRasmalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>5</ID>
       <SourceAlphabetID>2</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>ZamanalifYanalif</BuiltInID>
+      <BuiltInType>ZamanalifYanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>6</ID>
       <SourceAlphabetID>3</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>RasmalifYanalif</BuiltInID>
+      <BuiltInType>RasmalifYanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
       <ID>777</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
-      <BuiltInID>None</BuiltInID>
+      <BuiltInType>None</BuiltInType>
       <AssemblyPath>TestAssembly32062ed5-dbb3-4274-a5f8-933189152bbc</AssemblyPath>
       <TypeName>TestType</TypeName>
     </Item>
@@ -55,7 +55,7 @@
       <ID>778</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>0</TargetAlphabetID>
-      <BuiltInID>YanalifZamanalif</BuiltInID>
+      <BuiltInType>YanalifZamanalif</BuiltInType>
     </Item>
   </Collection>
 </Config>
