@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Bitig.Data.Storage;
 using Bitig.Logic.Model;
-using Bitig.Logic.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BitigDataTests
@@ -14,9 +13,9 @@ namespace BitigDataTests
     {
         private const string currentDataFolder = @"XmlContextTestData\";
         private readonly string testAlphabetPath = currentDataFolder + "Alphabets.xml";
-        private readonly string preparedAlphabetFile = currentDataFolder + @"Prepared\Alphabet1025.xml";
+        private readonly string preparedAlphabetFile = currentDataFolder + "Alphabet1025.xml";
         private readonly string testDirectionPath = currentDataFolder + "Directions.xml";
-        private readonly string preparedDirectionFile = currentDataFolder + @"Prepared\Direction777.xml";
+        private readonly string preparedDirectionFile = currentDataFolder + "Direction777.xml";
 
         [TestInitialize]
         [TestCleanup]
@@ -26,6 +25,8 @@ namespace BitigDataTests
                 Directory.Delete(currentDataFolder, true);
             Directory.CreateDirectory(currentDataFolder);
             TestUtils.CopyDirectory("TestData", currentDataFolder);
+            File.Copy(preparedAlphabetFile, testAlphabetPath);
+            File.Copy(preparedDirectionFile, testDirectionPath);
         }
 
 
@@ -49,7 +50,6 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
-            File.Copy(preparedAlphabetFile, testAlphabetPath);
             var _xmlContext = new XmlContext(testAlphabetPath, testDirectionPath);
             var _alphabetRepo = _xmlContext.AlphabetRepository;
             var _alphabet = _alphabetRepo.Get(1025);
@@ -191,7 +191,6 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            File.Copy(preparedAlphabetFile, testAlphabetPath);
             var _xmlContext = new XmlContext(testAlphabetPath, testDirectionPath);
             var _alphabetRepo = _xmlContext.AlphabetRepository;
             var _alphabet = _alphabetRepo.Get(1025);
@@ -291,16 +290,6 @@ namespace BitigDataTests
               _dir.Source.ID == _alif1.ID && _dir.Target.ID == _alif2.ID
               && _dir.AssemblyPath == _assembly);
             Assert.IsNotNull(_direction);
-        }
-
-        [TestMethod]
-        public void Initialization_FillList()
-        {
-            File.Copy(preparedDirectionFile, testDirectionPath);
-            var _xmlContext = new XmlContext(testAlphabetPath, testDirectionPath);
-            var _directionRepo = _xmlContext.DirectionRepository;
-            var _dirList = _directionRepo.GetList();
-            Assert.AreEqual(9, _dirList.Count);
         }
 
         [TestMethod]

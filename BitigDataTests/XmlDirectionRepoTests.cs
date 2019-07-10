@@ -18,33 +18,27 @@ namespace BitigDataTests
 
         private const string sourceDataFolder = @"TestData\";
         private const string currentDataFolder = @"DirectionRepoTestData\";
-        private readonly string sourcePreparedFile = sourceDataFolder + @"Prepared\Direction777.xml";
-        private readonly string currentTestFilePath = currentDataFolder + "Directions.xml";
-        private readonly string currentAlphabetFilePath = currentDataFolder + "Alphabets.xml";
+        private readonly string currentDirectionsPath = currentDataFolder + "Directions.xml";
+        private readonly string currentALphabetsPath = currentDataFolder + "Alphabets.xml";
+        private readonly string preparedFile = sourceDataFolder + @"Direction777.xml";
+        private readonly string preparedAlphabetsFile = sourceDataFolder + @"Alphabet1025.xml";
 
-        private DirectionRepository InitTestRepo(string preparedFilePath = null)
+        private DirectionRepository InitTestRepo()
         {
-            if (preparedFilePath != null)
-            {
-                File.Copy(preparedFilePath, currentTestFilePath);
-                var _preparedFolder = Path.GetDirectoryName(preparedFilePath) ?? "";
-                var _exclusionsPath = Path.Combine(_preparedFolder, "Exclusions");
-                if (Directory.Exists(_exclusionsPath))
-                    TestUtils.CopyDirectory(_exclusionsPath, currentDataFolder + "Exclusions");
-                var _mappingsPath = Path.Combine(_preparedFolder, "Mappings");
-                if (Directory.Exists(_mappingsPath))
-                    TestUtils.CopyDirectory(_mappingsPath, currentDataFolder + "Mappings");
-            }
-            var _xmlContext = new XmlContext(currentAlphabetFilePath, currentTestFilePath);
+            File.Copy(preparedFile, currentDirectionsPath);
+            File.Copy(preparedAlphabetsFile, currentALphabetsPath);
+            TestUtils.CopyDirectory(sourceDataFolder + "Exclusions", currentDataFolder + "Exclusions");
+            TestUtils.CopyDirectory(sourceDataFolder + "Mappings", currentDataFolder + "Mappings");
+            var _xmlContext = new XmlContext(currentALphabetsPath, currentDirectionsPath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
 
         private DirectionRepository InitCheckRepo()
         {
-            if (!File.Exists(currentTestFilePath))
+            if (!File.Exists(currentDirectionsPath))
                 throw new Exception("File not created.");
-            var _xmlContext = new XmlContext(currentAlphabetFilePath, currentTestFilePath);
+            var _xmlContext = new XmlContext(currentALphabetsPath, currentDirectionsPath);
             var _dirRepo = _xmlContext.DirectionRepository;
             return _dirRepo;
         }
@@ -61,7 +55,7 @@ namespace BitigDataTests
        [TestMethod]
         public void GetList()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _list = _testRepo.GetList();
             Assert.AreEqual(8, _list.Count);
         }
@@ -69,7 +63,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Get()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _direction777 = _testRepo.Get(777);
             Assert.IsNotNull(_direction777);
             Assert.IsNotNull(_direction777.Source);
@@ -80,17 +74,6 @@ namespace BitigDataTests
             Assert.IsNotNull(_direction778.Source);
             Assert.IsNotNull(_direction778.Target);
             Assert.IsNotNull(_direction778.BuiltInType);
-        }
-
-        [TestMethod]
-        public void Get_CreateDefault()
-        {
-            var _testRepo = InitTestRepo();
-            _testRepo.Get(0);
-
-            var _checkRepo = InitCheckRepo();
-            var _count = _checkRepo.GetList().Count;
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _count);
         }
 
         [TestMethod]
@@ -162,10 +145,10 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _alphabetRepo = _testRepo.DataContext.AlphabetRepository;
             var _direction = _testRepo.Get(777);
-            Assert.AreEqual(null, _direction.BuiltInType);
+            Assert.AreEqual(BuiltInDirectionType.None, _direction.BuiltInType);
             Assert.AreEqual(0, _direction.Source.ID);
             Assert.AreEqual(1, _direction.Target.ID);
 
@@ -194,7 +177,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _direction = _testRepo.Get(777);
             Assert.IsNotNull(_direction);
             _testRepo.Delete(_direction.ID);
@@ -228,7 +211,7 @@ namespace BitigDataTests
         [TestMethod]
         public void GetExclusions()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _direction = _testRepo.Get(777);
             Assert.IsNotNull(_direction.Exclusions);
             Assert.AreEqual(1, _direction.Exclusions.Count);
@@ -259,20 +242,11 @@ namespace BitigDataTests
         }
 
         [TestMethod]
-        public void InvalidConfig()
-        {
-            var _invalidFile = sourceDataFolder + @"corrupted\InvalidDirections.xml";
-            var _testRepo = InitTestRepo(_invalidFile);
-            var _list = _testRepo.GetList();
-            Assert.AreEqual(DefaultConfiguration.BuiltInDirections.Count, _list.Count);
-        }
-
-        [TestMethod]
         public void Insert_ManualCommand()
         {
             var _testRepo = InitTestRepo();
-            var _source = _testRepo.DataContext.AlphabetRepository.Get(0);
-            var _target = _testRepo.DataContext.AlphabetRepository.Get(1);//noyan pre-fill alphabet cnfig
+            var _source = _testRepo.DataContext.AlphabetRepository.Get(1);
+            var _target = _testRepo.DataContext.AlphabetRepository.Get(0);
             var _direction = new Direction(-1, _source, _target, null, 
                 ManualCommand: new ManualCommand(new Dictionary<TextSymbol, TextSymbol>
                 {
@@ -291,7 +265,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Update_ManualCommand()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _direction = _testRepo.Get(777);
             _direction.ManualCommand = new ManualCommand(new Dictionary<TextSymbol, TextSymbol>
                 {
@@ -309,7 +283,7 @@ namespace BitigDataTests
         [TestMethod]
         public void DeserializeSymbolMapping()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _mapping = _testRepo.GetSymbolMapping(1);
             Assert.IsNotNull(_mapping);
             Assert.AreEqual(2, _mapping.Count);
@@ -324,7 +298,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_Exclusions()
         {
-            var _testRepo = InitTestRepo(sourcePreparedFile);
+            var _testRepo = InitTestRepo();
             var _direction777 = _testRepo.Get(777);
             Assert.AreNotEqual(0, _direction777.Exclusions.Count);
             var _exclusionsPath = currentDataFolder + @"Exclusions\777.xml";

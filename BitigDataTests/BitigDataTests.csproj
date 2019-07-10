@@ -86,46 +86,40 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\corrupted\InvalidAlphabets.xml">
+    <Content Include="TestData\InvalidAlphabets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\corrupted\InvalidDirections.xml">
+    <Content Include="TestData\Alphabet1025.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\corrupted\NoYanalif.xml">
+    <Content Include="TestData\Direction777.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Alphabet1025.xml">
+    <Content Include="TestData\DirectionCyrYan.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Direction777.xml">
+    <Content Include="TestData\DirectionNoCyr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\DirectionCyrYan.xml">
+    <Content Include="TestData\Exclusions\0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\DirectionNoCyr.xml">
+    <Content Include="TestData\Exclusions\777.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Exclusions\0.xml">
+    <Content Include="TestData\KeyboardSummaries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Exclusions\777.xml">
+    <Content Include="TestData\Keyboards\444.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\KeyboardSummaries.xml">
+    <Content Include="TestData\Keyboards\333.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Keyboards\444.xml">
+    <Content Include="TestData\Mappings\1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Prepared\Keyboards\333.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\Prepared\Mappings\1.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\Prepared\Symbols\1025.xml">
+    <Content Include="TestData\Symbols\1025.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

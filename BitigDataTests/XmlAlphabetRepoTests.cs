@@ -17,10 +17,8 @@ namespace BitigDataTests
         }
 
         private const string currentDataFolder = @"AlphabetRepoTestData\";
-        private readonly string testFilePath = currentDataFolder + "Alphabets.xml";
-        private readonly string preparedFile = currentDataFolder + @"Prepared\Alphabet1025.xml";
-        private readonly string preparedFileSymbols = currentDataFolder + @"Prepared\Symbols\1025.xml";
-        private readonly string directionsPath = currentDataFolder + "Directions.xml";
+        private readonly string preparedFile = currentDataFolder + @"Alphabet1025.xml";
+        private readonly string directionsPath = currentDataFolder + "Direction777.xml";
 
         [TestInitialize]
         [TestCleanup]
@@ -32,17 +30,10 @@ namespace BitigDataTests
             TestUtils.CopyDirectory("TestData", currentDataFolder);
         }
 
-        private void PrepareKeyboards()
-        {
-            File.Copy(currentDataFolder + @"Prepared\KeyboardSummaries.xml", currentDataFolder + @"KeyboardSummaries.xml");
-            TestUtils.CopyDirectory(currentDataFolder + @"Prepared\Keyboards", currentDataFolder + "Keyboards");
-        }
-
         [TestMethod]
         public void Insert()
         {
-            PrepareKeyboards();
-            var _xmlContext = new XmlContext(testFilePath, null);
+            var _xmlContext = new XmlContext(preparedFile, null);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _name = "Test alphabet " + Guid.NewGuid();
             var _symbolText = Guid.NewGuid().ToString();
@@ -56,7 +47,7 @@ namespace BitigDataTests
             _testRepo.Insert(_alphabet);
             _xmlContext.SaveChanges();
 
-            var _checkContext = new XmlContext(testFilePath, null);
+            var _checkContext = new XmlContext(preparedFile, null);
             var _checkRepo = _checkContext.AlphabetRepository;
             var _list = _checkRepo.GetList();
             Assert.IsTrue(_list.Count > 0);
@@ -82,7 +73,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Insert_AssignID()
         {
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _name1 = "Test alphabet " + Guid.NewGuid();
             var _name2 = "Test alphabet " + Guid.NewGuid();
@@ -93,28 +84,23 @@ namespace BitigDataTests
             _testRepo.Insert(_alphabet2);
             //Assert.AreNotEqual(-1, _alphabet1.ID);
             //Assert.AreNotEqual(-1, _alphabet2.ID);
-            Assert.AreEqual(0, _alphabet1.ID);
-            Assert.AreEqual(1, _alphabet2.ID);
+            Assert.AreEqual(1026, _alphabet1.ID);
+            Assert.AreEqual(1027, _alphabet2.ID);
         }
 
         [TestMethod]
         public void GetList()
         {
-            File.Copy(preparedFile, testFilePath);
-
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _list = _testRepo.GetList();
-            Assert.AreEqual(2, _list.Count);
+            Assert.AreEqual(5, _list.Count);
         }
 
         [TestMethod]
         public void Get()
         {
-            PrepareKeyboards();
-            File.Copy(preparedFile, testFilePath);
-
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _alphabet = _testRepo.Get(1025);
             Assert.IsNotNull(_alphabet);
@@ -125,11 +111,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Update()
         {
-            PrepareKeyboards();
-            File.Copy(preparedFile, testFilePath);
-            Directory.CreateDirectory(currentDataFolder + @"Symbols");
-            File.Copy(preparedFileSymbols, currentDataFolder + @"Symbols\1025.xml");
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _alphabet = _testRepo.Get(1025);
             var _name2 = "Test name " + Guid.NewGuid();
@@ -145,7 +127,7 @@ namespace BitigDataTests
             _testRepo.Update(_alphabet);
             _xmlContext.SaveChanges();
 
-            var _checkContext = new XmlContext(testFilePath, directionsPath);
+            var _checkContext = new XmlContext(preparedFile, directionsPath);
             var _checkRepo = _checkContext.AlphabetRepository;
             var _checkAlphabet = _checkRepo.Get(1025);
             Assert.IsNotNull(_checkAlphabet);
@@ -165,16 +147,14 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete()
         {
-            File.Copy(preparedFile, testFilePath);
-
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _testAlphabet = _testRepo.Get(1025);
             Assert.IsNotNull(_testAlphabet);
             _testRepo.Delete(_testAlphabet.ID);
             _xmlContext.SaveChanges();
 
-            var _checkContext = new XmlContext(testFilePath, directionsPath);
+            var _checkContext = new XmlContext(preparedFile, directionsPath);
             var _checkRepo = _checkContext.AlphabetRepository;
             var _checkAlphabet = _checkRepo.Get(1025);
             Assert.IsNull(_checkAlphabet);
@@ -183,9 +163,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_InUse()
         {
-            File.Copy(preparedFile, testFilePath);
-            File.Copy(currentDataFolder + "Prepared\\DirectionCyrYan.xml", directionsPath);
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, currentDataFolder + "DirectionCyrYan.xml");
             var _testRepo = _xmlContext.AlphabetRepository;
             var _testAlphabet = _testRepo.Get(0); 
             try
@@ -202,10 +180,8 @@ namespace BitigDataTests
         [TestMethod]
         public void InvalidConfig()
         {
-            var _invalidFile = currentDataFolder + @"corrupted\InvalidAlphabets.xml";
-            File.Copy(_invalidFile, testFilePath);
-
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _invalidFile = currentDataFolder + "InvalidAlphabets.xml";
+            var _xmlContext = new XmlContext(_invalidFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _list = _testRepo.GetList();
 
@@ -215,12 +191,8 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_CustomSymbols()
         {
-            File.Copy(preparedFile, testFilePath);
-            Directory.CreateDirectory(currentDataFolder + @"Symbols");
             var _symbolsPath = currentDataFolder + @"Symbols\1025.xml";
-            File.Copy(preparedFileSymbols, _symbolsPath);
-
-            var _xmlContext = new XmlContext(testFilePath, directionsPath);
+            var _xmlContext = new XmlContext(preparedFile, directionsPath);
             var _testRepo = _xmlContext.AlphabetRepository;
             var _alphabet = _testRepo.Get(1025);
             Assert.AreNotEqual(0, _alphabet.CustomSymbols.Count);

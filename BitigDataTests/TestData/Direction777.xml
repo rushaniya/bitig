@@ -2,42 +2,42 @@
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Collection>
     <Item>
-      <ID>1</ID>
+      <ID>0</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
       <BuiltInType>CyrillicZamanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
-      <ID>2</ID>
+      <ID>1</ID>
       <SourceAlphabetID>0</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
       <BuiltInType>CyrillicRasmalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
-      <ID>3</ID>
+      <ID>2</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>2</TargetAlphabetID>
       <BuiltInType>YanalifZamanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
-      <ID>4</ID>
+      <ID>3</ID>
       <SourceAlphabetID>1</SourceAlphabetID>
       <TargetAlphabetID>3</TargetAlphabetID>
       <BuiltInType>YanalifRasmalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
-      <ID>5</ID>
+      <ID>4</ID>
       <SourceAlphabetID>2</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInType>ZamanalifYanalif</BuiltInType>
       <UseManualCommand>false</UseManualCommand>
     </Item>
     <Item>
-      <ID>6</ID>
+      <ID>5</ID>
       <SourceAlphabetID>3</SourceAlphabetID>
       <TargetAlphabetID>1</TargetAlphabetID>
       <BuiltInType>RasmalifYanalif</BuiltInType>
@@ -53,9 +53,9 @@
     </Item>
     <Item>
       <ID>778</ID>
-      <SourceAlphabetID>1</SourceAlphabetID>
-      <TargetAlphabetID>0</TargetAlphabetID>
-      <BuiltInType>YanalifZamanalif</BuiltInType>
+      <SourceAlphabetID>3</SourceAlphabetID>
+      <TargetAlphabetID>2</TargetAlphabetID>
+      <UseManualCommand>true</UseManualCommand>
     </Item>
   </Collection>
 </Config>

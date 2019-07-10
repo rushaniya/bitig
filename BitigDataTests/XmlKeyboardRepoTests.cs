@@ -12,7 +12,7 @@ namespace BitigDataTests
     [TestClass]
     public class XmlKeyboardRepoTests
     {
-        private const string preparedDataFolder = @"TestData\Prepared\";
+        private const string sourceDataFolder = @"TestData\";
         private const string currentDataFolder = @"KeyboardsTestData\";
         private readonly string preparedFile1 = @"Keyboards\333.xml";
         private readonly string preparedFile2 = @"Keyboards\444.xml";
@@ -26,9 +26,9 @@ namespace BitigDataTests
                 Directory.Delete(currentDataFolder, true);
             Directory.CreateDirectory(currentDataFolder);
             Directory.CreateDirectory(currentDataFolder + "Keyboards");
-            File.Copy(preparedDataFolder + preparedFile1, currentDataFolder + preparedFile1);
-            File.Copy(preparedDataFolder + preparedFile2, currentDataFolder + preparedFile2);
-            File.Copy(preparedDataFolder + preparedSummaryFile, currentDataFolder + preparedSummaryFile);
+            File.Copy(sourceDataFolder + preparedFile1, currentDataFolder + preparedFile1);
+            File.Copy(sourceDataFolder + preparedFile2, currentDataFolder + preparedFile2);
+            File.Copy(sourceDataFolder + preparedSummaryFile, currentDataFolder + preparedSummaryFile);
         }
 
         [TestMethod]
@@ -291,7 +291,7 @@ namespace BitigDataTests
         [TestMethod]
         public void Delete_InUse()
         {
-            File.Copy(preparedDataFolder + @"Alphabet1025.xml", currentDataFolder + "Alphabets.xml");
+            File.Copy(sourceDataFolder + @"Alphabet1025.xml", currentDataFolder + "Alphabets.xml");
             var _context = new XmlContext(currentDataFolder);
             var _repository = new XmlKeyboardRepository(_context);
             try
