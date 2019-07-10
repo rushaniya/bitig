@@ -10,7 +10,7 @@ namespace Bitig.Logic.Commands
 
         public CyrillicRasmalif()
         {
-            AlphabetPattern = @"А-яЁёӘәӨөҮүҖҗҢңҺһ"; //noyan:set this in Alphabet class?
+            AlphabetPattern = @"А-яЁёӘәӨөҮүҖҗҢңҺһ"; 
             ChainedCommands = new List<TranslitCommand> { cyrillicTranscription, phoneticRasmalif };
             CustomTargetUpLowPairs = TextHelper.ZamanalifUpperLowerPairs;
         }

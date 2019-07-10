@@ -100,7 +100,7 @@ namespace Bitig.Logic.Model
             {
                 if (IsBuiltIn() || string.IsNullOrEmpty(AssemblyPath))
                 {
-                    translitCommand = DefaultConfiguration.GetTranslitCommand(BuiltInType);
+                    translitCommand = BuiltInTransliteration.GetTranslitCommand(BuiltInType);
                 }
                 else
                 {

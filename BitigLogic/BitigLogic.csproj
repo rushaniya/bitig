@@ -79,7 +79,7 @@
     <Compile Include="Commands\PhoneticZamanalif.cs" />
     <Compile Include="Model\Alphabet.cs" />
     <Compile Include="Model\BuiltInAlphabetType.cs" />
-    <Compile Include="Model\BuiltInDirection.cs" />
+    <Compile Include="Model\BuiltInDirectionType.cs" />
     <Compile Include="Model\KeyboardLayoutSummary.cs" />
     <Compile Include="Model\ManualCommand.cs" />
     <Compile Include="Model\Exclusion.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="Repository\IDGenerator.cs" />
     <Compile Include="Repository\InMemoryList.cs" />
     <Compile Include="Repository\EquatableByID.cs" />
-    <Compile Include="Repository\DefaultConfiguration.cs" />
+    <Compile Include="Repository\BuiltInTransliteration.cs" />
     <Compile Include="Commands\RasmalifYanalif.cs" />
     <Compile Include="Commands\YanalifRasmalif.cs" />
     <Compile Include="Model\Direction.cs" />

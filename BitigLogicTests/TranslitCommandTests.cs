@@ -19,7 +19,7 @@ namespace BitigLogicTests
         {
             var _source = new Alphabet(-1, "test");
             var _target = new Alphabet(-2, "test");
-            var _builtIn = DefaultConfiguration.GetBuiltInDirection(BuiltInAlphabetType.Cyrillic, BuiltInAlphabetType.Rasmalif);
+            var _builtIn = BuiltInTransliteration.GetBuiltInDirection(BuiltInAlphabetType.Cyrillic, BuiltInAlphabetType.Rasmalif);
             var _cyrRasm = new Direction(-1, _source, _target, null, BuiltInType: _builtIn.Type);
             Assert.IsInstanceOfType(_cyrRasm.TranslitCommand, typeof(CyrillicRasmalif));
             var _result = _cyrRasm.Transliterate("сәлам");
@@ -44,7 +44,7 @@ namespace BitigLogicTests
         {
             var _source = new Alphabet(-1, "test");
             var _target = new Alphabet(-2, "test");
-            var _builtIn = DefaultConfiguration.GetBuiltInDirection(BuiltInAlphabetType.Cyrillic, BuiltInAlphabetType.Rasmalif);
+            var _builtIn = BuiltInTransliteration.GetBuiltInDirection(BuiltInAlphabetType.Cyrillic, BuiltInAlphabetType.Rasmalif);
             var _word1 = "Source word " + Guid.NewGuid();
             var _word2 = "Target word " + Guid.NewGuid();
             var _exclusions = new List<Exclusion>

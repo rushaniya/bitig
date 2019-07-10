@@ -1,4 +1,6 @@
-﻿namespace Bitig.Logic.Model
+﻿using Bitig.Logic.Repository;
+
+namespace Bitig.Logic.Model
 {
     public class BuiltInDirection
     {
@@ -18,7 +20,8 @@
             this.Type = ID;
             this.Source = Source;
             this.Target = Target;
-           //noyan FriendlyName = string.Format("Built-in {0} - {1}", Source.DefaultName, Target.DefaultName);
+            FriendlyName = string.Format("Built-in {0} - {1}", //loc
+                BuiltInTransliteration.GetBuiltInAlphabetName(Source), BuiltInTransliteration.GetBuiltInAlphabetName(Target));
         }
 
         public override string ToString()

@@ -23,14 +23,13 @@ namespace Bitig.UI.Configuration
             x_CurrentAlphabet = CurrentAlphabet;
             x_AlphabetRepository = AlphabetRepo;
             Text = string.Format("Custom {0} Symbols", x_CurrentAlphabet.FriendlyName);
-            //noyan del chkShowAllYanalifLetters, pnlYanalifSettings
             x_Symbols = x_CurrentAlphabet.CustomSymbols;
             x_TemporaryList.Clear();
             if (x_Symbols != null)
             {
                 foreach (AlphabetSymbol _symbol in x_Symbols)
                 {
-                    AlphabetSymbol _copy = new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen);
+                    AlphabetSymbol _copy = new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsOnScreen);
                     x_TemporaryList.Add(_copy);
                 }
             }
@@ -47,7 +46,7 @@ namespace Bitig.UI.Configuration
             {
                 if (_symbol.ActualText != null && _symbol.ActualText.Trim() != string.Empty)
                 {
-                    x_Symbols.Add(new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsAlphabetic, _symbol.IsOnScreen));
+                    x_Symbols.Add(new AlphabetSymbol(_symbol.ActualText, _symbol.CapitalizedText, _symbol.DisplayText, _symbol.CapitalizedDisplayText, _symbol.IsOnScreen));
                 }
                 _counter++;
             }

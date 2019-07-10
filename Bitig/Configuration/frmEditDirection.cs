@@ -28,7 +28,7 @@ namespace Bitig.UI.Configuration
                             cmbSource.Enabled = false;
                             cmbTarget.Enabled = false;
                             x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                            x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltInType);
+                            x_TypeComboSelectedItem = BuiltInTransliteration.GetBuiltInDirection(x_Direction.BuiltInType);
                         }
                         else
                         {
@@ -36,7 +36,7 @@ namespace Bitig.UI.Configuration
                             if (string.IsNullOrEmpty(x_Direction.AssemblyPath))
                             {
                                 x_AssemblyComboSelectedItem = x_BuiltInAssemblyItem;
-                                x_TypeComboSelectedItem = DefaultConfiguration.GetBuiltInDirection(x_Direction.BuiltInType);
+                                x_TypeComboSelectedItem = BuiltInTransliteration.GetBuiltInDirection(x_Direction.BuiltInType);
                             }
                             else
                             {
@@ -242,7 +242,7 @@ namespace Bitig.UI.Configuration
         private void PrepareBuiltInItems()
         {
             x_BuiltInTypes = new List<BuiltInDirection>();
-            DefaultConfiguration.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
+            BuiltInTransliteration.BuiltInDirections.ForEach(_dir => x_BuiltInTypes.Add(_dir));
         }
 
         private void FillAssemblyCombo()

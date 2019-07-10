@@ -35,19 +35,16 @@ namespace Bitig.UI.Configuration
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.dgvSymbols = new System.Windows.Forms.DataGridView();
-            this.bndSymbol = new System.Windows.Forms.BindingSource(this.components);
-            this.pnlYanalifSettings = new System.Windows.Forms.Panel();
-            this.chkShowAllYanalifLetters = new System.Windows.Forms.CheckBox();
             this.colSymbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDisplaySymbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDisplayUpper = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIsAlphabetic = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colIsOnScreen = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.bndSymbol = new System.Windows.Forms.BindingSource(this.components);
             this.pnlBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSymbols)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndSymbol)).BeginInit();
-            this.pnlYanalifSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlBottom
@@ -100,33 +97,8 @@ namespace Bitig.UI.Configuration
             this.dgvSymbols.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvSymbols.Location = new System.Drawing.Point(0, 0);
             this.dgvSymbols.Name = "dgvSymbols";
-            this.dgvSymbols.Size = new System.Drawing.Size(582, 278);
+            this.dgvSymbols.Size = new System.Drawing.Size(582, 312);
             this.dgvSymbols.TabIndex = 0;
-            // 
-            // bndSymbol
-            // 
-            this.bndSymbol.DataSource = typeof(Bitig.Logic.Model.AlphabetSymbol);
-            // 
-            // pnlYanalifSettings
-            // 
-            this.pnlYanalifSettings.Controls.Add(this.chkShowAllYanalifLetters);
-            this.pnlYanalifSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlYanalifSettings.Location = new System.Drawing.Point(0, 278);
-            this.pnlYanalifSettings.Name = "pnlYanalifSettings";
-            this.pnlYanalifSettings.Size = new System.Drawing.Size(582, 34);
-            this.pnlYanalifSettings.TabIndex = 2;
-            this.pnlYanalifSettings.Visible = false;
-            // 
-            // chkShowAllYanalifLetters
-            // 
-            this.chkShowAllYanalifLetters.AutoSize = true;
-            this.chkShowAllYanalifLetters.Enabled = false;
-            this.chkShowAllYanalifLetters.Location = new System.Drawing.Point(3, 8);
-            this.chkShowAllYanalifLetters.Name = "chkShowAllYanalifLetters";
-            this.chkShowAllYanalifLetters.Size = new System.Drawing.Size(166, 17);
-            this.chkShowAllYanalifLetters.TabIndex = 0;
-            this.chkShowAllYanalifLetters.Text = "Always show all Yanalif letters";
-            this.chkShowAllYanalifLetters.UseVisualStyleBackColor = true;
             // 
             // colSymbol
             // 
@@ -164,21 +136,22 @@ namespace Bitig.UI.Configuration
             this.colIsOnScreen.HeaderText = "On screen";
             this.colIsOnScreen.Name = "colIsOnScreen";
             // 
+            // bndSymbol
+            // 
+            this.bndSymbol.DataSource = typeof(Bitig.Logic.Model.AlphabetSymbol);
+            // 
             // frmAlphabetSymbols
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(582, 385);
             this.Controls.Add(this.dgvSymbols);
-            this.Controls.Add(this.pnlYanalifSettings);
             this.Controls.Add(this.pnlBottom);
             this.Name = "frmAlphabetSymbols";
             this.Text = "Custom On-Screen Symbols";
             this.pnlBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvSymbols)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bndSymbol)).EndInit();
-            this.pnlYanalifSettings.ResumeLayout(false);
-            this.pnlYanalifSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -190,8 +163,6 @@ namespace Bitig.UI.Configuration
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.DataGridView dgvSymbols;
         private System.Windows.Forms.BindingSource bndSymbol;
-        private System.Windows.Forms.Panel pnlYanalifSettings;
-        private System.Windows.Forms.CheckBox chkShowAllYanalifLetters;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSymbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDisplaySymbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn colUpper;

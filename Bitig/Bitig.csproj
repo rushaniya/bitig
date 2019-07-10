@@ -113,12 +113,6 @@
     <Compile Include="Controls\ctlCustomCombo.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ctlYanalif.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ctlYanalif.Designer.cs">
-      <DependentUpon>ctlYanalif.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,9 +160,6 @@
       <DependentUpon>ctlAlphabet.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ctlYanalif.resx">
-      <DependentUpon>ctlYanalif.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Configuration\frmExclusions.resx">
       <DependentUpon>frmExclusions.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -201,24 +192,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\disk_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\disks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\document_plain_new.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\font.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\flag_russia.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\bold.png" />
   </ItemGroup>
   <ItemGroup>
@@ -231,7 +204,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\keyboard2.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BitigBase.csproj">
@@ -256,82 +228,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\azur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\a.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\o.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ozur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\uzur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\u.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gzur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\g.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\izur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\i.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\czur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\c.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\szur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\s.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\nzur.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\n.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dash.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\quot_open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\quot_close.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\blank.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\text_align_left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\text_align_center.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\text_align_justified.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\text_align_right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\palette.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\palette_text.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\align_left.png" />
@@ -352,43 +249,10 @@
     <None Include="Resources\Photo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\forwd_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\down_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\back_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\go_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\keyboard_key.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\color-palette.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\alifba.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\document.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\back.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\forward.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\save.png" />
@@ -398,18 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\save_as.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cut.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\paste.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\copy.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\kitap.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\numeric_list.png" />
@@ -436,12 +288,6 @@
     <None Include="Resources\paragraph.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\redo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\erase.png" />
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +295,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\add.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\save_24.png" />
@@ -488,7 +331,11 @@
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\linespacing.png" />
+    <Content Include="Resources\open.png" />
     <Content Include="Resources\settings.png" />
+    <Content Include="Resources\Strikeout.png" />
+    <Content Include="Resources\superscript.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

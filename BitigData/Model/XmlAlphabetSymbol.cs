@@ -16,8 +16,6 @@ namespace Bitig.Data.Model
             get; set;
         }
 
-        public bool IsAlphabetic { get; set; }
-
         public bool IsOnScreen { get; set; }
 
         public XmlAlphabetSymbol()
@@ -31,14 +29,13 @@ namespace Bitig.Data.Model
             DisplayText = ModelSymbol.DisplayText;
             CapitalizedText = ModelSymbol.CapitalizedText;
             CapitalizedDisplayText = ModelSymbol.CapitalizedDisplayText;
-            IsAlphabetic = ModelSymbol.IsAlphabetic;
             IsOnScreen = ModelSymbol.IsOnScreen;
         }
 
         internal new AlphabetSymbol ToModel()
         {
             return new AlphabetSymbol(ActualText, CapitalizedText,
-                DisplayText, CapitalizedDisplayText, IsAlphabetic, IsOnScreen);
+                DisplayText, CapitalizedDisplayText, IsOnScreen);
         }
 
         public new XmlAlphabetSymbol Clone()
@@ -49,7 +46,6 @@ namespace Bitig.Data.Model
                 DisplayText = DisplayText,
                 CapitalizedText = CapitalizedText,
                 CapitalizedDisplayText = CapitalizedDisplayText,
-                IsAlphabetic = IsAlphabetic,
                 IsOnScreen = IsOnScreen
             };
         }

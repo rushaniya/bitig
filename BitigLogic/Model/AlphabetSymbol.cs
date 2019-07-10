@@ -54,9 +54,6 @@ namespace Bitig.Logic.Model
     }
     public class AlphabetSymbol : TextSymbol
     {
-        //noyan: needed?
-        public bool IsAlphabetic { get; set; }
-
         public bool IsOnScreen { get; set; }
 
         private string displayText = string.Empty;
@@ -78,14 +75,12 @@ namespace Bitig.Logic.Model
         //ctor needed for data grids
         public AlphabetSymbol()
         {
-            IsAlphabetic = true;
             IsOnScreen = true;
         }
 
-        public AlphabetSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitalizedDisplayText = null, bool IsAlphabetic = true, bool IsOnScreen = true)
+        public AlphabetSymbol(string ActualText, string CapitalizedText = null, string DisplayText = null, string CapitalizedDisplayText = null, bool IsOnScreen = true)
             : base (ActualText, CapitalizedText, DisplayText, CapitalizedDisplayText)
         {
-            this.IsAlphabetic = IsAlphabetic;
             this.IsOnScreen = IsOnScreen;
             this.displayText = string.IsNullOrEmpty(DisplayText) ? this.ActualText : DisplayText.Trim();
             this.capitalizedDisplayText = string.IsNullOrEmpty(CapitalizedDisplayText) ? this.capitalizedText : CapitalizedDisplayText.Trim();

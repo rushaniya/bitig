@@ -13,6 +13,7 @@ using Bitig.Data.Storage;
 using Bitig.UI.Logic;
 using System.Linq;
 using Bitig.Base;
+using System.IO;
 
 namespace Bitig.UI
 {
@@ -64,7 +65,8 @@ namespace Bitig.UI
 
         private void InitializeRepositories()
         {
-            x_DataContext = new XmlContext(DefaultConfiguration.LocalFolder);
+            var _configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bitig"); //config
+            x_DataContext = new XmlContext(_configFolder);
             x_AlphabetRepository = x_DataContext.AlphabetRepository;
             x_DirectionRepository = x_DataContext.DirectionRepository;
         }
@@ -501,7 +503,6 @@ namespace Bitig.UI
 
         private ctlAlphabet GetOnscreenKeyboard(AlphabetSummary Alphabet, TextBoxBase Target)
         {
-            //noyan: class OnscreenKeyboardLoader
             InitOnscreenKeyboard(Alphabet, Target);
             return x_OnscreenKeyboards[Alphabet.ID];
         }
@@ -524,7 +525,7 @@ namespace Bitig.UI
             int _currentSelection = Target.SelectionStart;
             Target.SelectedText = e.Text;
             Target.SelectionStart = _currentSelection + e.Text.Length;
-            Target.Focus(); //noyan Target.Select()?
+            Target.Focus();
         }
 
         private void DisplayOnscreenKeyboard(ctlAlphabet KeyboardControl, Panel KeyboardPanel)
@@ -578,7 +579,6 @@ namespace Bitig.UI
         private void ResetKeyboardLayouts()
         {
             x_KeyboardLayouts.Clear();
-            //noyan reload key managers?
         }
 
         #endregion
