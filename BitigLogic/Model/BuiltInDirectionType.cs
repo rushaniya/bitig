@@ -21,7 +21,7 @@ namespace Bitig.Logic.Model
             this.Source = Source;
             this.Target = Target;
             FriendlyName = string.Format("Built-in {0} - {1}", //loc
-                BuiltInTransliteration.GetBuiltInAlphabetName(Source), BuiltInTransliteration.GetBuiltInAlphabetName(Target));
+                BuiltInTransliteration.GetAlphabetName(Source), BuiltInTransliteration.GetAlphabetName(Target));
         }
 
         public override string ToString()

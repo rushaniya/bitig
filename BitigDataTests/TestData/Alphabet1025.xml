@@ -5,35 +5,30 @@
       <ID>0</ID>
       <FriendlyName>Cyrillic</FriendlyName>
       <RightToLeft>false</RightToLeft>
-      <BuiltIn>Cyrillic</BuiltIn>
     </Item>
     <Item>
       <ID>1</ID>
       <FriendlyName>Yanalif</FriendlyName>
       <DefaultFont Description="DejaVu Sans; 12pt" />
       <RightToLeft>false</RightToLeft>
-      <BuiltIn>Yanalif</BuiltIn>
     </Item>
     <Item>
       <ID>2</ID>
       <FriendlyName>Zamanalif</FriendlyName>
       <KeyboardLayoutID xsi:nil="true" />
       <RightToLeft>false</RightToLeft>
-      <BuiltIn>Zamanalif</BuiltIn>
     </Item>
     <Item>
       <ID>3</ID>
       <FriendlyName>Official 2012</FriendlyName>
       <KeyboardLayoutID xsi:nil="true" />
       <RightToLeft>false</RightToLeft>
-      <BuiltIn>Rasmalif</BuiltIn>
     </Item>
     <Item>
       <ID>1025</ID>
       <FriendlyName>Test Alphabet</FriendlyName>
       <DefaultFont Description="DejaVu Sans; 12pt" />
       <RightToLeft>true</RightToLeft>
-      <BuiltIn>None</BuiltIn>
       <KeyboardLayoutID>333</KeyboardLayoutID>
     </Item>
   </Collection>

@@ -12,8 +12,8 @@ namespace BitigDataTests
     {
         private const string dataFolder = @"TestData\";
         private const string currentDataFolder = @"ExclusionsTestData\";
-        private readonly string preparedDirectionsFile = dataFolder + @"DirectionCyrYan.xml";
-        private readonly string preparedAlphabetsFile = dataFolder + @"Alphabet1025.xml";
+        private readonly string preparedDirectionsFile = currentDataFolder + @"DirectionCyrYan.xml";
+        private readonly string preparedAlphabetsFile = currentDataFolder + @"Alphabet1025.xml";
 
         [TestInitialize]
         [TestCleanup]
@@ -22,6 +22,8 @@ namespace BitigDataTests
             if (Directory.Exists(currentDataFolder))
                 Directory.Delete(currentDataFolder, true);
             Directory.CreateDirectory(currentDataFolder);
+            File.Copy(dataFolder + @"DirectionCyrYan.xml", preparedDirectionsFile);
+            File.Copy(dataFolder + "Alphabet1025.xml", preparedAlphabetsFile);
             TestUtils.CopyDirectory(dataFolder + @"Exclusions", currentDataFolder + "Exclusions");
         }
 

@@ -11,12 +11,9 @@ namespace Bitig.UI
         /// </summary>
         [STAThread]
         static void Main(string[] args)
-        {
-            //MessageBox.Show("Test", "Test bitig");
-            
+        {            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //MessageBox.Show(Logic.DirectionManager.Test());
             frmMainForm _frmMain = new frmMainForm();
             if (args.Count() > 0) _frmMain.X_FilePath = args[0];
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += new ResolveEventHandler(CurrentDomain_ReflectionOnlyAssemblyResolve);
@@ -27,9 +24,5 @@ namespace Bitig.UI
         {
             return System.Reflection.Assembly.ReflectionOnlyLoad(args.Name);
         }
-
-
-        //config: любой спорный вопрос разработчики склонны выносить в настройки, но это в корне неверная позиция — 
-        //если создатель программы не может решить как лучше, то уж пользователь точно не будет этот вопрос решать
     }
 }

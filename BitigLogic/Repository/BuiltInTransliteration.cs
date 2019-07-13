@@ -18,7 +18,7 @@ namespace Bitig.Logic.Repository
         private const string ZAMANALIF_NAME = "Zamanalif";
         private const string RASMALIF_NAME = "Official 2012";//loc
 
-        public static string GetBuiltInAlphabetName(BuiltInAlphabetType AlphabetType)
+        public static string GetAlphabetName(BuiltInAlphabetType AlphabetType)
         {
             switch (AlphabetType)
             {
