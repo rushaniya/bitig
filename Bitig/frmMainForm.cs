@@ -40,6 +40,7 @@ namespace Bitig.UI
         private KeyboardManager x_MainKeyManager = new KeyboardManager();
         private KeyboardManager x_TranslitKeyManager = new KeyboardManager();
 
+        private Font x_DefaultFont = new Font("DejaVu Sans", 12, FontStyle.Regular); //config
         #endregion
 
 
@@ -48,7 +49,7 @@ namespace Bitig.UI
         public frmMainForm()
         {
             InitializeComponent();
-
+            ctlMultiRtb1.RtbMain.Font = x_DefaultFont;
             InitializeRepositories();
 
             FillAlphabets(false);
@@ -65,7 +66,7 @@ namespace Bitig.UI
 
         private void InitializeRepositories()
         {
-            var _configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bitig"); //config
+            var _configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bitig");
             x_DataContext = new XmlContext(_configFolder);
             x_AlphabetRepository = x_DataContext.AlphabetRepository;
             x_DirectionRepository = x_DataContext.DirectionRepository;
@@ -223,8 +224,8 @@ namespace Bitig.UI
             x_AlphabetList = x_AlphabetRepository.GetList();
             if (!RestoreSelectedItems)
             {
-                var _mainID = 1; //config
-                var _translitID = 0; //config
+                var _mainID = 0; //config
+                var _translitID = 1; //config
                 _prevMain = x_AlphabetList.Find(x => x.ID == _mainID);
                 _prevTranslit = x_AlphabetList.Find(x => x.ID == _translitID);
             }
@@ -382,7 +383,7 @@ namespace Bitig.UI
         {
             if (Alphabet == null)
             {
-                TargetTextBox.SelectionFont = SystemFonts.DefaultFont;//config
+                TargetTextBox.SelectionFont = x_DefaultFont;
                 TargetTextBox.RightToLeft = RightToLeft.No;
             }
             else
@@ -394,13 +395,13 @@ namespace Bitig.UI
 
         private Font GetDefaultFont(AlphabetSummary Alphabet)
         {
-            Font _result = SystemFonts.DefaultFont;//config
+            Font _result;
             if (Alphabet != null)
             {
                 _result = (Font)Alphabet.DefaultFont;
-                if (_result == null) return SystemFonts.DefaultFont;
+                if (_result != null) return _result;
             }
-            return _result;
+            return x_DefaultFont;
         }
 
         #endregion
@@ -514,8 +515,7 @@ namespace Bitig.UI
             if (x_OnscreenKeyboards.ContainsKey(Alphabet.ID))
                 return;
             ctlAlphabet _keyboard = new ctlAlphabet(x_OnscreenSymbols[Alphabet.ID]);
-            _keyboard.Font = new Font(GetDefaultFont(Alphabet).FontFamily, SystemFonts.DefaultFont.SizeInPoints);
-            _keyboard.SymbolPressed += (sender, e) => OnscreenKeyboard_SymbolPressed(e, Target);
+           _keyboard.SymbolPressed += (sender, e) => OnscreenKeyboard_SymbolPressed(e, Target);
             x_OnscreenKeyboards.Add(Alphabet.ID, _keyboard);
             _keyboard.Dock = DockStyle.Fill;
         }

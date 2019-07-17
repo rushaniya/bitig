@@ -23,6 +23,9 @@ namespace Bitig.Logic.Repository
             _yanalif.KeyboardLayout = _yanalifKbl;
             dataContext.AlphabetRepository.Insert(_yanalif);
             var _cyrillic = CreateAlphabet(BuiltInAlphabetType.Cyrillic);
+            var _cyrillicKbl = GetCyrillicKeyboard();
+            dataContext.KeyboardRepository.Insert(_cyrillicKbl);
+            _cyrillic.KeyboardLayout = _cyrillicKbl;
             dataContext.AlphabetRepository.Insert(_cyrillic);
             var _rasmalif = CreateAlphabet(BuiltInAlphabetType.Rasmalif);
             dataContext.AlphabetRepository.Insert(_rasmalif);
@@ -116,6 +119,7 @@ namespace Bitig.Logic.Repository
         private KeyboardLayout GetYanalifKeyboard()
         {
             var _kbl = new KeyboardLayout();
+            _kbl.FriendlyName = "Yanalif Keyboard";
             _kbl.KeyCombinations = new List<KeyCombination>();
             _kbl.KeyCombinations.Add(new KeyCombination
             {
@@ -287,6 +291,18 @@ namespace Bitig.Logic.Repository
             });
             _kbl.KeyCombinations.Add(new KeyCombination
             {
+                MainKey = Keys.Oemcomma,
+                WithAltGr = true,
+                Result = "<"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.OemPeriod,
+                WithAltGr = true,
+                Result = ">"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
                 MainKey = Keys.Oem5,
                 WithAltGr = true,
                 Result = "\\"
@@ -339,6 +355,7 @@ namespace Bitig.Logic.Repository
         private MagicKeyboardLayout GetYanalifMagicKeyboard()
         {
             var _kbl = new MagicKeyboardLayout();
+            _kbl.FriendlyName = "Easy Yanalif Keyboard";
             _kbl.MagicKey = Keys.Oem5;
             _kbl.KeyCombinations = new List<MagicKeyCombination>();
             _kbl.KeyCombinations.Add(new MagicKeyCombination
@@ -420,6 +437,92 @@ namespace Bitig.Logic.Repository
             {
                 Symbol = 'U',
                 WithMagic = "\u00dc"
+            });
+            return _kbl;
+        }
+
+        private KeyboardLayout GetCyrillicKeyboard()
+        {
+            var _kbl = new KeyboardLayout();
+            _kbl.FriendlyName = "Tatar Cyrillic";
+            _kbl.KeyCombinations = new List<KeyCombination>();
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.O,
+                Result = "\u04d9",
+                Capital = "\u04d8"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.O,
+                WithAltGr = true,
+                Result = "щ",
+                Capital = "Щ"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.W,
+                Result = "\u04e9",
+                Capital = "\u04e8"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.W,
+                WithAltGr = true,
+                Result = "ц",
+                Capital = "Ц"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.OemCloseBrackets,
+                Result = "\u04af",
+                Capital = "\u04ae"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.OemCloseBrackets,
+                WithAltGr = true,
+                Result = "ъ",
+                Capital = "Ъ"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.M,
+                Result = "\u0497",
+                Capital = "\u0496"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.M,
+                WithAltGr = true,
+                Result = "ь",
+                Capital = "Ь"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.OemSemicolon,
+                Result = "\u04a3",
+                Capital = "\u04a2"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.OemSemicolon,
+                WithAltGr = true,
+                Result = "ж",
+                Capital = "Ж"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.Oemtilde,
+                Result = "\u04bb",
+                Capital = "\u04ba"
+            });
+            _kbl.KeyCombinations.Add(new KeyCombination
+            {
+                MainKey = Keys.Oemtilde,
+                WithAltGr = true,
+                Result = "ё",
+                Capital = "Ё"
             });
             return _kbl;
         }
