@@ -66,6 +66,9 @@ namespace Bitig.KeyboardManagement
 
         private KeyStroke getCurrentCombination(Keys mainKey)
         {
+            //otherwise Shift key affects next pressed key
+            GetAsyncKeyState(Keys.LShiftKey);
+            GetAsyncKeyState(Keys.RShiftKey);
             var combination = new KeyStroke { MainKey = mainKey };
             if (Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)) || Convert.ToBoolean(GetAsyncKeyState(Keys.RShiftKey)))
                 combination.WithShift = true;
