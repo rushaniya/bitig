@@ -72,6 +72,9 @@
             this.mniAscii = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFormat = new System.Windows.Forms.ToolStripMenuItem();
             this.mniNumericList = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniAnsi1251 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniUtf8Bom = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniDefaultEncoding = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxText.SuspendLayout();
             this.tlsAdditional.SuspendLayout();
             this.tlsBasic.SuspendLayout();
@@ -110,7 +113,7 @@
             this.btnRemoveIndent});
             this.tlsAdditional.Location = new System.Drawing.Point(0, 3);
             this.tlsAdditional.Name = "tlsAdditional";
-            this.tlsAdditional.Size = new System.Drawing.Size(37, 255);
+            this.tlsAdditional.Size = new System.Drawing.Size(37, 236);
             this.tlsAdditional.TabIndex = 0;
             // 
             // btnBullet
@@ -346,15 +349,15 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.rtbMain);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(798, 637);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(798, 613);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 24);
             this.toolStripContainer1.Name = "toolStripContainer1";
             // 
             // toolStripContainer1.RightToolStripPanel
             // 
             this.toolStripContainer1.RightToolStripPanel.Controls.Add(this.tlsAdditional);
-            this.toolStripContainer1.Size = new System.Drawing.Size(835, 676);
+            this.toolStripContainer1.Size = new System.Drawing.Size(835, 652);
             this.toolStripContainer1.TabIndex = 28;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -370,7 +373,7 @@
             this.rtbMain.HideSelection = false;
             this.rtbMain.Location = new System.Drawing.Point(0, 0);
             this.rtbMain.Name = "rtbMain";
-            this.rtbMain.Size = new System.Drawing.Size(798, 637);
+            this.rtbMain.Size = new System.Drawing.Size(798, 613);
             this.rtbMain.TabIndex = 0;
             this.rtbMain.Text = "";
             this.rtbMain.SelectionChanged += new System.EventHandler(this.rtbMain_SelectionChanged);
@@ -438,12 +441,15 @@
             // 
             this.mniReopen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mniUtf8,
+            this.mniUtf8Bom,
             this.mniUtf16,
+            this.mniBigEndian,
             this.mniUtf7,
             this.mniUtf32,
-            this.mniBigEndian,
             this.mniAnsi,
-            this.mniAscii});
+            this.mniAnsi1251,
+            this.mniAscii,
+            this.mniDefaultEncoding});
             this.mniReopen.Enabled = false;
             this.mniReopen.Name = "mniReopen";
             this.mniReopen.Size = new System.Drawing.Size(193, 22);
@@ -452,49 +458,49 @@
             // mniUtf8
             // 
             this.mniUtf8.Name = "mniUtf8";
-            this.mniUtf8.Size = new System.Drawing.Size(171, 22);
+            this.mniUtf8.Size = new System.Drawing.Size(152, 22);
             this.mniUtf8.Text = "UTF-8";
             this.mniUtf8.Click += new System.EventHandler(this.mniUtf8_Click);
             // 
             // mniUtf16
             // 
             this.mniUtf16.Name = "mniUtf16";
-            this.mniUtf16.Size = new System.Drawing.Size(171, 22);
-            this.mniUtf16.Text = "UTF-16";
+            this.mniUtf16.Size = new System.Drawing.Size(152, 22);
+            this.mniUtf16.Text = "UTF-16 LE";
             this.mniUtf16.Click += new System.EventHandler(this.mniUtf16_Click);
             // 
             // mniUtf7
             // 
             this.mniUtf7.Name = "mniUtf7";
-            this.mniUtf7.Size = new System.Drawing.Size(171, 22);
+            this.mniUtf7.Size = new System.Drawing.Size(152, 22);
             this.mniUtf7.Text = "UTF-7";
             this.mniUtf7.Click += new System.EventHandler(this.mniUtf7_Click);
             // 
             // mniUtf32
             // 
             this.mniUtf32.Name = "mniUtf32";
-            this.mniUtf32.Size = new System.Drawing.Size(171, 22);
+            this.mniUtf32.Size = new System.Drawing.Size(152, 22);
             this.mniUtf32.Text = "UTF-32";
             this.mniUtf32.Click += new System.EventHandler(this.mniUtf32_Click);
             // 
             // mniBigEndian
             // 
             this.mniBigEndian.Name = "mniBigEndian";
-            this.mniBigEndian.Size = new System.Drawing.Size(171, 22);
-            this.mniBigEndian.Text = "Big Endian UTF-16";
+            this.mniBigEndian.Size = new System.Drawing.Size(152, 22);
+            this.mniBigEndian.Text = "UTF-16 BE";
             this.mniBigEndian.Click += new System.EventHandler(this.mniBigEndian_Click);
             // 
             // mniAnsi
             // 
             this.mniAnsi.Name = "mniAnsi";
-            this.mniAnsi.Size = new System.Drawing.Size(171, 22);
-            this.mniAnsi.Text = "ANSI";
+            this.mniAnsi.Size = new System.Drawing.Size(152, 22);
+            this.mniAnsi.Text = "ANSI Latin";
             this.mniAnsi.Click += new System.EventHandler(this.mniAnsi_Click);
             // 
             // mniAscii
             // 
             this.mniAscii.Name = "mniAscii";
-            this.mniAscii.Size = new System.Drawing.Size(171, 22);
+            this.mniAscii.Size = new System.Drawing.Size(152, 22);
             this.mniAscii.Text = "ASCII";
             this.mniAscii.Click += new System.EventHandler(this.mniAscii_Click);
             // 
@@ -512,6 +518,27 @@
             this.mniNumericList.Size = new System.Drawing.Size(147, 22);
             this.mniNumericList.Text = "Numeric list...";
             this.mniNumericList.Click += new System.EventHandler(this.mniNumericList_Click);
+            // 
+            // mniAnsi1251
+            // 
+            this.mniAnsi1251.Name = "mniAnsi1251";
+            this.mniAnsi1251.Size = new System.Drawing.Size(152, 22);
+            this.mniAnsi1251.Text = "ANSI Cyrillic";
+            this.mniAnsi1251.Click += new System.EventHandler(this.mniAnsi1251_Click);
+            // 
+            // mniUtf8Bom
+            // 
+            this.mniUtf8Bom.Name = "mniUtf8Bom";
+            this.mniUtf8Bom.Size = new System.Drawing.Size(152, 22);
+            this.mniUtf8Bom.Text = "UTF-8 BOM";
+            this.mniUtf8Bom.Click += new System.EventHandler(this.mniUtf8Bom_Click);
+            // 
+            // mniDefaultEncoding
+            // 
+            this.mniDefaultEncoding.Name = "mniDefaultEncoding";
+            this.mniDefaultEncoding.Size = new System.Drawing.Size(152, 22);
+            this.mniDefaultEncoding.Text = "System default";
+            this.mniDefaultEncoding.Click += new System.EventHandler(this.mniDefaultEncoding_Click);
             // 
             // ctlMultiRtb
             // 
@@ -588,5 +615,8 @@
         private System.Windows.Forms.ToolStripMenuItem mniBigEndian;
         private System.Windows.Forms.ToolStripMenuItem mniAnsi;
         private System.Windows.Forms.ToolStripMenuItem mniAscii;
+        private System.Windows.Forms.ToolStripMenuItem mniAnsi1251;
+        private System.Windows.Forms.ToolStripMenuItem mniUtf8Bom;
+        private System.Windows.Forms.ToolStripMenuItem mniDefaultEncoding;
     }
 }

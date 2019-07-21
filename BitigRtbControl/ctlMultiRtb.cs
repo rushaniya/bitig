@@ -21,6 +21,9 @@ namespace Bitig.RtbControl
         private string x_DummyFileName = "New file";//loc
         private RichTextBoxStreamType x_CurrentFileFormat = RichTextBoxStreamType.RichText;
         //private bool allowChangeEncoding;
+        private Encoding x_Utf8 = new UTF8Encoding(false);
+        private Encoding x_Encoding;
+
 
         private frmNumericList x_frmNumeric;
 
@@ -39,6 +42,7 @@ namespace Bitig.RtbControl
             FillCmbFontSize();
             this.MessageSent += new CtlMessage(ctlMultiRtb_MessageSent);
             dlgOpenFile.FileName = string.Empty;
+            x_Encoding = x_Utf8;
         }
 
         #region Control Events
@@ -746,6 +750,11 @@ namespace Bitig.RtbControl
 
         private void mniUtf8_Click(object sender, EventArgs e)
         {
+            Reopen(x_Utf8);
+        }
+
+        private void mniUtf8Bom_Click(object sender, EventArgs e)
+        {
             Reopen(Encoding.UTF8);
         }
 
@@ -771,11 +780,22 @@ namespace Bitig.RtbControl
 
         private void mniAnsi_Click(object sender, EventArgs e)
         {
-            Reopen(Encoding.Default);
+            Reopen(Encoding.GetEncoding(1252));
         }
+
+        private void mniAnsi1251_Click(object sender, EventArgs e)
+        {
+            Reopen(Encoding.GetEncoding(1251));
+        }
+
         private void mniAscii_Click(object sender, EventArgs e)
         {
             Reopen(Encoding.ASCII);
+        }
+
+        private void mniDefaultEncoding_Click(object sender, EventArgs e)
+        {
+            Reopen(Encoding.Default);
         }
 
         public void Reopen(Encoding TargetEncoding)
@@ -786,6 +806,7 @@ namespace Bitig.RtbControl
                 return;//loc
             rtbMain.SelectionFont = _currentFont;
             rtbMain.Text = File.ReadAllText(x_CurrentFilePath, TargetEncoding);
+            x_Encoding = TargetEncoding;
             //todo:rtbMain.Font = _currentFont;
             rtbMain.Modified = false;
         }
@@ -831,7 +852,7 @@ namespace Bitig.RtbControl
         {
             x_CurrentFilePath = FilePath;
             x_CurrentFileName = Path.GetFileName(x_CurrentFilePath);
-            this.MessageSent(this, new MessageArgs(x_CurrentFileName + " - Bitig", MessageArgs.EMessageTypes.FileNameChanged));
+            this.MessageSent(this, new MessageArgs(x_CurrentFileName, MessageArgs.EMessageTypes.FileNameChanged));
             try
             {
                 rtbMain.LoadFile(FilePath, RichTextBoxStreamType.RichText);
@@ -840,20 +861,8 @@ namespace Bitig.RtbControl
             }
             catch (ArgumentException)
             {
-                //using (FileStream fs = File.OpenRead(dlgOpenFile.FileName))
-                //{
-                //    ICharsetDetector _cdet = new CharsetDetector();
-                //    _cdet.Feed(fs);
-                //    _cdet.DataEnd();
-                //    if (_cdet.Charset != null)
-                //    {
-                //        Encoding _encoding = Encoding.GetEncoding(_cdet.Charset);
-                //        string _text = File.ReadAllText(dlgOpenFile.FileName, _encoding);
-                //        rtbMain.Text = _text;
-                //    }
-                //}
                 rtbMain.Clear();
-                rtbMain.Text = File.ReadAllText(dlgOpenFile.FileName, Encoding.Default);
+                rtbMain.Text = File.ReadAllText(dlgOpenFile.FileName, x_Encoding);
                 x_CurrentFileFormat = RichTextBoxStreamType.PlainText;
                 mniReopen.Enabled = true;
             }
@@ -871,7 +880,7 @@ namespace Bitig.RtbControl
                     if (x_CurrentFileFormat == RichTextBoxStreamType.RichText)
                         rtbMain.SaveFile(x_CurrentFilePath, RichTextBoxStreamType.RichText);
                     else
-                        File.WriteAllLines(x_CurrentFilePath, rtbMain.Lines, Encoding.UTF8);
+                        File.WriteAllText(x_CurrentFilePath, rtbMain.Text, x_Encoding);
                     rtbMain.Modified = false;
                     mniReopen.Enabled = false;
                     return true;
@@ -906,7 +915,7 @@ namespace Bitig.RtbControl
                             break;
                     }
                     SaveFile();
-                    this.MessageSent(this, new MessageArgs(x_CurrentFileName + " - Bitig", MessageArgs.EMessageTypes.FileNameChanged));
+                    this.MessageSent(this, new MessageArgs(x_CurrentFileName, MessageArgs.EMessageTypes.FileNameChanged));
                     mniReopen.Enabled = false;
                     return true;
                 }
@@ -929,7 +938,7 @@ namespace Bitig.RtbControl
                 x_CurrentFilePath = x_CurrentFileName = string.Empty;
                 rtbMain.Clear();
                 rtbMain.Modified = false;
-                this.MessageSent(this, new MessageArgs(string.Format("{0} - Bitig", x_DummyFileName), MessageArgs.EMessageTypes.FileNameChanged));
+                this.MessageSent(this, new MessageArgs(x_DummyFileName, MessageArgs.EMessageTypes.FileNameChanged));
             }
         }
 
