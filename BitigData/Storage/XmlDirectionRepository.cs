@@ -115,6 +115,10 @@ namespace Bitig.Data.Storage
                 var _exclusionList = new XmlCollectionConfig<XmlExclusion> { ID = Item.ID, Collection = Item.Exclusions.Select(x => new XmlExclusion(x)).ToList() };
                 xmlContext.Exclusions.InsertOrUpdate(_exclusionList);
             }
+            else
+            {
+                xmlContext.Exclusions.Delete(Item.ID);
+            }
         }
 
         public override Direction GetByAlphabetIDs(int SourceID, int TargetID)

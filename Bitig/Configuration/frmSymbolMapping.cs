@@ -123,7 +123,7 @@ namespace Bitig.UI.Configuration
             if (_duplicatesExist)
             {
                 //loc
-                if (MessageBox.Show("Duplicate symbols will be removed. Continue?", "?", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (MessageBox.Show("Duplicate symbols will be removed. Continue?", "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     return;
             }
             x_DirectionRepository.Insert(new Direction(-1, x_Target, x_Source, ManualCommand: new ManualCommand(_oppositeMapping)));

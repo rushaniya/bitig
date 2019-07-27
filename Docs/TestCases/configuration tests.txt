@@ -32,10 +32,9 @@ Expected result: direction deleted.
 2.1b. Target is not empty.
 2.1c. Library is not empty.
 2.1d. Type name is not empty.
-2.1e. When library is built-in, source is same as built-in source.
-2.1f. When library is built-in, target is same as built-in target.
-2.1g. Can't have more than one directions with same target and source.
-2.1h. Source and target cannot be same.
+2.1e. Can't have more than one directions with same target and source.
+2.1f. Source and target cannot be same.
+2.1g. If Manual radio is checked, manual mapping must not be empty.
 
 3. On-screen symbols.
 3a. Fill new symbol row, check it as On-screen and press Enter. Press OK on Custom Symbols form and on Configuration Form.
@@ -75,11 +74,10 @@ Expected result: exclusion does not change.
 4.1c. Changes are applied after OK button is pressed on Exclusions form.
 
 4.2. Validation.
-4.2a. Source cannot be empty.
+4.2a. Source cannot be empty. Exclusion with empty Source cell is deleted.
 4.2b. Source cannot contain characters not present in source alphabet.
 4.2c. Match Beginning and Any Position cannot be both set.
 4.2d. Source word should not include other exclusions.
-4.2e. If Manual radio is checked, manual mapping must not be empty.
 
 4.3. Cancel button should not cause validation.
 
@@ -133,6 +131,7 @@ Keyboard layout type is editable only when new keyboard layout is being created.
 6.3b. Key combination must be valid key strokes.
 6.3c. Result symbol must not be empty.
 6.3d. Key combinations must be unique.
+6.3e. Key combination with capital symbol defined must not contain Shift key.
 
 6.4. Magic keyboard layout symbols.
 6.4a. Source symbol must contain one character.

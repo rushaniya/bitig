@@ -87,13 +87,11 @@ namespace Bitig.UI.Configuration
             if (_row.Cells[0].Value == null && _row.Cells[1].Value == null)
                 return true;
             var _source = (string)_row.Cells[SOURCE_WORD_COLUMN].Value;
+            if (string.IsNullOrEmpty(_source))
+                return true;
             var _target = (string)_row.Cells[TARGET_WORD_COLUMN].Value;
-            if (string.IsNullOrEmpty(_source) && !string.IsNullOrEmpty(_target))
-            {
-                MessageBox.Show("Source word is empty", "!", MessageBoxButtons.OK);
-                return false;
-            }
-            x_SelectedDirection.Exclusions = x_BindingLists[x_SelectedDirection.ID]
+            var _fullDirection = x_DataContext.DirectionRepository.Get(x_SelectedDirection.ID);
+            _fullDirection.Exclusions = x_BindingLists[x_SelectedDirection.ID]
                 .Where(_excl => !string.IsNullOrEmpty(_excl.SourceWord))
                 .ToList();  
             List<string> _warnings, _errors;
@@ -105,7 +103,7 @@ namespace Bitig.UI.Configuration
                 AnyPosition: _row.Cells[ANY_POSITION_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[ANY_POSITION_COLUMN].Value),
                 MatchCase: _row.Cells[MATCH_CASE_COLUMN].Value == null ? false : Convert.ToBoolean(_row.Cells[MATCH_CASE_COLUMN].Value)
             );
-            if (!x_SelectedDirection.IsValidExclusion(_exclusion, out _errors, out _warnings) || _warnings.Count > 0)
+            if (!_fullDirection.IsValidExclusion(_exclusion, out _errors, out _warnings) || _warnings.Count > 0)
             {
                 x_ValidationResults[RowIndex] = _errors.Union(_warnings).Aggregate((x, y) => x + Environment.NewLine + y);
                 dgvExclusions.Rows[RowIndex].Cells[VALIDATION_RESULT_COLUMN].Value = "!";
@@ -119,7 +117,8 @@ namespace Bitig.UI.Configuration
             dgvExclusions.DataSource = null;
             if(!x_BindingLists.ContainsKey(x_SelectedDirection.ID))
             {
-                x_BindingLists.Add(x_SelectedDirection.ID, new BindingList<Exclusion>(x_SelectedDirection.Exclusions));
+                var _fullDirection = x_DataContext.DirectionRepository.Get(x_SelectedDirection.ID);
+                x_BindingLists.Add(x_SelectedDirection.ID, new BindingList<Exclusion>(_fullDirection.Exclusions));
             }
             dgvExclusions.DataSource = x_BindingLists[x_SelectedDirection.ID];
             x_PreviousIndex = cmbDirection.SelectedIndex;

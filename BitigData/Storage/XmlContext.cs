@@ -245,7 +245,7 @@ namespace Bitig.Data.Storage
             exclusionsCache.NotFound += xmlExclusionReader.Read;
         }
 
-        public void CancelChanges()
+        private void ClearCaches()
         {
             alphabetCache = null;
             directionCache = null;
@@ -254,6 +254,11 @@ namespace Bitig.Data.Storage
             exclusionsCache = null;
             keyboardsCache = null;
             keyboardSummariesCache = null;
+        }
+
+        public void CancelChanges()
+        {
+            ClearCaches();
         }
 
         public void SaveChanges()
@@ -274,6 +279,7 @@ namespace Bitig.Data.Storage
                 xmlKeyboardReader.Save(keyboardsCache);
             if (magicKeyboardsCache != null)
                 xmlMagicKeyboardReader.Save(magicKeyboardsCache);
+            ClearCaches();
         }
     }
 }

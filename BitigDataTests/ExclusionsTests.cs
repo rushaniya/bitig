@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Bitig.Data.Storage;
+using Bitig.Logic.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BitigDataTests
@@ -55,6 +56,27 @@ namespace BitigDataTests
             _direction = _dirRepo.Get(_direction.ID);
             var _result = _direction.Transliterate("бер");
             Assert.AreEqual(_target, _result);
+        }
+
+        [TestMethod]
+        public void DeleteThenAdd()
+        {
+            var _context = new XmlContext(preparedAlphabetsFile, preparedDirectionsFile);
+            var _dirRepo = _context.DirectionRepository;
+            var _direction = _dirRepo.Get(0);
+            Assert.AreEqual(1, _direction.Exclusions.Count);
+            _direction.Exclusions = null;
+            _dirRepo.Update(_direction);
+            _context.SaveChanges();
+            _direction = _dirRepo.Get(0);
+            var _exclusion = new Exclusion(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), false, false, false);
+            _direction.Exclusions = new List<Exclusion> { _exclusion };
+            _dirRepo.Update(_direction);
+            _context.SaveChanges();
+
+            var _checkDirection = _dirRepo.Get(0);
+            Assert.AreEqual(1, _checkDirection.Exclusions.Count);
+            Assert.AreEqual(_exclusion.SourceWord, _checkDirection.Exclusions[0].SourceWord);
         }
 
         private string GenerateCyrillicWord()

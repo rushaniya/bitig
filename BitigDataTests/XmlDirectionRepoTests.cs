@@ -307,5 +307,19 @@ namespace BitigDataTests
             _testRepo.DataContext.SaveChanges();
             Assert.IsFalse(File.Exists(_exclusionsPath));
         }
+
+        [TestMethod]
+        public void Update_DeleteExclusions()
+        {
+            var _testRepo = InitTestRepo();
+            var _direction777 = _testRepo.Get(777);
+            Assert.AreNotEqual(0, _direction777.Exclusions.Count);
+            var _exclusionsPath = currentDataFolder + @"Exclusions\777.xml";
+            Assert.IsTrue(File.Exists(_exclusionsPath));
+            _direction777.Exclusions = null;
+            _testRepo.Update(_direction777);
+            _testRepo.DataContext.SaveChanges();
+            Assert.IsFalse(File.Exists(_exclusionsPath));
+        }
     }
 }

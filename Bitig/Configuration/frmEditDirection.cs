@@ -160,7 +160,7 @@ namespace Bitig.UI.Configuration
             if (_duplicate != null)
             {
                 if (MessageBox.Show("Transliteration direction already exists. Replace?", "?",  //loc
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     return;
             }
             if (_duplicate != null)
@@ -174,9 +174,10 @@ namespace Bitig.UI.Configuration
                 _assembly = x_SelectedAssemblyPath;
                 _type = cmbType.Text.Trim();
             }
+            var _builtInType = _builtIn == null ? BuiltInDirectionType.None : _builtIn.Type;
             if (x_Direction == null)
             {
-                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtIn.Type, _manualCommand);
+                x_Direction = new Direction(-1, _source, _target, null, _assembly, _type, _builtInType, _manualCommand);
                 x_DirectionRepository.Insert(x_Direction);
             }
             else
@@ -185,7 +186,7 @@ namespace Bitig.UI.Configuration
                 x_Direction.TypeName = _type;
                 x_Direction.Source = _source;
                 x_Direction.Target = _target;
-                x_Direction.BuiltInType = _builtIn.Type;
+                x_Direction.BuiltInType = _builtInType;
                 x_Direction.ManualCommand = _manualCommand;
                 x_DirectionRepository.Update(x_Direction);
             }

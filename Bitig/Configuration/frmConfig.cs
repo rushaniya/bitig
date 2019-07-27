@@ -104,7 +104,7 @@ namespace Bitig.UI.Configuration
                     MessageBox.Show("This alphabet is in use.", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(string.Format("Remove {0} alphabet?", x_CurrentAlphabet.FriendlyName), "?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     x_AlphabetRepo.Delete(x_CurrentAlphabet.ID);
                     DisplayAlphabets();
@@ -212,7 +212,7 @@ namespace Bitig.UI.Configuration
                 //loc
                 if (MessageBox.Show(string.Format("Remove transliteration direction {0}?",
                     x_CurrentDirection.FriendlyName),
-                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     x_DirectionRepo.Delete(x_CurrentDirection.ID);
                     DisplayDirections();
@@ -322,7 +322,7 @@ namespace Bitig.UI.Configuration
                 //loc
                 if (MessageBox.Show(string.Format("Remove keyboard layout {0}?",
                     x_CurrentKeyboardSummary.FriendlyName),
-                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    "?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     x_KeyboardRepo.Delete(x_CurrentKeyboardSummary.ID);
                     x_AlphabetsModified = true;

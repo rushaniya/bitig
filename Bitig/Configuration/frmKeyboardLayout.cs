@@ -150,6 +150,11 @@ namespace Bitig.UI.Configuration
                         MessageBox.Show(string.Format("Empty symbol for combination {0}", _keyCombination.Combination), "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
                         return;
                     }
+                    if (_keyStroke.WithShift && !string.IsNullOrEmpty(_keyCombination.Capital))
+                    {
+                        MessageBox.Show(string.Format("Combination {0} cannot have capital symbol because it includes Shift key", _keyCombination.Combination), "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);//loc
+                        return;
+                    }
                     _keyCombinations.Add(new KeyCombination
                     {
                         Capital = _keyCombination.Capital,

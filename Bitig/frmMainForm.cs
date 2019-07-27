@@ -52,8 +52,6 @@ namespace Bitig.UI
             ctlMultiRtb1.RtbMain.Font = x_DefaultFont;
             InitializeRepositories();
 
-            FillAlphabets(false);
-
             ctlMultiRtb1.MessageSent += new ctlMultiRtb.CtlMessage(ctlMultiRtb1_MessageSent);
             ctlMultiRtb1.ResetFormatDisplay();
             //config
@@ -62,6 +60,8 @@ namespace Bitig.UI
             spltMain.Panel1Collapsed = true;
             btnMainKeyboard.Checked = false;
             mniMainKeyboard.Checked = false;
+
+            FillAlphabets(false);
         }
 
         private void InitializeRepositories()
@@ -72,7 +72,7 @@ namespace Bitig.UI
             x_DirectionRepository = x_DataContext.DirectionRepository;
         }
 
-        private void ctlMultiRtb1_MessageSent(object sender, Bitig.RtbControl.Utilities.MessageArgs e)
+        private void ctlMultiRtb1_MessageSent(object sender, RtbControl.Utilities.MessageArgs e)
         {
             switch (e.MessageType)
             {
@@ -85,6 +85,7 @@ namespace Bitig.UI
 
         private void frmMainForm_Load(object sender, EventArgs e)
         {
+            txtTranslit.LanguageOption = RichTextBoxLanguageOptions.DualFont;
             if (!spltMain.Panel1Collapsed)
             {
                 //config:spltMain.SplitterDistance = Properties.Settings.Default.k_SplitterDistance;
@@ -162,6 +163,8 @@ namespace Bitig.UI
                 //config:spltMain.SplitterDistance = Properties.Settings.Default.k_SplitterDistance;
                 x_SplitterShown1stTime = false;
             }
+            mniCurrentMapping.Enabled = x_DirectionToMain != null && x_DirectionToMain.ManualCommand != null;
+            mniExclusions.Enabled = x_DirectionToMain != null;
             x_ProcessingTranslitArea = false;
         }
 
@@ -427,13 +430,15 @@ namespace Bitig.UI
             {
                 btnToMain.Enabled = false;
                 mniCurrentMapping.Enabled = false;
+                mniExclusions.Enabled = false;
             }
             else
             {
                 var _toMainToolTip = string.Format("Convert from {0} to {1}", x_TranslitAlphabet.FriendlyName, x_MainAlphabet.FriendlyName);
                 btnToMain.Enabled = true;
                 btnToMain.ToolTipText = _toMainToolTip;
-                mniCurrentMapping.Enabled = x_DirectionToMain.ManualCommand != null;
+                mniCurrentMapping.Enabled = x_DirectionToMain.ManualCommand != null && mniTranslitPanel.Checked;
+                mniExclusions.Enabled = mniTranslitPanel.Checked;
             }
             if (x_DirectionFromMain == null)
             {
@@ -454,6 +459,7 @@ namespace Bitig.UI
             ctlMultiRtb1.RtbMain.SelectedText = x_DirectionToMain.Transliterate(txtTranslit.Text);
             ctlMultiRtb1.RtbMain.Select(ctlMultiRtb1.RtbMain.TextLength, 0);
             ctlMultiRtb1.RtbMain.ScrollToCaret();
+            ctlMultiRtb1.RtbMain.Select();
         }
 
         private void btnFromMain_Click(object sender, EventArgs e)
@@ -462,6 +468,7 @@ namespace Bitig.UI
                 return;
             string _translitted = x_DirectionFromMain.Transliterate(ctlMultiRtb1.RtbMain.Text);
             txtTranslit.SelectedText = InsertTextboxLineBreaks(_translitted);
+            txtTranslit.Select();
         }
 
         #endregion
@@ -591,7 +598,8 @@ namespace Bitig.UI
         {
             using (var _configForm = new frmExclusions(x_DirectionToMain, x_DataContext, true))
             {
-                _configForm.ShowDialog();
+                if (_configForm.ShowDialog() == DialogResult.OK)
+                    GetCurrentDirection();
             }
         }
 
@@ -625,6 +633,7 @@ namespace Bitig.UI
                     x_DirectionToMain.ManualCommand = new ManualCommand(_mappingForm.SymbolMapping);
                     x_DirectionRepository.Update(x_DirectionToMain);
                     x_DataContext.SaveChanges();
+                    GetCurrentDirection();
                 }
             }
         }
