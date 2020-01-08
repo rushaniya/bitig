@@ -57,12 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitigInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="BitigInstaller.Designer.cs">
-      <DependentUpon>BitigInstaller.cs</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\frmKeyboardLayout.cs">
       <SubType>Form</SubType>
     </Compile>

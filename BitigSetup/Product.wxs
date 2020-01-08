@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="7E83419B-F658-4591-90C1-A6729C2C063C" Name="Bitig" Language="1033" Version="2.0.0.0" Manufacturer="Adab" UpgradeCode="34635427-9176-47e1-a6e4-0f7b620faae2">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="Adab" Description="Multi-alphabet text editor"/>
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+    
+    <UIRef Id="WixUI_Minimal" />
+
+    <!-- todo <PropertyRef Id="NETFRAMEWORK451FULL"/>
+    <Condition Message="You must install Microsoft .NET Framework 4.5.1.">
+      <![CDATA[Installed OR NETFRAMEWORK451FULL]]>
+    </Condition>-->
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Bitig" />
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ShortcutsDirectory" Name="Bitig"/>
+      </Directory>
+
+    <!--todo <Directory Id="FontsFolder"/>-->
+    </Directory>
+
+    <Feature Id="ApplicationFeature" Title="Bitig Application" Level="1" Absent="disallow">
+      <ComponentGroupRef Id="ApplicationComponents" />
+      <ComponentRef Id="ShortcutsComponent"/>
+    </Feature>
+    <!-- todo <Feature Id="FontsFeature" Title="Fonts" Level="1" Absent="allow">
+      <ComponentGroupRef Id="FontsComponents"/>
+    </Feature>-->
+  </Product>
+
+  <Fragment>
+    <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
+      <Component Id="BitigExe" Guid="C9FFB856-E791-4A3B-B6CE-0B406DB3044F">
+        <File Source="$(var.Bitig.TargetDir)Bitig.exe" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+      <Component Id="BitigBaseDll" Guid="17CC1A31-F217-4838-B981-0C370FA8EF14">
+        <File Source="$(var.Bitig.TargetDir)BitigBase.dll" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+      <Component Id="BitigDataDll" Guid="B74404DA-28E5-4D4B-8D09-68D81CFEE79B">
+        <File Source="$(var.Bitig.TargetDir)BitigData.dll" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+      <Component Id="BitigLogicDll" Guid="3491720F-E20F-49E5-A5D1-E8093506DB57">
+        <File Source="$(var.Bitig.TargetDir)BitigLogic.dll" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+      <Component Id="BitigRtbControlDll" Guid="38E0A629-B3AA-4456-A9EC-B496E07609FA">
+        <File Source="$(var.Bitig.TargetDir)BitigrtbControl.dll" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+      <Component Id="KeyboardManagerDll" Guid="093CE7A5-5B8D-4EB3-A904-073230D4378A">
+        <File Source="$(var.Bitig.TargetDir)KeyboardManager.dll" KeyPath="yes" ReadOnly="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!--todo <ComponentGroup Id="FontsComponents" Directory="FontsFolder">
+      <Component Id="DejaVuSansFonts" Guid="4CCF52AD-8323-42A3-9961-CC123FF1E244">
+        <File Source="Fonts\DejaVuSans.ttf" TrueType="yes"/>
+      </Component>
+    </ComponentGroup>-->
+    
+    <!--todo Icon-->
+	  <!--<Icon Id="BitigIcon" SourceFile="..\bitig.ico" />
+	  <Property Id="ARPPRODUCTION" Value="BitigIcon" />-->
+	  <Property Id="ARPCOMMENTS" Value="Support for Tatar Latin Alphabet" />
+	
+    <DirectoryRef Id="ShortcutsDirectory">
+      <Component Id="ShortcutsComponent" Guid="8269D095-111E-47BC-BDE8-CD80EF8CCDCF">
+        <Shortcut Id="StartMenuShortcut"
+                  Name="Bitig"
+                  Description="Start Bitig, multi-alphabet text editor"
+                  Target="[INSTALLFOLDER]Bitig.exe"/>
+        <RemoveFolder Id="RemoveShortcutsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU"
+                       Key="Software\Bitig"
+                       Name="installed"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+  </Fragment>
+</Wix>
