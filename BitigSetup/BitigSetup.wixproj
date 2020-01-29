@@ -19,6 +19,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fonts.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +41,32 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fonts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fonts\DejaVuSans-Bold.ttf" />
+    <Content Include="Fonts\DejaVuSans-BoldOblique.ttf" />
+    <Content Include="Fonts\DejaVuSans-ExtraLight.ttf" />
+    <Content Include="Fonts\DejaVuSans-Oblique.ttf" />
+    <Content Include="Fonts\DejaVuSans.ttf" />
+    <Content Include="Fonts\DejaVuSansCondensed-Bold.ttf" />
+    <Content Include="Fonts\DejaVuSansCondensed-BoldOblique.ttf" />
+    <Content Include="Fonts\DejaVuSansCondensed-Oblique.ttf" />
+    <Content Include="Fonts\DejaVuSansCondensed.ttf" />
+    <Content Include="Fonts\DejaVuSansMono-Bold.ttf" />
+    <Content Include="Fonts\DejaVuSansMono-BoldOblique.ttf" />
+    <Content Include="Fonts\DejaVuSansMono-Oblique.ttf" />
+    <Content Include="Fonts\DejaVuSansMono.ttf" />
+    <Content Include="Fonts\DejaVuSerif-Bold.ttf" />
+    <Content Include="Fonts\DejaVuSerif-BoldItalic.ttf" />
+    <Content Include="Fonts\DejaVuSerif-Italic.ttf" />
+    <Content Include="Fonts\DejaVuSerif.ttf" />
+    <Content Include="Fonts\DejaVuSerifCondensed-Bold.ttf" />
+    <Content Include="Fonts\DejaVuSerifCondensed-BoldItalic.ttf" />
+    <Content Include="Fonts\DejaVuSerifCondensed-Italic.ttf" />
+    <Content Include="Fonts\DejaVuSerifCondensed.ttf" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />

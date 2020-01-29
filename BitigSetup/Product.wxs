@@ -22,20 +22,20 @@
         <Directory Id="ShortcutsDirectory" Name="Bitig"/>
       </Directory>
 
-    <!--todo <Directory Id="FontsFolder"/>-->
+    <Directory Id="FontsFolder"/>
     </Directory>
 
     <Feature Id="ApplicationFeature" Title="Bitig Application" Level="1" Absent="disallow">
-      <ComponentGroupRef Id="ApplicationComponents" />
+      <ComponentGroupRef Id="ApplicationComponentGroup" />
       <ComponentRef Id="ShortcutsComponent"/>
     </Feature>
-    <!-- todo <Feature Id="FontsFeature" Title="Fonts" Level="1" Absent="allow">
-      <ComponentGroupRef Id="FontsComponents"/>
-    </Feature>-->
+     <Feature Id="FontsFeature" Title="Fonts" Level="1" Absent="allow">
+      <ComponentGroupRef Id="FontsComponentGroup"/>
+    </Feature>
   </Product>
 
   <Fragment>
-    <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
+    <ComponentGroup Id="ApplicationComponentGroup" Directory="INSTALLFOLDER">
       <Component Id="BitigExe" Guid="C9FFB856-E791-4A3B-B6CE-0B406DB3044F">
         <File Source="$(var.Bitig.TargetDir)Bitig.exe" KeyPath="yes" ReadOnly="yes" />
       </Component>
@@ -56,11 +56,7 @@
       </Component>
     </ComponentGroup>
 
-    <!--todo <ComponentGroup Id="FontsComponents" Directory="FontsFolder">
-      <Component Id="DejaVuSansFonts" Guid="4CCF52AD-8323-42A3-9961-CC123FF1E244">
-        <File Source="Fonts\DejaVuSans.ttf" TrueType="yes"/>
-      </Component>
-    </ComponentGroup>-->
+    <PropertyRef Id="FontsProperty"/>
     
     <!--todo Icon-->
 	  <!--<Icon Id="BitigIcon" SourceFile="..\bitig.ico" />

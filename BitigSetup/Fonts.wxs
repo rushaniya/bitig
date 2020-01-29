@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    <Property Id="FontsProperty" Value="1"/>
+
+    <ComponentGroup Id="FontsComponentGroup" Directory="FontsFolder">
+      
+      <Component Id="DejaVuSansFont" Guid="4CCF52AD-8323-42A3-9961-CC123FF1E244">
+        <File Source="Fonts\DejaVuSans.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSans_BoldFont" Guid="DBBBE7AB-7858-4030-9888-DE19A100EBCA">
+        <File Source="Fonts\DejaVuSans-Bold.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_BOLD_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSans_ObliqueFont" Guid="8E541504-6D1B-4EA0-A3E3-863F8ADADC30">
+        <File Source="Fonts\DejaVuSans-Oblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSans_BoldObliqueFont" Guid="42CC434A-EE15-4AD8-8782-A8D439915D52">
+        <File Source="Fonts\DejaVuSans-BoldOblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_BOLD_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansCondensedFont" Guid="9CBACC69-7CAD-45F3-BBDF-39193E2C5C5A">
+        <File Source="Fonts\DejaVuSansCondensed.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_CONDENSED_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansCondensed_BoldFont" Guid="3AC75D4F-9EA3-42DE-B55F-FB86F1988714">
+        <File Source="Fonts\DejaVuSansCondensed-Bold.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_CONDENSED_BOLD_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansCondensed_ObliqueFont" Guid="C105815A-7D08-43FD-8573-DE6D9335BA64">
+        <File Source="Fonts\DejaVuSansCondensed-Oblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_CONDENSED_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansCondensed_BoldObliqueFont" Guid="64A2D2AB-640D-49BF-A651-BD36AD063268">
+        <File Source="Fonts\DejaVuSansCondensed-BoldOblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_CONDENSED_BOLD_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSans_ExtraLightFont" Guid="B7CCE494-0C4D-4EA4-9411-4DAC181C4C78">
+        <File Source="Fonts\DejaVuSans-ExtraLight.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_EXTRA_LIGHT_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansMonoFont" Guid="EF2E7991-0C71-4D80-8D0F-725FDEECE90E">
+        <File Source="Fonts\DejaVuSansMono.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_MONO_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansMono_BoldFont" Guid="AF2D2E1D-607B-412D-A8DB-E4EFF94672AF">
+        <File Source="Fonts\DejaVuSansMono-Bold.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_MONO_BOLD_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansMono_ObliqueFont" Guid="96A5EB8A-B57B-4605-B9B0-426F0DEE7E3B">
+        <File Source="Fonts\DejaVuSansMono-Oblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_MONO_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSansMono_BoldObliqueFont" Guid="5DA4864C-FF10-4AE6-A1A5-9D2CC902F5C1">
+        <File Source="Fonts\DejaVuSansMono-BoldOblique.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SANS_MONO_BOLD_OBLIQUE_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerifFont" Guid="8D6A366A-81FB-422F-8529-A52799703FE5">
+        <File Source="Fonts\DejaVuSerif.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerif_BoldFont" Guid="4D587867-C15B-4EB9-97B8-6FAB7C8C7084">
+        <File Source="Fonts\DejaVuSerif-Bold.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_BOLD_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerif_ItalicFont" Guid="B54E980B-763D-4992-A23B-53B83C341706">
+        <File Source="Fonts\DejaVuSerif-Italic.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_ITALIC_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerif_BoldItalicFont" Guid="EED62DD4-62BF-424A-98D5-7928A8AFADB9">
+        <File Source="Fonts\DejaVuSerif-BoldItalic.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_BOLD_ITALIC_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerifCondensedFont" Guid="35821C3B-BA8B-48A5-A966-3BE1053D72BC">
+        <File Source="Fonts\DejaVuSerifCondensed.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_CONDENSED_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerifCondensed_BoldFont" Guid="56D8315E-D82A-4E58-896B-6C9763063158">
+        <File Source="Fonts\DejaVuSerifCondensed-Bold.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_CONDENSED_BOLD_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerifCondensed_ItalicFont" Guid="95F4DFB0-4C2E-4F70-B816-6152EAB878A7">
+        <File Source="Fonts\DejaVuSerifCondensed-Italic.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_CONDENSED_ITALIC_FOUND</Condition>
+      </Component>
+
+      <Component Id="DejaVuSerifCondensed_BoldItalicFont" Guid="292815E6-3B5F-4E62-A092-6B89EEB7AE5C">
+        <File Source="Fonts\DejaVuSerifCondensed-BoldItalic.ttf" TrueType="yes" KeyPath="yes"/>
+        <Condition>NOT DEJAVU_SERIF_CONDENSED_BOLD_ITALIC_FOUND</Condition>
+      </Component>
+
+    </ComponentGroup>
+
+    <Property Id="DEJAVU_SANS_FOUND">
+      <RegistrySearch Id="DejaVuSansFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_BOLD_FOUND">
+      <RegistrySearch Id="DejaVuSans_BoldFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Bold (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSans_ObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_BOLD_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSans_BoldObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Bold Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_CONDENSED_FOUND">
+      <RegistrySearch Id="DejaVuSansCondensedFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Condensed (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_CONDENSED_BOLD_FOUND">
+      <RegistrySearch Id="DejaVuSansCondensed_BoldFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Condensed Bold (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_CONDENSED_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSansCondensed_ObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Condensed Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_EXTRA_LIGHT_FOUND">
+      <RegistrySearch Id="DejaVuSans_ExtraLightFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans ExtraLight (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_CONDENSED_BOLD_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSansCondensed_BoldObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Condensed Bold Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_MONO_FOUND">
+      <RegistrySearch Id="DejaVuSansMonoFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Mono (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_MONO_BOLD_FOUND">
+      <RegistrySearch Id="DejaVuSansMono_BoldFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Mono Bold (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_MONO_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSansMono_ObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Mono Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SANS_MONO_BOLD_OBLIQUE_FOUND">
+      <RegistrySearch Id="DejaVuSansMono_BoldObliqueFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Sans Mono Bold Oblique (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_FOUND">
+      <RegistrySearch Id="DejaVuSerifFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_BOLD_FOUND">
+      <RegistrySearch Id="DejaVuSerif_BoldFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Bold (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_ITALIC_FOUND">
+      <RegistrySearch Id="DejaVuSerif_ItalicFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Italic (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_BOLD_ITALIC_FOUND">
+      <RegistrySearch Id="DejaVuSerif_BoldItalicFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Bold Italic (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_CONDENSED_FOUND">
+      <RegistrySearch Id="DejaVuSerifCondensedFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Condensed (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_CONDENSED_BOLD_FOUND">
+      <RegistrySearch Id="DejaVuSerifCondensed_BoldFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Condensed Bold (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_CONDENSED_ITALIC_FOUND">
+      <RegistrySearch Id="DejaVuSerifCondensed_ItalicFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Condensed Italic (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+
+    <Property Id="DEJAVU_SERIF_CONDENSED_BOLD_ITALIC_FOUND">
+      <RegistrySearch Id="DejaVuSerifCondensed_BoldItalicFont_RegSearch"
+      Root="HKLM"
+      Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+      Name="DejaVu Serif Condensed Bold Italic (TrueType)"
+      Type="raw">
+      </RegistrySearch>
+    </Property>
+	</Fragment>
+</Wix>
