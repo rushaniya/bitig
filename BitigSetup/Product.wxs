@@ -4,8 +4,9 @@
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="Adab" Description="Multi-alphabet text editor"/>
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
-    
-    <UIRef Id="WixUI_Minimal" />
+
+    <PropertyRef Id="UIProperty"/>
+    <UIRef Id="CustomUI" />
 
     <!-- todo <PropertyRef Id="NETFRAMEWORK451FULL"/>
     <Condition Message="You must install Microsoft .NET Framework 4.5.1.">

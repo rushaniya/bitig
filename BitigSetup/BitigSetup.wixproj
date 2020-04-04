@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="Fonts.wxs" />
     <Compile Include="Product.wxs" />
+    <Compile Include="UI.wxs" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixNetFxExtension">
