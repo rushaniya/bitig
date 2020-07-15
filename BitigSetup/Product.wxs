@@ -58,6 +58,7 @@
     </ComponentGroup>
 
     <PropertyRef Id="FontsProperty"/>
+    <PropertyRef Id="ActionsProperty"/>
     
     <!--todo Icon-->
 	  <!--<Icon Id="BitigIcon" SourceFile="..\bitig.ico" />

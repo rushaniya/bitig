@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Fragment>
-    <!--<CustomAction Id="SeedAction" Execute="deferred" Return="check" />-->
-	</Fragment>
+  <Fragment>
+    <Property Id="ActionsProperty" Value="1"/>
+    
+    <Binary Id="CustomActionDll" SourceFile="$(var.WixCustomActions.TargetDir)WixCustomActions.CA.dll" />
+
+    <CustomAction Id="SeedAction"
+                  BinaryKey="CustomActionDll"
+                  DllEntry="Seed"
+                  Execute="deferred"
+                  Impersonate="yes"
+                  Return="check" />
+
+    <InstallExecuteSequence>
+      <Custom Action="SeedAction" Before="InstallFinalize" />
+    </InstallExecuteSequence>
+  
+  </Fragment>
 </Wix>
