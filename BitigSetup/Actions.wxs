@@ -13,7 +13,7 @@
                   Return="check" />
 
     <InstallExecuteSequence>
-      <Custom Action="SeedAction" Before="InstallFinalize" />
+      <Custom Action="SeedAction" Before="InstallFinalize">RUN_SEED = "yes"</Custom>
     </InstallExecuteSequence>
   
   </Fragment>

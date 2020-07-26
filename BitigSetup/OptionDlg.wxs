@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
-    <Property Id="InstallFonts" Value="True"/>
-    <Property Id="RunSeed" Value="True"/>
+    <Property Id="INSTALL_FONTS" Value="yes"/>
+    <Property Id="RUN_SEED" Value="yes" Secure="yes"/>
     <UI>
       <Dialog Id="OptionDlg" Width="370" Height="270" Title="!(loc.InstallDirDlg_Title)">
         <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="Choose additional options." />
         <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Options" />
         <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
-        <Control Id="FontsCheckbox" Type="CheckBox" Property="InstallFonts"
-          CheckBoxValue="True" Text="Install DejaVu fonts"
+        <Control Id="FontsCheckbox" Type="CheckBox" Property="INSTALL_FONTS"
+          CheckBoxValue="yes" Text="Install DejaVu fonts"
           X="20" Y="60" Height="10" Width="150" />
-        <Control Id="SeedCheckbox" Type="CheckBox" Property="RunSeed"
-         CheckBoxValue="True" Text="Create default configuration"
+        <Control Id="SeedCheckbox" Type="CheckBox" Property="RUN_SEED"
+         CheckBoxValue="yes" Text="Create default configuration"
          X="20" Y="76" Height="10" Width="150" />
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
