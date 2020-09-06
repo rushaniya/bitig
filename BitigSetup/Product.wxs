@@ -50,7 +50,7 @@
         <File Source="$(var.Bitig.TargetDir)BitigLogic.dll" KeyPath="yes" ReadOnly="yes" />
       </Component>
       <Component Id="BitigRtbControlDll" Guid="38E0A629-B3AA-4456-A9EC-B496E07609FA">
-        <File Source="$(var.Bitig.TargetDir)BitigrtbControl.dll" KeyPath="yes" ReadOnly="yes" />
+        <File Source="$(var.Bitig.TargetDir)BitigRtbControl.dll" KeyPath="yes" ReadOnly="yes" />
       </Component>
       <Component Id="KeyboardManagerDll" Guid="093CE7A5-5B8D-4EB3-A904-073230D4378A">
         <File Source="$(var.Bitig.TargetDir)KeyboardManager.dll" KeyPath="yes" ReadOnly="yes" />

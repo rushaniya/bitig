@@ -48,6 +48,16 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BitigData\BitigData.csproj">
+      <Project>{2be970c9-50ff-4038-be4c-80275ef802e4}</Project>
+      <Name>BitigData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitigLogic\BitigLogic.csproj">
+      <Project>{5052751a-ce01-4cef-88dd-4bc4fa3c49cb}</Project>
+      <Name>BitigLogic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(WixCATargetsPath)" Condition=" '$(WixCATargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.CA.targets" Condition=" '$(WixCATargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.CA.targets') " />
