@@ -19,11 +19,9 @@
         <Directory Id="INSTALLFOLDER" Name="Bitig" />
       </Directory>
 
-      <Directory Id="ProgramMenuFolder">
-        <Directory Id="ShortcutsDirectory" Name="Bitig"/>
-      </Directory>
+      <Directory Id="ProgramMenuFolder" />
 
-    <Directory Id="FontsFolder"/>
+      <Directory Id="FontsFolder"/>
     </Directory>
 
     <Feature Id="ApplicationFeature" Title="Bitig Application" Level="1" Absent="disallow">
@@ -65,13 +63,12 @@
 	  <Property Id="ARPPRODUCTION" Value="BitigIcon" />-->
 	  <Property Id="ARPCOMMENTS" Value="Support for Tatar Latin Alphabet" />
 	
-    <DirectoryRef Id="ShortcutsDirectory">
+    <DirectoryRef Id="ProgramMenuFolder">
       <Component Id="ShortcutsComponent" Guid="8269D095-111E-47BC-BDE8-CD80EF8CCDCF">
         <Shortcut Id="StartMenuShortcut"
                   Name="Bitig"
                   Description="Start Bitig, multi-alphabet text editor"
                   Target="[INSTALLFOLDER]Bitig.exe"/>
-        <RemoveFolder Id="RemoveShortcutsFolder" On="uninstall"/>
         <RegistryValue Root="HKCU"
                        Key="Software\Bitig"
                        Name="installed"
