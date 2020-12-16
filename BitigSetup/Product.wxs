@@ -8,10 +8,10 @@
     <PropertyRef Id="UIProperty"/>
     <UIRef Id="CustomUI" />
 
-    <!-- todo <PropertyRef Id="NETFRAMEWORK451FULL"/>
-    <Condition Message="You must install Microsoft .NET Framework 4.5.1.">
-      <![CDATA[Installed OR NETFRAMEWORK451FULL]]>
-    </Condition>-->
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="You must install Microsoft .NET Framework 4.0 or higher.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    </Condition>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
 
